@@ -2,14 +2,9 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
   CardContent,
   Button,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Stack,
   Chip,
   Paper,
@@ -103,8 +98,8 @@ const TMJPage = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -159,8 +154,8 @@ const TMJPage = () => {
                   </Button>
                 </Stack>
               </motion.div>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={heroInView ? { opacity: 1, scale: 1 } : {}}
@@ -198,8 +193,8 @@ const TMJPage = () => {
                   </Box>
                 </Paper>
               </motion.div>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
@@ -230,9 +225,9 @@ const TMJPage = () => {
             </Typography>
           </motion.div>
 
-          <Grid container spacing={3}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {symptoms.map((symptom, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { xs: '100%', sm: '50%', md: '25%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={symptomsInView ? { opacity: 1, x: 0 } : {}}
@@ -256,9 +251,9 @@ const TMJPage = () => {
                     <Typography>{symptom}</Typography>
                   </Box>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -274,9 +269,9 @@ const TMJPage = () => {
             Our Comprehensive Treatment Approach
           </Typography>
 
-          <Grid container spacing={4}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {treatments.map((treatment, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { xs: '100%', sm: '50%', md: '25%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={treatmentInView ? { opacity: 1, y: 0 } : {}}
@@ -311,9 +306,9 @@ const TMJPage = () => {
                     </Typography>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -329,9 +324,9 @@ const TMJPage = () => {
             Patient Success Stories
           </Typography>
 
-          <Grid container spacing={4}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {testimonials.map((testimonial, index) => (
-              <Grid item xs={12} md={4} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { md: '33.333%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={testimonialsInView ? { opacity: 1, y: 0 } : {}}
@@ -368,9 +363,9 @@ const TMJPage = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 

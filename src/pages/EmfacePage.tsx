@@ -2,7 +2,6 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
   CardContent,
   Button,
@@ -13,13 +12,15 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+} from '@mui/material';
+import {
   Timeline,
   TimelineItem,
   TimelineSeparator,
   TimelineConnector,
   TimelineContent,
   TimelineDot,
-} from '@mui/material';
+} from '@mui/lab';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
@@ -108,8 +109,8 @@ const EmfacePage = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -173,8 +174,8 @@ const EmfacePage = () => {
                   </Button>
                 </Stack>
               </motion.div>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={heroInView ? { opacity: 1, scale: 1 } : {}}
@@ -216,8 +217,8 @@ const EmfacePage = () => {
                   </Box>
                 </Paper>
               </motion.div>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
@@ -243,8 +244,8 @@ const EmfacePage = () => {
             to simultaneously treat your facial skin and muscles.
           </Typography>
 
-          <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <Card sx={{ height: '100%', p: 3 }}>
                 <CardContent>
                   <Typography variant="h5" gutterBottom fontWeight={600}>
@@ -276,8 +277,8 @@ const EmfacePage = () => {
                   </List>
                 </CardContent>
               </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <Card sx={{ height: '100%', p: 3 }}>
                 <CardContent>
                   <Typography variant="h5" gutterBottom fontWeight={600}>
@@ -309,8 +310,8 @@ const EmfacePage = () => {
                   </List>
                 </CardContent>
               </Card>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
@@ -326,9 +327,9 @@ const EmfacePage = () => {
             Why Choose EMFACE?
           </Typography>
 
-          <Grid container spacing={4}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {benefits.map((benefit, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { xs: '100%', sm: '50%', md: '25%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={benefitsInView ? { opacity: 1, y: 0 } : {}}
@@ -362,17 +363,17 @@ const EmfacePage = () => {
                     </Typography>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
       {/* Treatment Areas Section */}
       <Box ref={resultsRef} sx={{ py: 10 }}>
         <Container maxWidth="lg">
-          <Grid container spacing={6} alignItems="center">
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6, alignItems: 'center' }}>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={resultsInView ? { opacity: 1, x: 0 } : {}}
@@ -395,8 +396,8 @@ const EmfacePage = () => {
                   ))}
                 </List>
               </motion.div>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={resultsInView ? { opacity: 1, x: 0 } : {}}
@@ -412,8 +413,8 @@ const EmfacePage = () => {
                   }}
                 />
               </motion.div>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 

@@ -2,7 +2,6 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
   CardContent,
   TextField,
@@ -103,9 +102,9 @@ const ContactPage = () => {
       {/* Contact Form & Info Section */}
       <Box ref={formRef} sx={{ py: 10 }}>
         <Container maxWidth="lg">
-          <Grid container spacing={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {/* Contact Form */}
-            <Grid item xs={12} md={7}>
+            <Box sx={{ width: { xs: '100%', md: '58.333%' }, px: 3 }}>
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={formInView ? { opacity: 1, x: 0 } : {}}
@@ -129,8 +128,8 @@ const ContactPage = () => {
                       onSubmit={handleSubmit}
                       sx={{ mt: 3 }}
                     >
-                      <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
                           <TextField
                             fullWidth
                             label="Full Name"
@@ -139,8 +138,8 @@ const ContactPage = () => {
                             onChange={handleChange}
                             required
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        </Box>
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
                           <TextField
                             fullWidth
                             label="Email"
@@ -150,8 +149,8 @@ const ContactPage = () => {
                             onChange={handleChange}
                             required
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        </Box>
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
                           <TextField
                             fullWidth
                             label="Phone Number"
@@ -160,8 +159,8 @@ const ContactPage = () => {
                             onChange={handleChange}
                             required
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        </Box>
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
                           <TextField
                             fullWidth
                             select
@@ -177,8 +176,8 @@ const ContactPage = () => {
                               </MenuItem>
                             ))}
                           </TextField>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        </Box>
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
                           <TextField
                             fullWidth
                             label="Preferred Date"
@@ -188,8 +187,8 @@ const ContactPage = () => {
                             onChange={handleChange}
                             InputLabelProps={{ shrink: true }}
                           />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
+                        </Box>
+                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
                           <TextField
                             fullWidth
                             select
@@ -204,8 +203,8 @@ const ContactPage = () => {
                               </MenuItem>
                             ))}
                           </TextField>
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Box>
+                        <Box sx={{ width: '100%', px: 1.5 }}>
                           <TextField
                             fullWidth
                             label="Additional Message"
@@ -215,8 +214,8 @@ const ContactPage = () => {
                             multiline
                             rows={4}
                           />
-                        </Grid>
-                        <Grid item xs={12}>
+                        </Box>
+                        <Box sx={{ width: '100%', px: 1.5 }}>
                           <Button
                             type="submit"
                             variant="contained"
@@ -226,16 +225,16 @@ const ContactPage = () => {
                           >
                             Request Appointment
                           </Button>
-                        </Grid>
-                      </Grid>
+                        </Box>
+                      </Box>
                     </Box>
                   </CardContent>
                 </Card>
               </motion.div>
-            </Grid>
+            </Box>
 
             {/* Contact Information */}
-            <Grid item xs={12} md={5}>
+            <Box sx={{ width: { xs: '100%', md: '41.667%' }, px: 3 }}>
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 animate={formInView ? { opacity: 1, x: 0 } : {}}
@@ -315,8 +314,8 @@ const ContactPage = () => {
                   </Paper>
                 </Stack>
               </motion.div>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 

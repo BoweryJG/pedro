@@ -1,7 +1,6 @@
 import {
   Box,
   Container,
-  Grid,
   Typography,
   Link,
   IconButton,
@@ -29,8 +28,8 @@ const Footer = () => {
       }}
     >
       <Container maxWidth="lg">
-        <Grid container spacing={4}>
-          <Grid item xs={12} md={4}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          <Box sx={{ width: { xs: '100%', md: '33.333%' }, px: 2 }}>
             <Typography variant="h6" color="primary" gutterBottom>
               Edwards & Pedro Advanced Dental Care
             </Typography>
@@ -49,9 +48,9 @@ const Footer = () => {
                 <LinkedInIcon />
               </IconButton>
             </Stack>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Box sx={{ width: { xs: '100%', sm: '50%', md: '33.333%' }, px: 2 }}>
             <Typography variant="h6" gutterBottom>
               Contact Information
             </Typography>
@@ -76,9 +75,9 @@ const Footer = () => {
                 </Typography>
               </Box>
             </Stack>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6} md={4}>
+          <Box sx={{ width: { xs: '100%', sm: '50%', md: '33.333%' }, px: 2 }}>
             <Typography variant="h6" gutterBottom>
               Our Services
             </Typography>
@@ -96,8 +95,8 @@ const Footer = () => {
                 All Services
               </Link>
             </Stack>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         <Divider sx={{ my: 3 }} />
 

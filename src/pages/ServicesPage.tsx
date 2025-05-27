@@ -2,7 +2,6 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
   CardContent,
   Button,
@@ -18,11 +17,8 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
-import HealingIcon from '@mui/icons-material/Healing';
-import FaceIcon from '@mui/icons-material/Face';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -52,7 +48,16 @@ const ServicesPage = () => {
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
 
-  const serviceCategories = [
+  const serviceCategories: Array<{
+    title: string;
+    icon: React.ReactElement;
+    services: Array<{
+      name: string;
+      description: string;
+      features: string[];
+      path?: string;
+    }>;
+  }> = [
     {
       title: 'Advanced Procedures',
       icon: <PrecisionManufacturingIcon />,
@@ -177,9 +182,9 @@ const ServicesPage = () => {
 
           {serviceCategories.map((category, categoryIndex) => (
             <TabPanel key={categoryIndex} value={tabValue} index={categoryIndex}>
-              <Grid container spacing={4}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
                 {category.services.map((service, serviceIndex) => (
-                  <Grid item xs={12} md={4} key={serviceIndex}>
+                  <Box sx={{ flex: '1 1 100%', maxWidth: { md: '33.333%' } }} key={serviceIndex}>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -233,9 +238,9 @@ const ServicesPage = () => {
                         </CardContent>
                       </Card>
                     </motion.div>
-                  </Grid>
+                  </Box>
                 ))}
-              </Grid>
+              </Box>
             </TabPanel>
           ))}
         </Container>

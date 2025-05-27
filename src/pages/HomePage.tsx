@@ -3,7 +3,6 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   CardMedia,
@@ -70,8 +69,8 @@ const HomePage = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 4 }}>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -127,8 +126,8 @@ const HomePage = () => {
                   </Button>
                 </Stack>
               </motion.div>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={heroInView ? { opacity: 1, scale: 1 } : {}}
@@ -196,8 +195,8 @@ const HomePage = () => {
                   </Card>
                 </Box>
               </motion.div>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
@@ -211,9 +210,9 @@ const HomePage = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Grid container spacing={4}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {stats.map((stat, index) => (
-              <Grid item xs={12} md={4} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { md: '33.333%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={statsInView ? { opacity: 1, y: 0 } : {}}
@@ -231,9 +230,9 @@ const HomePage = () => {
                     </Typography>
                   </Box>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -264,9 +263,9 @@ const HomePage = () => {
             </Typography>
           </motion.div>
 
-          <Grid container spacing={4}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {services.map((service, index) => (
-              <Grid item xs={12} md={4} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { md: '33.333%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={featuresInView ? { opacity: 1, y: 0 } : {}}
@@ -336,9 +335,9 @@ const HomePage = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 

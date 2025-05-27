@@ -2,7 +2,6 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
   CardContent,
   Avatar,
@@ -107,9 +106,9 @@ const AboutPage = () => {
       {/* Doctors Section */}
       <Box ref={doctorsRef} sx={{ py: 10 }}>
         <Container maxWidth="lg">
-          <Grid container spacing={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {doctors.map((doctor, index) => (
-              <Grid item xs={12} md={6} key={index}>
+              <Box sx={{ width: { xs: '100%', md: '50%' }, px: 3 }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={doctorsInView ? { opacity: 1, y: 0 } : {}}
@@ -168,9 +167,9 @@ const AboutPage = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -228,9 +227,9 @@ const AboutPage = () => {
             Our Core Values
           </Typography>
 
-          <Grid container spacing={4}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {values.map((value, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box sx={{ width: { xs: '100%', sm: '50%', md: '25%' }, px: 2 }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={valuesInView ? { opacity: 1, scale: 1 } : {}}
@@ -254,9 +253,9 @@ const AboutPage = () => {
                     </Typography>
                   </Box>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
     </Box>

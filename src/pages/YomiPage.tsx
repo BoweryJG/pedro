@@ -2,26 +2,18 @@ import {
   Box,
   Container,
   Typography,
-  Grid,
   Card,
-  CardContent,
   Button,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Stack,
   Chip,
-  Paper,
 } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import SpeedIcon from '@mui/icons-material/Speed';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
@@ -115,8 +107,8 @@ const YomiPage = () => {
         }}
       >
         <Container maxWidth="lg">
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, alignItems: 'center' }}>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, x: -50 }}
                 animate={heroInView ? { opacity: 1, x: 0 } : {}}
@@ -180,8 +172,8 @@ const YomiPage = () => {
                   </Button>
                 </Stack>
               </motion.div>
-            </Grid>
-            <Grid item xs={12} md={6}>
+            </Box>
+            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={heroInView ? { opacity: 1, scale: 1 } : {}}
@@ -206,8 +198,8 @@ const YomiPage = () => {
                   />
                 </Box>
               </motion.div>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Container>
       </Box>
 
@@ -229,9 +221,9 @@ const YomiPage = () => {
             </Typography>
           </motion.div>
 
-          <Grid container spacing={4}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {benefits.map((benefit, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { xs: '100%', sm: '50%', md: '25%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={benefitsInView ? { opacity: 1, y: 0 } : {}}
@@ -265,9 +257,9 @@ const YomiPage = () => {
                     </Typography>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
@@ -283,9 +275,9 @@ const YomiPage = () => {
             The Yomi Process
           </Typography>
 
-          <Grid container spacing={3}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {processSteps.map((step, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Box sx={{ flex: '1 1 100%', maxWidth: { xs: '100%', sm: '50%', md: '25%' } }} key={index}>
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={processInView ? { opacity: 1, x: 0 } : {}}
@@ -318,9 +310,9 @@ const YomiPage = () => {
                     </Typography>
                   </Box>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </Container>
       </Box>
 
