@@ -25,7 +25,7 @@ const AboutPage = () => {
     {
       name: 'Dr. John Edwards',
       title: 'DDS, General Dentistry',
-      image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=400&q=80',
+      image: '/images/johnedwards.jpg',
       education: ['NYU College of Dentistry', 'Advanced Implant Training'],
       specialties: ['General Dentistry', 'Cosmetic Dentistry', 'Dental Implants'],
       bio: 'With over 15 years of experience, Dr. Edwards is committed to providing comprehensive dental care with a gentle touch.',
@@ -33,7 +33,7 @@ const AboutPage = () => {
     {
       name: 'Dr. Greg Pedro',
       title: 'DDS, Prosthodontist',
-      image: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=400&q=80',
+      image: '/images/gregpedro.jpg',
       education: ['Columbia University', 'Prosthodontics Residency', 'Yomi Robotic Surgery Certification'],
       specialties: ['Prosthodontics', 'TMJ Treatment', 'Yomi Robotic Surgery', 'EMFACE'],
       bio: 'Staten Island\'s only Yomi-certified surgeon, Dr. Pedro brings cutting-edge technology and expertise to every patient.',
