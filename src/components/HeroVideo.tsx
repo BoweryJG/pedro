@@ -5,7 +5,7 @@ interface HeroVideoProps {
   videoUrl?: string;
 }
 
-const HeroVideo = ({ videoUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }: HeroVideoProps) => {
+const HeroVideo = ({ videoUrl = 'https://www.youtube.com/watch?v=vXu9dXqFbGU' }: HeroVideoProps) => {
   return (
     <Box
       sx={{
@@ -54,6 +54,7 @@ const HeroVideo = ({ videoUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }:
           },
         }}
       />
+      {/* Local Video Fallback */}
       <video
         autoPlay
         loop
@@ -67,10 +68,11 @@ const HeroVideo = ({ videoUrl = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }:
           minWidth: '100%',
           minHeight: '100%',
           objectFit: 'cover',
-          display: 'none',
+          display: 'none', // Hidden by default, show if YouTube fails
         }}
       >
-        <source src="/videos/dental-hero.mp4" type="video/mp4" />
+        <source src="/videos/yomi-dental-surgery.mp4" type="video/mp4" />
+        <source src="/videos/dental-practice.webm" type="video/webm" />
       </video>
     </Box>
   );
