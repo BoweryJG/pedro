@@ -18,7 +18,6 @@ import FaceIcon from '@mui/icons-material/Face';
 import TimerIcon from '@mui/icons-material/Timer';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import HeroVideo from '../components/HeroVideo';
 import AnimatedStats from '../components/AnimatedStats';
 import TrustIndicators from '../components/TrustIndicators';
 import FloatingAppointmentButton from '../components/FloatingAppointmentButton';
@@ -73,10 +72,20 @@ const HomePage = () => {
           alignItems: 'center',
           position: 'relative',
           overflow: 'hidden',
+          backgroundImage: 'url(/images/hero-dental.jpg), url(https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=2000&q=80)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'linear-gradient(180deg, rgba(30,64,175,0.8) 0%, rgba(124,58,237,0.9) 100%)',
+          },
         }}
       >
-        {/* Video Background */}
-        <HeroVideo />
         
         {/* Hero Content */}
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
