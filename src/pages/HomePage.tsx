@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardContent,
-  CardMedia,
   Stack,
   Chip,
 } from '@mui/material';
@@ -19,6 +18,13 @@ import FaceIcon from '@mui/icons-material/Face';
 import TimerIcon from '@mui/icons-material/Timer';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import HeroVideo from '../components/HeroVideo';
+import AnimatedStats from '../components/AnimatedStats';
+import TrustIndicators from '../components/TrustIndicators';
+import FloatingAppointmentButton from '../components/FloatingAppointmentButton';
+import TestimonialCarousel from '../components/TestimonialCarousel';
+import BeforeAfterGallery from '../components/BeforeAfterGallery';
+import ServiceComparison from '../components/ServiceComparison';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -56,146 +62,110 @@ const HomePage = () => {
 
   return (
     <Box>
-      {/* Hero Section */}
+      <FloatingAppointmentButton />
+      
+      {/* Enhanced Hero Section */}
       <Box
         ref={heroRef}
         sx={{
-          minHeight: '90vh',
-          background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+          minHeight: '100vh',
           display: 'flex',
           alignItems: 'center',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
-        <Container maxWidth="lg">
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 4 }}>
-            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
-              <motion.div
-                initial={{ opacity: 0, x: -50 }}
-                animate={heroInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.8 }}
+        {/* Video Background */}
+        <HeroVideo />
+        
+        {/* Hero Content */}
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+          <Box sx={{ textAlign: 'center', maxWidth: 900, mx: 'auto' }}>
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              animate={heroInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8 }}
+            >
+              <Chip
+                label="Staten Island's Only Yomi Provider"
+                sx={{
+                  mb: 3,
+                  fontSize: '1rem',
+                  py: 2,
+                  px: 3,
+                  bgcolor: 'rgba(255, 255, 255, 0.2)',
+                  color: 'white',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                }}
+              />
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: { xs: '3rem', md: '4.5rem' },
+                  fontWeight: 800,
+                  mb: 2,
+                  color: 'white',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                }}
               >
-                <Typography
-                  variant="h1"
-                  sx={{
-                    fontSize: { xs: '2.5rem', md: '3.5rem' },
-                    fontWeight: 800,
-                    mb: 2,
-                    background: 'linear-gradient(45deg, #1e40af 30%, #7c3aed 90%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  The Future of Dental Care is Here
-                </Typography>
-                <Typography
-                  variant="h5"
-                  color="text.secondary"
-                  paragraph
-                  sx={{ mb: 3 }}
-                >
-                  Staten Island's only practice with Yomi robotic surgery. 
-                  Experience precision, comfort, and faster healing.
-                </Typography>
-                <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    endIcon={<ArrowForwardIcon />}
-                    onClick={() => navigate('/contact')}
-                    sx={{
-                      py: 1.5,
-                      px: 4,
-                      fontSize: '1.1rem',
-                    }}
-                  >
-                    Book Consultation
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={() => navigate('/yomi-robotic-surgery')}
-                    sx={{
-                      py: 1.5,
-                      px: 4,
-                      fontSize: '1.1rem',
-                    }}
-                  >
-                    Learn About Yomi
-                  </Button>
-                </Stack>
-              </motion.div>
-            </Box>
-            <Box sx={{ flex: '1 1 100%', maxWidth: { md: '50%' } }}>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={heroInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.8, delay: 0.2 }}
+                The Future of Dental Care is Here
+              </Typography>
+              <Typography
+                variant="h5"
+                paragraph
+                sx={{ mb: 4, color: 'white', opacity: 0.9, maxWidth: 700, mx: 'auto' }}
               >
-                <Box
+                Staten Island's only practice with Yomi robotic surgery. 
+                Experience precision, comfort, and faster healing.
+              </Typography>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+                <Button
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowForwardIcon />}
+                  onClick={() => navigate('/contact')}
                   sx={{
-                    position: 'relative',
-                    height: { xs: 300, md: 500 },
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: -20,
-                      right: -20,
-                      width: '100%',
-                      height: '100%',
-                      background: 'linear-gradient(45deg, #1e40af 30%, #7c3aed 90%)',
-                      borderRadius: 4,
-                      opacity: 0.1,
-                      transform: 'rotate(3deg)',
+                    py: 2,
+                    px: 5,
+                    fontSize: '1.2rem',
+                    bgcolor: 'white',
+                    color: 'primary.main',
+                    '&:hover': {
+                      bgcolor: 'grey.100',
+                      transform: 'translateY(-2px)',
                     },
                   }}
                 >
-                  <Card
-                    sx={{
-                      height: '100%',
-                      position: 'relative',
-                      overflow: 'hidden',
-                      borderRadius: 4,
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-                    }}
-                  >
-                    <CardMedia
-                      component="img"
-                      height="100%"
-                      image="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=800&q=80"
-                      alt="Advanced Dental Technology"
-                      sx={{ objectFit: 'cover' }}
-                    />
-                    <Box
-                      sx={{
-                        position: 'absolute',
-                        bottom: 20,
-                        left: 20,
-                        right: 20,
-                        background: 'rgba(255,255,255,0.95)',
-                        backdropFilter: 'blur(10px)',
-                        borderRadius: 2,
-                        p: 2,
-                      }}
-                    >
-                      <Chip
-                        label="Staten Island Exclusive"
-                        color="primary"
-                        size="small"
-                        sx={{ mb: 1 }}
-                      />
-                      <Typography variant="h6" fontWeight={600}>
-                        Yomi Robotic Dental Surgery
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Precision technology for optimal results
-                      </Typography>
-                    </Box>
-                  </Card>
-                </Box>
-              </motion.div>
-            </Box>
+                  Book Free Consultation
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={() => navigate('/yomi-robotic-surgery')}
+                  sx={{
+                    py: 2,
+                    px: 5,
+                    fontSize: '1.2rem',
+                    borderColor: 'white',
+                    color: 'white',
+                    '&:hover': {
+                      borderColor: 'white',
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      transform: 'translateY(-2px)',
+                    },
+                  }}
+                >
+                  Watch Yomi in Action
+                </Button>
+              </Stack>
+              
+              {/* Animated Statistics */}
+              <AnimatedStats />
+              
+              {/* Trust Indicators */}
+              <TrustIndicators />
+            </motion.div>
           </Box>
         </Container>
       </Box>
@@ -338,6 +308,23 @@ const HomePage = () => {
               </Box>
             ))}
           </Box>
+        </Container>
+      </Box>
+
+      {/* Testimonials Section */}
+      <Box sx={{ py: 10, bgcolor: 'background.default' }}>
+        <Container maxWidth="lg">
+          <TestimonialCarousel />
+        </Container>
+      </Box>
+
+      {/* Before/After Gallery */}
+      <BeforeAfterGallery />
+
+      {/* Service Comparison */}
+      <Box sx={{ bgcolor: 'background.default' }}>
+        <Container maxWidth="lg">
+          <ServiceComparison />
         </Container>
       </Box>
 
