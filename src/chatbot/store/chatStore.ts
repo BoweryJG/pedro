@@ -55,7 +55,7 @@ const initialState = {
     {
       id: '1',
       role: 'assistant' as const,
-      content: "Hi! I'm Sophie, Dr. Pedro's virtual smile consultant. 😊 Whether you're curious about our robotic dental implants, dealing with jaw pain, or interested in facial rejuvenation, I'm here to help. What brings you in today?",
+      content: "Hi! I'm Sophie, Dr. Pedro's virtual smile consultant. 😊 Whether you're curious about our robotic dental implants, dealing with jaw pain, or interested in facial rejuvenation, I'm here to help. What brings you to our Staten Island practice today?",
       timestamp: new Date()
     }
   ],
