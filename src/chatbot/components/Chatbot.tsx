@@ -16,7 +16,6 @@ import {
 import {
   Send as SendIcon,
   Close as CloseIcon,
-  SmartToy as BotIcon,
   Person as PersonIcon,
   AutoAwesome as SparkleIcon,
   LocalOffer as OfferIcon

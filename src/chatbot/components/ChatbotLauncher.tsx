@@ -5,13 +5,11 @@ import {
   Badge,
   Typography,
   Avatar,
-  Zoom,
   Tooltip
 } from '@mui/material';
 import {
   Chat as ChatIcon,
-  AutoAwesome as SparkleIcon,
-  Close as CloseIcon
+  AutoAwesome as SparkleIcon
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { keyframes } from '@mui/material/styles';
