@@ -1,10 +1,10 @@
-# Edwards & Pedro Advanced Dental Care Platform
+# Staten Island Advanced Dentistry Platform
 
 A modern, AI-powered dental practice website featuring an intelligent chatbot assistant and integrated smile simulation technology. Built with React, TypeScript, and cutting-edge web technologies.
 
 ## 🦷 Overview
 
-This platform represents the digital presence of Edwards & Pedro Dental Practice in Staten Island, specializing in advanced procedures including:
+This platform represents the digital presence of Staten Island Advanced Dentistry, led by Dr. Edwards (General Practitioner) and Dr. Pedro (Prosthodontist), specializing in advanced procedures including:
 - Yomi Robotic Surgery
 - TMJ Treatment
 - EMFACE Facial Rejuvenation
@@ -199,8 +199,8 @@ The site is configured for automatic deployment via Netlify:
 
 ## 👥 Contributing
 
-This is a private repository for Edwards & Pedro Dental Practice. For any questions or issues, please contact the development team.
+This is a private repository for Staten Island Advanced Dentistry. For any questions or issues, please contact the development team.
 
 ## 📄 License
 
-Proprietary - All rights reserved by Edwards & Pedro Dental Practice.
+Proprietary - All rights reserved by Staten Island Advanced Dentistry.

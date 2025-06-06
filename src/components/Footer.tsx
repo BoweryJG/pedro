@@ -31,7 +31,7 @@ const Footer = () => {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
           <Box sx={{ width: { xs: '100%', md: '33.333%' }, px: 2 }}>
             <Typography variant="h6" color="primary" gutterBottom>
-              Edwards & Pedro Advanced Dental Care
+              Staten Island Advanced Dentistry
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
               Leading the future of dental care with cutting-edge Yomi robotic surgery,
@@ -58,13 +58,13 @@ const Footer = () => {
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <PhoneIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">
-                  (718) 555-0123
+                  (718) 494-9700
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <EmailIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">
-                  info@edwardspedrodental.com
+                  info@siadvanceddentistry.com
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -102,7 +102,7 @@ const Footer = () => {
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Edwards & Pedro Advanced Dental Care. All rights reserved.
+            © {new Date().getFullYear()} Staten Island Advanced Dentistry. All rights reserved.
           </Typography>
           <Stack direction="row" spacing={2}>
             <Link href="/privacy" color="inherit" underline="hover" variant="body2">

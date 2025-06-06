@@ -102,7 +102,7 @@ export const socraticQuestions = {
     trust: [
       "What would help you feel confident in choosing our practice?",
       "Would you like to see our success stories from other Staten Island patients?",
-      "What questions can I answer about Dr. Pedro's experience with {procedure}?",
+      "What questions can I answer about our doctors' experience with {procedure}?",
       "How important is it to work with someone who specializes in {procedure}?"
     ]
   },
@@ -115,11 +115,11 @@ export const socraticQuestions = {
     ],
     medium: [
       "Would you be interested in a free consultation to discuss your specific case?",
-      "Can I check what times Dr. Pedro has available this week?",
+      "Can I check what times our doctors have available this week?",
       "Would you like to see if your insurance covers {procedure}?"
     ],
     strong: [
-      "I can see Dr. Pedro has an opening on {day} at {time} - would that work for you?",
+      "I can see we have an opening on {day} at {time} - would that work for you?",
       "Should I reserve that consultation spot for you while we're chatting?",
       "What day this week works best for your smile assessment?"
     ]

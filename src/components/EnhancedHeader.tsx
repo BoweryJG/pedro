@@ -220,7 +220,7 @@ const EnhancedHeader = () => {
                     transition: 'font-size 0.3s ease-in-out',
                   }}
                 >
-                  Edwards & Pedro
+                  Staten Island Advanced Dentistry
                 </Typography>
                 {!scrolled && (
                   <Typography 
@@ -231,7 +231,7 @@ const EnhancedHeader = () => {
                       letterSpacing: '0.5px',
                     }}
                   >
-                    Advanced Dental Care • Staten Island
+                    Dr. Edwards & Dr. Pedro • Expert Care
                   </Typography>
                 )}
               </Box>
