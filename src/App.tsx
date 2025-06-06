@@ -7,6 +7,7 @@ import YomiPage from './pages/YomiPage';
 import TMJPage from './pages/TMJPage';
 import EmfacePage from './pages/EmfacePage';
 import ContactPage from './pages/ContactPage';
+import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import { Chatbot } from './chatbot/components/Chatbot';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="yomi-robotic-surgery" element={<YomiPage />} />
           <Route path="tmj-treatment" element={<TMJPage />} />
           <Route path="emface-mfa" element={<EmfacePage />} />
+          <Route path="smile-simulator" element={<SmileSimulatorPage />} />
           <Route path="contact" element={<ContactPage />} />
         </Route>
       </Routes>

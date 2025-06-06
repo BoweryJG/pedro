@@ -122,6 +122,12 @@ const ServicesPage = () => {
           description: 'Complete smile transformation',
           features: ['Personalized treatment plans', 'Multiple procedures', 'Dramatic results'],
         },
+        {
+          name: 'AI Smile Simulator',
+          description: 'Visualize your perfect smile with AI',
+          features: ['Instant transformations', 'AI-powered analysis', 'HIPAA compliant'],
+          path: '/smile-simulator',
+        },
       ],
     },
   ];

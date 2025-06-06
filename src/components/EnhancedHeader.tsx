@@ -16,8 +16,6 @@ import {
   useMediaQuery,
   Stack,
   Container,
-  Fab,
-  Zoom,
   Divider,
   Chip,
 } from '@mui/material';
@@ -27,7 +25,6 @@ import {
   LocalHospital as LocalHospitalIcon,
   Phone as PhoneIcon,
   Schedule as ScheduleIcon,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
   AutoAwesome as SparkleIcon,
   Science as ScienceIcon,
   Psychology as PsychologyIcon,
@@ -62,13 +59,18 @@ const menuItems: MenuItem[] = [
     path: '/emface-mfa',
     icon: <FaceIcon fontSize="small" />
   },
+  { 
+    label: 'Smile Simulator', 
+    path: '/smile-simulator',
+    icon: <SparkleIcon fontSize="small" />,
+    highlight: true
+  },
   { label: 'Contact', path: '/contact' },
 ];
 
 const EnhancedHeader = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showScrollTop, setShowScrollTop] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
@@ -78,7 +80,6 @@ const EnhancedHeader = () => {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      setShowScrollTop(window.scrollY > 300);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -500,26 +501,6 @@ const EnhancedHeader = () => {
         </Box>
       </Drawer>
 
-      {/* Scroll to Top Button */}
-      <Zoom in={showScrollTop}>
-        <Fab
-          color="primary"
-          size="small"
-          onClick={scrollToTop}
-          sx={{
-            position: 'fixed',
-            bottom: 16,
-            right: 16,
-            zIndex: 1000,
-            background: 'linear-gradient(135deg, #1e40af 0%, #7c3aed 100%)',
-            '&:hover': {
-              background: 'linear-gradient(135deg, #1e3a8a 0%, #6d28d9 100%)',
-            },
-          }}
-        >
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </Zoom>
     </>
   );
 };

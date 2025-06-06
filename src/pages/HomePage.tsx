@@ -17,7 +17,7 @@ import FaceIcon from '@mui/icons-material/Face';
 import TimerIcon from '@mui/icons-material/Timer';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import FloatingAppointmentButton from '../components/FloatingAppointmentButton';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
 import ServiceComparison from '../components/ServiceComparison';
@@ -58,8 +58,6 @@ const HomePage = () => {
 
   return (
     <Box>
-      <FloatingAppointmentButton />
-      
       {/* Enhanced Hero Section */}
       <EnhancedHero onNavigate={navigate} />
 
@@ -208,6 +206,96 @@ const HomePage = () => {
       <Box sx={{ py: 10, bgcolor: 'background.default' }}>
         <Container maxWidth="lg">
           <TestimonialCarousel />
+        </Container>
+      </Box>
+
+      {/* AI Simulator CTA Section */}
+      <Box
+        sx={{
+          py: 8,
+          background: 'linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%)',
+          color: 'white',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: '-50%',
+            right: '-10%',
+            width: '60%',
+            height: '200%',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%)',
+            transform: 'rotate(-30deg)',
+          }
+        }}
+      >
+        <Container maxWidth="lg">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Box sx={{ textAlign: 'center', position: 'relative', zIndex: 1 }}>
+              <Chip
+                label="NEW"
+                color="warning"
+                sx={{
+                  mb: 2,
+                  fontWeight: 700,
+                  animation: 'pulse 2s infinite'
+                }}
+              />
+              <Typography variant="h3" fontWeight={700} gutterBottom>
+                Try Our AI Smile Simulator
+              </Typography>
+              <Typography variant="h6" sx={{ mb: 4, opacity: 0.95, maxWidth: 600, mx: 'auto' }}>
+                See your perfect smile in seconds with our advanced AI technology. 
+                Upload a photo and visualize your transformation instantly!
+              </Typography>
+              <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  startIcon={<AutoAwesomeIcon />}
+                  onClick={() => navigate('/smile-simulator')}
+                  sx={{
+                    bgcolor: 'white',
+                    color: 'primary.main',
+                    py: 1.5,
+                    px: 4,
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    '&:hover': {
+                      bgcolor: 'grey.100',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 8px 20px rgba(0,0,0,0.2)'
+                    },
+                  }}
+                >
+                  Try Simulator Now
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={() => navigate('/services')}
+                  sx={{
+                    borderColor: 'white',
+                    color: 'white',
+                    py: 1.5,
+                    px: 4,
+                    fontSize: '1.1rem',
+                    '&:hover': {
+                      borderColor: 'white',
+                      bgcolor: 'rgba(255,255,255,0.1)',
+                    },
+                  }}
+                >
+                  View All Services
+                </Button>
+              </Box>
+            </Box>
+          </motion.div>
         </Container>
       </Box>
 
