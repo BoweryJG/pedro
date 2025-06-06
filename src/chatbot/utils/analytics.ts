@@ -1,4 +1,4 @@
-import { ConversationStage, Message, Analytics } from '../types';
+import type { ConversationStage, Analytics } from '../types';
 
 interface AnalyticsEvent {
   event: string;
@@ -59,7 +59,7 @@ class ChatbotAnalytics {
     }
     
     // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.log('Analytics Event:', event);
     }
   }

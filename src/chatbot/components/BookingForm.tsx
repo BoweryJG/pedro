@@ -16,9 +16,9 @@ import {
   Chip,
   FormControl,
   InputLabel,
-  Select,
-  SelectChangeEvent
+  Select
 } from '@mui/material';
+import type { SelectChangeEvent } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -67,7 +67,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     insurance: 'none',
     message: ''
   });
-  const [errors, setErrors] = useState<Partial<BookingData>>({});
+  const [errors, setErrors] = useState<Partial<Record<keyof BookingData, string>>>({});
   
   const handleNext = () => {
     if (validateStep()) {
@@ -80,7 +80,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   };
   
   const validateStep = (): boolean => {
-    const newErrors: Partial<BookingData> = {};
+    const newErrors: Partial<Record<keyof BookingData, string>> = {};
     
     if (activeStep === 0) {
       if (!formData.firstName) newErrors.firstName = 'First name is required';
@@ -111,7 +111,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   
   const handleFieldChange = (field: keyof BookingData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    setErrors(prev => ({ ...prev, [field]: '' }));
+    setErrors(prev => ({ ...prev, [field]: undefined }));
   };
   
   const handleSubmit = () => {
@@ -303,8 +303,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                 sx={{ mb: 1 }}
               />
               <Typography variant="body2">
-                Preferred: {formData.preferredDate?.format('MMM D, YYYY')} at{' '}
-                {formData.preferredTime?.format('h:mm A')}
+                Preferred: {formData.preferredDate && formData.preferredDate.format('MMM D, YYYY')} at{' '}
+                {formData.preferredTime && formData.preferredTime.format('h:mm A')}
               </Typography>
               {formData.alternateDate && (
                 <Typography variant="body2">

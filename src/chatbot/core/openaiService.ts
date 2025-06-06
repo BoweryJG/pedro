@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { Message, ChatbotConfig, ConversationState } from '../types';
+import type { Message, ChatbotConfig, ConversationState, ConversationStage } from '../types';
 import { procedureKnowledge, statenIslandContext } from '../knowledge/procedures';
 import { ConversationFlowManager } from './conversationFlow';
 
@@ -196,6 +196,6 @@ BOOKING PROCESS:
       ]
     };
     
-    return suggestions[currentStage] || suggestions.greeting;
+    return suggestions[currentStage as keyof typeof suggestions] || suggestions.greeting;
   }
 }

@@ -1,6 +1,5 @@
-import { ConversationState, ConversationStage, Message } from '../types';
+import type { ConversationState, ConversationStage, Message } from '../types';
 import { socraticQuestions, personalizeQuestion } from './socraticQuestions';
-import { procedureKnowledge } from '../knowledge/procedures';
 
 export class ConversationFlowManager {
   private state: ConversationState;
@@ -133,7 +132,7 @@ export class ConversationFlowManager {
       trust: "That's a great question about our experience. Dr. Pedro has performed over 500 successful implant procedures right here in Staten Island. Would you like to see some patient stories?"
     };
     
-    return handlers[objectionType] || "I understand your concern. Let me address that for you...";
+    return handlers[objectionType as keyof typeof handlers] || "I understand your concern. Let me address that for you...";
   }
   
   updateState(newMessage: Message): ConversationState {

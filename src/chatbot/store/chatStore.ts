@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Message, ConversationState, ConversationStage, Analytics } from '../types';
+import type { Message, ConversationState, ConversationStage, Analytics } from '../types';
 import { OpenAIService } from '../core/openaiService';
 
 interface ChatStore {
