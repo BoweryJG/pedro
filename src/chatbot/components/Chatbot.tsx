@@ -26,7 +26,6 @@ import remarkGfm from 'remark-gfm';
 import { useChatStore } from '../store/chatStore';
 import { ChatbotLauncher } from './ChatbotLauncher';
 import { FinancingWidget } from './FinancingWidget';
-import { procedureKnowledge } from '../knowledge/procedures';
 
 export const Chatbot: React.FC = () => {
   const {
@@ -251,12 +250,8 @@ export const Chatbot: React.FC = () => {
                   financingProcedure === 'tmj' ? 2500 :
                   3200
                 }
-                onComplete={(result) => {
+                onComplete={(_result) => {
                   setShowFinancingWidget(false);
-                  const message = result.type === 'financing' 
-                    ? `Great! I've saved your financing pre-qualification. ${result.data[0]?.approved ? 'You have options available!' : 'Let\'s explore other payment options.'}`
-                    : `I've verified your insurance coverage. ${result.data.eligible ? 'Good news - you have benefits available!' : 'Let\'s discuss payment alternatives.'}`;
-                  
                   sendMessage('I completed the financing/insurance check');
                 }}
               />

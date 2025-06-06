@@ -50,17 +50,18 @@ export interface InsuranceResult {
 }
 
 class FinancingService {
-  private sunbitApiKey: string;
-  private cherryApiKey: string;
-  private zuubApiKey: string;
-  private pverifyApiKey: string;
+  // API keys would be used in production
+  // private sunbitApiKey: string;
+  // private cherryApiKey: string;
+  // private zuubApiKey: string;
+  // private pverifyApiKey: string;
 
   constructor() {
     // In production, these would come from environment variables
-    this.sunbitApiKey = import.meta.env.VITE_SUNBIT_API_KEY || '';
-    this.cherryApiKey = import.meta.env.VITE_CHERRY_API_KEY || '';
-    this.zuubApiKey = import.meta.env.VITE_ZUUB_API_KEY || '';
-    this.pverifyApiKey = import.meta.env.VITE_PVERIFY_API_KEY || '';
+    // this.sunbitApiKey = import.meta.env.VITE_SUNBIT_API_KEY || '';
+    // this.cherryApiKey = import.meta.env.VITE_CHERRY_API_KEY || '';
+    // this.zuubApiKey = import.meta.env.VITE_ZUUB_API_KEY || '';
+    // this.pverifyApiKey = import.meta.env.VITE_PVERIFY_API_KEY || '';
   }
 
   // Patient Financing Methods
@@ -170,7 +171,7 @@ class FinancingService {
   private async checkCareCredit(data: PatientFinancingData): Promise<FinancingResult> {
     // CareCredit typically requires higher credit scores
     // This would integrate with their API
-    const mockApproval = data.income && data.income > 50000;
+    const mockApproval = !!(data.income && data.income > 50000);
 
     return {
       approved: mockApproval,
@@ -258,7 +259,7 @@ class FinancingService {
     const result = response.data;
 
     return {
-      eligible: result.isActive,
+      eligible: result.isActive || false,
       provider: result.planName,
       coveragePercentage: result.coinsurancePercentage,
       deductible: result.deductibleAmount,

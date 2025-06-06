@@ -25,7 +25,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Grid
 } from '@mui/material';
 import {
   CheckCircle as CheckIcon,
@@ -41,7 +40,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { motion, AnimatePresence } from 'framer-motion';
-import { financingService, PatientFinancingData, InsuranceVerificationData } from '../services/financingService';
+import { financingService } from '../services/financingService';
+import type { PatientFinancingData, InsuranceVerificationData } from '../services/financingService';
 
 interface FinancingWidgetProps {
   procedureType: 'yomi' | 'tmj' | 'emface';
@@ -146,8 +146,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
             <Typography variant="h6" gutterBottom>
               How would you like to handle payment?
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+            <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} gap={2}>
+              <Box flex={{ xs: '1 1 100%', md: '1 1 50%' }}>
                 <Card 
                   sx={{ 
                     cursor: 'pointer',
@@ -186,9 +186,9 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                     </List>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Box>
               
-              <Grid item xs={12} md={6}>
+              <Box flex={{ xs: '1 1 100%', md: '1 1 50%' }}>
                 <Card 
                   sx={{ 
                     cursor: 'pointer',
@@ -227,8 +227,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                     </List>
                   </CardContent>
                 </Card>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
             {errors.option && (
               <Alert severity="error" sx={{ mt: 2 }}>{errors.option}</Alert>
             )}
@@ -247,8 +247,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                   No impact to your credit score
                 </Typography>
                 
-                <Grid container spacing={2} sx={{ mt: 1 }}>
-                  <Grid item xs={12} sm={6}>
+                <Box display="flex" flexWrap="wrap" gap={2} sx={{ mt: 1 }}>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="First Name"
                       fullWidth
@@ -257,8 +257,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       error={!!errors.firstName}
                       helperText={errors.firstName}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="Last Name"
                       fullWidth
@@ -267,8 +267,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       error={!!errors.lastName}
                       helperText={errors.lastName}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="Email"
                       type="email"
@@ -278,8 +278,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       error={!!errors.email}
                       helperText={errors.email}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="Phone"
                       fullWidth
@@ -288,8 +288,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       error={!!errors.phone}
                       helperText={errors.phone}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Date of Birth"
@@ -305,8 +305,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                         }}
                       />
                     </LocalizationProvider>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="Annual Income (Optional)"
                       fullWidth
@@ -318,8 +318,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       }}
                       helperText="Helps find best options"
                     />
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               </>
             ) : (
               <>
@@ -327,8 +327,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                   Verify Your Insurance Coverage
                 </Typography>
                 
-                <Grid container spacing={2} sx={{ mt: 1 }}>
-                  <Grid item xs={12} sm={6}>
+                <Box display="flex" flexWrap="wrap" gap={2} sx={{ mt: 1 }}>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="First Name"
                       fullWidth
@@ -337,8 +337,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       error={!!errors.firstName}
                       helperText={errors.firstName}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="Last Name"
                       fullWidth
@@ -347,8 +347,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       error={!!errors.lastName}
                       helperText={errors.lastName}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <FormControl fullWidth error={!!errors.provider}>
                       <InputLabel>Insurance Provider</InputLabel>
                       <Select
@@ -366,8 +366,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                         <MenuItem value="Other">Other</MenuItem>
                       </Select>
                     </FormControl>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="Member ID"
                       fullWidth
@@ -376,8 +376,8 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                       error={!!errors.memberId}
                       helperText={errors.memberId}
                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DatePicker
                         label="Date of Birth"
@@ -392,16 +392,16 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                         }}
                       />
                     </LocalizationProvider>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  </Box>
+                  <Box flex={{ xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' }}>
                     <TextField
                       label="Group Number (Optional)"
                       fullWidth
                       value={insuranceData.groupNumber || ''}
                       onChange={(e) => setInsuranceData({ ...insuranceData, groupNumber: e.target.value })}
                     />
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               </>
             )}
           </Box>
@@ -444,40 +444,40 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                               <Alert severity="success" sx={{ mb: 2 }}>
                                 {option.message}
                               </Alert>
-                              <Grid container spacing={2}>
-                                <Grid item xs={6}>
+                              <Box display="flex" flexWrap="wrap" gap={2}>
+                                <Box flex="1 1 calc(50% - 8px)">
                                   <Typography variant="body2" color="text.secondary">
                                     Approval Amount
                                   </Typography>
                                   <Typography variant="h6">
                                     ${option.approvalAmount}
                                   </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
+                                </Box>
+                                <Box flex="1 1 calc(50% - 8px)">
                                   <Typography variant="body2" color="text.secondary">
                                     Monthly Payment
                                   </Typography>
                                   <Typography variant="h6">
                                     ${option.monthlyPayment}
                                   </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
+                                </Box>
+                                <Box flex="1 1 calc(50% - 8px)">
                                   <Typography variant="body2" color="text.secondary">
                                     Term Length
                                   </Typography>
                                   <Typography variant="h6">
                                     {option.term} months
                                   </Typography>
-                                </Grid>
-                                <Grid item xs={6}>
+                                </Box>
+                                <Box flex="1 1 calc(50% - 8px)">
                                   <Typography variant="body2" color="text.secondary">
                                     APR
                                   </Typography>
                                   <Typography variant="h6">
                                     {option.apr}%
                                   </Typography>
-                                </Grid>
-                              </Grid>
+                                </Box>
+                              </Box>
                               {option.preQualificationId && (
                                 <Box sx={{ mt: 2 }}>
                                   <Typography variant="caption" color="text.secondary">
@@ -518,40 +518,40 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                           <Typography variant="subtitle1" gutterBottom fontWeight="bold">
                             Coverage Details
                           </Typography>
-                          <Grid container spacing={2}>
-                            <Grid item xs={6}>
+                          <Box display="flex" flexWrap="wrap" gap={2}>
+                            <Box flex="1 1 calc(50% - 8px)">
                               <Typography variant="body2" color="text.secondary">
                                 Coverage
                               </Typography>
                               <Typography variant="h6">
                                 {results.data.coveragePercentage}%
                               </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
+                            </Box>
+                            <Box flex="1 1 calc(50% - 8px)">
                               <Typography variant="body2" color="text.secondary">
                                 Deductible
                               </Typography>
                               <Typography variant="h6">
                                 ${results.data.deductibleMet} / ${results.data.deductible}
                               </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
+                            </Box>
+                            <Box flex="1 1 calc(50% - 8px)">
                               <Typography variant="body2" color="text.secondary">
                                 Benefits Remaining
                               </Typography>
                               <Typography variant="h6">
                                 ${results.data.remainingBenefit}
                               </Typography>
-                            </Grid>
-                            <Grid item xs={6}>
+                            </Box>
+                            <Box flex="1 1 calc(50% - 8px)">
                               <Typography variant="body2" color="text.secondary">
                                 Annual Maximum
                               </Typography>
                               <Typography variant="h6">
                                 ${results.data.maxAnnualBenefit}
                               </Typography>
-                            </Grid>
-                          </Grid>
+                            </Box>
+                          </Box>
                         </CardContent>
                       </Card>
                       
