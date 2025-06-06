@@ -25,7 +25,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
 import ServiceComparison from '../components/ServiceComparison';
-import EnhancedHero from '../components/EnhancedHero';
+import StreamlinedHero from '../components/StreamlinedHero';
 
 // Animated counter component
 const AnimatedCounter = ({ value, suffix = '' }: { value: number; suffix?: string }) => {
@@ -216,8 +216,8 @@ const EnhancedHomePage = () => {
     <Box sx={{ overflowX: 'hidden' }}>
       <ScrollProgress />
       
-      {/* Enhanced Hero Section */}
-      <EnhancedHero onNavigate={navigate} />
+      {/* Streamlined Hero Section */}
+      <StreamlinedHero onNavigate={navigate} />
 
       {/* Transition Element */}
       <Box
