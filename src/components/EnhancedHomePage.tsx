@@ -25,7 +25,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
 import ServiceComparison from '../components/ServiceComparison';
-import StreamlinedHero from '../components/StreamlinedHero';
+import UnifiedHero from '../components/UnifiedHero';
 
 // Animated counter component
 const AnimatedCounter = ({ value, suffix = '' }: { value: number; suffix?: string }) => {
@@ -216,103 +216,8 @@ const EnhancedHomePage = () => {
     <Box sx={{ overflowX: 'hidden' }}>
       <ScrollProgress />
       
-      {/* Streamlined Hero Section */}
-      <StreamlinedHero onNavigate={navigate} />
-
-      {/* Transition Element */}
-      <Box
-        sx={{
-          height: 100,
-          background: `linear-gradient(to bottom, ${theme.palette.background.default}, transparent)`,
-          marginTop: -100,
-          position: 'relative',
-          zIndex: 1,
-        }}
-      />
-
-      {/* Enhanced Stats Section */}
-      <Box
-        sx={{
-          py: { xs: 8, md: 12 },
-          background: `
-            radial-gradient(circle at 20% 50%, ${alpha('#1e40af', 0.15)} 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, ${alpha('#7c3aed', 0.1)} 0%, transparent 50%),
-            linear-gradient(135deg, #1e40af 0%, #7c3aed 100%)
-          `,
-          color: 'white',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.1) 1px, transparent 1px)',
-            backgroundSize: '30px 30px',
-            opacity: 0.3,
-          }}
-        />
-        
-        <Container maxWidth="lg">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 2, md: 4 } }}>
-              {stats.map((stat, index) => (
-                <Box sx={{ flex: '1 1 100%', maxWidth: { xs: '100%', sm: '50%', md: '33.333%' } }} key={index}>
-                  <motion.div variants={itemVariants}>
-                    <Card
-                      sx={{
-                        background: alpha('#ffffff', 0.1),
-                        backdropFilter: 'blur(20px)',
-                        border: `1px solid ${alpha('#ffffff', 0.2)}`,
-                        color: 'white',
-                        textAlign: 'center',
-                        p: { xs: 2, sm: 3, md: 4 },
-                        height: '100%',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          transform: 'translateY(-5px)',
-                          background: alpha('#ffffff', 0.15),
-                          boxShadow: `0 10px 30px ${alpha('#000000', 0.2)}`,
-                        },
-                      }}
-                    >
-                      <Box sx={{ mb: { xs: 1, md: 2 }, color: alpha('#ffffff', 0.8), '& svg': { fontSize: { xs: 24, md: 32 } } }}>
-                        {stat.icon}
-                      </Box>
-                      <Typography 
-                        variant="h2" 
-                        fontWeight={700} 
-                        gutterBottom
-                        sx={{ 
-                          fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }
-                        }}
-                      >
-                        <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                      </Typography>
-                      <Typography 
-                        variant="h6"
-                        sx={{ 
-                          fontSize: { xs: '0.875rem', sm: '1rem', md: '1.25rem' }
-                        }}
-                      >
-                        {stat.label}
-                      </Typography>
-                    </Card>
-                  </motion.div>
-                </Box>
-              ))}
-            </Box>
-          </motion.div>
-        </Container>
-        
-        <WaveDivider />
-      </Box>
+      {/* Unified Hero Section with Integrated Stats */}
+      <UnifiedHero onNavigate={navigate} />
 
       {/* Enhanced Services Section */}
       <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: 'background.default', position: 'relative' }}>
@@ -422,7 +327,13 @@ const EnhancedHomePage = () => {
                           >
                             {service.icon}
                           </Box>
-                          <Typography variant="h5" align="center" gutterBottom fontWeight={600}>
+                          <Typography 
+                            variant="h5" 
+                            align="center" 
+                            gutterBottom 
+                            fontWeight={600}
+                            sx={{ fontSize: { xs: '1.125rem', sm: '1.25rem', md: '1.5rem' } }}
+                          >
                             {service.title}
                           </Typography>
                           <Typography
@@ -430,7 +341,10 @@ const EnhancedHomePage = () => {
                             color="text.secondary"
                             align="center"
                             paragraph
-                            sx={{ mb: 3 }}
+                            sx={{ 
+                              mb: 3,
+                              fontSize: { xs: '0.875rem', sm: '1rem' }
+                            }}
                           >
                             {service.description}
                           </Typography>
@@ -515,10 +429,24 @@ const EnhancedHomePage = () => {
                 />
               </motion.div>
               
-              <Typography variant="h2" fontWeight={800} gutterBottom>
+              <Typography 
+                variant="h2" 
+                fontWeight={800} 
+                gutterBottom
+                sx={{ fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' } }}
+              >
                 Try Our AI Smile Simulator
               </Typography>
-              <Typography variant="h5" sx={{ mb: 6, opacity: 0.95, maxWidth: 700, mx: 'auto' }}>
+              <Typography 
+                variant="h5" 
+                sx={{ 
+                  mb: 6, 
+                  opacity: 0.95, 
+                  maxWidth: 700, 
+                  mx: 'auto',
+                  fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' }
+                }}
+              >
                 See your perfect smile in seconds with our advanced AI technology. 
                 Upload a photo and visualize your transformation instantly!
               </Typography>
@@ -640,10 +568,23 @@ const EnhancedHomePage = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <Typography variant="h2" fontWeight={800} gutterBottom>
+            <Typography 
+              variant="h2" 
+              fontWeight={800} 
+              gutterBottom
+              sx={{ fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' } }}
+            >
               Ready to Experience the Future of Dental Care?
             </Typography>
-            <Typography variant="h5" paragraph sx={{ mb: 6, opacity: 0.9 }}>
+            <Typography 
+              variant="h5" 
+              paragraph 
+              sx={{ 
+                mb: 6, 
+                opacity: 0.9,
+                fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' }
+              }}
+            >
               Join thousands of satisfied patients who have transformed their smiles with our advanced technology.
             </Typography>
             
