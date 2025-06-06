@@ -10,8 +10,7 @@ import { motion } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import GlassmorphicCard from './effects/GlassmorphicCard';
 import AnimatedGradientBorder from './effects/AnimatedGradientBorder';
-import ShimmerEffect from './effects/ShimmerEffect';
-import AnimatedIcon from './effects/AnimatedIcon';
+import SoftAnimatedIcon from './effects/SoftAnimatedIcon';
 import NoiseTexture from './effects/NoiseTexture';
 
 interface EnhancedServiceCardProps {
@@ -160,12 +159,12 @@ const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
                 
                 {/* Animated Icon */}
                 <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-                  <AnimatedIcon
+                  <SoftAnimatedIcon
                     icon={icon}
                     gradient={`linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.7)} 100%)`}
-                    pulseColor={alpha(color, 0.4)}
-                    glowColor={alpha(color, 0.6)}
+                    glowColor={alpha(color, 0.3)}
                     size={50}
+                    animate={false}
                   />
                 </Box>
                 
@@ -230,7 +229,6 @@ const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
                     }}
                   >
                     Learn More
-                    <ShimmerEffect color={alpha(color, 0.3)} />
                   </Button>
                 </Box>
               </Box>
@@ -281,11 +279,10 @@ const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
 
             <Box sx={{ p: 4, position: 'relative', zIndex: 1 }}>
               <Box sx={{ display: 'flex', justifyContent: 'center', mb: 4 }}>
-                <AnimatedIcon
+                <SoftAnimatedIcon
                   icon={icon}
                   gradient={`linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.7)} 100%)`}
-                  pulseColor={alpha(color, 0.3)}
-                  glowColor={alpha(color, 0.5)}
+                  glowColor={alpha(color, 0.25)}
                   size={45}
                   animate={false}
                 />

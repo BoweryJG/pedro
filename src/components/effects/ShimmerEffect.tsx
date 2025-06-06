@@ -20,8 +20,8 @@ const shimmer = keyframes`
 const ShimmerEffect: React.FC<ShimmerEffectProps> = ({
   width = '100%',
   height = '100%',
-  color = 'rgba(255, 255, 255, 0.3)',
-  duration = 1.5,
+  color = 'rgba(255, 255, 255, 0.2)',
+  duration = 3,
 }) => {
   return (
     <Box
@@ -41,10 +41,11 @@ const ShimmerEffect: React.FC<ShimmerEffectProps> = ({
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '50%',
+          width: '30%',
           height: '100%',
-          background: `linear-gradient(90deg, transparent 0%, ${color} 50%, transparent 100%)`,
+          background: `linear-gradient(90deg, transparent 0%, ${color} 30%, ${color} 70%, transparent 100%)`,
           animation: `${shimmer} ${duration}s infinite`,
+          animationDelay: '1s',
         }}
       />
     </Box>

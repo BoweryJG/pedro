@@ -88,12 +88,12 @@ export const IconicChatbotLauncher: React.FC<IconicChatbotLauncherProps> = ({
             transition: 'transform 0.3s ease',
           },
           
-          // Animated rings
+          // Soft glow pulse
           '& .ring': {
             position: 'absolute',
-            border: '2px solid rgba(255,255,255,0.3)',
+            background: 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)',
             borderRadius: '50%',
-            animation: 'expand-ring 2s ease-out infinite',
+            animation: 'soft-pulse 3s ease-out infinite',
           },
           
           '@keyframes rotate-border': {
@@ -101,15 +101,15 @@ export const IconicChatbotLauncher: React.FC<IconicChatbotLauncherProps> = ({
             '100%': { transform: 'rotate(360deg)' },
           },
           
-          '@keyframes expand-ring': {
+          '@keyframes soft-pulse': {
             '0%': {
               width: 40,
               height: 40,
-              opacity: 1,
+              opacity: 0.3,
             },
             '100%': {
-              width: 90,
-              height: 90,
+              width: 80,
+              height: 80,
               opacity: 0,
             },
           },
@@ -210,26 +210,27 @@ export const IconicChatbotLauncher: React.FC<IconicChatbotLauncherProps> = ({
                 key={i}
                 sx={{
                   position: 'absolute',
-                  width: 4,
-                  height: 4,
+                  width: 6,
+                  height: 6,
                   borderRadius: '50%',
-                  background: ['#818cf8', '#c084fc', '#f472b6'][i % 3],
+                  background: `radial-gradient(circle, ${['#818cf8', '#c084fc', '#f472b6'][i % 3]} 0%, transparent 70%)`,
                   left: '50%',
                   top: '50%',
-                  animation: `float-particle-${i} 3s ease-in-out infinite`,
+                  filter: 'blur(1px)',
+                  animation: `float-particle-${i} 4s ease-in-out infinite`,
                   [`@keyframes float-particle-${i}`]: {
                     '0%': {
                       transform: 'translate(-50%, -50%) translate(0, 0)',
                       opacity: 0,
                     },
                     '20%': {
-                      opacity: 1,
+                      opacity: 0.6,
                     },
                     '80%': {
-                      opacity: 1,
+                      opacity: 0.3,
                     },
                     '100%': {
-                      transform: `translate(-50%, -50%) translate(${Math.cos(i * 60 * Math.PI / 180) * 40}px, ${Math.sin(i * 60 * Math.PI / 180) * 40}px)`,
+                      transform: `translate(-50%, -50%) translate(${Math.cos(i * 60 * Math.PI / 180) * 30}px, ${Math.sin(i * 60 * Math.PI / 180) * 30}px)`,
                       opacity: 0,
                     },
                   },

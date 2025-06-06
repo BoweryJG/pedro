@@ -3,20 +3,18 @@ import { motion } from 'framer-motion';
 import type { ReactElement } from 'react';
 import { cloneElement } from 'react';
 
-interface AnimatedIconProps {
+interface SoftAnimatedIconProps {
   icon: ReactElement;
   gradient?: string;
-  pulseColor?: string;
   glowColor?: string;
   size?: number;
   animate?: boolean;
 }
 
-const AnimatedIcon: React.FC<AnimatedIconProps> = ({
+const SoftAnimatedIcon: React.FC<SoftAnimatedIconProps> = ({
   icon,
   gradient = 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%)',
-  pulseColor = 'rgba(59, 130, 246, 0.4)',
-  glowColor = 'rgba(139, 92, 246, 0.6)',
+  glowColor = 'rgba(139, 92, 246, 0.3)',
   size = 40,
   animate = true,
 }) => {
@@ -31,51 +29,29 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
         height: size * 1.5,
       }}
     >
-      {/* Glow effect */}
+      {/* Soft ambient glow - no harsh edges */}
       <motion.div
         style={{
           position: 'absolute',
-          width: '100%',
-          height: '100%',
+          width: '120%',
+          height: '120%',
           borderRadius: '50%',
-          background: glowColor,
-          filter: 'blur(20px)',
-          opacity: 0.6,
+          background: `radial-gradient(circle, ${glowColor} 0%, transparent 60%)`,
+          filter: 'blur(25px)',
+          opacity: 0.5,
         }}
         animate={animate ? {
-          scale: [1, 1.2, 1],
-          opacity: [0.6, 0.8, 0.6],
+          scale: [1, 1.15, 1],
+          opacity: [0.5, 0.6, 0.5],
         } : {}}
         transition={{
-          duration: 3,
+          duration: 4,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
       />
       
-      {/* Soft pulse effect - single subtle wave */}
-      {animate && (
-        <motion.div
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            borderRadius: '50%',
-            background: `radial-gradient(circle, ${pulseColor} 0%, transparent 70%)`,
-          }}
-          animate={{
-            scale: [1, 1.8, 1.8],
-            opacity: [0.4, 0, 0],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: 'easeOut',
-          }}
-        />
-      )}
-      
-      {/* Icon container with gradient */}
+      {/* Icon container with subtle shadow */}
       <Box
         sx={{
           position: 'relative',
@@ -85,8 +61,13 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          boxShadow: `0 8px 32px ${pulseColor}`,
+          boxShadow: `0 4px 20px ${glowColor}`,
           zIndex: 1,
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            transform: 'translateY(-2px)',
+            boxShadow: `0 6px 25px ${glowColor}`,
+          },
         }}
       >
         {cloneElement(icon, {
@@ -94,7 +75,7 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
             ...(icon.props as any)?.sx,
             color: 'white',
             fontSize: size,
-            filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
+            filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.1))',
           },
         } as any)}
       </Box>
@@ -102,4 +83,4 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
   );
 };
 
-export default AnimatedIcon;
+export default SoftAnimatedIcon;

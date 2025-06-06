@@ -20,8 +20,7 @@ import GradientMesh from './effects/GradientMesh';
 import NoiseTexture from './effects/NoiseTexture';
 import ParticlesBackground from './effects/ParticlesBackground';
 import AnimatedGradientBorder from './effects/AnimatedGradientBorder';
-import ShimmerEffect from './effects/ShimmerEffect';
-import AnimatedIcon from './effects/AnimatedIcon';
+import SoftAnimatedIcon from './effects/SoftAnimatedIcon';
 
 interface EnhancedUnifiedHeroProps {
   onNavigate: (path: string) => void;
@@ -246,11 +245,11 @@ const EnhancedUnifiedHero: React.FC<EnhancedUnifiedHeroProps> = ({ onNavigate })
                       },
                     }}
                   >
-                    <AnimatedIcon
+                    <SoftAnimatedIcon
                       icon={highlight.icon}
                       gradient={highlight.gradient}
                       size={24}
-                      animate={true}
+                      animate={false}
                     />
                     <Typography 
                       sx={{ 
@@ -301,7 +300,6 @@ const EnhancedUnifiedHero: React.FC<EnhancedUnifiedHeroProps> = ({ onNavigate })
                   }}
                 >
                   Schedule Free Consultation
-                  <ShimmerEffect />
                 </Button>
               </Box>
               
