@@ -24,7 +24,7 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useChatStore } from '../store/chatStore';
-import { ChatbotLauncher } from './ChatbotLauncher';
+import { SimplifiedChatbotLauncher } from './SimplifiedChatbotLauncher';
 import { FinancingWidget } from './FinancingWidget';
 
 export const Chatbot: React.FC = () => {
@@ -95,11 +95,10 @@ export const Chatbot: React.FC = () => {
   
   return (
     <>
-      {/* Enhanced Chat Launcher */}
-      <ChatbotLauncher 
+      {/* Simplified Chat Launcher */}
+      <SimplifiedChatbotLauncher 
         isOpen={isOpen} 
         onToggle={toggleChat}
-        unreadCount={0}
       />
       
       {/* Chat Window */}
