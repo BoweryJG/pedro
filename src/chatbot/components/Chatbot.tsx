@@ -24,7 +24,7 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useChatStore } from '../store/chatStore';
-import { PremiumChatbotLauncher } from './PremiumChatbotLauncher';
+import { IntegratedChatbotLauncher } from './IntegratedChatbotLauncher';
 import { FinancingWidget } from './FinancingWidget';
 
 export const Chatbot: React.FC = () => {
@@ -32,7 +32,6 @@ export const Chatbot: React.FC = () => {
     isOpen,
     isLoading,
     messages,
-    currentStage,
     bookingIntent,
     suggestedResponses,
     showFinancingWidget,
@@ -80,23 +79,11 @@ export const Chatbot: React.FC = () => {
     inputRef.current?.focus();
   };
   
-  const getStageColor = () => {
-    const colors = {
-      greeting: '#4CAF50',
-      discovery: '#2196F3',
-      education: '#FF9800',
-      'objection-handling': '#F44336',
-      'social-proof': '#9C27B0',
-      commitment: '#3F51B5',
-      booking: '#4CAF50'
-    };
-    return colors[currentStage] || '#2196F3';
-  };
   
   return (
     <>
-      {/* Premium Chat Launcher */}
-      <PremiumChatbotLauncher 
+      {/* Integrated Chat Launcher */}
+      <IntegratedChatbotLauncher 
         isOpen={isOpen} 
         onToggle={toggleChat}
       />
@@ -122,7 +109,7 @@ export const Chatbot: React.FC = () => {
           <Box
             sx={{
               p: 2,
-              background: `linear-gradient(135deg, ${getStageColor()} 0%, #21CBF3 100%)`,
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
               display: 'flex',
               alignItems: 'center',
