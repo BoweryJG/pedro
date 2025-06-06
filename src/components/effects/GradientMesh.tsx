@@ -45,25 +45,35 @@ const GradientMesh: React.FC<GradientMeshProps> = ({
           </filter>
         </defs>
         <g filter="url(#goo)">
-          {colors.map((color, i) => (
-            <motion.circle
-              key={i}
-              cx={`${25 + (i * 25)}%`}
-              cy={`${25 + (i * 15)}%`}
-              r="20%"
-              fill={color}
-              animate={animate ? {
-                cx: [`${25 + (i * 25)}%`, `${75 - (i * 15)}%`, `${25 + (i * 25)}%`],
-                cy: [`${25 + (i * 15)}%`, `${75 - (i * 25)}%`, `${25 + (i * 15)}%`],
-                scale: [1, 1.5, 1],
-              } : {}}
-              transition={{
-                duration: 20 + i * 5,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-          ))}
+          {colors.map((color, i) => {
+            const initialCx = 25 + (i * 25);
+            const initialCy = 25 + (i * 15);
+            
+            return (
+              <motion.circle
+                key={i}
+                r="20%"
+                fill={color}
+                initial={{
+                  cx: `${initialCx}%`,
+                  cy: `${initialCy}%`,
+                }}
+                animate={animate ? {
+                  cx: [`${initialCx}%`, `${75 - (i * 15)}%`, `${initialCx}%`],
+                  cy: [`${initialCy}%`, `${75 - (i * 25)}%`, `${initialCy}%`],
+                  scale: [1, 1.5, 1],
+                } : {
+                  cx: `${initialCx}%`,
+                  cy: `${initialCy}%`,
+                }}
+                transition={{
+                  duration: 20 + i * 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+            );
+          })}
         </g>
       </svg>
     </Box>
