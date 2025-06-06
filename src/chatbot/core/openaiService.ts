@@ -1,18 +1,12 @@
-import OpenAI from 'openai';
 import type { Message, ChatbotConfig, ConversationState, ConversationStage } from '../types';
 import { procedureKnowledge, statenIslandContext } from '../knowledge/procedures';
 import { ConversationFlowManager } from './conversationFlow';
 
 export class OpenAIService {
-  private openai: OpenAI;
   private config: ChatbotConfig;
   private flowManager: ConversationFlowManager;
   
   constructor(config: ChatbotConfig, conversationState: ConversationState) {
-    this.openai = new OpenAI({
-      apiKey: config.apiKey,
-      dangerouslyAllowBrowser: true // Note: In production, use a backend proxy
-    });
     this.config = config;
     this.flowManager = new ConversationFlowManager(conversationState);
   }
@@ -101,15 +95,24 @@ BOOKING PROCESS:
         });
       }
       
-      // Generate response
-      const completion = await this.openai.chat.completions.create({
-        model: this.config.model,
-        messages,
-        temperature: this.config.temperature,
-        max_tokens: this.config.maxTokens,
+      // Generate response using Netlify function
+      const response = await fetch('/.netlify/functions/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          messages: messages.slice(1), // Exclude system message
+          systemPrompt: messages[0].content,
+        }),
       });
       
-      return completion.choices[0]?.message?.content || 
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data.response || 
         "I apologize, I'm having trouble responding right now. How can I help you learn about our dental services?";
       
     } catch (error) {

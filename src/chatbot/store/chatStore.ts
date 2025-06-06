@@ -33,9 +33,9 @@ interface ChatStore {
   reset: () => void;
 }
 
-// Initialize OpenAI service (API key should come from environment variable)
+// Initialize chatbot configuration (no API key needed - using serverless function)
 const chatbotConfig = {
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY || '',
+  apiKey: '', // Not needed when using serverless function
   model: 'gpt-4-turbo-preview',
   temperature: 0.7,
   maxTokens: 500,
