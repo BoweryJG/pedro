@@ -8,7 +8,7 @@ import TMJPage from './pages/TMJPage';
 import EmfacePage from './pages/EmfacePage';
 import ContactPage from './pages/ContactPage';
 import SmileSimulatorPage from './pages/SmileSimulatorPage';
-import { EnhancedChatbot } from './chatbot/components/EnhancedChatbot';
+import { Chatbot } from './chatbot/components/Chatbot';
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           <Route path="contact" element={<ContactPage />} />
         </Route>
       </Routes>
-      <EnhancedChatbot />
+      <Chatbot />
     </>
   );
 }
