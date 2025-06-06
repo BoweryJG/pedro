@@ -77,7 +77,15 @@ export const socraticQuestions = {
       "I understand cost is important. Have you considered the long-term cost of NOT addressing {issue}?",
       "What if I told you we have financing options starting at ${amount}/month?",
       "How much is {benefit} worth to your quality of life?",
-      "Did you know many patients save money long-term by choosing {procedure}?"
+      "Did you know many patients save money long-term by choosing {procedure}?",
+      "Would you like to check if you pre-qualify for 0% financing right now? It only takes 30 seconds.",
+      "Did you know 85% of our patients get approved for financing, even with less-than-perfect credit?"
+    ],
+    insurance: [
+      "Would you like me to instantly verify your insurance coverage?",
+      "I can check your benefits and estimate your out-of-pocket cost in real-time. Interested?",
+      "Many patients are surprised by how much their insurance actually covers. Should we check yours?",
+      "Even if insurance doesn't cover everything, we have financing options. Would you like to explore both?"
     ],
     fear: [
       "What specifically worries you about {procedure}?",

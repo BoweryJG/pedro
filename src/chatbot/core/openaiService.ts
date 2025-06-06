@@ -179,7 +179,9 @@ BOOKING PROCESS:
       'objection-handling': [
         "What about the cost?",
         "Does insurance cover this?",
-        "I'm nervous about the procedure"
+        "I'm nervous about the procedure",
+        "Check if I qualify for financing",
+        "Verify my insurance coverage"
       ],
       'social-proof': [
         "Do you have patient reviews?",
@@ -189,7 +191,8 @@ BOOKING PROCESS:
       commitment: [
         "What's the next step?",
         "When could I start?",
-        "Do you have payment plans?"
+        "Do you have payment plans?",
+        "Check financing options"
       ],
       booking: [
         "What times are available?",

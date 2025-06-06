@@ -22,6 +22,8 @@ interface ChatStore {
   };
   analytics: Analytics | null;
   suggestedResponses: string[];
+  showFinancingWidget: boolean;
+  financingProcedure?: 'yomi' | 'tmj' | 'emface';
   
   // Actions
   toggleChat: () => void;
@@ -31,6 +33,7 @@ interface ChatStore {
   updateBookingIntent: (score: number) => void;
   trackAnalytics: (event: string, data?: any) => void;
   reset: () => void;
+  setShowFinancingWidget: (show: boolean, procedure?: 'yomi' | 'tmj' | 'emface') => void;
 }
 
 // Initialize chatbot configuration (no API key needed - using serverless function)
@@ -76,7 +79,9 @@ const initialState = {
     "I'm missing a tooth",
     "My jaw clicks and hurts", 
     "Tell me about facial rejuvenation"
-  ]
+  ],
+  showFinancingWidget: false,
+  financingProcedure: undefined
 };
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -127,6 +132,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       // Detect procedure interest
       const detectedProcedure = detectProcedureFromMessage(content);
       
+      // Check if user wants financing/insurance info
+      const wantsFinancing = content.toLowerCase().match(/financing|finance|payment|cost|insurance|coverage|afford|qualify/);
+      const wantsInsuranceCheck = content.toLowerCase().match(/verify insurance|check insurance|insurance coverage|benefits/);
+      
       // Update suggested responses based on stage
       const newStage = determineStage([...state.messages, userMessage, assistantMessage]);
       const suggestedResponses = openAIService.generateSuggestedResponses(newStage);
@@ -140,7 +149,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
           ...state.procedureInterest,
           [detectedProcedure]: state.procedureInterest[detectedProcedure] + 20
         } : state.procedureInterest,
-        suggestedResponses
+        suggestedResponses,
+        showFinancingWidget: (wantsFinancing || wantsInsuranceCheck) && detectedProcedure ? true : state.showFinancingWidget,
+        financingProcedure: (wantsFinancing || wantsInsuranceCheck) && detectedProcedure ? detectedProcedure : state.financingProcedure
       }));
       
       // Track analytics
@@ -194,7 +205,12 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }
   },
   
-  reset: () => set(initialState)
+  reset: () => set(initialState),
+  
+  setShowFinancingWidget: (show, procedure) => set({ 
+    showFinancingWidget: show,
+    financingProcedure: procedure 
+  })
 }));
 
 // Helper functions
