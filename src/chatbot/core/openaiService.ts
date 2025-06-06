@@ -3,11 +3,10 @@ import { procedureKnowledge, statenIslandContext } from '../knowledge/procedures
 import { ConversationFlowManager } from './conversationFlow';
 
 export class OpenAIService {
-  private config: ChatbotConfig;
   private flowManager: ConversationFlowManager;
   
-  constructor(config: ChatbotConfig, conversationState: ConversationState) {
-    this.config = config;
+  constructor(_config: ChatbotConfig, conversationState: ConversationState) {
+    // Config is not needed when using serverless function
     this.flowManager = new ConversationFlowManager(conversationState);
   }
   
