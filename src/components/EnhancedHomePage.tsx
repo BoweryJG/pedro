@@ -3,12 +3,10 @@ import {
   Container,
   Typography,
   Button,
-  Card,
-  CardContent,
   Chip,
   useTheme,
-  alpha,
   Skeleton,
+  Stack,
 } from '@mui/material';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -21,48 +19,13 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
 import ServiceComparison from '../components/ServiceComparison';
-import UnifiedHero from '../components/UnifiedHero';
+import EnhancedUnifiedHero from '../components/EnhancedUnifiedHero';
+import EnhancedServiceCard from '../components/EnhancedServiceCard';
+import GradientMesh from '../components/effects/GradientMesh';
+import NoiseTexture from '../components/effects/NoiseTexture';
+import AnimatedGradientBorder from '../components/effects/AnimatedGradientBorder';
 
 
-// Floating elements for AI section
-const FloatingElements = () => {
-  const elements = [
-    { icon: '🧠', size: 40, x: '10%', y: '20%', duration: 15 },
-    { icon: '✨', size: 30, x: '80%', y: '15%', duration: 20 },
-    { icon: '🦷', size: 35, x: '70%', y: '70%', duration: 18 },
-    { icon: '💡', size: 25, x: '20%', y: '60%', duration: 22 },
-    { icon: '🔬', size: 30, x: '90%', y: '40%', duration: 17 },
-  ];
-
-  return (
-    <>
-      {elements.map((el, i) => (
-        <motion.div
-          key={i}
-          style={{
-            position: 'absolute',
-            left: el.x,
-            top: el.y,
-            fontSize: el.size,
-            zIndex: 0,
-          }}
-          animate={{
-            y: [0, -20, 0],
-            x: [0, 10, 0],
-            rotate: [0, 10, -10, 0],
-          }}
-          transition={{
-            duration: el.duration,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          {el.icon}
-        </motion.div>
-      ))}
-    </>
-  );
-};
 
 // Progress bar component
 const ScrollProgress = () => {
@@ -159,24 +122,12 @@ const EnhancedHomePage = () => {
     },
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: 'spring',
-        stiffness: 100,
-      },
-    },
-  };
-
   return (
     <Box sx={{ overflowX: 'hidden' }}>
       <ScrollProgress />
       
-      {/* Unified Hero Section with Integrated Stats */}
-      <UnifiedHero onNavigate={navigate} />
+      {/* Enhanced Unified Hero Section with Rich Visual Effects */}
+      <EnhancedUnifiedHero onNavigate={navigate} />
 
       {/* Enhanced Services Section */}
       <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: 'background.default', position: 'relative' }}>
@@ -224,106 +175,20 @@ const EnhancedHomePage = () => {
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
               {services.map((service, index) => (
                 <Box sx={{ flex: '1 1 100%', maxWidth: { md: '33.333%' } }} key={index}>
-                  <motion.div
-                    variants={itemVariants}
-                    whileHover={{
-                      y: -10,
-                      scale: 1.02,
-                      transition: { type: 'spring', stiffness: 300 },
-                    }}
-                  >
-                    {loading ? (
-                      <Skeleton variant="rectangular" height={300} sx={{ borderRadius: 2 }} />
-                    ) : (
-                      <Card
-                        sx={{
-                          height: '100%',
-                          cursor: 'pointer',
-                          position: 'relative',
-                          overflow: 'visible',
-                          background: `linear-gradient(135deg, ${alpha(service.color, 0.05)} 0%, transparent 100%)`,
-                          border: service.highlight ? `2px solid ${service.color}` : '1px solid',
-                          borderColor: service.highlight ? service.color : 'divider',
-                          transition: 'all 0.3s ease',
-                          '&:hover': {
-                            borderColor: service.color,
-                            boxShadow: `0 10px 40px ${alpha(service.color, 0.2)}`,
-                            '& .service-icon': {
-                              transform: 'rotate(360deg)',
-                            },
-                          },
-                        }}
-                        onClick={() => navigate(service.path)}
-                      >
-                        {service.highlight && (
-                          <motion.div
-                            animate={{ y: [0, -5, 0] }}
-                            transition={{ duration: 2, repeat: Infinity }}
-                          >
-                            <Chip
-                              label="Most Popular"
-                              sx={{
-                                position: 'absolute',
-                                top: -10,
-                                right: 20,
-                                background: `linear-gradient(135deg, ${service.color} 0%, ${alpha(service.color, 0.8)} 100%)`,
-                                color: 'white',
-                                fontWeight: 600,
-                              }}
-                            />
-                          </motion.div>
-                        )}
-                        <CardContent sx={{ p: 4 }}>
-                          <Box
-                            className="service-icon"
-                            sx={{
-                              color: service.color,
-                              mb: 3,
-                              display: 'flex',
-                              justifyContent: 'center',
-                              transition: 'transform 0.6s ease',
-                            }}
-                          >
-                            {service.icon}
-                          </Box>
-                          <Typography 
-                            variant="h5" 
-                            align="center" 
-                            gutterBottom 
-                            fontWeight={600}
-                            sx={{ fontSize: { xs: '1.125rem', sm: '1.25rem', md: '1.5rem' } }}
-                          >
-                            {service.title}
-                          </Typography>
-                          <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            align="center"
-                            paragraph
-                            sx={{ 
-                              mb: 3,
-                              fontSize: { xs: '0.875rem', sm: '1rem' }
-                            }}
-                          >
-                            {service.description}
-                          </Typography>
-                          <Box textAlign="center">
-                            <Button
-                              endIcon={<ArrowForwardIcon />}
-                              sx={{
-                                color: service.color,
-                                '&:hover': {
-                                  background: alpha(service.color, 0.1),
-                                },
-                              }}
-                            >
-                              Learn More
-                            </Button>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    )}
-                  </motion.div>
+                  {loading ? (
+                    <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
+                  ) : (
+                    <EnhancedServiceCard
+                      icon={service.icon}
+                      title={service.title}
+                      description={service.description}
+                      path={service.path}
+                      highlight={service.highlight}
+                      color={service.color}
+                      onNavigate={navigate}
+                      index={index}
+                    />
+                  )}
                 </Box>
               ))}
             </Box>
@@ -355,15 +220,20 @@ const EnhancedHomePage = () => {
       <Box
         sx={{
           py: { xs: 8, md: 12 },
-          background: 'linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%)',
+          background: 'linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%)',
           color: 'white',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
-        <FloatingElements />
+        <GradientMesh 
+          colors={['#818cf8', '#c084fc', '#f472b6', '#60a5fa']}
+          opacity={0.2}
+          animate={true}
+        />
+        <NoiseTexture opacity={0.02} />
         
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 10 }}>
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -375,24 +245,45 @@ const EnhancedHomePage = () => {
                 animate={{ rotate: [0, 10, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
-                <Chip
-                  label="NEW"
-                  color="warning"
-                  sx={{
-                    mb: 3,
-                    fontWeight: 700,
-                    fontSize: '0.9rem',
-                    py: 2,
-                    px: 3,
-                  }}
-                />
+                <AnimatedGradientBorder
+                  borderRadius={24}
+                  colors={['#fbbf24', '#f59e0b', '#d97706', '#fbbf24']}
+                  borderWidth={2}
+                >
+                  <Chip
+                    label="NEW TECHNOLOGY"
+                    sx={{
+                      background: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
+                      color: 'black',
+                      fontWeight: 800,
+                      fontSize: '1rem',
+                      py: 2.5,
+                      px: 3,
+                      border: 'none',
+                      boxShadow: '0 8px 20px rgba(251, 191, 36, 0.3)',
+                    }}
+                  />
+                </AnimatedGradientBorder>
               </motion.div>
               
               <Typography 
                 variant="h2" 
                 fontWeight={800} 
                 gutterBottom
-                sx={{ fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' } }}
+                sx={{ 
+                  fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+                  mt: 4,
+                  background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 30%, #f472b6 60%, #34d399 100%)',
+                  backgroundSize: '300% 100%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  animation: 'gradient-shift 6s ease infinite',
+                  '@keyframes gradient-shift': {
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '50%': { backgroundPosition: '100% 50%' },
+                    '100%': { backgroundPosition: '0% 50%' },
+                  },
+                }}
               >
                 Try Our AI Smile Simulator
               </Typography>
@@ -400,10 +291,11 @@ const EnhancedHomePage = () => {
                 variant="h5" 
                 sx={{ 
                   mb: 6, 
-                  opacity: 0.95, 
-                  maxWidth: 700, 
+                  opacity: 0.9, 
+                  maxWidth: 800, 
                   mx: 'auto',
-                  fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' }
+                  fontSize: { xs: '1.125rem', sm: '1.5rem', md: '1.75rem' },
+                  color: 'rgba(255, 255, 255, 0.85)',
                 }}
               >
                 See your perfect smile in seconds with our advanced AI technology. 
@@ -412,55 +304,63 @@ const EnhancedHomePage = () => {
               
               <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant="contained"
-                    size="large"
-                    startIcon={<AutoAwesomeIcon />}
-                    onClick={() => navigate('/smile-simulator')}
-                    sx={{
-                      bgcolor: 'white',
-                      color: '#818cf8',
-                      py: 2,
-                      px: 5,
-                      fontSize: '1.2rem',
-                      fontWeight: 600,
-                      borderRadius: 3,
-                      boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
-                      '&:hover': {
-                        bgcolor: 'grey.100',
-                        transform: 'translateY(-2px)',
-                        boxShadow: '0 15px 40px rgba(0,0,0,0.3)',
-                      },
-                    }}
-                  >
-                    Try Simulator Now
-                  </Button>
+                  <Box sx={{ position: 'relative' }}>
+                    <Button
+                      variant="contained"
+                      size="large"
+                      startIcon={<AutoAwesomeIcon />}
+                      onClick={() => navigate('/smile-simulator')}
+                      sx={{
+                        background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
+                        color: 'white',
+                        py: 2.5,
+                        px: 6,
+                        fontSize: '1.3rem',
+                        fontWeight: 700,
+                        borderRadius: 3,
+                        boxShadow: '0 20px 40px rgba(96, 165, 250, 0.3)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&:hover': {
+                          transform: 'translateY(-3px)',
+                          boxShadow: '0 25px 50px rgba(96, 165, 250, 0.4)',
+                        },
+                      }}
+                    >
+                      Try Simulator Now
+                    </Button>
+                  </Box>
                 </motion.div>
                 
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={() => navigate('/services')}
-                    sx={{
-                      borderColor: 'white',
-                      color: 'white',
-                      borderWidth: 2,
-                      py: 2,
-                      px: 5,
-                      fontSize: '1.2rem',
-                      borderRadius: 3,
-                      backdropFilter: 'blur(10px)',
-                      background: alpha('#ffffff', 0.1),
-                      '&:hover': {
-                        borderColor: 'white',
-                        background: alpha('#ffffff', 0.2),
-                        borderWidth: 2,
-                      },
-                    }}
+                  <AnimatedGradientBorder
+                    borderRadius={12}
+                    borderWidth={2}
+                    colors={['rgba(255,255,255,0.3)', 'rgba(255,255,255,0.1)', 'rgba(255,255,255,0.3)']}
                   >
-                    View All Services
-                  </Button>
+                    <Button
+                      variant="outlined"
+                      size="large"
+                      onClick={() => navigate('/services')}
+                      sx={{
+                        border: 'none',
+                        color: 'white',
+                        py: 2.5,
+                        px: 6,
+                        fontSize: '1.3rem',
+                        fontWeight: 600,
+                        borderRadius: 1.5,
+                        background: 'rgba(255, 255, 255, 0.05)',
+                        backdropFilter: 'blur(20px)',
+                        '&:hover': {
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          border: 'none',
+                        },
+                      }}
+                    >
+                      View All Services
+                    </Button>
+                  </AnimatedGradientBorder>
                 </motion.div>
               </Box>
             </Box>
@@ -499,81 +399,163 @@ const EnhancedHomePage = () => {
       {/* Enhanced Final CTA Section */}
       <Box
         sx={{
-          py: { xs: 8, md: 12 },
-          background: `
-            linear-gradient(135deg, ${alpha('#667eea', 0.95)} 0%, ${alpha('#764ba2', 0.95)} 100%),
-            url('/images/office-pattern.jpg')
-          `,
-          backgroundSize: 'cover',
-          backgroundAttachment: 'fixed',
+          py: { xs: 10, md: 14 },
+          background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
           color: 'white',
           textAlign: 'center',
           position: 'relative',
           overflow: 'hidden',
         }}
       >
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%)',
-          }}
+        <GradientMesh 
+          colors={['#667eea', '#764ba2', '#f687b3', '#818cf8']}
+          opacity={0.25}
+          animate={true}
         />
+        <NoiseTexture opacity={0.03} />
         
-        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
+        {/* Animated light beams */}
+        <Box sx={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+          {[...Array(3)].map((_, i) => (
+            <motion.div
+              key={i}
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: `${20 + i * 30}%`,
+                width: 2,
+                height: '150%',
+                background: `linear-gradient(to top, transparent 0%, rgba(167, 139, 250, 0.6) 50%, transparent 100%)`,
+                transform: 'rotate(-15deg)',
+              }}
+              animate={{
+                top: ['-50%', '100%'],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 8,
+                delay: i * 2,
+                repeat: Infinity,
+                ease: 'linear',
+              }}
+            />
+          ))}
+        </Box>
+        
+        <Container maxWidth="md" sx={{ position: 'relative', zIndex: 10 }}>
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <Typography 
-              variant="h2" 
-              fontWeight={800} 
-              gutterBottom
-              sx={{ fontSize: { xs: '1.75rem', sm: '2.5rem', md: '3rem' } }}
+            <AnimatedGradientBorder
+              borderRadius={32}
+              borderWidth={3}
+              colors={['#60a5fa', '#a78bfa', '#f472b6', '#34d399']}
+              animationDuration={5}
             >
-              Ready to Experience the Future of Dental Care?
-            </Typography>
-            <Typography 
-              variant="h5" 
-              paragraph 
-              sx={{ 
-                mb: 6, 
-                opacity: 0.9,
-                fontSize: { xs: '1rem', sm: '1.25rem', md: '1.5rem' }
-              }}
-            >
-              Join thousands of satisfied patients who have transformed their smiles with our advanced technology.
-            </Typography>
-            
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button
-                variant="contained"
-                size="large"
-                onClick={() => navigate('/contact')}
-                sx={{
-                  bgcolor: 'white',
-                  color: '#667eea',
-                  py: 2.5,
-                  px: 6,
-                  fontSize: '1.3rem',
-                  fontWeight: 700,
-                  borderRadius: 4,
-                  boxShadow: '0 15px 35px rgba(0,0,0,0.3)',
-                  '&:hover': {
-                    bgcolor: 'grey.100',
-                    transform: 'translateY(-3px)',
-                    boxShadow: '0 20px 45px rgba(0,0,0,0.4)',
-                  },
-                }}
-              >
-                Schedule Your Consultation
-              </Button>
-            </motion.div>
+              <Box sx={{ py: 6, px: { xs: 3, sm: 6 }, background: 'rgba(0, 0, 0, 0.5)', backdropFilter: 'blur(20px)', borderRadius: 4 }}>
+                <Typography 
+                  variant="h2" 
+                  fontWeight={800} 
+                  gutterBottom
+                  sx={{ 
+                    fontSize: { xs: '2rem', sm: '3rem', md: '4rem' },
+                    background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 30%, #f472b6 60%, #34d399 100%)',
+                    backgroundSize: '300% 100%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    animation: 'gradient-shift 8s ease infinite',
+                    textShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                  }}
+                >
+                  Ready to Experience the Future of Dental Care?
+                </Typography>
+                <Typography 
+                  variant="h5" 
+                  paragraph 
+                  sx={{ 
+                    mb: 6, 
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    fontSize: { xs: '1.125rem', sm: '1.5rem', md: '1.75rem' },
+                    maxWidth: 700,
+                    mx: 'auto',
+                  }}
+                >
+                  Join thousands of satisfied patients who have transformed their smiles 
+                  with our advanced robotic technology and expert care.
+                </Typography>
+                
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                    <Button
+                      variant="contained"
+                      size="large"
+                      onClick={() => navigate('/contact')}
+                      endIcon={<ArrowForwardIcon sx={{ fontSize: 28 }} />}
+                      sx={{
+                        background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%)',
+                        color: 'white',
+                        py: 3,
+                        px: 8,
+                        fontSize: '1.5rem',
+                        fontWeight: 800,
+                        borderRadius: 4,
+                        boxShadow: '0 20px 40px rgba(96, 165, 250, 0.4)',
+                        position: 'relative',
+                        overflow: 'hidden',
+                        '&:hover': {
+                          transform: 'translateY(-3px)',
+                          boxShadow: '0 25px 50px rgba(96, 165, 250, 0.5)',
+                        },
+                      }}
+                    >
+                      Schedule Your Consultation
+                    </Button>
+                  </Box>
+                </motion.div>
+
+                {/* Trust badges */}
+                <Stack
+                  direction={{ xs: 'column', sm: 'row' }}
+                  spacing={3}
+                  justifyContent="center"
+                  sx={{ mt: 6 }}
+                >
+                  {[
+                    '✅ Free Consultation',
+                    '🏆 Top Rated Practice',
+                    '💎 Premium Technology',
+                  ].map((badge, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 + index * 0.1 }}
+                    >
+                      <Chip
+                        label={badge}
+                        sx={{
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          backdropFilter: 'blur(10px)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: 'white',
+                          fontSize: '1rem',
+                          py: 3,
+                          px: 2,
+                          fontWeight: 600,
+                        }}
+                      />
+                    </motion.div>
+                  ))}
+                </Stack>
+              </Box>
+            </AnimatedGradientBorder>
           </motion.div>
         </Container>
       </Box>
