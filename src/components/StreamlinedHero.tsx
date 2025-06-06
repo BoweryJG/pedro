@@ -21,11 +21,12 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
     <Box
       sx={{
         position: 'relative',
-        minHeight: { xs: '70vh', md: '80vh' },
+        minHeight: { xs: '100vh', sm: '80vh', md: '80vh' },
         display: 'flex',
         alignItems: 'center',
         background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
         overflow: 'hidden',
+        py: { xs: 4, md: 0 },
       }}
     >
       {/* Subtle gradient overlay */}
@@ -52,10 +53,10 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
             <Typography
               variant="h1"
               sx={{
-                fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4rem', lg: '4.5rem' },
+                fontSize: { xs: '2rem', sm: '3rem', md: '4rem', lg: '4.5rem' },
                 fontWeight: 700,
                 lineHeight: 1.2,
-                mb: 3,
+                mb: { xs: 2, md: 3 },
                 color: 'white',
               }}
             >
@@ -84,9 +85,10 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
             <Typography
               variant="h5"
               sx={{
+                fontSize: { xs: '1.125rem', sm: '1.25rem', md: '1.5rem' },
                 color: 'rgba(255, 255, 255, 0.8)',
                 fontWeight: 400,
-                mb: 4,
+                mb: { xs: 3, md: 4 },
                 maxWidth: 600,
                 lineHeight: 1.6,
               }}
@@ -102,37 +104,42 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mb: 4 }}>
+            <Stack 
+              direction={{ xs: 'column', sm: 'row' }} 
+              spacing={{ xs: 1.5, sm: 2 }} 
+              sx={{ mb: { xs: 3, md: 4 } }}
+            >
               <Button
                 variant="contained"
-                size="large"
-                endIcon={<ArrowForwardIcon />}
+                endIcon={<ArrowForwardIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />}
                 onClick={() => onNavigate('/contact')}
                 sx={{
-                  py: 2,
-                  px: 4,
+                  py: { xs: 1.5, sm: 2 },
+                  px: { xs: 3, sm: 4 },
                   background: 'linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%)',
-                  fontSize: '1.125rem',
+                  fontSize: { xs: '1rem', sm: '1.125rem' },
                   fontWeight: 600,
                   boxShadow: '0 10px 30px rgba(59, 130, 246, 0.3)',
+                  whiteSpace: 'nowrap',
+                  minWidth: { xs: '100%', sm: 'auto' },
                   '&:hover': {
                     boxShadow: '0 15px 40px rgba(59, 130, 246, 0.4)',
                     transform: 'translateY(-2px)',
                   },
                 }}
               >
-                Schedule Consultation
+                Book Consultation
               </Button>
               <Button
                 variant="outlined"
-                size="large"
                 onClick={() => onNavigate('/services')}
                 sx={{
-                  py: 2,
-                  px: 4,
-                  fontSize: '1.125rem',
+                  py: { xs: 1.5, sm: 2 },
+                  px: { xs: 3, sm: 4 },
+                  fontSize: { xs: '1rem', sm: '1.125rem' },
                   borderColor: 'rgba(255, 255, 255, 0.3)',
                   color: 'white',
+                  minWidth: { xs: '100%', sm: 'auto' },
                   '&:hover': {
                     borderColor: 'rgba(255, 255, 255, 0.5)',
                     bgcolor: 'rgba(255, 255, 255, 0.05)',
@@ -151,9 +158,12 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <Box display="flex" alignItems="center" gap={1}>
-              <PhoneIcon sx={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: 20 }} />
-              <Typography sx={{ color: 'rgba(255, 255, 255, 0.6)' }}>
-                Call us today: (718) 494-9700
+              <PhoneIcon sx={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: { xs: 18, sm: 20 } }} />
+              <Typography sx={{ 
+                color: 'rgba(255, 255, 255, 0.6)',
+                fontSize: { xs: '0.875rem', sm: '1rem' }
+              }}>
+                Call: (718) 494-9700
               </Typography>
             </Box>
           </motion.div>
