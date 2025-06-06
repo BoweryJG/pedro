@@ -24,6 +24,7 @@ import FloatingAppointmentButton from '../components/FloatingAppointmentButton';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
 import ServiceComparison from '../components/ServiceComparison';
+import EnhancedHero from '../components/EnhancedHero';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -64,120 +65,7 @@ const HomePage = () => {
       <FloatingAppointmentButton />
       
       {/* Enhanced Hero Section */}
-      <Box
-        ref={heroRef}
-        sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-          backgroundImage: 'url(/images/hero-dental.jpg), url(https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=2000&q=80)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'linear-gradient(180deg, rgba(30,64,175,0.8) 0%, rgba(124,58,237,0.9) 100%)',
-          },
-        }}
-      >
-        
-        {/* Hero Content */}
-        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Box sx={{ textAlign: 'center', maxWidth: 900, mx: 'auto' }}>
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={heroInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
-              <Chip
-                label="Staten Island's Only Yomi Provider"
-                sx={{
-                  mb: 3,
-                  fontSize: '1rem',
-                  py: 2,
-                  px: 3,
-                  bgcolor: 'rgba(255, 255, 255, 0.2)',
-                  color: 'white',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                }}
-              />
-              <Typography
-                variant="h1"
-                sx={{
-                  fontSize: { xs: '3rem', md: '4.5rem' },
-                  fontWeight: 800,
-                  mb: 2,
-                  color: 'white',
-                  textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-                }}
-              >
-                The Future of Dental Care is Here
-              </Typography>
-              <Typography
-                variant="h5"
-                paragraph
-                sx={{ mb: 4, color: 'white', opacity: 0.9, maxWidth: 700, mx: 'auto' }}
-              >
-                Staten Island's only practice with Yomi robotic surgery. 
-                Experience precision, comfort, and faster healing.
-              </Typography>
-              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
-                <Button
-                  variant="contained"
-                  size="large"
-                  endIcon={<ArrowForwardIcon />}
-                  onClick={() => navigate('/contact')}
-                  sx={{
-                    py: 2,
-                    px: 5,
-                    fontSize: '1.2rem',
-                    bgcolor: 'white',
-                    color: 'primary.main',
-                    '&:hover': {
-                      bgcolor: 'grey.100',
-                      transform: 'translateY(-2px)',
-                    },
-                  }}
-                >
-                  Book Free Consultation
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  onClick={() => navigate('/yomi-robotic-surgery')}
-                  sx={{
-                    py: 2,
-                    px: 5,
-                    fontSize: '1.2rem',
-                    borderColor: 'white',
-                    color: 'white',
-                    '&:hover': {
-                      borderColor: 'white',
-                      bgcolor: 'rgba(255, 255, 255, 0.1)',
-                      transform: 'translateY(-2px)',
-                    },
-                  }}
-                >
-                  Watch Yomi in Action
-                </Button>
-              </Stack>
-              
-              {/* Animated Statistics */}
-              <AnimatedStats />
-              
-              {/* Trust Indicators */}
-              <TrustIndicators />
-            </motion.div>
-          </Box>
-        </Container>
-      </Box>
+      <EnhancedHero onNavigate={navigate} />
 
       {/* Stats Section */}
       <Box
