@@ -10,10 +10,10 @@ import {
   alpha,
   Skeleton,
 } from '@mui/material';
-import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
+import { motion, useScroll, useSpring } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import HealingIcon from '@mui/icons-material/Healing';
