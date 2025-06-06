@@ -45,34 +45,18 @@ export const IconicChatbotLauncher: React.FC<IconicChatbotLauncherProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           
-          // Morphing shape
+          // Simple shape with soft glow
           '& .launcher-shape': {
             position: 'absolute',
             width: '100%',
             height: '100%',
-            background: 'linear-gradient(135deg, #818cf8 0%, #c084fc 50%, #f472b6 100%)',
-            borderRadius: hovering ? '30% 70% 70% 30% / 30% 30% 70% 70%' : '50%',
-            transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-            transform: hovering ? 'rotate(180deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+            background: 'linear-gradient(135deg, #818cf8 0%, #c084fc 100%)',
+            borderRadius: '50%',
+            transition: 'all 0.5s ease',
+            transform: hovering ? 'scale(1.05)' : 'scale(1)',
             boxShadow: hovering 
-              ? '0 20px 40px rgba(129, 140, 248, 0.4), inset 0 0 20px rgba(255,255,255,0.2)' 
-              : '0 10px 30px rgba(129, 140, 248, 0.3)',
-            
-            // Animated border
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              inset: -3,
-              borderRadius: 'inherit',
-              padding: 3,
-              background: 'linear-gradient(45deg, #60a5fa, #a78bfa, #f472b6, #60a5fa)',
-              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude',
-              opacity: hovering ? 1 : 0,
-              transition: 'opacity 0.3s ease',
-              animation: hovering ? 'rotate-border 3s linear infinite' : 'none',
-            },
+              ? '0 8px 30px rgba(129, 140, 248, 0.5)' 
+              : '0 4px 20px rgba(129, 140, 248, 0.3)',
           },
           
           // Center icon container
@@ -88,44 +72,11 @@ export const IconicChatbotLauncher: React.FC<IconicChatbotLauncherProps> = ({
             transition: 'transform 0.3s ease',
           },
           
-          // Soft glow pulse
-          '& .ring': {
-            position: 'absolute',
-            background: 'radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%)',
-            borderRadius: '50%',
-            animation: 'soft-pulse 3s ease-out infinite',
-          },
-          
-          '@keyframes rotate-border': {
-            '0%': { transform: 'rotate(0deg)' },
-            '100%': { transform: 'rotate(360deg)' },
-          },
-          
-          '@keyframes soft-pulse': {
-            '0%': {
-              width: 40,
-              height: 40,
-              opacity: 0.3,
-            },
-            '100%': {
-              width: 80,
-              height: 80,
-              opacity: 0,
-            },
-          },
         }}
       >
         {/* Morphing background shape */}
         <Box className="launcher-shape" />
         
-        {/* Animated rings */}
-        {hovering && (
-          <>
-            <Box className="ring" sx={{ animationDelay: '0s' }} />
-            <Box className="ring" sx={{ animationDelay: '0.5s' }} />
-            <Box className="ring" sx={{ animationDelay: '1s' }} />
-          </>
-        )}
         
         {/* Unique icon design */}
         <Box className="icon-container">
@@ -161,107 +112,21 @@ export const IconicChatbotLauncher: React.FC<IconicChatbotLauncherProps> = ({
               opacity="0.6"
             />
             
-            {/* Sparkle effects */}
-            {hovering && (
-              <>
-                <circle cx="8" cy="8" r="1" fill="white" opacity="0.8">
-                  <animate
-                    attributeName="opacity"
-                    values="0;0.8;0"
-                    dur="2s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle cx="24" cy="8" r="1" fill="white" opacity="0.8">
-                  <animate
-                    attributeName="opacity"
-                    values="0;0.8;0"
-                    dur="2s"
-                    begin="0.5s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-                <circle cx="16" cy="26" r="1" fill="white" opacity="0.8">
-                  <animate
-                    attributeName="opacity"
-                    values="0;0.8;0"
-                    dur="2s"
-                    begin="1s"
-                    repeatCount="indefinite"
-                  />
-                </circle>
-              </>
-            )}
           </svg>
         </Box>
         
-        {/* Floating particles */}
-        {hovering && (
-          <Box
-            sx={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              pointerEvents: 'none',
-            }}
-          >
-            {[...Array(6)].map((_, i) => (
-              <Box
-                key={i}
-                sx={{
-                  position: 'absolute',
-                  width: 6,
-                  height: 6,
-                  borderRadius: '50%',
-                  background: `radial-gradient(circle, ${['#818cf8', '#c084fc', '#f472b6'][i % 3]} 0%, transparent 70%)`,
-                  left: '50%',
-                  top: '50%',
-                  filter: 'blur(1px)',
-                  animation: `float-particle-${i} 4s ease-in-out infinite`,
-                  [`@keyframes float-particle-${i}`]: {
-                    '0%': {
-                      transform: 'translate(-50%, -50%) translate(0, 0)',
-                      opacity: 0,
-                    },
-                    '20%': {
-                      opacity: 0.6,
-                    },
-                    '80%': {
-                      opacity: 0.3,
-                    },
-                    '100%': {
-                      transform: `translate(-50%, -50%) translate(${Math.cos(i * 60 * Math.PI / 180) * 30}px, ${Math.sin(i * 60 * Math.PI / 180) * 30}px)`,
-                      opacity: 0,
-                    },
-                  },
-                }}
-              />
-            ))}
-          </Box>
-        )}
         
-        {/* Pulse indicator */}
+        {/* Static status dot */}
         <Box
           sx={{
             position: 'absolute',
             bottom: 8,
             right: 8,
-            width: 12,
-            height: 12,
+            width: 10,
+            height: 10,
             borderRadius: '50%',
             background: '#10b981',
-            boxShadow: '0 0 0 3px rgba(16, 185, 129, 0.3)',
-            animation: 'pulse-dot 2s ease-in-out infinite',
-            '@keyframes pulse-dot': {
-              '0%, 100%': {
-                transform: 'scale(1)',
-                boxShadow: '0 0 0 3px rgba(16, 185, 129, 0.3)',
-              },
-              '50%': {
-                transform: 'scale(1.1)',
-                boxShadow: '0 0 0 6px rgba(16, 185, 129, 0.1)',
-              },
-            },
+            boxShadow: '0 0 8px rgba(16, 185, 129, 0.4)',
           }}
         />
       </Box>
