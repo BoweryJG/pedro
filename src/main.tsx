@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import theme from './theme'
 import App from './App.tsx'
+import './styles/animations.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
