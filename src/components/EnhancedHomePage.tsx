@@ -11,54 +11,18 @@ import {
   Skeleton,
 } from '@mui/material';
 import { motion, useScroll, useSpring } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import HealingIcon from '@mui/icons-material/Healing';
 import FaceIcon from '@mui/icons-material/Face';
-import TimerIcon from '@mui/icons-material/Timer';
-import VerifiedIcon from '@mui/icons-material/Verified';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
 import ServiceComparison from '../components/ServiceComparison';
 import UnifiedHero from '../components/UnifiedHero';
 
-// Animated counter component
-const AnimatedCounter = ({ value, suffix = '' }: { value: number; suffix?: string }) => {
-  const [count, setCount] = useState(0);
-  const [ref, inView] = useInView({ triggerOnce: true });
-
-  useEffect(() => {
-    if (inView) {
-      const duration = 2000;
-      const steps = 60;
-      const increment = value / steps;
-      let current = 0;
-
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= value) {
-          setCount(value);
-          clearInterval(timer);
-        } else {
-          setCount(Math.floor(current));
-        }
-      }, duration / steps);
-
-      return () => clearInterval(timer);
-    }
-  }, [inView, value]);
-
-  return (
-    <span ref={ref}>
-      {count.toLocaleString()}{suffix}
-    </span>
-  );
-};
 
 // Floating elements for AI section
 const FloatingElements = () => {
@@ -184,11 +148,6 @@ const EnhancedHomePage = () => {
     },
   ];
 
-  const stats = [
-    { value: 50, suffix: '%', label: 'Faster Healing', icon: <TimerIcon /> },
-    { value: 100, suffix: '%', label: 'Precision Rate', icon: <VerifiedIcon /> },
-    { value: 2000, suffix: '+', label: 'Happy Patients', icon: <TrendingUpIcon /> },
-  ];
 
   const containerVariants = {
     hidden: { opacity: 0 },

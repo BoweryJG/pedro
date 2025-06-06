@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import {
   ArrowForward as ArrowForwardIcon,
-  CheckCircle as CheckIcon,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
