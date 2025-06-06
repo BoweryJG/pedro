@@ -7,13 +7,9 @@ import {
   Stack,
   Chip,
   IconButton,
-  useTheme,
-  useMediaQuery,
   Paper,
   Avatar,
   Rating,
-  Fade,
-  Zoom,
 } from '@mui/material';
 import {
   ArrowForward as ArrowForwardIcon,
@@ -37,11 +33,9 @@ interface EnhancedHeroProps {
 }
 
 const EnhancedHero: React.FC<EnhancedHeroProps> = ({ onNavigate }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [heroRef, heroInView] = useInView({ triggerOnce: true });
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [showVideo, setShowVideo] = useState(false);
+  const [_showVideo, setShowVideo] = useState(false);
 
   // Rotating text animations
   const rotatingTexts = [
@@ -399,8 +393,8 @@ const EnhancedHero: React.FC<EnhancedHeroProps> = ({ onNavigate }) => {
                   }}
                 >
                   <img
-                    src="/images/yomi-robot.jpg"
-                    alt="Yomi Robot"
+                    src="/images/edwards.png"
+                    alt="Edwards Advanced Dental"
                     style={{
                       width: '100%',
                       height: '100%',
@@ -518,9 +512,14 @@ const EnhancedHero: React.FC<EnhancedHeroProps> = ({ onNavigate }) => {
                 >
                   <Stack direction="row" spacing={2} alignItems="center">
                     <Avatar
-                      src="/images/patient-avatar.jpg"
-                      sx={{ width: 48, height: 48 }}
-                    />
+                      sx={{ 
+                        width: 48, 
+                        height: 48,
+                        bgcolor: 'primary.main'
+                      }}
+                    >
+                      SM
+                    </Avatar>
                     <Box>
                       <Typography variant="subtitle2" fontWeight={600}>
                         Sarah M.

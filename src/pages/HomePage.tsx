@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   CardContent,
-  Stack,
   Chip,
 } from '@mui/material';
 import { motion } from 'framer-motion';
@@ -18,8 +17,6 @@ import FaceIcon from '@mui/icons-material/Face';
 import TimerIcon from '@mui/icons-material/Timer';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import AnimatedStats from '../components/AnimatedStats';
-import TrustIndicators from '../components/TrustIndicators';
 import FloatingAppointmentButton from '../components/FloatingAppointmentButton';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
@@ -28,7 +25,6 @@ import EnhancedHero from '../components/EnhancedHero';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const [heroRef, heroInView] = useInView({ triggerOnce: true });
   const [featuresRef, featuresInView] = useInView({ triggerOnce: true });
   const [statsRef, statsInView] = useInView({ triggerOnce: true });
 
