@@ -261,9 +261,9 @@ const EnhancedHomePage = () => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: { xs: 2, md: 4 } }}>
               {stats.map((stat, index) => (
-                <Box sx={{ flex: '1 1 100%', maxWidth: { md: '33.333%' } }} key={index}>
+                <Box sx={{ flex: '1 1 100%', maxWidth: { xs: '100%', sm: '50%', md: '33.333%' } }} key={index}>
                   <motion.div variants={itemVariants}>
                     <Card
                       sx={{
@@ -272,7 +272,7 @@ const EnhancedHomePage = () => {
                         border: `1px solid ${alpha('#ffffff', 0.2)}`,
                         color: 'white',
                         textAlign: 'center',
-                        p: 4,
+                        p: { xs: 2, sm: 3, md: 4 },
                         height: '100%',
                         transition: 'all 0.3s ease',
                         '&:hover': {
@@ -282,13 +282,27 @@ const EnhancedHomePage = () => {
                         },
                       }}
                     >
-                      <Box sx={{ mb: 2, color: alpha('#ffffff', 0.8) }}>
+                      <Box sx={{ mb: { xs: 1, md: 2 }, color: alpha('#ffffff', 0.8), '& svg': { fontSize: { xs: 24, md: 32 } } }}>
                         {stat.icon}
                       </Box>
-                      <Typography variant="h2" fontWeight={700} gutterBottom>
+                      <Typography 
+                        variant="h2" 
+                        fontWeight={700} 
+                        gutterBottom
+                        sx={{ 
+                          fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }
+                        }}
+                      >
                         <AnimatedCounter value={stat.value} suffix={stat.suffix} />
                       </Typography>
-                      <Typography variant="h6">{stat.label}</Typography>
+                      <Typography 
+                        variant="h6"
+                        sx={{ 
+                          fontSize: { xs: '0.875rem', sm: '1rem', md: '1.25rem' }
+                        }}
+                      >
+                        {stat.label}
+                      </Typography>
                     </Card>
                   </motion.div>
                 </Box>
@@ -313,7 +327,11 @@ const EnhancedHomePage = () => {
               variant="h2"
               align="center"
               gutterBottom
-              sx={{ fontWeight: 700, mb: 2 }}
+              sx={{ 
+                fontWeight: 700, 
+                mb: 2,
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }
+              }}
             >
               Our Advanced Services
             </Typography>
@@ -322,7 +340,12 @@ const EnhancedHomePage = () => {
               align="center"
               color="text.secondary"
               paragraph
-              sx={{ mb: 8, maxWidth: 600, mx: 'auto' }}
+              sx={{ 
+                mb: { xs: 4, md: 8 }, 
+                maxWidth: 600, 
+                mx: 'auto',
+                fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' }
+              }}
             >
               Combining cutting-edge technology with compassionate care
             </Typography>
