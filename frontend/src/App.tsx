@@ -8,6 +8,7 @@ import TMJPage from './pages/TMJPage';
 import EmfacePage from './pages/EmfacePage';
 import ContactPage from './pages/ContactPage';
 import SmileSimulatorPage from './pages/SmileSimulatorPage';
+import InstagramDashboard from './components/InstagramDashboard';
 import { Chatbot } from './chatbot/components/Chatbot';
 import BackendStatus from './components/BackendStatus';
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="emface-mfa" element={<EmfacePage />} />
           <Route path="smile-simulator" element={<SmileSimulatorPage />} />
           <Route path="contact" element={<ContactPage />} />
+          <Route path="instagram-dashboard" element={<InstagramDashboard />} />
         </Route>
       </Routes>
       <Chatbot />
