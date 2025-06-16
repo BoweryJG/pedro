@@ -23,6 +23,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { CONTACT_INFO } from '../constants/contact';
 
 const ContactPage = () => {
   usePageTitle('Contact Us');
@@ -255,7 +256,7 @@ const ContactPage = () => {
                         </ListItemIcon>
                         <ListItemText
                           primary="Phone"
-                          secondary="(718) 555-0123"
+                          secondary={CONTACT_INFO.phone.display}
                         />
                       </ListItem>
                       <ListItem disableGutters>
@@ -264,7 +265,7 @@ const ContactPage = () => {
                         </ListItemIcon>
                         <ListItemText
                           primary="Email"
-                          secondary="info@drpedrodental.com"
+                          secondary={CONTACT_INFO.emails.suite.info}
                         />
                       </ListItem>
                       <ListItem disableGutters>
@@ -273,7 +274,7 @@ const ContactPage = () => {
                         </ListItemIcon>
                         <ListItemText
                           primary="Location"
-                          secondary="123 Advanced Dental Plaza, Staten Island, NY 10301"
+                          secondary={CONTACT_INFO.address.full}
                         />
                       </ListItem>
                     </List>
@@ -288,19 +289,19 @@ const ContactPage = () => {
                         <ListItemIcon>
                           <AccessTimeIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Monday - Friday: 9:00 AM - 6:00 PM" />
+                        <ListItemText primary={`Monday - Friday: ${CONTACT_INFO.businessHours.weekdays}`} />
                       </ListItem>
                       <ListItem disableGutters>
                         <ListItemIcon>
                           <AccessTimeIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Saturday: 9:00 AM - 2:00 PM" />
+                        <ListItemText primary={`Saturday: ${CONTACT_INFO.businessHours.saturday}`} />
                       </ListItem>
                       <ListItem disableGutters>
                         <ListItemIcon>
                           <AccessTimeIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText primary="Sunday: Closed" />
+                        <ListItemText primary={`Sunday: ${CONTACT_INFO.businessHours.sunday}`} />
                       </ListItem>
                     </List>
                   </Paper>

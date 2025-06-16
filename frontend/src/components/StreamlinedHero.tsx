@@ -11,6 +11,7 @@ import {
   LocalPhone as PhoneIcon,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import { CONTACT_INFO } from '../constants/contact';
 
 interface StreamlinedHeroProps {
   onNavigate: (path: string) => void;
@@ -163,7 +164,7 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
                 color: 'rgba(255, 255, 255, 0.6)',
                 fontSize: { xs: '0.875rem', sm: '1rem' }
               }}>
-                Call: (718) 494-9700
+                Call: {CONTACT_INFO.phone.display}
               </Typography>
             </Box>
           </motion.div>

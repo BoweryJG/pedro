@@ -13,6 +13,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import { CONTACT_INFO } from '../constants/contact';
 
 const Footer = () => {
   return (
@@ -58,20 +59,20 @@ const Footer = () => {
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <PhoneIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">
-                  (718) 494-9700
+                  {CONTACT_INFO.phone.display}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <EmailIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">
-                  info@siadvanceddentistry.com
+                  {CONTACT_INFO.emails.suite.info}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <LocationOnIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">
-                  123 Advanced Dental Plaza<br />
-                  Staten Island, NY 10301
+                  {CONTACT_INFO.address.street}<br />
+                  {CONTACT_INFO.address.city}, {CONTACT_INFO.address.state} {CONTACT_INFO.address.zip}
                 </Typography>
               </Box>
             </Stack>

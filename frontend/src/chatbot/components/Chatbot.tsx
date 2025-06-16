@@ -24,10 +24,13 @@ import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useChatStore } from '../store/chatStore';
-import { SimpleChatbotLauncher } from './SimpleChatbotLauncher';
 import { FinancingWidget } from './FinancingWidget';
 
-export const Chatbot: React.FC = () => {
+interface ChatbotProps {
+  onClose?: () => void;
+}
+
+export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   const {
     isOpen,
     isLoading,
@@ -82,12 +85,6 @@ export const Chatbot: React.FC = () => {
   
   return (
     <>
-      {/* Simple Chat Launcher */}
-      <SimpleChatbotLauncher 
-        isOpen={isOpen} 
-        onToggle={toggleChat}
-      />
-      
       {/* Chat Window */}
       <Slide direction="up" in={isOpen} mountOnEnter unmountOnExit>
         <Paper
@@ -171,7 +168,10 @@ export const Chatbot: React.FC = () => {
               </Box>
             </Box>
             <IconButton 
-              onClick={toggleChat} 
+              onClick={() => {
+                toggleChat();
+                onClose?.();
+              }} 
               sx={{ 
                 color: 'white',
                 '&:hover': {

@@ -11,6 +11,7 @@ import {
   Avatar,
   Rating,
 } from '@mui/material';
+import { CONTACT_INFO } from '../constants/contact';
 import {
   ArrowForward as ArrowForwardIcon,
   PlayCircleOutline as PlayIcon,
@@ -342,7 +343,7 @@ const EnhancedHero: React.FC<EnhancedHeroProps> = ({ onNavigate }) => {
                 <Box display="flex" alignItems="center" gap={1}>
                   <PhoneIcon sx={{ color: 'primary.light' }} />
                   <Typography sx={{ color: 'grey.300' }}>
-                    Call: (718) 494-9700
+                    Call: {CONTACT_INFO.phone.display}
                   </Typography>
                 </Box>
                 <Box display="flex" alignItems="center" gap={1}>

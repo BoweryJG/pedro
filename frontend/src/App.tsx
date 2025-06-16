@@ -11,8 +11,16 @@ import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import InstagramDashboard from './components/InstagramDashboard';
 import { Chatbot } from './chatbot/components/Chatbot';
 import BackendStatus from './components/BackendStatus';
+import { ChatFirstContactWidget } from './components/ChatFirstContactWidget';
+import { MobileChatOptimized } from './components/MobileChatOptimized';
+import { useState } from 'react';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 function App() {
+  const [chatOpen, setChatOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <>
       <Routes>
@@ -28,7 +36,12 @@ function App() {
           <Route path="instagram-dashboard" element={<InstagramDashboard />} />
         </Route>
       </Routes>
-      <Chatbot />
+      {chatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
+      {isMobile ? (
+        <MobileChatOptimized onChatOpen={() => setChatOpen(true)} />
+      ) : (
+        <ChatFirstContactWidget onChatOpen={() => setChatOpen(true)} />
+      )}
       <BackendStatus />
     </>
   );

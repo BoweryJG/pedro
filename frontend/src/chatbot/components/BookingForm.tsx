@@ -18,6 +18,7 @@ import {
   InputLabel,
   Select
 } from '@mui/material';
+import { CONTACT_INFO } from '../../constants/contact';
 import type { SelectChangeEvent } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -180,7 +181,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
               onChange={(e) => handleFieldChange('phone', formatPhone(e.target.value))}
               error={!!errors.phone}
               helperText={errors.phone}
-              placeholder="(718) 555-0123"
+              placeholder={CONTACT_INFO.phone.display}
               fullWidth
               required
             />

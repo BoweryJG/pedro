@@ -1,13 +1,13 @@
 import type { Message, ChatbotConfig, ConversationState, ConversationStage } from '../types';
 import { procedureKnowledge, statenIslandContext } from '../knowledge/procedures';
-import { ConversationFlowManager } from './conversationFlow';
+import { EnhancedConversationFlowManager } from './enhancedConversationFlow';
 
 export class OpenAIService {
-  private flowManager: ConversationFlowManager;
+  private flowManager: EnhancedConversationFlowManager;
   
   constructor(_config: ChatbotConfig, conversationState: ConversationState) {
     // Config is not needed when using serverless function
-    this.flowManager = new ConversationFlowManager(conversationState);
+    this.flowManager = new EnhancedConversationFlowManager(conversationState);
   }
   
   private buildSystemPrompt(): string {

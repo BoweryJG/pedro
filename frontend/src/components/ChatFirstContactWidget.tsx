@@ -22,6 +22,7 @@ import {
 } from '@mui/icons-material';
 import { keyframes } from '@mui/material/styles';
 import { CONTACT_INFO } from '../constants/contact';
+import { trackPhoneClick, trackChatOpen, trackContactMethodChoice } from '../utils/analytics';
 
 const pulse = keyframes`
   0% { transform: scale(1); }
@@ -45,15 +46,15 @@ export const ChatFirstContactWidget: React.FC<ChatFirstContactWidgetProps> = ({ 
   const handleChatClick = () => {
     setHasInteracted(true);
     setShowOptions(false);
+    trackChatOpen('contact_widget');
+    trackContactMethodChoice('chat', 'widget');
     onChatOpen();
   };
 
   const handlePhoneClick = () => {
     setHasInteracted(true);
-    window.gtag?.('event', 'phone_click', {
-      event_category: 'contact',
-      event_label: 'chat_widget_phone',
-    });
+    trackPhoneClick('contact_widget');
+    trackContactMethodChoice('phone', 'widget');
     window.location.href = CONTACT_INFO.phone.href;
   };
 

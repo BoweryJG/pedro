@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { useNavigate } from 'react-router-dom';
+import { CONTACT_INFO } from '../constants/contact';
 
 const FloatingAppointmentButton = () => {
   const [showButton, setShowButton] = useState(false);
@@ -30,7 +31,7 @@ const FloatingAppointmentButton = () => {
 
   const handleCall = (e: React.MouseEvent) => {
     e.stopPropagation();
-    window.location.href = 'tel:7185550123';
+    window.location.href = CONTACT_INFO.phone.href;
   };
 
   return (

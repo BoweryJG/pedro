@@ -21,6 +21,7 @@ import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { CONTACT_INFO } from '../constants/contact';
 
 const TMJPage = () => {
   usePageTitle('TMJ Treatment');
@@ -425,7 +426,7 @@ const TMJPage = () => {
                 },
               }}
             >
-              Call (718) 555-0123
+              Call {CONTACT_INFO.phone.display}
             </Button>
           </Stack>
         </Container>

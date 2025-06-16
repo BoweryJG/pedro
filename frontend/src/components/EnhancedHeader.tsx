@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { CONTACT_INFO } from '../constants/contact';
 import {
   AppBar,
   Toolbar,
@@ -130,7 +131,7 @@ const EnhancedHeader = () => {
                   <Box display="flex" alignItems="center" gap={0.5}>
                     <PhoneIcon fontSize="small" />
                     <Typography variant="caption">
-                      (718) 494-9700
+                      {CONTACT_INFO.phone.display}
                     </Typography>
                   </Box>
                   <Box display="flex" alignItems="center" gap={0.5}>
@@ -487,7 +488,7 @@ const EnhancedHeader = () => {
             <Stack spacing={1}>
               <Box display="flex" alignItems="center" gap={1}>
                 <PhoneIcon fontSize="small" color="primary" />
-                <Typography variant="body2">(718) 494-9700</Typography>
+                <Typography variant="body2">{CONTACT_INFO.phone.display}</Typography>
               </Box>
               <Box display="flex" alignItems="center" gap={1}>
                 <ScheduleIcon fontSize="small" color="primary" />
