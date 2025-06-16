@@ -393,8 +393,8 @@ const EnhancedHero: React.FC<EnhancedHeroProps> = ({ onNavigate }) => {
                   }}
                 >
                   <img
-                    src="/images/edwards.png"
-                    alt="Edwards Advanced Dental"
+                    src="/images/pedro.png"
+                    alt="Pedro Advanced Dental"
                     style={{
                       width: '100%',
                       height: '100%',

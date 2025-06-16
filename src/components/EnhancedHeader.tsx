@@ -231,7 +231,7 @@ const EnhancedHeader = () => {
                       letterSpacing: '0.5px',
                     }}
                   >
-                    Dr. Edwards & Dr. Pedro • Expert Care
+                    Dr. Pedro • Expert Prosthodontic Care
                   </Typography>
                 )}
               </Box>

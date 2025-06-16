@@ -4,7 +4,7 @@ A modern, AI-powered dental practice website featuring an intelligent chatbot as
 
 ## 🦷 Overview
 
-This platform represents the digital presence of Staten Island Advanced Dentistry, led by Dr. Edwards (General Practitioner) and Dr. Pedro (Prosthodontist), specializing in advanced procedures including:
+This platform represents the digital presence of Staten Island Advanced Dentistry, led by Dr. Pedro (Prosthodontist and General Practitioner), specializing in advanced procedures including:
 - Yomi Robotic Surgery
 - TMJ Treatment
 - EMFACE Facial Rejuvenation

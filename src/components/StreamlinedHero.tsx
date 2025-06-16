@@ -94,7 +94,7 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
               }}
             >
               Staten Island's only Yomi-certified practice. Experience precision implants, 
-              TMJ relief, and facial rejuvenation with Dr. Edwards & Dr. Pedro.
+              TMJ relief, and facial rejuvenation with Dr. Pedro.
             </Typography>
           </motion.div>
 
@@ -197,7 +197,7 @@ const StreamlinedHero: React.FC<StreamlinedHeroProps> = ({ onNavigate }) => {
               }}
             >
               <img
-                src="/images/edwards.png"
+                src="/images/pedro.png"
                 alt="Dental Technology"
                 style={{
                   width: '100%',

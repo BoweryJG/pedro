@@ -261,7 +261,7 @@ const ContactPage = () => {
                         </ListItemIcon>
                         <ListItemText
                           primary="Email"
-                          secondary="info@edwardspedrodental.com"
+                          secondary="info@drpedrodental.com"
                         />
                       </ListItem>
                       <ListItem disableGutters>

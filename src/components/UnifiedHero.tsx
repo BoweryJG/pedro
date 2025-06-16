@@ -121,7 +121,7 @@ const UnifiedHero: React.FC<UnifiedHeroProps> = ({ onNavigate }) => {
               }}
             >
               Advanced robotic surgery, TMJ relief, and facial rejuvenation 
-              with Dr. Edwards & Dr. Pedro
+              with Dr. Pedro
             </Typography>
           </motion.div>
 

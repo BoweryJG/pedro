@@ -23,20 +23,12 @@ const AboutPage = () => {
 
   const doctors = [
     {
-      name: 'Dr. John Edwards',
-      title: 'DDS, General Dentistry',
-      image: '/images/johnedwards.jpg',
-      education: ['NYU College of Dentistry', 'Advanced Implant Training'],
-      specialties: ['General Dentistry', 'Cosmetic Dentistry', 'Dental Implants'],
-      bio: 'With over 15 years of experience, Dr. Edwards is committed to providing comprehensive dental care with a gentle touch.',
-    },
-    {
       name: 'Dr. Greg Pedro',
       title: 'DDS, Prosthodontist',
       image: '/images/gregpedro.jpg',
       education: ['Columbia University', 'Prosthodontics Residency', 'Yomi Robotic Surgery Certification'],
-      specialties: ['Prosthodontics', 'TMJ Treatment', 'Yomi Robotic Surgery', 'EMFACE'],
-      bio: 'Staten Island\'s only Yomi-certified surgeon, Dr. Pedro brings cutting-edge technology and expertise to every patient.',
+      specialties: ['Prosthodontics', 'TMJ Treatment', 'Yomi Robotic Surgery', 'EMFACE', 'General Dentistry', 'Cosmetic Dentistry', 'Dental Implants'],
+      bio: 'Staten Island\'s only Yomi-certified surgeon, Dr. Pedro brings cutting-edge technology and expertise to every patient, providing comprehensive dental care with a gentle touch.',
     },
   ];
 
@@ -89,15 +81,15 @@ const AboutPage = () => {
                 mb: 3,
               }}
             >
-              Meet Your Dental Team
+              Meet Dr. Pedro
             </Typography>
             <Typography
               variant="h5"
               align="center"
               sx={{ maxWidth: 800, mx: 'auto', opacity: 0.9 }}
             >
-              Two distinguished doctors, one vision: bringing the most advanced 
-              dental care to Staten Island with compassion and excellence.
+              Bringing the most advanced dental care to Staten Island 
+              with compassion, excellence, and cutting-edge technology.
             </Typography>
           </motion.div>
         </Container>

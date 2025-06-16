@@ -36,7 +36,7 @@ const testimonials = [
     id: 4,
     name: 'Robert Thompson',
     rating: 5,
-    text: 'Both doctors are fantastic! Dr. Edwards handles my regular care and Dr. Pedro did my implants. Perfect team.',
+    text: 'Dr. Pedro is fantastic! He handled both my regular care and my implants with amazing skill and precision.',
     procedure: 'General & Implant Care',
     image: 'RT',
   },

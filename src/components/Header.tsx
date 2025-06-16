@@ -82,7 +82,7 @@ const Header = () => {
             }}
             onClick={() => navigate('/')}
           >
-            Edwards & Pedro Advanced Dental Care
+            Dr. Pedro Advanced Dental Care
           </Typography>
 
           {isMobile ? (
