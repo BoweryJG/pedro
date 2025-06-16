@@ -1,11 +1,13 @@
 [build]
   base = "frontend"
-  command = "npm run build"
+  command = "rm -rf node_modules package-lock.json && npm install --force && npm install @rollup/rollup-linux-x64-gnu --save-optional && npm run build"
   functions = "netlify/functions"
   publish = "dist"
 
 [build.environment]
-  NODE_VERSION = "22"
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--legacy-peer-deps"
+  NETLIFY_USE_PNPM = "false"
 
 [[headers]]
   for = "/*"
