@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: gregpedro-backend
+    env: node
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: PORT=10000 node index.js
+    envVars:
+      - key: SUPABASE_URL
+        value: https://pedrobackend.onrender.com
+      - key: SUPABASE_ANON_KEY
+        generateValue: true
+    autoDeploy: true
+    
+  - type: pserv
+    name: gregpedro-db
+    env: postgres
+    plan: free
+    region: oregon
+    disk:
+      name: data
+      mountPath: /var/lib/postgresql/data
+      sizeGB: 10
+    envVars:
+      - key: POSTGRES_USER
+        value: postgres
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+      - key: POSTGRES_DB
+        value: gregpedro
+    autoDeploy: false
