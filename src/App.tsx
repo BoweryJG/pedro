@@ -9,6 +9,7 @@ import EmfacePage from './pages/EmfacePage';
 import ContactPage from './pages/ContactPage';
 import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import { Chatbot } from './chatbot/components/Chatbot';
+import BackendStatus from './components/BackendStatus';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         </Route>
       </Routes>
       <Chatbot />
+      <BackendStatus />
     </>
   );
 }
