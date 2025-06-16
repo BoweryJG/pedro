@@ -38,18 +38,18 @@ router.get('/webhook', (req, res) => {
   const token = req.query['hub.verify_token'];
   const challenge = req.query['hub.challenge'];
 
-  console.log('🔍 Webhook verification attempt:', { mode, token });
+  console.log('🔍 Webhook verification attempt:', { mode, token, challenge });
 
-  if (mode && token) {
-    if (mode === 'subscribe' && token === process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN) {
-      console.log('✅ Webhook verified successfully');
-      res.status(200).send(challenge);
-    } else {
-      console.error('❌ Webhook verification failed');
-      res.status(403).json({ error: 'Verification failed' });
-    }
+  // Facebook expects these exact parameters
+  if (mode === 'subscribe' && token === (process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN || 'pedro_dental_2025')) {
+    console.log('✅ Webhook verified successfully');
+    // IMPORTANT: Facebook expects ONLY the challenge value, not JSON
+    res.status(200).send(challenge);
   } else {
-    res.status(400).json({ error: 'Missing verification parameters' });
+    console.error('❌ Webhook verification failed');
+    console.error('Expected token:', process.env.FACEBOOK_WEBHOOK_VERIFY_TOKEN || 'pedro_dental_2025');
+    console.error('Received token:', token);
+    res.status(403).send('Verification failed');
   }
 });
 

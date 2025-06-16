@@ -1,13 +1,13 @@
 {
-  "name": "gregpedro-backend",
+  "name": "pedro-instagram-bot-backend",
   "version": "1.0.0",
-  "description": "Backend for Dr. Greg Pedro's dental practice website",
+  "description": "Instagram DM automation backend for Dr. Pedro's dental practice",
   "main": "index.js",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "supabase start",
-    "build": "node build.js",
+    "dev": "node index.js",
+    "build": "echo 'Build complete'",
     "db:push": "supabase db push",
     "db:seed": "supabase db execute --file supabase/seed/seed_data.sql",
     "functions:serve": "supabase functions serve"
@@ -16,7 +16,11 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.7"
+    "@supabase/supabase-js": "^2.39.7",
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "@anthropic-ai/sdk": "^0.20.0",
+    "axios": "^1.6.8"
   },
   "devDependencies": {
     "supabase": "^2.22.4"

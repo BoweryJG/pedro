@@ -1,35 +1,54 @@
-// This file serves as a placeholder entry point for Node.js hosting platforms
-// The actual functionality is handled by Supabase Edge Functions
-const http = require('http');
+import express from 'express';
+import cors from 'cors';
+import instagramWebhookRouter from './src/routes/instagram-webhook.js';
 
-// CRITICAL: Use PORT from environment or default to 10000
-const PORT = process.env.PORT || 10000;
+const app = express();
+const PORT = process.env.PORT || 3001;
 
-console.log(`Starting server with PORT=${PORT}`);
+// Middleware
+app.use(cors());
 
-const server = http.createServer((req, res) => {
-  console.log(`[${new Date().toISOString()}] Received request for ${req.url}`);
-  
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({
+// IMPORTANT: Raw body for webhook signature verification
+app.use('/api/instagram/webhook', express.raw({ type: 'application/json' }));
+
+// Regular JSON parsing for other routes
+app.use(express.json());
+
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({
     status: 'ok',
-    message: 'Dr. Greg Pedro Dental Backend - Powered by Supabase',
+    message: 'Dr. Pedro Instagram DM Automation Backend',
     timestamp: new Date().toISOString(),
-    port: PORT
-  }));
+    endpoints: {
+      webhook: '/api/instagram/webhook',
+      conversations: '/api/instagram/conversations',
+      analytics: '/api/instagram/analytics'
+    }
+  });
 });
 
-// Explicit host binding to ensure Render can access it
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Dr. Greg Pedro Dental Backend - Powered by Supabase`);
-  console.log(`Server running on port ${PORT} and bound to 0.0.0.0`);
-  console.log(`Deployed on Render: https://pedrobackend.onrender.com`);
+// Instagram webhook routes
+app.use('/api/instagram', instagramWebhookRouter);
+
+// Error handling
+app.use((err, req, res, next) => {
+  console.error('Error:', err);
+  res.status(500).json({ error: 'Internal server error' });
 });
 
-// This helps prevent automatic shutdown on some hosts
+// Start server
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Dr. Pedro Instagram DM Automation Backend`);
+  console.log(`📍 Server running on port ${PORT}`);
+  console.log(`🌐 Webhook URL: https://pedrobackend.onrender.com/api/instagram/webhook`);
+  console.log(`✅ Ready to receive Instagram DMs!`);
+});
+
+// Keep-alive for Render
 const keepAlive = () => {
-  console.log(`[${new Date().toISOString()}] Service is still running`);
-  setTimeout(keepAlive, 300000); // Log every 5 minutes
+  console.log(`[${new Date().toISOString()}] Service is active`);
+  setTimeout(keepAlive, 300000); // Every 5 minutes
 };
 
 keepAlive();
