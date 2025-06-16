@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Container,
   Typography,
-  Grid,
   Paper,
   Box,
   Button,
@@ -15,6 +14,7 @@ import {
   Tab,
   List,
   ListItem,
+  ListItemButton,
   ListItemAvatar,
   ListItemText,
   TextField,
@@ -24,7 +24,6 @@ import {
   DialogActions,
   Alert,
   Badge,
-  Divider,
   LinearProgress,
   Switch,
   FormControlLabel,
@@ -37,13 +36,9 @@ import {
   Analytics as AnalyticsIcon,
   Chat,
   SmartToy,
-  Person,
   AccessTime,
-  CheckCircle,
   Warning,
-  TrendingUp,
   Reply,
-  Block,
   Star,
 } from '@mui/icons-material';
 
@@ -218,8 +213,8 @@ const InstagramDashboard: React.FC = () => {
       {loading ? (
         <LinearProgress />
       ) : (
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={5}>
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '0 0 40%' } }}>
             <Paper sx={{ height: '600px', overflow: 'hidden' }}>
               <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
                 <Typography variant="h6">Conversations ({conversations.length})</Typography>
@@ -234,11 +229,12 @@ const InstagramDashboard: React.FC = () => {
                   return (
                     <ListItem
                       key={conversation.id}
-                      button
-                      selected={selectedConversation?.id === conversation.id}
-                      onClick={() => setSelectedConversation(conversation)}
-                      sx={{ borderBottom: '1px solid', borderColor: 'divider' }}
+                      sx={{ borderBottom: '1px solid', borderColor: 'divider', padding: 0 }}
                     >
+                      <ListItemButton
+                        selected={selectedConversation?.id === conversation.id}
+                        onClick={() => setSelectedConversation(conversation)}
+                      >
                       <ListItemAvatar>
                         <Badge
                           badgeContent={hasUnreadAI ? '!' : 0}
@@ -287,14 +283,15 @@ const InstagramDashboard: React.FC = () => {
                           </Box>
                         }
                       />
+                      </ListItemButton>
                     </ListItem>
                   );
                 })}
               </List>
             </Paper>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} md={7}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '0 0 58%' } }}>
             {selectedConversation ? (
               <Paper sx={{ height: '600px', display: 'flex', flexDirection: 'column' }}>
                 <Box sx={{ p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
@@ -371,8 +368,8 @@ const InstagramDashboard: React.FC = () => {
                 </Box>
               </Paper>
             )}
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       )}
     </>
   );
@@ -384,8 +381,8 @@ const InstagramDashboard: React.FC = () => {
       </Typography>
 
       {analytics && (
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={3}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
+          <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 12px)', md: '1 1 calc(25% - 18px)' } }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -401,9 +398,9 @@ const InstagramDashboard: React.FC = () => {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 12px)', md: '1 1 calc(25% - 18px)' } }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -424,9 +421,9 @@ const InstagramDashboard: React.FC = () => {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 12px)', md: '1 1 calc(25% - 18px)' } }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -442,9 +439,9 @@ const InstagramDashboard: React.FC = () => {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 12px)', md: '1 1 calc(25% - 18px)' } }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -460,8 +457,8 @@ const InstagramDashboard: React.FC = () => {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       )}
 
       <Alert severity="info" sx={{ mt: 3 }}>
@@ -477,8 +474,8 @@ const InstagramDashboard: React.FC = () => {
         Instagram DM Settings
       </Typography>
       
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+        <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 50%' } }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -496,9 +493,9 @@ const InstagramDashboard: React.FC = () => {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} md={6}>
+        <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 50%' } }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -514,8 +511,8 @@ const InstagramDashboard: React.FC = () => {
               </Button>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
     </>
   );
 

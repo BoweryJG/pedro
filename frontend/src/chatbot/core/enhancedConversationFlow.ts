@@ -186,7 +186,7 @@ export class EnhancedConversationFlowManager {
         tmj: "TMJ treatment", 
         emface: "EMFACE rejuvenation"
       };
-      response = response.replace('[procedure]', procedureInfo[context.procedure]);
+      response = response.replace('[procedure]', procedureInfo[context.procedure as keyof typeof procedureInfo]);
     }
     
     return response;
@@ -246,7 +246,7 @@ export class EnhancedConversationFlowManager {
   
   shouldTransitionStage(): boolean {
     const messagesSinceStageChange = this.state.messages.filter(
-      m => m.timestamp > (this.state.lastStageChange || 0)
+      m => m.timestamp.getTime() > (this.state.lastStageChange || 0)
     ).length;
     
     return messagesSinceStageChange >= 2;

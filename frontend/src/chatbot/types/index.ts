@@ -25,6 +25,7 @@ export interface ConversationState {
   userProfile: UserProfile;
   procedureInterest: ProcedureInterest;
   bookingIntent: number; // 0-100 score
+  lastStageChange?: number; // timestamp
 }
 
 export interface UserProfile {
