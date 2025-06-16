@@ -1,0 +1,48 @@
+{
+  "agency": {
+    "name": "Bowery Creative Agency",
+    "owner": "Jason",
+    "email": "jason@bowerycreative.com",
+    "facebook_app_id": "959139930338809"
+  },
+  "clients": {
+    "pedro": {
+      "name": "Dr. Pedro",
+      "practice_name": "Dr. Pedro Advanced Dental Care",
+      "deployment_url": "https://pedrobackend.onrender.com",
+      "instagram_username": "@drpedrodental",
+      "facebook_page_name": "Dr. Pedro Dental - Managed by Bowery Creative",
+      "status": "active",
+      "billing": {
+        "monthly_fee": 997,
+        "start_date": "2025-06-16",
+        "billing_cycle": "monthly"
+      },
+      "features": {
+        "instagram_dm_automation": true,
+        "appointment_booking": true,
+        "ai_responses": true,
+        "analytics_dashboard": true
+      }
+    },
+    "template": {
+      "name": "Dr. [Name]",
+      "practice_name": "[Practice Name]",
+      "deployment_url": "https://[identifier]backend.onrender.com",
+      "instagram_username": "@[username]",
+      "facebook_page_name": "[Practice] - Managed by Bowery Creative",
+      "status": "pending",
+      "billing": {
+        "monthly_fee": 997,
+        "start_date": "[DATE]",
+        "billing_cycle": "monthly"
+      },
+      "features": {
+        "instagram_dm_automation": true,
+        "appointment_booking": true,
+        "ai_responses": true,
+        "analytics_dashboard": true
+      }
+    }
+  }
+}
