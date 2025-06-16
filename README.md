@@ -149,7 +149,7 @@ SmileLab is an embedded AI-powered smile visualization tool that allows patients
 
 ```bash
 # Clone the repository
-git clone https://github.com/BoweryJG/edwards.git
+git clone https://github.com/BoweryJG/pedro.git
 
 # Install dependencies
 npm install
