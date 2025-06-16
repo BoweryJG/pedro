@@ -19,8 +19,11 @@ import SpeedIcon from '@mui/icons-material/Speed';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const YomiPage = () => {
+  usePageTitle('Yomi Robotic Surgery');
+  
   const navigate = useNavigate();
   const [heroRef, heroInView] = useInView({ triggerOnce: true });
   const [benefitsRef, benefitsInView] = useInView({ triggerOnce: true });

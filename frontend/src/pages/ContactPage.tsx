@@ -22,8 +22,11 @@ import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const ContactPage = () => {
+  usePageTitle('Contact Us');
+  
   const [formRef, formInView] = useInView({ triggerOnce: true });
   const [formData, setFormData] = useState({
     name: '',

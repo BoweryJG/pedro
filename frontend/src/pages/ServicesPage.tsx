@@ -19,6 +19,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -45,6 +46,8 @@ function TabPanel(props: TabPanelProps) {
 }
 
 const ServicesPage = () => {
+  usePageTitle('Our Services');
+  
   const navigate = useNavigate();
   const [tabValue, setTabValue] = useState(0);
 

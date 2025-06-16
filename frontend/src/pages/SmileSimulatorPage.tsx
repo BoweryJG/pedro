@@ -6,8 +6,11 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import TimerIcon from '@mui/icons-material/Timer';
 import SecurityIcon from '@mui/icons-material/Security';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const SmileSimulatorPage = () => {
+  usePageTitle('Smile Simulator');
+  
   const navigate = useNavigate();
 
   const features = [

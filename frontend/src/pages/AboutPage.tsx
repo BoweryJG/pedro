@@ -15,8 +15,11 @@ import SchoolIcon from '@mui/icons-material/School';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import GroupsIcon from '@mui/icons-material/Groups';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const AboutPage = () => {
+  usePageTitle('About Dr. Pedro');
+  
   const [heroRef, heroInView] = useInView({ triggerOnce: true });
   const [doctorsRef, doctorsInView] = useInView({ triggerOnce: true });
   const [valuesRef, valuesInView] = useInView({ triggerOnce: true });

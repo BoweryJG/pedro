@@ -20,8 +20,11 @@ import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 import SelfImprovementIcon from '@mui/icons-material/SelfImprovement';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const TMJPage = () => {
+  usePageTitle('TMJ Treatment');
+  
   const navigate = useNavigate();
   const [heroRef, heroInView] = useInView({ triggerOnce: true });
   const [symptomsRef, symptomsInView] = useInView({ triggerOnce: true });

@@ -1,28 +1,69 @@
-# Dr. Pedro Advanced Dental Care - Instagram DM Automation System
+# Dr. Greg Pedro - Staten Island Advanced Dentistry
 
-## 🚀 Overview
+## 🦷 Overview
 
-This is a comprehensive Instagram DM automation system built specifically for Dr. Pedro's dental practice. It features Claude AI integration for intelligent patient responses, automated appointment booking, and a complete practice management dashboard.
+A comprehensive digital platform for Dr. Greg Pedro's dental practice, featuring AI-powered patient engagement, automated appointment booking, Instagram DM automation, and advanced practice management integration.
 
-## 🎯 Key Features
+### 🌟 Key Features
 
-### AI-Powered Instagram DM Management
+- **AI-Powered Chat Assistant** - 24/7 patient support with Sophie, our intelligent dental assistant
+- **Instagram DM Automation** - Automated responses and appointment booking through Instagram
+- **Yomi Robotic Surgery** - Showcasing Staten Island's only Yomi-certified practice
+- **Insurance & Financing** - Real-time verification and instant approval
+- **Smart Appointment Booking** - Integrated scheduling with practice management system
+
+## 📞 Contact Information
+
+### Primary Contact
+- **Phone**: (929) 242-4535
+- **Email**: drpedro@gregpedromd.com
+- **Address**: 123 Advanced Dental Plaza, Staten Island, NY 10301
+
+### Department Email Addresses
+All department emails forward to drpedro@gregpedromd.com:
+
+- **General Info**: info@gregpedromd.com
+- **Appointments**: appointments@gregpedromd.com
+- **Billing**: billing@gregpedromd.com
+- **Insurance**: insurance@gregpedromd.com
+- **Referrals**: referrals@gregpedromd.com
+- **Emergencies**: emergencies@gregpedromd.com
+- **Marketing**: marketing@gregpedromd.com
+- **Support**: support@gregpedromd.com
+- **New Patients**: newpatients@gregpedromd.com
+- **Feedback**: feedback@gregpedromd.com
+
+### Business Hours
+- **Monday-Friday**: 9:00 AM - 6:00 PM
+- **Saturday**: 9:00 AM - 2:00 PM
+- **Sunday**: Closed
+
+## 🎯 Features in Detail
+
+### 1. AI-Powered Instagram DM Management
 - **Claude AI Integration**: Medical-specific responses trained for dental practice
 - **24/7 Automated Responses**: Instant replies to patient inquiries
 - **Appointment Booking**: Intelligent extraction of booking requests from DMs
 - **Sentiment Analysis**: Monitor patient satisfaction in real-time
 - **Human Oversight**: Flag complex cases for manual review
 
-### Practice Dashboard
+### 2. Web Chat Assistant (Sophie)
+- **24/7 Availability**: Always-on patient support
+- **GPT-4 Powered**: Latest AI technology for natural conversations
+- **Socratic Method**: Guides patients to the right treatment decisions
+- **Multi-stage Flow**: From greeting to booking in 5 optimized stages
+- **Quick Responses**: Pre-configured options for faster interaction
+
+### 3. Practice Dashboard
 - **Real-time Conversation Management**: View and respond to all Instagram DMs
 - **Analytics Dashboard**: Track message volume, response times, and patient satisfaction
 - **Appointment Requests**: Manage booking requests from Instagram conversations
 - **AI Confidence Monitoring**: Review and improve automated responses
 
-### Technical Architecture
+### 4. Technical Architecture
 - **Frontend**: React + TypeScript + Material-UI
 - **Backend**: Node.js + Express + Supabase
-- **AI**: Claude 3.5 Sonnet (Anthropic)
+- **AI**: Claude 3.5 Sonnet (Instagram) + GPT-4 (Web Chat)
 - **Integration**: Facebook Graph API + Instagram Basic Display API
 - **Database**: PostgreSQL with Row Level Security
 
@@ -204,5 +245,6 @@ Private repository for Dr. Pedro Advanced Dental Care. All rights reserved.
 
 ---
 
-**Built with ❤️ for Dr. Pedro's Practice**
-*Revolutionizing dental patient communication through AI automation*
+**Staten Island Advanced Dentistry** - *Where Technology Meets Compassionate Care*
+
+For technical support: support@gregpedromd.com or call (929) 242-4535

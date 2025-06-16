@@ -30,8 +30,11 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SparklesIcon from '@mui/icons-material/AutoAwesome';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const EmfacePage = () => {
+  usePageTitle('EMFACE Treatment');
+  
   const navigate = useNavigate();
   const [heroRef, heroInView] = useInView({ triggerOnce: true });
   const [benefitsRef, benefitsInView] = useInView({ triggerOnce: true });
