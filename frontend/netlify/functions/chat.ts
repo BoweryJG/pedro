@@ -1,18 +1,10 @@
 import { Handler } from '@netlify/functions';
 
 // OpenRouter configuration
-const OPENROUTER_API_KEY = process.env.VITE_OPENROUTER_API_KEY || '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';
+const OPENROUTER_API_KEY = process.env.VITE_OPENROUTER_API_KEY;
 const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 export const handler: Handler = async (event) => {
-  // Only allow POST requests
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method not allowed' }),
-    };
-  }
-
   // Add CORS headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -26,6 +18,15 @@ export const handler: Handler = async (event) => {
       statusCode: 200,
       headers,
       body: '',
+    };
+  }
+
+  // Only allow POST requests
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      headers,
+      body: JSON.stringify({ error: 'Method not allowed' }),
     };
   }
 
