@@ -225,7 +225,6 @@ const AboutFaceChatbot: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
-  const [showQuickActions, setShowQuickActions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -264,7 +263,6 @@ const AboutFaceChatbot: React.FC = () => {
     setTimeout(() => {
       setIsTyping(false);
       addMessage(text, false, quickActions);
-      setShowQuickActions(!!quickActions?.length);
     }, 1500);
   };
 
@@ -444,7 +442,6 @@ const AboutFaceChatbot: React.FC = () => {
     if (inputValue.trim()) {
       addMessage(inputValue, true);
       setInputValue('');
-      setShowQuickActions(false);
       
       // Simple bot response based on input
       setTimeout(() => {
@@ -461,7 +458,7 @@ const AboutFaceChatbot: React.FC = () => {
               id: 'more-questions',
               label: 'Ask Another Question',
               icon: <AutoAwesomeIcon />,
-              action: () => setShowQuickActions(true)
+              action: () => {}
             }
           ]
         );
