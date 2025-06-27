@@ -16,7 +16,7 @@ import {
   Dialog,
   DialogContent
 } from '@mui/material'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { 
   AutoAwesome, 
   Visibility,
@@ -88,7 +88,7 @@ const FacialGallery: React.FC = () => {
         <TabPanel value={tabValue} index={0}>
           <Grid container spacing={4}>
             {beforeAfter.map((item, index) => (
-              <Grid size={{ xs: 12, md: 4 }} key={item.id}>
+              <Grid xs={12} md={4} key={item.id}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -106,7 +106,7 @@ const FacialGallery: React.FC = () => {
                   >
                     <Box sx={{ position: 'relative' }}>
                       <Grid container>
-                        <Grid size={{ xs: 6 }}>
+                        <Grid xs={6}>
                           <Box sx={{ position: 'relative' }}>
                             <Box
                               component="img"
@@ -133,7 +133,7 @@ const FacialGallery: React.FC = () => {
                             />
                           </Box>
                         </Grid>
-                        <Grid size={{ xs: 6 }}>
+                        <Grid xs={6}>
                           <Box sx={{ position: 'relative' }}>
                             <Box
                               component="img"
@@ -208,7 +208,7 @@ const FacialGallery: React.FC = () => {
         <TabPanel value={tabValue} index={1}>
           <Grid container spacing={4}>
             {testimonials.map((testimonial, index) => (
-              <Grid size={{ xs: 12, md: 4 }} key={testimonial.id}>
+              <Grid xs={12} md={4} key={testimonial.id}>
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}

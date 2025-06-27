@@ -1,4 +1,3 @@
-import React from 'react'
 import { Container } from '@mui/material'
 import AboutFaceHero from './components/AboutFaceHero'
 import FacialTreatmentWizard from './components/FacialTreatmentWizard'

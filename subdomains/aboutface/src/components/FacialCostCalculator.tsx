@@ -19,7 +19,6 @@ import { motion } from 'framer-motion'
 import { 
   AttachMoney, 
   Calculate,
-  ExpandMore,
   CreditCard,
   Schedule,
   Savings
@@ -80,10 +79,6 @@ const FacialCostCalculator: React.FC = () => {
     setShowFinancing(totalAmount >= 500)
   }, [totalAmount, financingTerm])
 
-  const getSavingsForPackage = (packageId: string) => {
-    const pkg = facialPackages.find(p => p.id === packageId)
-    return pkg ? pkg.savings : 0
-  }
 
   return (
     <Box sx={{ py: 8, background: 'linear-gradient(135deg, #FEFEFE 0%, #F9F7F4 100%)' }}>
@@ -99,7 +94,7 @@ const FacialCostCalculator: React.FC = () => {
 
         <Grid container spacing={6}>
           {/* Treatment Selection */}
-          <Grid size={{ xs: 12, lg: 6 }}>
+          <Grid xs={12} lg={6}>
             <Card sx={{ p: 3, height: '100%' }}>
               <Typography variant="h5" gutterBottom>
                 <Calculate /> Select Your Treatments
@@ -195,7 +190,7 @@ const FacialCostCalculator: React.FC = () => {
           </Grid>
 
           {/* Cost Summary & Financing */}
-          <Grid size={{ xs: 12, lg: 6 }}>
+          <Grid xs={12} lg={6}>
             <Stack spacing={3}>
               {/* Total Cost */}
               <Card sx={{ p: 4 }}>

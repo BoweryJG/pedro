@@ -31,7 +31,7 @@ const AboutFaceHero: React.FC = () => {
       <Container maxWidth="xl">
         <Grid container spacing={6} alignItems="center">
           {/* Left Content */}
-          <Grid size={{ xs: 12, lg: 6 }}>
+          <Grid xs={12} lg={6}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -99,7 +99,7 @@ const AboutFaceHero: React.FC = () => {
 
               {/* Trust Indicators */}
               <Grid container spacing={3}>
-                <Grid size={{ xs: 4 }}>
+                <Grid xs={4}>
                   <Box textAlign="center">
                     <Typography variant="h4" color="primary" fontWeight="bold">
                       15+
@@ -109,7 +109,7 @@ const AboutFaceHero: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid size={{ xs: 4 }}>
+                <Grid xs={4}>
                   <Box textAlign="center">
                     <Typography variant="h4" color="primary" fontWeight="bold">
                       5,000+
@@ -119,7 +119,7 @@ const AboutFaceHero: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid size={{ xs: 4 }}>
+                <Grid xs={4}>
                   <Box textAlign="center">
                     <Typography variant="h4" color="primary" fontWeight="bold">
                       4.9★
@@ -134,7 +134,7 @@ const AboutFaceHero: React.FC = () => {
           </Grid>
 
           {/* Right Content - Doctor Card & Images */}
-          <Grid size={{ xs: 12, lg: 6 }}>
+          <Grid xs={12} lg={6}>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -142,7 +142,7 @@ const AboutFaceHero: React.FC = () => {
             >
               <Grid container spacing={3}>
                 {/* Doctor Card */}
-                <Grid size={{ xs: 12 }}>
+                <Grid xs={12}>
                   <Card
                     elevation={0}
                     sx={{
@@ -182,10 +182,10 @@ const AboutFaceHero: React.FC = () => {
                 </Grid>
 
                 {/* Treatment Gallery Preview */}
-                <Grid size={{ xs: 12 }}>
+                <Grid xs={12}>
                   <Grid container spacing={2}>
                     {hero.images.map((image, index) => (
-                      <Grid size={{ xs: 4 }} key={index}>
+                      <Grid xs={4} key={index}>
                         <motion.div
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.3 }}
