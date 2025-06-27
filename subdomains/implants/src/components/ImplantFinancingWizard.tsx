@@ -4,7 +4,7 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
+  Grid2 as Grid,
   Card,
   CardContent,
   TextField,
@@ -148,7 +148,7 @@ const ImplantFinancingWizard: React.FC = () => {
       case 0:
         return (
           <Grid container spacing={3}>
-            <Grid item={true}="true" xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="First Name"
@@ -156,7 +156,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 onChange={(e) => updateFinancingData('personalInfo', 'firstName', e.target.value)}
               />
             </Grid>
-            <Grid item={true}="true" xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Last Name"
@@ -164,7 +164,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 onChange={(e) => updateFinancingData('personalInfo', 'lastName', e.target.value)}
               />
             </Grid>
-            <Grid item={true}="true" xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Email"
@@ -173,7 +173,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 onChange={(e) => updateFinancingData('personalInfo', 'email', e.target.value)}
               />
             </Grid>
-            <Grid item={true}="true" xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Phone"
@@ -181,7 +181,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 onChange={(e) => updateFinancingData('personalInfo', 'phone', e.target.value)}
               />
             </Grid>
-            <Grid item={true}="true" xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <TextField
                 fullWidth
                 label="Date of Birth"
@@ -197,7 +197,7 @@ const ImplantFinancingWizard: React.FC = () => {
       case 1:
         return (
           <Grid container spacing={3}>
-            <Grid item={true}="true" xs={12}>
+            <Grid xs={12}>
               <Typography variant="h6" gutterBottom>
                 Annual Income: ${financingData.financialInfo.income.toLocaleString()}
               </Typography>
@@ -214,7 +214,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 ]}
               />
             </Grid>
-            <Grid item={true}="true" xs={12}>
+            <Grid xs={12}>
               <Typography variant="h6" gutterBottom>
                 Estimated Credit Score: {financingData.financialInfo.creditScore}
               </Typography>
@@ -233,7 +233,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 ]}
               />
             </Grid>
-            <Grid item={true}="true" xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <FormControl fullWidth>
                 <InputLabel>Employment Status</InputLabel>
                 <Select
@@ -248,7 +248,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item={true}="true" xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <FormControl component="fieldset">
                 <Typography variant="subtitle1" gutterBottom>
                   Do you have dental insurance?
@@ -268,7 +268,7 @@ const ImplantFinancingWizard: React.FC = () => {
       case 2:
         return (
           <Grid container spacing={3}>
-            <Grid item={true}="true" xs={12}>
+            <Grid xs={12}>
               <FormControl component="fieldset">
                 <Typography variant="h6" gutterBottom>
                   What type of implant treatment do you need?
@@ -295,13 +295,13 @@ const ImplantFinancingWizard: React.FC = () => {
                 </RadioGroup>
               </FormControl>
             </Grid>
-            <Grid item={true}="true" xs={12}>
+            <Grid xs={12}>
               <Typography variant="h6" gutterBottom>
                 Preferred Financing Provider
               </Typography>
               <Grid container spacing={2}>
                 {financingProviders.map((provider) => (
-                  <Grid item={true}="true" xs={12} sm={6} key={provider.name}>
+                  <Grid xs={12} sm={6} key={provider.name}>
                     <Card
                       sx={{
                         cursor: 'pointer',
@@ -345,7 +345,7 @@ const ImplantFinancingWizard: React.FC = () => {
                   with {qualificationResults.provider}
                 </Alert>
                 <Grid container spacing={2} sx={{ mb: 3 }}>
-                  <Grid item={true}="true" xs={6}>
+                  <Grid xs={6}>
                     <Card>
                       <CardContent>
                         <AttachMoney sx={{ fontSize: '2rem', color: 'primary.main' }} />
@@ -356,7 +356,7 @@ const ImplantFinancingWizard: React.FC = () => {
                       </CardContent>
                     </Card>
                   </Grid>
-                  <Grid item={true}="true" xs={6}>
+                  <Grid xs={6}>
                     <Card>
                       <CardContent>
                         <TrendingUp sx={{ fontSize: '2rem', color: 'primary.main' }} />
