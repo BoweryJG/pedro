@@ -1,0 +1,153 @@
+{
+  "hero": {
+    "title": "Dental Implants Specialist",
+    "subtitle": "Dr. Greg Pedro - Precise, Pain-free Dental Implants in a Day",
+    "description": "Comprehensive dental implant solutions to restore missing teeth, improve oral function, and enhance the natural beauty of your smile with financing options available.",
+    "statistics": [
+      {
+        "number": "25+",
+        "label": "Years of Implant Experience"
+      },
+      {
+        "number": "98%",
+        "label": "Implant Success Rate"
+      },
+      {
+        "number": "2000+",
+        "label": "Successful Implants Placed"
+      }
+    ],
+    "primaryButton": {
+      "text": "Schedule Free Consultation",
+      "action": "book_consultation"
+    },
+    "secondaryButton": {
+      "text": "Call (718) 948-0870",
+      "action": "phone_call"
+    }
+  },
+  "doctor": {
+    "name": "Dr. Gregory Pedro, DMD",
+    "title": "Board-Certified Prosthodontist & Implant Specialist",
+    "credentials": [
+      "Temple University School of Dentistry - DMD",
+      "ADA Certified Prosthodontist",
+      "Dental Implant Certification",
+      "Computer-Guided Implant Surgery Certified",
+      "Staten Island Hall of Fame Inductee"
+    ],
+    "experience": "Over 25 years of experience in dental implant placement with extensive training in prosthetic restoration and full mouth reconstruction",
+    "expertise": [
+      "Single Tooth Dental Implants",
+      "Full Mouth Reconstruction",
+      "Implant-Supported Dentures",
+      "Computer-Guided Implant Surgery",
+      "Zirconia Restored Implants",
+      "Bone Grafting and Sinus Lifts"
+    ]
+  },
+  "services": [
+    {
+      "name": "Single Tooth Dental Implants",
+      "description": "Replace individual missing teeth with permanent, natural-looking implants that function like your natural teeth.",
+      "benefits": [
+        "Preserves adjacent teeth",
+        "Prevents bone loss",
+        "Natural appearance and function",
+        "Lifetime solution with proper care"
+      ],
+      "duration": "1-2 visits",
+      "price_range": {
+        "min": 3500,
+        "max": 5500
+      }
+    },
+    {
+      "name": "Full Mouth Reconstruction",
+      "description": "Complete restoration of all teeth using dental implants for patients with extensive tooth loss or damage.",
+      "benefits": [
+        "Restored chewing function",
+        "Improved facial support",
+        "Enhanced confidence",
+        "Permanent solution"
+      ],
+      "duration": "3-6 months",
+      "price_range": {
+        "min": 25000,
+        "max": 45000
+      }
+    },
+    {
+      "name": "Implant Overdentures",
+      "description": "Secure dentures anchored by dental implants for superior comfort and stability.",
+      "benefits": [
+        "No slipping or sliding",
+        "Improved chewing ability",
+        "Better speech",
+        "Increased confidence"
+      ],
+      "duration": "2-4 months",
+      "price_range": {
+        "min": 15000,
+        "max": 25000
+      }
+    },
+    {
+      "name": "Computer-Guided Implant Surgery",
+      "description": "Precision implant placement using advanced 3D imaging and surgical guides for optimal results.",
+      "benefits": [
+        "Minimally invasive",
+        "Precise placement",
+        "Faster healing",
+        "Predictable results"
+      ],
+      "duration": "1-2 visits",
+      "price_range": {
+        "min": 4000,
+        "max": 6000
+      }
+    }
+  ],
+  "financing": {
+    "providers": ["Cherry", "Sunbit", "CareCredit"],
+    "options": [
+      "0% APR for 12 months",
+      "Low monthly payments",
+      "Quick approval process",
+      "Flexible payment terms"
+    ],
+    "qualification": {
+      "soft_credit_check": true,
+      "instant_approval": true,
+      "no_prepayment_penalty": true
+    }
+  },
+  "testimonials": [
+    {
+      "text": "Dr.Pedro did an extraction of my tooth followed by a dental bone graft. He explained me the process of getting a dental implant The procedures were painless.I had no problem with the healing process.I highly recommend Dr.Pedro.He is an excellent doctor, great manners and very friendly. The office is beautiful and the staff is very welcoming.",
+      "author": "Maria S.",
+      "rating": 5,
+      "procedure": "Single Tooth Implant"
+    },
+    {
+      "text": "A dental specialist that is a combination of: professionalism, detail oriented, honest & caring is a rare find these days! Dr. G. Pedro placed 4 implants for me well over 15 years ago. I moved out of town & subsequently had 2 more implants placed by another prosthodontist. One of the 2 recent implants failed. I came back to Dr. Pedro to save the day by rectifying the situation. The original titanium implants of 15 years have not given me any problems.",
+      "author": "Robert M.",
+      "rating": 5,
+      "procedure": "Multiple Implants"
+    }
+  ],
+  "contact": {
+    "phone": "(718) 948-0870",
+    "email": "hello@statenislandimplantdr.com",
+    "address": "Staten Island, NY",
+    "hours": {
+      "monday": "9:00 AM - 6:00 PM",
+      "tuesday": "9:00 AM - 6:00 PM",
+      "wednesday": "9:00 AM - 6:00 PM",
+      "thursday": "9:00 AM - 6:00 PM",
+      "friday": "9:00 AM - 5:00 PM",
+      "saturday": "By Appointment",
+      "sunday": "Closed"
+    }
+  }
+}

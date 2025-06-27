@@ -1,9 +1,8 @@
 import { Handler } from '@netlify/functions';
-import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.VITE_OPENAI_API_KEY,
-});
+// OpenRouter configuration
+const OPENROUTER_API_KEY = process.env.VITE_OPENROUTER_API_KEY || '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';
+const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 export const handler: Handler = async (event) => {
   // Only allow POST requests
@@ -47,13 +46,28 @@ export const handler: Handler = async (event) => {
       ...messages,
     ];
 
-    // Call OpenAI API
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview',
-      messages: openAIMessages,
-      temperature: 0.7,
-      max_tokens: 500,
+    // Call OpenRouter API
+    const response = await fetch(`${OPENROUTER_BASE_URL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://drpedro.com',
+        'X-Title': 'Dr. Pedro Dental Practice'
+      },
+      body: JSON.stringify({
+        model: 'openai/gpt-4',
+        messages: openAIMessages,
+        temperature: 0.7,
+        max_tokens: 500,
+      })
     });
+
+    if (!response.ok) {
+      throw new Error(`OpenRouter API error: ${response.status} ${response.statusText}`);
+    }
+
+    const completion = await response.json();
 
     const responseContent = completion.choices[0]?.message?.content || 
       "I apologize, I'm having trouble responding right now. How can I help you learn about our dental services?";
@@ -67,7 +81,7 @@ export const handler: Handler = async (event) => {
       }),
     };
   } catch (error) {
-    console.error('OpenAI API Error:', error);
+    console.error('OpenRouter API Error:', error);
     
     return {
       statusCode: 500,

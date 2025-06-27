@@ -36,5 +36,8 @@
     "url": "git+https://github.com/BoweryJG/pedro.git"
   },
   "author": "Dr. Pedro Dental Practice",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "puppeteer": "^24.11.0"
+  }
 }
