@@ -43,7 +43,9 @@ deploy_subdomain() {
     
     # Deploy to Netlify
     echo "   🌐 Deploying $subdomain to Netlify..."
-    netlify deploy --prod --dir=dist
+    
+    # Create or deploy to the site
+    netlify deploy --prod --dir=dist --site="dr-pedro-$subdomain" --create-site || netlify deploy --prod --dir=dist
     
     if [ $? -eq 0 ]; then
         echo "   ✅ $subdomain deployed successfully!"
