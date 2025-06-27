@@ -54,56 +54,64 @@
       "name": "Jaw Pain & Clicking",
       "description": "Persistent pain in jaw joints with audible clicking or popping sounds during movement",
       "severity": "high",
-      "frequency": "Most common TMJ symptom"
+      "frequency": "Most common TMJ symptom",
+      "impact": "High impact on daily activities"
     },
     {
       "id": 2,
       "name": "Chronic Headaches",
       "description": "Recurring headaches often mistaken for migraines, caused by jaw muscle tension",
       "severity": "high",
-      "frequency": "90% of TMJ patients"
+      "frequency": "90% of TMJ patients",
+      "impact": "High impact on work and daily life"
     },
     {
       "id": 3,
       "name": "Facial Pain",
       "description": "Radiating pain throughout face, cheeks, and around the ears",
       "severity": "medium",
-      "frequency": "80% of cases"
+      "frequency": "80% of cases",
+      "impact": "Moderate impact on social activities"
     },
     {
       "id": 4,
       "name": "Neck & Shoulder Tension",
       "description": "Muscle stiffness and pain extending from jaw to neck and shoulders",
       "severity": "medium",
-      "frequency": "75% of patients"
+      "frequency": "75% of patients",
+      "impact": "Affects posture and movement"
     },
     {
       "id": 5,
       "name": "Limited Jaw Movement",
       "description": "Difficulty opening mouth fully or jaw locking in open/closed position",
       "severity": "high",
-      "frequency": "65% of cases"
+      "frequency": "65% of cases",
+      "impact": "Significantly affects eating and speaking"
     },
     {
       "id": 6,
       "name": "Teeth Grinding (Bruxism)",
       "description": "Unconscious grinding or clenching of teeth, especially during sleep",
       "severity": "medium",
-      "frequency": "70% of TMJ patients"
+      "frequency": "70% of TMJ patients",
+      "impact": "Causes tooth damage and sleep disruption"
     },
     {
       "id": 7,
       "name": "Ear Problems",
       "description": "Ear pain, ringing (tinnitus), or feeling of fullness in ears",
       "severity": "medium",
-      "frequency": "60% of patients"
+      "frequency": "60% of patients",
+      "impact": "Affects hearing and concentration"
     },
     {
       "id": 8,
       "name": "Sleep Disturbances",
       "description": "Poor sleep quality due to pain and unconscious jaw clenching",
       "severity": "high",
-      "frequency": "85% of severe cases"
+      "frequency": "85% of severe cases",
+      "impact": "Severely impacts overall health and energy"
     }
   ],
   "treatments": [
@@ -119,7 +127,8 @@
         "Minimal downtime"
       ],
       "effectiveness": "95% success rate",
-      "duration": "3-6 months per treatment"
+      "duration": "3-6 months per treatment",
+      "candidacy": "Ideal for muscle-related TMJ pain and bruxism"
     },
     {
       "id": 2,
@@ -133,7 +142,8 @@
         "Accelerated recovery"
       ],
       "effectiveness": "90% improvement",
-      "duration": "Series of treatments"
+      "duration": "Series of treatments",
+      "candidacy": "Patients with inflammation and tissue damage"
     },
     {
       "id": 3,
@@ -147,7 +157,8 @@
         "No side effects"
       ],
       "effectiveness": "85% pain reduction",
-      "duration": "4-6 sessions"
+      "duration": "4-6 sessions",
+      "candidacy": "Excellent for chronic TMJ pain and stiffness"
     },
     {
       "id": 4,
@@ -161,7 +172,8 @@
         "Progress monitoring"
       ],
       "effectiveness": "99% diagnostic accuracy",
-      "duration": "Single assessment"
+      "duration": "Single assessment",
+      "candidacy": "Essential for all TMJ patients"
     },
     {
       "id": 5,
@@ -175,7 +187,8 @@
         "Comfortable wear"
       ],
       "effectiveness": "80% improvement",
-      "duration": "Ongoing use"
+      "duration": "Ongoing use",
+      "candidacy": "Ideal for bite-related TMJ and bruxism"
     },
     {
       "id": 6,
@@ -189,61 +202,64 @@
         "No recovery time"
       ],
       "effectiveness": "88% pain relief",
-      "duration": "Multiple sessions"
+      "duration": "Multiple sessions",
+      "candidacy": "Good for acute pain and inflammation"
     }
   ],
-  "treatmentTimeline": {
-    "phases": [
-      {
-        "phase": 1,
-        "title": "Comprehensive Evaluation",
-        "duration": "1-2 weeks",
-        "steps": [
-          "Complete medical and dental history review",
-          "Digital TMJ imaging and analysis",
-          "Bite assessment and jaw movement evaluation",
-          "Pain level and symptom documentation",
-          "Custom treatment plan development"
-        ]
-      },
-      {
-        "phase": 2,
-        "title": "Immediate Pain Relief",
-        "duration": "1-4 weeks",
-        "steps": [
-          "BOTOX injections for muscle relaxation",
-          "Anti-inflammatory medications",
-          "Trigger point therapy",
-          "Initial appliance fitting if needed",
-          "Patient education and home care instructions"
-        ]
-      },
-      {
-        "phase": 3,
-        "title": "Active Treatment",
-        "duration": "2-6 months",
-        "steps": [
-          "Regular BOTOX maintenance treatments",
-          "Electrophoresis serum therapy sessions",
-          "Acoustic shockwave therapy",
-          "Custom appliance adjustments",
-          "Progress monitoring and plan modifications"
-        ]
-      },
-      {
-        "phase": 4,
-        "title": "Long-term Management",
-        "duration": "Ongoing",
-        "steps": [
-          "Maintenance BOTOX treatments",
-          "Regular check-ups and monitoring",
-          "Appliance maintenance and adjustments",
-          "Lifestyle modification guidance",
-          "Prevention strategies implementation"
-        ]
-      }
-    ]
-  },
+  "treatmentTimeline": [
+    {
+      "phase": "1",
+      "title": "Comprehensive Evaluation",
+      "description": "Thorough assessment to identify the root cause of your TMJ symptoms",
+      "duration": "1-2 weeks",
+      "steps": [
+        "Complete medical and dental history review",
+        "Digital TMJ imaging and analysis",
+        "Bite assessment and jaw movement evaluation",
+        "Pain level and symptom documentation",
+        "Custom treatment plan development"
+      ]
+    },
+    {
+      "phase": "2",
+      "title": "Immediate Pain Relief",
+      "description": "Quick relief strategies to reduce pain and discomfort",
+      "duration": "1-4 weeks",
+      "steps": [
+        "BOTOX injections for muscle relaxation",
+        "Anti-inflammatory medications",
+        "Trigger point therapy",
+        "Initial appliance fitting if needed",
+        "Patient education and home care instructions"
+      ]
+    },
+    {
+      "phase": "3",
+      "title": "Active Treatment",
+      "description": "Comprehensive treatment plan implementation for lasting results",
+      "duration": "2-6 months",
+      "steps": [
+        "Regular BOTOX maintenance treatments",
+        "Electrophoresis serum therapy sessions",
+        "Acoustic shockwave therapy",
+        "Custom appliance adjustments",
+        "Progress monitoring and plan modifications"
+      ]
+    },
+    {
+      "phase": "4",
+      "title": "Long-term Management",
+      "description": "Ongoing care to maintain results and prevent recurrence",
+      "duration": "Ongoing",
+      "steps": [
+        "Maintenance BOTOX treatments",
+        "Regular check-ups and monitoring",
+        "Appliance maintenance and adjustments",
+        "Lifestyle modification guidance",
+        "Prevention strategies implementation"
+      ]
+    }
+  ],
   "whyChoose": [
     {
       "title": "Specialized TMJ Expertise",
@@ -326,15 +342,10 @@
     "phone": "(718) 356-9700",
     "address": "2656 Hylan Boulevard, Suite #23, Staten Island, NY 10306",
     "hours": {
-      "monday": "10:00 AM - 7:00 PM",
-      "tuesday": "10:00 AM - 7:00 PM", 
-      "wednesday": "10:00 AM - 7:00 PM",
-      "thursday": "10:00 AM - 7:00 PM",
-      "friday": "10:00 AM - 7:00 PM",
+      "weekdays": "10:00 AM - 7:00 PM",
       "saturday": "9:00 AM - 5:00 PM",
       "sunday": "9:00 AM - 5:00 PM"
     },
-    "emergency": "Available for TMJ emergencies",
     "email": "aboutfacedds@gmail.com"
   },
   "seo": {

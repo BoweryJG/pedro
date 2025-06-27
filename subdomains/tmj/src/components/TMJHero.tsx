@@ -4,7 +4,6 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   Chip,
@@ -80,8 +79,15 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
       />
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={7}>
+        <Box 
+          sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: 'center',
+            gap: 4 
+          }}
+        >
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 58.33%' } }}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -126,40 +132,46 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
               </Typography>
 
               {/* Statistics */}
-              <Grid container spacing={2} sx={{ mb: 4 }}>
+              <Box 
+                sx={{ 
+                  display: 'grid',
+                  gridTemplateColumns: { xs: 'repeat(2, 1fr)', sm: 'repeat(4, 1fr)' },
+                  gap: 2,
+                  mb: 4
+                }}
+              >
                 {content.statistics.map((stat, index) => (
-                  <Grid item xs={6} sm={3} key={index}>
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                    >
-                      <Box textAlign="center">
-                        <Typography
-                          variant="h3"
-                          sx={{
-                            fontSize: '2rem',
-                            fontWeight: 700,
-                            color: 'white',
-                            mb: 0.5
-                          }}
-                        >
-                          {stat.number}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          sx={{
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            fontSize: '0.875rem'
-                          }}
-                        >
-                          {stat.label}
-                        </Typography>
-                      </Box>
-                    </motion.div>
-                  </Grid>
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
+                  >
+                    <Box textAlign="center">
+                      <Typography
+                        variant="h3"
+                        sx={{
+                          fontSize: '2rem',
+                          fontWeight: 700,
+                          color: 'white',
+                          mb: 0.5
+                        }}
+                      >
+                        {stat.number}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          fontSize: '0.875rem'
+                        }}
+                      >
+                        {stat.label}
+                      </Typography>
+                    </Box>
+                  </motion.div>
                 ))}
-              </Grid>
+              </Box>
 
               {/* Action Buttons */}
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -207,9 +219,9 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                 </Button>
               </Stack>
             </motion.div>
-          </Grid>
+          </Box>
 
-          <Grid item xs={12} md={5}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 41.67%' } }}>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -288,8 +300,8 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                 </CardContent>
               </Card>
             </motion.div>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Container>
     </Box>
   )

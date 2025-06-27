@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, Container } from '@mui/material'
 import { motion } from 'framer-motion'
 import TMJHero from './components/TMJHero'
