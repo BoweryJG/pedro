@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/roboticvstraditional.tsx","./src/components/yomichatbot.tsx","./src/components/yomihero.tsx","./src/components/yomitechnologyshowcase.tsx","./src/services/yomiapi.ts","./src/theme/robotictheme.ts"],"errors":true,"version":"5.8.3"}

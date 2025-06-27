@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/tmjchatbot.tsx","./src/components/tmjhero.tsx","./src/components/tmjsymptomassessment.tsx","./src/components/tmjtreatmenttimeline.tsx","./src/services/tmjapi.ts","./src/theme/tmjtheme.ts"],"errors":true,"version":"5.8.3"}
