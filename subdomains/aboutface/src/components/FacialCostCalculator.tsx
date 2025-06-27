@@ -7,16 +7,12 @@ import {
   Card,
   CardContent,
   Button,
-  Slider,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
   Chip,
   Stack,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Divider
 } from '@mui/material'
 import { motion } from 'framer-motion'

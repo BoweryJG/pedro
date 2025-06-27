@@ -166,7 +166,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
           >
             <Grid container spacing={4}>
               {beforeAfterImages.map((image, index) => (
-                <Grid item key={image.id} xs={12} md={6}>
+                <Grid item="true" key={image.id} xs={12} md={6}>
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -185,7 +185,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
                     >
                       <Box sx={{ position: 'relative', height: 300 }}>
                         <Grid container sx={{ height: '100%' }}>
-                          <Grid item xs={6}>
+                          <Grid item="true" xs={6}>
                             <Box
                               sx={{
                                 height: '100%',
@@ -209,7 +209,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
                               />
                             </Box>
                           </Grid>
-                          <Grid item xs={6}>
+                          <Grid item="true" xs={6}>
                             <Box
                               sx={{
                                 height: '100%',
@@ -281,7 +281,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
           >
             <Grid container spacing={3}>
               {treatments.map((treatment, index) => (
-                <Grid item key={treatment.id} xs={12} sm={6} md={4}>
+                <Grid item="true" key={treatment.id} xs={12} sm={6} md={4}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -346,7 +346,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
           >
             <Grid container spacing={4}>
               {testimonials.map((testimonial, index) => (
-                <Grid item key={index} xs={12} md={6}>
+                <Grid item="true" key={index} xs={12} md={6}>
                   <motion.div
                     initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
                     animate={{ opacity: 1, x: 0 }}
@@ -464,7 +464,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
             {selectedImage && (
               <Box>
                 <Grid container spacing={2} sx={{ mb: 3 }}>
-                  <Grid item xs={6}>
+                  <Grid item="true" xs={6}>
                     <Box
                       sx={{
                         height: 400,
@@ -487,7 +487,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
                       />
                     </Box>
                   </Grid>
-                  <Grid item xs={6}>
+                  <Grid item="true" xs={6}>
                     <Box
                       sx={{
                         height: 400,

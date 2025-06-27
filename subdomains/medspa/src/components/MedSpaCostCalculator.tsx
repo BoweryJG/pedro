@@ -124,7 +124,7 @@ const MedSpaCostCalculator: React.FC<MedSpaCostCalculatorProps> = ({
 
         <Grid container spacing={6}>
           {/* Treatment Selection */}
-          <Grid item xs={12} md={8}>
+          <Grid item="true" xs={12} md={8}>
             <Card sx={{ p: 3 }}>
               <Typography variant="h5" sx={{ mb: 3, color: 'primary.main' }}>
                 Select Your Treatments
@@ -132,7 +132,7 @@ const MedSpaCostCalculator: React.FC<MedSpaCostCalculatorProps> = ({
 
               <Grid container spacing={3}>
                 {treatments.map((treatment, index) => (
-                  <Grid item key={treatment.id} xs={12} sm={6}>
+                  <Grid item="true" key={treatment.id} xs={12} sm={6}>
                     <motion.div
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
@@ -210,7 +210,7 @@ const MedSpaCostCalculator: React.FC<MedSpaCostCalculatorProps> = ({
           </Grid>
 
           {/* Cost Summary & Financing */}
-          <Grid item xs={12} md={4}>
+          <Grid item="true" xs={12} md={4}>
             <Card sx={{ p: 3, position: 'sticky', top: 20 }}>
               <Typography variant="h5" sx={{ mb: 3, color: 'primary.main' }}>
                 Investment Summary
@@ -339,7 +339,7 @@ const MedSpaCostCalculator: React.FC<MedSpaCostCalculatorProps> = ({
 
             <Grid container spacing={3}>
               {financing.options.map((option, index) => (
-                <Grid item key={index} xs={12} md={4}>
+                <Grid item="true" key={index} xs={12} md={4}>
                   <Card variant="outlined" sx={{ height: '100%' }}>
                     <CardContent>
                       <Typography variant="h6" sx={{ mb: 1, color: 'primary.main' }}>

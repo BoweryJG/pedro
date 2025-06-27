@@ -19,8 +19,8 @@ import {
   FormControlLabel,
   Avatar,
   LinearProgress,
-  Accordion,
-  AccordionSummary,
+  
+  
   AccordionDetails
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -331,7 +331,7 @@ const RoboticVsTraditional: React.FC = () => {
                                 </Typography>
                                 <Grid container spacing={2}>
                                   {metric.details.map((detail, detailIndex) => (
-                                    <Grid item xs={12} sm={6} key={detailIndex}>
+                                    <Grid item={true}="true" xs={12} sm={6} key={detailIndex}>
                                       <Box
                                         sx={{
                                           p: 1,
@@ -361,7 +361,7 @@ const RoboticVsTraditional: React.FC = () => {
 
           {/* Advantages Grid */}
           <Grid container spacing={4} sx={{ mb: 6 }}>
-            <Grid item xs={12} md={6}>
+            <Grid item={true}="true" xs={12} md={6}>
               <Card sx={{ height: '100%', bgcolor: 'success.light', color: 'white' }}>
                 <CardContent sx={{ p: 4 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
@@ -389,7 +389,7 @@ const RoboticVsTraditional: React.FC = () => {
               </Card>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item={true}="true" xs={12} md={6}>
               <Card sx={{ height: '100%', bgcolor: 'warning.light', color: 'white' }}>
                 <CardContent sx={{ p: 4 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
@@ -426,7 +426,7 @@ const RoboticVsTraditional: React.FC = () => {
               </Typography>
               
               <Grid container spacing={4} sx={{ mt: 2 }}>
-                <Grid item xs={12} md={4}>
+                <Grid item={true}="true" xs={12} md={4}>
                   <Box textAlign="center">
                     <TrendingUp sx={{ fontSize: '3rem', color: 'success.main', mb: 2 }} />
                     <Typography variant="h6" gutterBottom>
@@ -437,7 +437,7 @@ const RoboticVsTraditional: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item={true}="true" xs={12} md={4}>
                   <Box textAlign="center">
                     <Speed sx={{ fontSize: '3rem', color: 'primary.main', mb: 2 }} />
                     <Typography variant="h6" gutterBottom>
@@ -448,7 +448,7 @@ const RoboticVsTraditional: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} md={4}>
+                <Grid item={true}="true" xs={12} md={4}>
                   <Box textAlign="center">
                     <Precision sx={{ fontSize: '3rem', color: 'secondary.main', mb: 2 }} />
                     <Typography variant="h6" gutterBottom>
@@ -472,7 +472,7 @@ const RoboticVsTraditional: React.FC = () => {
             </AccordionSummary>
             <AccordionDetails>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid item={true}="true" xs={12} md={6}>
                   <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
                     Why Robotic Costs More:
                   </Typography>
@@ -491,7 +491,7 @@ const RoboticVsTraditional: React.FC = () => {
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item={true}="true" xs={12} md={6}>
                   <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
                     Long-term Value:
                   </Typography>
@@ -526,7 +526,7 @@ const RoboticVsTraditional: React.FC = () => {
                 how Yomi robotic technology can transform your implant experience.
               </Typography>
               <Grid container spacing={2} justifyContent="center">
-                <Grid item>
+                <Grid item={true}="true">
                   <Button
                     variant="contained"
                     size="large"
@@ -545,7 +545,7 @@ const RoboticVsTraditional: React.FC = () => {
                     Schedule Robotic Consultation
                   </Button>
                 </Grid>
-                <Grid item>
+                <Grid item={true}="true">
                   <Button
                     variant="outlined"
                     size="large"

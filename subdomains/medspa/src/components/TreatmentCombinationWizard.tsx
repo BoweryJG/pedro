@@ -131,7 +131,7 @@ const TreatmentCombinationWizard: React.FC<TreatmentCombinationWizardProps> = ({
             
             <Grid container spacing={3}>
               {treatments.map((treatment, index) => (
-                <Grid item key={treatment.id} xs={12} md={6} lg={4}>
+                <Grid item={true}="true" key={treatment.id} xs={12} md={6} lg={4}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -275,7 +275,7 @@ const TreatmentCombinationWizard: React.FC<TreatmentCombinationWizardProps> = ({
             </Typography>
 
             <Grid container spacing={4}>
-              <Grid item xs={12} md={8}>
+              <Grid item={true}="true" xs={12} md={8}>
                 <Card sx={{ p: 3 }}>
                   <Typography variant="h6" sx={{ mb: 3 }}>
                     Selected Treatments
@@ -301,7 +301,7 @@ const TreatmentCombinationWizard: React.FC<TreatmentCombinationWizardProps> = ({
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid item={true}="true" xs={12} md={4}>
                 <Card sx={{ p: 3, position: 'sticky', top: 20 }}>
                   <Typography variant="h6" sx={{ mb: 3 }}>
                     Pricing Summary

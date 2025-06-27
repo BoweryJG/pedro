@@ -7,8 +7,8 @@ import {
   CardContent,
   Grid,
   Button,
-  Accordion,
-  AccordionSummary,
+  
+  
   AccordionDetails,
   Chip,
   LinearProgress,
@@ -191,13 +191,13 @@ const YomiTechnologyShowcase: React.FC = () => {
 
           {/* Technology Features Grid */}
           <Grid container spacing={4} sx={{ mb: 8 }}>
-            <Grid item xs={12} md={6}>
+            <Grid item={true}="true" xs={12} md={6}>
               <Typography variant="h4" gutterBottom color="primary">
                 Core Technologies
               </Typography>
               <Grid container spacing={2}>
                 {technologyFeatures.map((feature, index) => (
-                  <Grid item xs={12} key={index}>
+                  <Grid item={true}="true" xs={12} key={index}>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -259,7 +259,7 @@ const YomiTechnologyShowcase: React.FC = () => {
               </Grid>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item={true}="true" xs={12} md={6}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedFeature}
@@ -296,7 +296,7 @@ const YomiTechnologyShowcase: React.FC = () => {
                       </Typography>
                       <Grid container spacing={1} sx={{ mb: 3 }}>
                         {technologyFeatures[selectedFeature].benefits.map((benefit, index) => (
-                          <Grid item xs={12} sm={6} key={index}>
+                          <Grid item={true}="true" xs={12} sm={6} key={index}>
                             <Chip
                               label={benefit}
                               size="small"
@@ -425,7 +425,7 @@ const YomiTechnologyShowcase: React.FC = () => {
           </Typography>
           <Grid container spacing={3}>
             {roboticContent.yomi_features.map((feature, index) => (
-              <Grid item xs={12} md={6} key={index}>
+              <Grid item={true}="true" xs={12} md={6} key={index}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -472,7 +472,7 @@ const YomiTechnologyShowcase: React.FC = () => {
                 the most precise, comfortable, and predictable implant experience possible.
               </Typography>
               <Grid container spacing={2} justifyContent="center">
-                <Grid item>
+                <Grid item={true}="true">
                   <Button
                     variant="contained"
                     size="large"
@@ -491,7 +491,7 @@ const YomiTechnologyShowcase: React.FC = () => {
                     Schedule Robotic Consultation
                   </Button>
                 </Grid>
-                <Grid item>
+                <Grid item={true}="true">
                   <Button
                     variant="outlined"
                     size="large"

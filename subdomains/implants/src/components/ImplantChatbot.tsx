@@ -436,7 +436,7 @@ const ImplantChatbot: React.FC = () => {
           {/* CTA Section */}
           <Box sx={{ mt: 4, textAlign: 'center' }}>
             <Grid container spacing={2} justifyContent="center">
-              <Grid item>
+              <Grid item="true">
                 <Button
                   variant="contained"
                   startIcon={<Phone />}
@@ -446,7 +446,7 @@ const ImplantChatbot: React.FC = () => {
                   Call Now: (718) 948-0870
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item="true">
                 <Button
                   variant="outlined"
                   startIcon={<Schedule />}
@@ -485,7 +485,7 @@ const ImplantChatbot: React.FC = () => {
           </Typography>
           
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography gutterBottom>
                 Annual Income: ${qualificationData.income.toLocaleString()}
               </Typography>
@@ -498,7 +498,7 @@ const ImplantChatbot: React.FC = () => {
               />
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography gutterBottom>
                 Estimated Credit Score: {qualificationData.creditScore}
               </Typography>
@@ -511,7 +511,7 @@ const ImplantChatbot: React.FC = () => {
               />
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <FormControl fullWidth>
                 <InputLabel>Treatment Cost Estimate</InputLabel>
                 <Select

@@ -167,26 +167,30 @@ const TMJTreatmentTimeline: React.FC<TMJTreatmentTimelineProps> = ({ timeline, t
           Advanced Treatment Options
         </Typography>
 
-        <Grid container spacing={3}>
+        <Box sx={{ 
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' },
+          gap: 3
+        }}>
           {treatments.map((treatment, index) => (
-            <Grid item xs={12} md={6} lg={4} key={index}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Card 
+                sx={{ 
+                  height: '100%', 
+                  borderRadius: 3,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
+                  }
+                }}
               >
-                <Card 
-                  sx={{ 
-                    height: '100%', 
-                    borderRadius: 3,
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 8px 25px rgba(0,0,0,0.15)'
-                    }
-                  }}
-                >
                   <CardContent sx={{ p: 3 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                       <Science sx={{ color: 'primary.main', mr: 1 }} />
@@ -267,11 +271,10 @@ const TMJTreatmentTimeline: React.FC<TMJTreatmentTimelineProps> = ({ timeline, t
                       Best for: {treatment.candidacy}
                     </Typography>
                   </CardContent>
-                </Card>
-              </motion.div>
-            </Grid>
+              </Card>
+            </motion.div>
           ))}
-        </Grid>
+        </Box>
 
         {/* Call to Action */}
         <Box 

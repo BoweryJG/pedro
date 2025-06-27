@@ -114,7 +114,7 @@ const FacialTreatmentWizard: React.FC = () => {
 
             <Grid container spacing={2} justifyContent="center">
               {facialConcerns.map(concern => (
-                <Grid item key={concern}>
+                <Grid size="auto" key={concern}>
                   <Chip
                     label={concern}
                     onClick={() => handleConcernToggle(concern)}
@@ -149,7 +149,7 @@ const FacialTreatmentWizard: React.FC = () => {
             </Typography>
             
             <Grid container spacing={4} sx={{ mt: 2 }}>
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Card sx={{ p: 3, height: '100%' }}>
                   <Typography variant="h6" gutterBottom>
                     <AttachMoney /> Investment Range
@@ -178,7 +178,7 @@ const FacialTreatmentWizard: React.FC = () => {
                 </Card>
               </Grid>
 
-              <Grid item xs={12} md={6}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Card sx={{ p: 3, height: '100%' }}>
                   <Typography variant="h6" gutterBottom>
                     <Schedule /> Timeline Preference
@@ -222,7 +222,7 @@ const FacialTreatmentWizard: React.FC = () => {
 
             <Grid container spacing={3}>
               {recommendations.map((rec, index) => (
-                <Grid item xs={12} md={6} key={index}>
+                <Grid size={{ xs: 12, md: 6 }} key={index}>
                   <Card
                     sx={{
                       height: '100%',

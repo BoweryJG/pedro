@@ -60,7 +60,7 @@ const ImplantHero: React.FC = () => {
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <Grid container spacing={4} alignItems="center">
-          <Grid item xs={12} md={7}>
+          <Grid item={true}="true" xs={12} md={7}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -107,7 +107,7 @@ const ImplantHero: React.FC = () => {
               {/* Statistics */}
               <Grid container spacing={2} sx={{ mb: 4 }}>
                 {hero.statistics.map((stat, index) => (
-                  <Grid item xs={6} sm={3} key={index}>
+                  <Grid item={true}="true" xs={6} sm={3} key={index}>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -211,7 +211,7 @@ const ImplantHero: React.FC = () => {
             </motion.div>
           </Grid>
 
-          <Grid item xs={12} md={5}>
+          <Grid item={true}="true" xs={12} md={5}>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}

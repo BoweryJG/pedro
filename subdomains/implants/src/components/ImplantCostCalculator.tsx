@@ -11,7 +11,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Checkbox,
+  
   FormControlLabel,
   Slider,
   Chip,
@@ -24,7 +24,7 @@ import {
   TableRow,
   Paper,
   Accordion,
-  AccordionSummary,
+  
   AccordionDetails
 } from '@mui/material'
 import { motion } from 'framer-motion'
@@ -218,7 +218,7 @@ const ImplantCostCalculator: React.FC = () => {
 
           <Grid container spacing={4}>
             {/* Calculator Controls */}
-            <Grid item xs={12} md={4}>
+            <Grid item="true" xs={12} md={4}>
               <Card sx={{ p: 3, height: 'fit-content' }}>
                 <Typography variant="h5" gutterBottom color="primary">
                   Treatment Details
@@ -291,7 +291,7 @@ const ImplantCostCalculator: React.FC = () => {
             </Grid>
 
             {/* Cost Breakdown */}
-            <Grid item xs={12} md={8}>
+            <Grid item="true" xs={12} md={8}>
               {costBreakdown && (
                 <motion.div
                   initial={{ opacity: 0, x: 20 }}
@@ -368,7 +368,7 @@ const ImplantCostCalculator: React.FC = () => {
 
                       <Grid container spacing={2}>
                         {financingOptions.map((option, index) => (
-                          <Grid item xs={12} sm={6} key={option.provider}>
+                          <Grid item="true" xs={12} sm={6} key={option.provider}>
                             <Card variant="outlined" sx={{ height: '100%' }}>
                               <CardContent>
                                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>

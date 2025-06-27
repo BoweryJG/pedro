@@ -511,7 +511,7 @@ const YomiChatbot: React.FC = () => {
           {/* CTA Section */}
           <Box sx={{ mt: 4, textAlign: 'center' }}>
             <Grid container spacing={2} justifyContent="center">
-              <Grid item>
+              <Grid item="true">
                 <Button
                   variant="contained"
                   startIcon={<Phone />}
@@ -521,7 +521,7 @@ const YomiChatbot: React.FC = () => {
                   Call: (718) 948-0870
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item="true">
                 <Button
                   variant="outlined"
                   startIcon={<Science />}
@@ -534,7 +534,7 @@ const YomiChatbot: React.FC = () => {
                   Explore Technology
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item="true">
                 <Button
                   variant="outlined"
                   startIcon={<CompareArrows />}
@@ -576,7 +576,7 @@ const YomiChatbot: React.FC = () => {
           </Alert>
           
           <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography gutterBottom>
                 How comfortable are you with advanced technology? ({readinessData.technologyComfort}/10)
               </Typography>
@@ -590,7 +590,7 @@ const YomiChatbot: React.FC = () => {
               />
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography gutterBottom>
                 How important is maximum precision to you? ({readinessData.precisionImportance}/10)
               </Typography>
@@ -604,7 +604,7 @@ const YomiChatbot: React.FC = () => {
               />
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography gutterBottom>
                 How important is faster healing to you? ({readinessData.healingPriority}/10)
               </Typography>
@@ -618,7 +618,7 @@ const YomiChatbot: React.FC = () => {
               />
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography gutterBottom>
                 Budget flexibility for advanced technology? ({readinessData.budgetFlexibility}/10)
               </Typography>
@@ -632,7 +632,7 @@ const YomiChatbot: React.FC = () => {
               />
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <FormControl fullWidth>
                 <InputLabel>Implant Type Needed</InputLabel>
                 <Select
@@ -646,7 +646,7 @@ const YomiChatbot: React.FC = () => {
               </FormControl>
             </Grid>
             
-            <Grid item xs={12}>
+            <Grid item="true" xs={12}>
               <Typography variant="subtitle1" gutterBottom>
                 Current concerns about implant surgery:
               </Typography>

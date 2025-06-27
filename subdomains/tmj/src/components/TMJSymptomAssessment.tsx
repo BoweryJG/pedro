@@ -7,18 +7,16 @@ import {
   CardContent,
   Button,
   FormControl,
-  FormLabel,
   RadioGroup,
   FormControlLabel,
   Radio,
   LinearProgress,
   Chip,
   Alert,
-  Grid,
   Paper
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle, Warning, Info } from '@mui/icons-material'
+import { CheckCircle, Warning } from '@mui/icons-material'
 
 interface Symptom {
   name: string
@@ -170,14 +168,14 @@ const TMJSymptomAssessment: React.FC<TMJSymptomAssessmentProps> = ({ symptoms })
               <Chip
                 icon={recommendation.icon}
                 label={recommendation.level}
-                color={recommendation.color as any}
+                color={recommendation.color as "success" | "warning" | "error"}
                 size="medium"
                 sx={{ fontSize: '1.1rem', py: 2, px: 1 }}
               />
             </Box>
 
             <Alert 
-              severity={recommendation.color as any} 
+              severity={recommendation.color as "success" | "warning" | "error"} 
               sx={{ mb: 3, fontSize: '1.1rem' }}
             >
               {recommendation.message}
@@ -217,26 +215,28 @@ const TMJSymptomAssessment: React.FC<TMJSymptomAssessmentProps> = ({ symptoms })
             Common TMJ Symptoms We Treat:
           </Typography>
 
-          <Grid container spacing={2}>
+          <Box sx={{ 
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+            gap: 2
+          }}>
             {symptoms.map((symptom, index) => (
-              <Grid item xs={12} sm={6} md={4} key={index}>
-                <Card sx={{ height: '100%', borderRadius: 2 }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ mb: 1, color: 'primary.main' }}>
-                      {symptom.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                      {symptom.description}
-                    </Typography>
-                    <Box>
-                      <Chip label={`Severity: ${symptom.severity}`} size="small" sx={{ mr: 1, mb: 1 }} />
-                      <Chip label={`Frequency: ${symptom.frequency}`} size="small" />
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <Card key={index} sx={{ height: '100%', borderRadius: 2 }}>
+                <CardContent>
+                  <Typography variant="h6" sx={{ mb: 1, color: 'primary.main' }}>
+                    {symptom.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    {symptom.description}
+                  </Typography>
+                  <Box>
+                    <Chip label={`Severity: ${symptom.severity}`} size="small" sx={{ mr: 1, mb: 1 }} />
+                    <Chip label={`Frequency: ${symptom.frequency}`} size="small" />
+                  </Box>
+                </CardContent>
+              </Card>
             ))}
-          </Grid>
+          </Box>
         </motion.div>
       </Container>
     )
