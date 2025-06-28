@@ -26,8 +26,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Send,
   Psychology,
-  AttachMoney,
-  CreditCard,
   Phone,
   Close,
   SmartToy,
@@ -435,31 +433,27 @@ const ImplantChatbot: React.FC = () => {
 
           {/* CTA Section */}
           <Box sx={{ mt: 4, textAlign: 'center' }}>
-            <Grid container spacing={2} justifyContent="center">
-              <Grid item="true">
-                <Button
-                  variant="contained"
-                  startIcon={<Phone />}
-                  onClick={() => window.open('tel:+17189480870', '_blank')}
-                  sx={{ px: 3 }}
-                >
-                  Call Now: (718) 948-0870
-                </Button>
-              </Grid>
-              <Grid item="true">
-                <Button
-                  variant="outlined"
-                  startIcon={<Schedule />}
-                  onClick={() => {
-                    const element = document.getElementById('implant-financing-wizard')
-                    element?.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                  sx={{ px: 3 }}
-                >
-                  Get Pre-Qualified
-                </Button>
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button
+                variant="contained"
+                startIcon={<Phone />}
+                onClick={() => window.open('tel:+17189480870', '_blank')}
+                sx={{ px: 3 }}
+              >
+                Call Now: (718) 948-0870
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<Schedule />}
+                onClick={() => {
+                  const element = document.getElementById('implant-financing-wizard')
+                  element?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                sx={{ px: 3 }}
+              >
+                Get Pre-Qualified
+              </Button>
+            </Box>
           </Box>
         </motion.div>
       </Container>
@@ -484,8 +478,8 @@ const ImplantChatbot: React.FC = () => {
             This is a soft credit check and won't affect your credit score.
           </Typography>
           
-          <Grid container spacing={3}>
-            <Grid item="true" xs={12}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box>
               <Typography gutterBottom>
                 Annual Income: ${qualificationData.income.toLocaleString()}
               </Typography>
@@ -496,9 +490,9 @@ const ImplantChatbot: React.FC = () => {
                 max={150000}
                 step={5000}
               />
-            </Grid>
+            </Box>
             
-            <Grid item="true" xs={12}>
+            <Box>
               <Typography gutterBottom>
                 Estimated Credit Score: {qualificationData.creditScore}
               </Typography>
@@ -509,9 +503,9 @@ const ImplantChatbot: React.FC = () => {
                 max={850}
                 step={10}
               />
-            </Grid>
+            </Box>
             
-            <Grid item="true" xs={12}>
+            <Box>
               <FormControl fullWidth>
                 <InputLabel>Treatment Cost Estimate</InputLabel>
                 <Select
@@ -524,8 +518,8 @@ const ImplantChatbot: React.FC = () => {
                   <MenuItem value={25000}>Full Mouth ($25,000+)</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowQualificationDialog(false)}>

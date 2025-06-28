@@ -28,7 +28,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Send,
   SmartToy,
-  Precision,
   Science,
   Phone,
   Close,
@@ -510,44 +509,38 @@ const YomiChatbot: React.FC = () => {
 
           {/* CTA Section */}
           <Box sx={{ mt: 4, textAlign: 'center' }}>
-            <Grid container spacing={2} justifyContent="center">
-              <Grid item="true">
-                <Button
-                  variant="contained"
-                  startIcon={<Phone />}
-                  onClick={() => window.open('tel:+17189480870', '_blank')}
-                  sx={{ px: 3 }}
-                >
-                  Call: (718) 948-0870
-                </Button>
-              </Grid>
-              <Grid item="true">
-                <Button
-                  variant="outlined"
-                  startIcon={<Science />}
-                  onClick={() => {
-                    const element = document.getElementById('yomi-technology-showcase')
-                    element?.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                  sx={{ px: 3 }}
-                >
-                  Explore Technology
-                </Button>
-              </Grid>
-              <Grid item="true">
-                <Button
-                  variant="outlined"
-                  startIcon={<CompareArrows />}
-                  onClick={() => {
-                    const element = document.getElementById('robotic-vs-traditional')
-                    element?.scrollIntoView({ behavior: 'smooth' })
-                  }}
-                  sx={{ px: 3 }}
-                >
-                  Compare Methods
-                </Button>
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button
+                variant="contained"
+                startIcon={<Phone />}
+                onClick={() => window.open('tel:+17189480870', '_blank')}
+                sx={{ px: 3 }}
+              >
+                Call: (718) 948-0870
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<Science />}
+                onClick={() => {
+                  const element = document.getElementById('yomi-technology-showcase')
+                  element?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                sx={{ px: 3 }}
+              >
+                Explore Technology
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<CompareArrows />}
+                onClick={() => {
+                  const element = document.getElementById('robotic-vs-traditional')
+                  element?.scrollIntoView({ behavior: 'smooth' })
+                }}
+                sx={{ px: 3 }}
+              >
+                Compare Methods
+              </Button>
+            </Box>
           </Box>
         </motion.div>
       </Container>
@@ -575,8 +568,8 @@ const YomiChatbot: React.FC = () => {
             This quick assessment helps determine your suitability for robotic implant surgery based on your priorities and preferences.
           </Alert>
           
-          <Grid container spacing={3}>
-            <Grid item="true" xs={12}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+            <Box>
               <Typography gutterBottom>
                 How comfortable are you with advanced technology? ({readinessData.technologyComfort}/10)
               </Typography>
@@ -588,9 +581,9 @@ const YomiChatbot: React.FC = () => {
                 step={1}
                 marks
               />
-            </Grid>
+            </Box>
             
-            <Grid item="true" xs={12}>
+            <Box>
               <Typography gutterBottom>
                 How important is maximum precision to you? ({readinessData.precisionImportance}/10)
               </Typography>
@@ -602,9 +595,9 @@ const YomiChatbot: React.FC = () => {
                 step={1}
                 marks
               />
-            </Grid>
+            </Box>
             
-            <Grid item="true" xs={12}>
+            <Box>
               <Typography gutterBottom>
                 How important is faster healing to you? ({readinessData.healingPriority}/10)
               </Typography>
@@ -616,9 +609,9 @@ const YomiChatbot: React.FC = () => {
                 step={1}
                 marks
               />
-            </Grid>
+            </Box>
             
-            <Grid item="true" xs={12}>
+            <Box>
               <Typography gutterBottom>
                 Budget flexibility for advanced technology? ({readinessData.budgetFlexibility}/10)
               </Typography>
@@ -630,9 +623,9 @@ const YomiChatbot: React.FC = () => {
                 step={1}
                 marks
               />
-            </Grid>
+            </Box>
             
-            <Grid item="true" xs={12}>
+            <Box>
               <FormControl fullWidth>
                 <InputLabel>Implant Type Needed</InputLabel>
                 <Select
@@ -644,9 +637,9 @@ const YomiChatbot: React.FC = () => {
                   <MenuItem value="full_mouth">Full Mouth Reconstruction</MenuItem>
                 </Select>
               </FormControl>
-            </Grid>
+            </Box>
             
-            <Grid item="true" xs={12}>
+            <Box>
               <Typography variant="subtitle1" gutterBottom>
                 Current concerns about implant surgery:
               </Typography>
@@ -662,8 +655,8 @@ const YomiChatbot: React.FC = () => {
                   />
                 ))}
               </Box>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setShowReadinessDialog(false)}>
