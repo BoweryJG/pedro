@@ -55,7 +55,33 @@
   status = 200
   force = true
 
-# Main domain fallback
+# Path-based routing for subdomains (when accessed via main domain)
+[[redirects]]
+  from = "/tmj/*"
+  to = "/tmj/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/implants/*"
+  to = "/implants/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/robotic/*"
+  to = "/robotic/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/medspa/*"
+  to = "/medspa/index.html"
+  status = 200
+
+[[redirects]]
+  from = "/aboutface/*"
+  to = "/aboutface/index.html"
+  status = 200
+
+# Main domain fallback (must be last)
 [[redirects]]
   from = "/*"
   to = "/index.html"

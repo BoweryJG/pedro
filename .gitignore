@@ -60,3 +60,7 @@ backend/supabase/.branches
 Thumbs.db
 # Local Netlify folder
 .netlify
+
+# Testing and deployment check files
+check-deployment.js
+screenshots/
