@@ -12,7 +12,7 @@ import {
   Avatar
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Phone, CalendarToday, LocationOn, Star, Precision, SmartToy } from '@mui/icons-material'
+import { Phone, CalendarToday, LocationOn, Star, Engineering, SmartToy } from '@mui/icons-material'
 import roboticContent from '../data/roboticContent.json'
 
 const YomiHero: React.FC = () => {
@@ -81,12 +81,12 @@ const YomiHero: React.FC = () => {
           animation: 'float 8s ease-in-out infinite reverse'
         }}
       >
-        <Precision sx={{ fontSize: '3rem', color: 'white' }} />
+        <Engineering sx={{ fontSize: '3rem', color: 'white' }} />
       </Box>
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-        <Grid container spacing={4} alignItems="center">
-          <Grid item={true}="true" xs={12} md={7}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 4 }}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 58.333333%' } }}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -135,9 +135,9 @@ const YomiHero: React.FC = () => {
               </Typography>
 
               {/* Statistics with Robotic Theme */}
-              <Grid container spacing={2} sx={{ mb: 4 }}>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 4 }}>
                 {hero.statistics.map((stat, index) => (
-                  <Grid item={true}="true" xs={6} sm={4} key={index}>
+                  <Box key={index} sx={{ flex: { xs: '1 1 calc(50% - 8px)', sm: '1 1 calc(33.333333% - 11px)' } }}>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -176,9 +176,9 @@ const YomiHero: React.FC = () => {
                         </Typography>
                       </Box>
                     </motion.div>
-                  </Grid>
+                  </Box>
                 ))}
-              </Grid>
+              </Box>
 
               {/* Action Buttons */}
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -232,7 +232,7 @@ const YomiHero: React.FC = () => {
                   variant="outlined"
                   size="large"
                   onClick={handleComparisonAction}
-                  startIcon={<Precision />}
+                  startIcon={<Engineering />}
                   sx={{
                     borderColor: 'rgba(255, 255, 255, 0.7)',
                     color: 'rgba(255, 255, 255, 0.9)',
@@ -252,9 +252,9 @@ const YomiHero: React.FC = () => {
                 </Button>
               </Stack>
             </motion.div>
-          </Grid>
+          </Box>
 
-          <Grid item={true}="true" xs={12} md={5}>
+          <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 41.666667%' } }}>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -389,8 +389,8 @@ const YomiHero: React.FC = () => {
                 </CardContent>
               </Card>
             </motion.div>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Container>
 
       {/* Add floating animation keyframes */}

@@ -7,8 +7,8 @@ import {
   CardContent,
   Grid,
   Button,
-  
-  
+  Accordion,
+  AccordionSummary,
   AccordionDetails,
   Chip,
   LinearProgress,
@@ -21,7 +21,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion'
 import {
   ExpandMore,
-  Precision,
+  CenterFocusStrong,
   SmartToy,
   Memory,
   Visibility,
@@ -49,7 +49,7 @@ const YomiTechnologyShowcase: React.FC = () => {
 
   const technologyFeatures: TechnologyFeature[] = [
     {
-      icon: <Precision sx={{ fontSize: '2rem' }} />,
+      icon: <CenterFocusStrong sx={{ fontSize: '2rem' }} />,
       title: 'Robotic Precision',
       description: 'Sub-millimeter accuracy ensures perfect implant placement every time',
       accuracy: 99.5,
@@ -190,14 +190,14 @@ const YomiTechnologyShowcase: React.FC = () => {
           </Box>
 
           {/* Technology Features Grid */}
-          <Grid container spacing={4} sx={{ mb: 8 }}>
-            <Grid item={true}="true" xs={12} md={6}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4, mb: 8 }}>
+            <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 50%' } }}>
               <Typography variant="h4" gutterBottom color="primary">
                 Core Technologies
               </Typography>
-              <Grid container spacing={2}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {technologyFeatures.map((feature, index) => (
-                  <Grid item={true}="true" xs={12} key={index}>
+                  <Box key={index} sx={{ width: '100%' }}>
                     <motion.div
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -254,12 +254,12 @@ const YomiTechnologyShowcase: React.FC = () => {
                         </CardContent>
                       </Card>
                     </motion.div>
-                  </Grid>
+                  </Box>
                 ))}
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
 
-            <Grid item={true}="true" xs={12} md={6}>
+            <Box sx={{ flex: { xs: '1 1 100%', md: '1 1 50%' } }}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={selectedFeature}
@@ -294,9 +294,9 @@ const YomiTechnologyShowcase: React.FC = () => {
                       <Typography variant="h6" gutterBottom color="primary">
                         Key Benefits
                       </Typography>
-                      <Grid container spacing={1} sx={{ mb: 3 }}>
+                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
                         {technologyFeatures[selectedFeature].benefits.map((benefit, index) => (
-                          <Grid item={true}="true" xs={12} sm={6} key={index}>
+                          <Box key={index} sx={{ flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 4px)' } }}>
                             <Chip
                               label={benefit}
                               size="small"
@@ -307,9 +307,9 @@ const YomiTechnologyShowcase: React.FC = () => {
                                 justifyContent: 'flex-start'
                               }}
                             />
-                          </Grid>
+                          </Box>
                         ))}
-                      </Grid>
+                      </Box>
 
                       <Typography variant="h6" gutterBottom color="primary">
                         Technical Specifications
@@ -334,8 +334,8 @@ const YomiTechnologyShowcase: React.FC = () => {
                   </Card>
                 </motion.div>
               </AnimatePresence>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
 
           {/* Procedure Timeline */}
           <Card sx={{ mb: 6 }}>
@@ -423,9 +423,9 @@ const YomiTechnologyShowcase: React.FC = () => {
           <Typography variant="h4" gutterBottom color="primary" textAlign="center">
             Advanced Yomi Features
           </Typography>
-          <Grid container spacing={3}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
             {roboticContent.yomi_features.map((feature, index) => (
-              <Grid item={true}="true" xs={12} md={6} key={index}>
+              <Box key={index} sx={{ flex: { xs: '1 1 100%', md: '1 1 calc(50% - 12px)' } }}>
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -456,9 +456,9 @@ const YomiTechnologyShowcase: React.FC = () => {
                     </AccordionDetails>
                   </Accordion>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
 
           {/* CTA Section */}
           <Box sx={{ mt: 8, textAlign: 'center' }}>
@@ -471,50 +471,46 @@ const YomiTechnologyShowcase: React.FC = () => {
                 Schedule a consultation to see how Yomi robotic technology can give you 
                 the most precise, comfortable, and predictable implant experience possible.
               </Typography>
-              <Grid container spacing={2} justifyContent="center">
-                <Grid item={true}="true">
-                  <Button
-                    variant="contained"
-                    size="large"
-                    onClick={() => window.open('tel:+17189480870', '_blank')}
-                    sx={{
-                      bgcolor: 'white',
-                      color: 'primary.main',
-                      fontSize: '1.1rem',
-                      py: 1.5,
-                      px: 4,
-                      '&:hover': {
-                        bgcolor: 'grey.100'
-                      }
-                    }}
-                  >
-                    Schedule Robotic Consultation
-                  </Button>
-                </Grid>
-                <Grid item={true}="true">
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={() => {
-                      const element = document.getElementById('robotic-vs-traditional')
-                      element?.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                    sx={{
-                      borderColor: 'white',
-                      color: 'white',
-                      fontSize: '1.1rem',
-                      py: 1.5,
-                      px: 4,
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.1)',
-                        borderColor: 'white'
-                      }
-                    }}
-                  >
-                    Compare Technologies
-                  </Button>
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, justifyContent: 'center' }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={() => window.open('tel:+17189480870', '_blank')}
+                  sx={{
+                    bgcolor: 'white',
+                    color: 'primary.main',
+                    fontSize: '1.1rem',
+                    py: 1.5,
+                    px: 4,
+                    '&:hover': {
+                      bgcolor: 'grey.100'
+                    }
+                  }}
+                >
+                  Schedule Robotic Consultation
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={() => {
+                    const element = document.getElementById('robotic-vs-traditional')
+                    element?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  sx={{
+                    borderColor: 'white',
+                    color: 'white',
+                    fontSize: '1.1rem',
+                    py: 1.5,
+                    px: 4,
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: 'white'
+                    }
+                  }}
+                >
+                  Compare Technologies
+                </Button>
+              </Box>
             </Card>
           </Box>
         </motion.div>
