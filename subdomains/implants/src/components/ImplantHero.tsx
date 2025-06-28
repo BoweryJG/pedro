@@ -4,11 +4,11 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
   Card,
   CardContent,
   Chip,
-  Stack
+  Stack,
+  Grid
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Phone, CalendarToday, LocationOn, Star, Psychology, AttachMoney } from '@mui/icons-material'
@@ -60,7 +60,7 @@ const ImplantHero: React.FC = () => {
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <Grid container spacing={4} alignItems="center">
-          <Grid item={true}="true" xs={12} md={7}>
+          <Grid size={{ xs: 12, md: 7 }}>
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -107,7 +107,7 @@ const ImplantHero: React.FC = () => {
               {/* Statistics */}
               <Grid container spacing={2} sx={{ mb: 4 }}>
                 {hero.statistics.map((stat, index) => (
-                  <Grid item={true}="true" xs={6} sm={3} key={index}>
+                  <Grid size={{ xs: 6, sm: 3 }} key={index}>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -211,7 +211,7 @@ const ImplantHero: React.FC = () => {
             </motion.div>
           </Grid>
 
-          <Grid item={true}="true" xs={12} md={5}>
+          <Grid size={{ xs: 12, md: 5 }}>
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}

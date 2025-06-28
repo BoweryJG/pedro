@@ -48,6 +48,8 @@ backend/.env
 build/
 dist/
 .cache/
+*.tsbuildinfo
+subdomains/*/tsconfig*.tsbuildinfo
 
 # Supabase
 backend/supabase/.temp
