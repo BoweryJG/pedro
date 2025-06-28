@@ -1,7 +1,7 @@
 [build]
-  base = "frontend"
-  command = "rm -rf node_modules package-lock.json && npm install --force && npm install @rollup/rollup-linux-x64-gnu --save-optional && npm run build"
-  functions = "netlify/functions"
+  base = "."
+  command = "./build-all.sh"
+  functions = "frontend/netlify/functions"
   publish = "dist"
 
 [build.environment]
@@ -23,3 +23,40 @@
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Headers = "Content-Type"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+
+# Subdomain redirects - These handle subdomain routing
+[[redirects]]
+  from = "https://tmj.gregpedromd.com/*"
+  to = "/tmj/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://implants.gregpedromd.com/*"
+  to = "/implants/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://robotic.gregpedromd.com/*"
+  to = "/robotic/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://medspa.gregpedromd.com/*"
+  to = "/medspa/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "https://aboutface.gregpedromd.com/*"
+  to = "/aboutface/:splat"
+  status = 200
+  force = true
+
+# Main domain fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
