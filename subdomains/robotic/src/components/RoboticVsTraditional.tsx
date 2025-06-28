@@ -5,7 +5,6 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
   Button,
   Table,
   TableBody,
@@ -18,9 +17,8 @@ import {
   Switch,
   FormControlLabel,
   Avatar,
-  LinearProgress,
-  
-  
+  Accordion,
+  AccordionSummary,
   AccordionDetails
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -31,13 +29,13 @@ import {
   CheckCircle,
   Cancel,
   Speed,
-  Precision,
   Healing,
   AttachMoney,
   ExpandMore,
   TrendingUp,
   Science,
-  AccessTime
+  AccessTime,
+  Engineering
 } from '@mui/icons-material'
 import roboticContent from '../data/roboticContent.json'
 
@@ -58,7 +56,7 @@ const RoboticVsTraditional: React.FC = () => {
   const comparisonMetrics: ComparisonMetric[] = [
     {
       category: 'Precision Accuracy',
-      icon: <Precision />,
+      icon: <Engineering />,
       roboticValue: '99.5%',
       traditionalValue: '85-90%',
       roboticAdvantage: true,
@@ -329,24 +327,24 @@ const RoboticVsTraditional: React.FC = () => {
                                 <Typography variant="h6" gutterBottom>
                                   Detailed Comparison
                                 </Typography>
-                                <Grid container spacing={2}>
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
                                   {metric.details.map((detail, detailIndex) => (
-                                    <Grid item={true}="true" xs={12} sm={6} key={detailIndex}>
-                                      <Box
-                                        sx={{
-                                          p: 1,
-                                          bgcolor: detail.includes('Robotic:') ? 'success.light' : 'warning.light',
-                                          borderRadius: 1,
-                                          color: 'white'
-                                        }}
-                                      >
-                                        <Typography variant="body2">
-                                          {detail}
-                                        </Typography>
-                                      </Box>
-                                    </Grid>
+                                    <Box
+                                      key={detailIndex}
+                                      sx={{
+                                        flex: { xs: '1 1 100%', sm: '1 1 calc(50% - 8px)' },
+                                        p: 1,
+                                        bgcolor: detail.includes('Robotic:') ? 'success.light' : 'warning.light',
+                                        borderRadius: 1,
+                                        color: 'white'
+                                      }}
+                                    >
+                                      <Typography variant="body2">
+                                        {detail}
+                                      </Typography>
+                                    </Box>
                                   ))}
-                                </Grid>
+                                </Box>
                               </Box>
                             </motion.div>
                           </TableCell>
@@ -359,9 +357,9 @@ const RoboticVsTraditional: React.FC = () => {
             </TableContainer>
           </Card>
 
-          {/* Advantages Grid */}
-          <Grid container spacing={4} sx={{ mb: 6 }}>
-            <Grid item={true}="true" xs={12} md={6}>
+          {/* Advantages Section */}
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, mb: 6 }}>
+            <Box sx={{ flex: 1 }}>
               <Card sx={{ height: '100%', bgcolor: 'success.light', color: 'white' }}>
                 <CardContent sx={{ p: 4 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
@@ -387,9 +385,9 @@ const RoboticVsTraditional: React.FC = () => {
                   ))}
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
 
-            <Grid item={true}="true" xs={12} md={6}>
+            <Box sx={{ flex: 1 }}>
               <Card sx={{ height: '100%', bgcolor: 'warning.light', color: 'white' }}>
                 <CardContent sx={{ p: 4 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
@@ -415,8 +413,8 @@ const RoboticVsTraditional: React.FC = () => {
                   ))}
                 </CardContent>
               </Card>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
 
           {/* ROI Analysis */}
           <Card sx={{ mb: 6 }}>
@@ -425,41 +423,35 @@ const RoboticVsTraditional: React.FC = () => {
                 Long-Term Value Analysis
               </Typography>
               
-              <Grid container spacing={4} sx={{ mt: 2 }}>
-                <Grid item={true}="true" xs={12} md={4}>
-                  <Box textAlign="center">
-                    <TrendingUp sx={{ fontSize: '3rem', color: 'success.main', mb: 2 }} />
-                    <Typography variant="h6" gutterBottom>
-                      Higher Success Rate
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      98.7% vs 95% success rate means fewer complications and replacements
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item={true}="true" xs={12} md={4}>
-                  <Box textAlign="center">
-                    <Speed sx={{ fontSize: '3rem', color: 'primary.main', mb: 2 }} />
-                    <Typography variant="h6" gutterBottom>
-                      Faster Recovery
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Return to work and normal activities 50% faster with robotic precision
-                    </Typography>
-                  </Box>
-                </Grid>
-                <Grid item={true}="true" xs={12} md={4}>
-                  <Box textAlign="center">
-                    <Precision sx={{ fontSize: '3rem', color: 'secondary.main', mb: 2 }} />
-                    <Typography variant="h6" gutterBottom>
-                      Predictable Outcomes
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Computer-guided placement ensures optimal positioning every time
-                    </Typography>
-                  </Box>
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, mt: 2 }}>
+                <Box sx={{ flex: 1, textAlign: 'center' }}>
+                  <TrendingUp sx={{ fontSize: '3rem', color: 'success.main', mb: 2 }} />
+                  <Typography variant="h6" gutterBottom>
+                    Higher Success Rate
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    98.7% vs 95% success rate means fewer complications and replacements
+                  </Typography>
+                </Box>
+                <Box sx={{ flex: 1, textAlign: 'center' }}>
+                  <Speed sx={{ fontSize: '3rem', color: 'primary.main', mb: 2 }} />
+                  <Typography variant="h6" gutterBottom>
+                    Faster Recovery
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Return to work and normal activities 50% faster with robotic precision
+                  </Typography>
+                </Box>
+                <Box sx={{ flex: 1, textAlign: 'center' }}>
+                  <Engineering sx={{ fontSize: '3rem', color: 'secondary.main', mb: 2 }} />
+                  <Typography variant="h6" gutterBottom>
+                    Predictable Outcomes
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Computer-guided placement ensures optimal positioning every time
+                  </Typography>
+                </Box>
+              </Box>
             </CardContent>
           </Card>
 
@@ -471,8 +463,8 @@ const RoboticVsTraditional: React.FC = () => {
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Grid container spacing={3}>
-                <Grid item={true}="true" xs={12} md={6}>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3 }}>
+                <Box sx={{ flex: 1 }}>
                   <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
                     Why Robotic Costs More:
                   </Typography>
@@ -490,8 +482,8 @@ const RoboticVsTraditional: React.FC = () => {
                       Premium materials and precision components
                     </Typography>
                   </Box>
-                </Grid>
-                <Grid item={true}="true" xs={12} md={6}>
+                </Box>
+                <Box sx={{ flex: 1 }}>
                   <Typography variant="subtitle1" gutterBottom sx={{ fontWeight: 600 }}>
                     Long-term Value:
                   </Typography>
@@ -509,8 +501,8 @@ const RoboticVsTraditional: React.FC = () => {
                       Better aesthetic and functional outcomes
                     </Typography>
                   </Box>
-                </Grid>
-              </Grid>
+                </Box>
+              </Box>
             </AccordionDetails>
           </Accordion>
 
@@ -525,50 +517,46 @@ const RoboticVsTraditional: React.FC = () => {
                 Don't just read about the advantages - schedule a consultation to see 
                 how Yomi robotic technology can transform your implant experience.
               </Typography>
-              <Grid container spacing={2} justifyContent="center">
-                <Grid item={true}="true">
-                  <Button
-                    variant="contained"
-                    size="large"
-                    onClick={() => window.open('tel:+17189480870', '_blank')}
-                    sx={{
-                      bgcolor: 'white',
-                      color: 'primary.main',
-                      fontSize: '1.1rem',
-                      py: 1.5,
-                      px: 4,
-                      '&:hover': {
-                        bgcolor: 'grey.100'
-                      }
-                    }}
-                  >
-                    Schedule Robotic Consultation
-                  </Button>
-                </Grid>
-                <Grid item={true}="true">
-                  <Button
-                    variant="outlined"
-                    size="large"
-                    onClick={() => {
-                      const element = document.getElementById('yomi-chatbot')
-                      element?.scrollIntoView({ behavior: 'smooth' })
-                    }}
-                    sx={{
-                      borderColor: 'white',
-                      color: 'white',
-                      fontSize: '1.1rem',
-                      py: 1.5,
-                      px: 4,
-                      '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.1)',
-                        borderColor: 'white'
-                      }
-                    }}
-                  >
-                    Ask Our Yomi Expert
-                  </Button>
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center' }}>
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={() => window.open('tel:+17189480870', '_blank')}
+                  sx={{
+                    bgcolor: 'white',
+                    color: 'primary.main',
+                    fontSize: '1.1rem',
+                    py: 1.5,
+                    px: 4,
+                    '&:hover': {
+                      bgcolor: 'grey.100'
+                    }
+                  }}
+                >
+                  Schedule Robotic Consultation
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  onClick={() => {
+                    const element = document.getElementById('yomi-chatbot')
+                    element?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  sx={{
+                    borderColor: 'white',
+                    color: 'white',
+                    fontSize: '1.1rem',
+                    py: 1.5,
+                    px: 4,
+                    '&:hover': {
+                      bgcolor: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: 'white'
+                    }
+                  }}
+                >
+                  Ask Our Yomi Expert
+                </Button>
+              </Box>
             </Card>
           </Box>
         </motion.div>
