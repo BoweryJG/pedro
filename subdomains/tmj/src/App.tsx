@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Box, Container } from '@mui/material'
 import { motion } from 'framer-motion'
 import TMJHero from './components/TMJHero'
@@ -7,6 +8,9 @@ import TMJChatbot from './components/TMJChatbot'
 import tmjContent from './data/tmjContent.json'
 
 function App() {
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, []);
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
       {/* Hero Section */}
