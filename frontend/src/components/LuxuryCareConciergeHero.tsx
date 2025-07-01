@@ -14,105 +14,7 @@ import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import { LuxuryNavigationIcon, LuxuryExploreIcon, LuxuryEmergencyIcon, LuxurySparkleIcon } from './icons/LuxuryIcons';
 
-// Particle system component
-const ParticleField: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    
-    const particles: Array<{
-      x: number;
-      y: number;
-      vx: number;
-      vy: number;
-      size: number;
-      opacity: number;
-    }> = [];
-    
-    // Create particles
-    for (let i = 0; i < 50; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        size: Math.random() * 3 + 1,
-        opacity: Math.random() * 0.5 + 0.2,
-      });
-    }
-    
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach((particle) => {
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        
-        // Wrap around edges
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
-        
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(102, 126, 234, ${particle.opacity})`;
-        ctx.fill();
-        
-        // Draw connections
-        particles.forEach((otherParticle) => {
-          const distance = Math.sqrt(
-            Math.pow(particle.x - otherParticle.x, 2) +
-            Math.pow(particle.y - otherParticle.y, 2)
-          );
-          
-          if (distance < 150) {
-            ctx.beginPath();
-            ctx.moveTo(particle.x, particle.y);
-            ctx.lineTo(otherParticle.x, otherParticle.y);
-            ctx.strokeStyle = `rgba(102, 126, 234, ${0.1 * (1 - distance / 150)})`;
-            ctx.stroke();
-          }
-        });
-      });
-      
-      requestAnimationFrame(animate);
-    };
-    
-    animate();
-    
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-  
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        pointerEvents: 'none',
-      }}
-    />
-  );
-};
+// Removed ParticleField component for performance optimization
 
 const LuxuryCareConciergeHero: React.FC = () => {
   const theme = useTheme();
@@ -221,7 +123,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
       
       {/* Particle system - removed for performance */}
       
-      {/* Floating orbs */}
+      {/* Floating orbs - optimized blur for performance */}
       <Box
         sx={{
           position: 'absolute',
@@ -231,9 +133,10 @@ const LuxuryCareConciergeHero: React.FC = () => {
           height: 300,
           borderRadius: '50%',
           background: 'var(--gradient-luxury)',
-          filter: 'blur(80px)',
-          opacity: 0.3,
+          filter: 'blur(40px)',
+          opacity: 0.2,
           animation: 'float 8s ease-in-out infinite',
+          willChange: 'transform',
         }}
       />
       <Box
@@ -245,9 +148,10 @@ const LuxuryCareConciergeHero: React.FC = () => {
           height: 400,
           borderRadius: '50%',
           background: 'var(--gradient-holographic)',
-          filter: 'blur(100px)',
-          opacity: 0.2,
+          filter: 'blur(50px)',
+          opacity: 0.15,
           animation: 'float 10s ease-in-out infinite reverse',
+          willChange: 'transform',
         }}
       />
 

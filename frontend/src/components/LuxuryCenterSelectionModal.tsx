@@ -255,7 +255,7 @@ const LuxuryCenterSelectionModal: React.FC<LuxuryCenterSelectionModalProps> = ({
                   height: '100%',
                   cursor: 'pointer',
                   position: 'relative',
-                  overflow: 'visible',
+                  overflow: 'hidden',
                   background: 'rgba(255, 255, 255, 0.9)',
                   backdropFilter: 'blur(20px)',
                   border: '2px solid',
