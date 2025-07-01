@@ -1,0 +1,185 @@
+{
+  "hero": {
+    "title": "Yomi Robotic Dental Implants",
+    "subtitle": "Pioneering the Future of Precision Dentistry with Cutting-Edge Robotic Technology",
+    "description": "We are revolutionizing dental implant surgery with the Yomi robotic system, delivering faster, safer, and more personalized dental implants with unmatched precision.",
+    "statistics": [
+      {
+        "number": "99.5%",
+        "label": "Robotic Precision Accuracy"
+      },
+      {
+        "number": "50%",
+        "label": "Faster Healing Time"
+      },
+      {
+        "number": "First",
+        "label": "FDA-Approved Dental Robot"
+      }
+    ],
+    "primaryButton": {
+      "text": "Discover Yomi Technology",
+      "action": "learn_more"
+    },
+    "secondaryButton": {
+      "text": "Schedule Robotic Consultation",
+      "action": "book_consultation"
+    }
+  },
+  "doctor": {
+    "name": "Dr. Gregory Pedro, DMD",
+    "title": "Certified Yomi Robotic Surgery Specialist",
+    "credentials": [
+      "Temple University School of Dentistry - DMD",
+      "Yomi Robotic System Certified",
+      "Computer-Guided Surgery Specialist",
+      "ADA Certified Prosthodontist",
+      "Advanced Robotic Training Certification"
+    ],
+    "experience": "Pioneer in robotic dental implant surgery with extensive training on the Yomi system and over 500 robotic procedures performed",
+    "expertise": [
+      "Yomi Robotic Implant Surgery",
+      "Computer-Guided Precision Placement",
+      "Minimally Invasive Robotic Procedures",
+      "3D Surgical Planning",
+      "Robotic Full Mouth Reconstruction",
+      "Real-time Surgical Navigation"
+    ]
+  },
+  "yomi_features": [
+    {
+      "title": "FDA-Approved Precision",
+      "description": "Yomi is the first and only FDA-approved robotic system for dental implant surgery, ensuring the highest safety and precision standards.",
+      "benefits": [
+        "FDA-approved technology",
+        "Millimeter-level precision",
+        "Real-time guidance",
+        "Consistent results"
+      ]
+    },
+    {
+      "title": "3D Surgical Planning",
+      "description": "Advanced pre-surgical planning using 3D imaging creates a precise surgical roadmap for optimal implant placement.",
+      "benefits": [
+        "Detailed 3D visualization",
+        "Predictable outcomes",
+        "Customized treatment plans",
+        "Reduced surgery time"
+      ]
+    },
+    {
+      "title": "Minimally Invasive Surgery",
+      "description": "Robotic precision enables smaller incisions and less tissue trauma for faster healing and reduced discomfort.",
+      "benefits": [
+        "Smaller incisions",
+        "Less bleeding",
+        "Reduced swelling",
+        "Faster recovery"
+      ]
+    },
+    {
+      "title": "Real-Time Navigation",
+      "description": "Continuous monitoring and adjustment during surgery ensures perfect implant positioning according to the pre-planned design.",
+      "benefits": [
+        "Live surgical guidance",
+        "Instant adjustments",
+        "Perfect positioning",
+        "Enhanced safety"
+      ]
+    }
+  ],
+  "robotic_vs_traditional": {
+    "robotic_advantages": [
+      "99.5% precision accuracy",
+      "Minimally invasive approach",
+      "Faster healing time",
+      "Real-time surgical guidance",
+      "Predictable outcomes",
+      "Reduced surgical time",
+      "Less post-operative discomfort",
+      "FDA-approved technology"
+    ],
+    "traditional_limitations": [
+      "Human error variability",
+      "Larger incisions required",
+      "Longer healing time",
+      "Manual placement limitations",
+      "Less predictable outcomes",
+      "Extended surgery time",
+      "More post-operative pain",
+      "Technique-dependent results"
+    ]
+  },
+  "procedure_timeline": [
+    {
+      "step": 1,
+      "title": "3D Imaging & Planning",
+      "description": "Comprehensive 3D scan and digital treatment planning",
+      "duration": "1 visit"
+    },
+    {
+      "step": 2,
+      "title": "Robotic Surgery",
+      "description": "Precise implant placement using Yomi robotic guidance",
+      "duration": "1-2 hours"
+    },
+    {
+      "step": 3,
+      "title": "Healing Period",
+      "description": "Accelerated healing due to minimally invasive approach",
+      "duration": "2-3 months"
+    },
+    {
+      "step": 4,
+      "title": "Final Restoration",
+      "description": "Custom crown or prosthetic placement",
+      "duration": "1 visit"
+    }
+  ],
+  "financing": {
+    "providers": ["Cherry", "Sunbit", "CareCredit", "Affirm"],
+    "robotic_pricing": {
+      "single_implant": {
+        "min": 4500,
+        "max": 6500
+      },
+      "multiple_implants": {
+        "min": 12000,
+        "max": 20000
+      },
+      "full_mouth": {
+        "min": 35000,
+        "max": 55000
+      }
+    },
+    "technology_fee": "Advanced robotic technology included in all procedures"
+  },
+  "testimonials": [
+    {
+      "text": "The Yomi robotic surgery was incredible. Dr. Pedro explained every step, and the precision was amazing. I had minimal pain and healed so much faster than my friend who had traditional implants.",
+      "author": "Jennifer L.",
+      "rating": 5,
+      "procedure": "Robotic Single Implant"
+    },
+    {
+      "text": "As a healthcare professional myself, I was impressed by the technology and Dr. Pedro's expertise. The robotic system gave me confidence in the outcome, and the results exceeded my expectations.",
+      "author": "Dr. Michael R.",
+      "rating": 5,
+      "procedure": "Robotic Multiple Implants"
+    }
+  ],
+  "contact": {
+    "phone": "(718) 948-0870",
+    "email": "hello@roboticimplantsnyc.com",
+    "address": "Staten Island, NY",
+    "hours": {
+      "monday": "9:00 AM - 6:00 PM",
+      "tuesday": "9:00 AM - 6:00 PM",
+      "wednesday": "9:00 AM - 6:00 PM",
+      "thursday": "9:00 AM - 6:00 PM",
+      "friday": "9:00 AM - 5:00 PM",
+      "saturday": "By Appointment",
+      "sunday": "Closed"
+    }
+  }
+}

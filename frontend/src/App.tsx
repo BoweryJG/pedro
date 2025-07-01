@@ -16,6 +16,13 @@ import { MobileChatOptimized } from './components/MobileChatOptimized';
 import { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 
+// Subdomain Pages
+import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
+import ImplantsSubdomainPage from './pages/implants/ImplantsSubdomainPage';
+import RoboticSubdomainPage from './pages/robotic/RoboticSubdomainPage';
+import MedSpaSubdomainPage from './pages/medspa/MedSpaSubdomainPage';
+import AboutFaceSubdomainPage from './pages/aboutface/AboutFaceSubdomainPage';
+
 function App() {
   const [chatOpen, setChatOpen] = useState(false);
   const theme = useTheme();
@@ -34,6 +41,13 @@ function App() {
           <Route path="smile-simulator" element={<SmileSimulatorPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="instagram-dashboard" element={<InstagramDashboard />} />
+          
+          {/* Subdomain Routes */}
+          <Route path="tmj/*" element={<TMJSubdomainPage />} />
+          <Route path="implants/*" element={<ImplantsSubdomainPage />} />
+          <Route path="robotic/*" element={<RoboticSubdomainPage />} />
+          <Route path="medspa/*" element={<MedSpaSubdomainPage />} />
+          <Route path="aboutface/*" element={<AboutFaceSubdomainPage />} />
         </Route>
       </Routes>
       {chatOpen && <Chatbot onClose={() => setChatOpen(false)} />}

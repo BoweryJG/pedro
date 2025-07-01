@@ -1,0 +1,285 @@
+{
+  "hero": {
+    "title": "About Face",
+    "subtitle": "Premium Facial Aesthetics",
+    "description": "Discover the art of facial rejuvenation with Dr. Pedro's expertise in advanced facial aesthetics, dermal fillers, and personalized skincare treatments.",
+    "cta": "Book Your Facial Consultation",
+    "images": [
+      "/api/placeholder/400/600",
+      "/api/placeholder/400/600",
+      "/api/placeholder/400/600"
+    ]
+  },
+  "doctor": {
+    "name": "Dr. Pedro",
+    "title": "Board-Certified Facial Aesthetic Specialist",
+    "credentials": [
+      "DDS, Aesthetic Medicine Certification",
+      "Advanced Dermal Filler Training",
+      "Facial Anatomy & Injectable Specialist"
+    ],
+    "experience": "15+ years",
+    "image": "/api/placeholder/300/400"
+  },
+  "treatments": [
+    {
+      "id": "dermal-fillers",
+      "name": "Dermal Fillers",
+      "category": "Facial Enhancement",
+      "description": "Restore volume, smooth lines, and enhance facial contours with FDA-approved hyaluronic acid fillers.",
+      "duration": "30-60 minutes",
+      "results": "Immediate, lasting 6-18 months",
+      "price": "$650-$1,200",
+      "image": "/api/placeholder/300/200",
+      "benefits": [
+        "Instant volume restoration",
+        "Natural-looking results",
+        "No downtime required",
+        "Reversible treatment"
+      ],
+      "areas": [
+        "Lips",
+        "Cheeks",
+        "Nasolabial folds",
+        "Marionette lines",
+        "Under-eye hollows",
+        "Jawline definition"
+      ]
+    },
+    {
+      "id": "botox-facial",
+      "name": "Botox Facial Rejuvenation",
+      "category": "Wrinkle Prevention",
+      "description": "Smooth dynamic wrinkles and prevent new lines with precision Botox injections for natural facial movement.",
+      "duration": "15-30 minutes",
+      "results": "Visible in 3-7 days, lasting 3-4 months",
+      "price": "$12-$15 per unit",
+      "image": "/api/placeholder/300/200",
+      "benefits": [
+        "Prevents wrinkle formation",
+        "Quick treatment",
+        "Maintains natural expressions",
+        "No recovery time"
+      ],
+      "areas": [
+        "Forehead lines",
+        "Crow's feet",
+        "Frown lines",
+        "Bunny lines",
+        "Lip lines",
+        "Neck bands"
+      ]
+    },
+    {
+      "id": "facial-threading",
+      "name": "PDO Thread Lift",
+      "category": "Non-Surgical Lift",
+      "description": "Lift and tighten facial skin with absorbable PDO threads for immediate and progressive results.",
+      "duration": "45-90 minutes",
+      "results": "Immediate lift, continued improvement over 6 months",
+      "price": "$1,200-$2,500",
+      "image": "/api/placeholder/300/200",
+      "benefits": [
+        "Non-surgical facelift",
+        "Stimulates collagen production",
+        "Minimal downtime",
+        "Natural tissue regeneration"
+      ],
+      "areas": [
+        "Mid-face lift",
+        "Jawline definition",
+        "Neck tightening",
+        "Brow lift",
+        "Cheek lift"
+      ]
+    },
+    {
+      "id": "chemical-peels",
+      "name": "Advanced Chemical Peels",
+      "category": "Skin Resurfacing",
+      "description": "Rejuvenate facial skin with customized chemical peels for improved texture, tone, and clarity.",
+      "duration": "30-45 minutes",
+      "results": "Progressive improvement over 2-4 weeks",
+      "price": "$150-$400",
+      "image": "/api/placeholder/300/200",
+      "benefits": [
+        "Improved skin texture",
+        "Reduced hyperpigmentation",
+        "Minimized pore appearance",
+        "Enhanced radiance"
+      ],
+      "levels": [
+        "Light peel (no downtime)",
+        "Medium peel (3-7 days)",
+        "Deep peel (7-14 days)"
+      ]
+    },
+    {
+      "id": "microneedling",
+      "name": "RF Microneedling",
+      "category": "Collagen Induction",
+      "description": "Stimulate natural collagen production with radiofrequency microneedling for skin tightening and rejuvenation.",
+      "duration": "60-90 minutes",
+      "results": "Progressive improvement over 3-6 months",
+      "price": "$400-$600",
+      "image": "/api/placeholder/300/200",
+      "benefits": [
+        "Collagen stimulation",
+        "Skin tightening",
+        "Scar improvement",
+        "Texture refinement"
+      ],
+      "sessions": "3-6 treatments recommended"
+    },
+    {
+      "id": "facial-contouring",
+      "name": "Liquid Facelift",
+      "category": "Complete Rejuvenation",
+      "description": "Comprehensive facial rejuvenation combining fillers and Botox for a complete non-surgical facelift.",
+      "duration": "90-120 minutes",
+      "results": "Immediate transformation, lasting 12-18 months",
+      "price": "$2,500-$4,000",
+      "image": "/api/placeholder/300/200",
+      "benefits": [
+        "Complete facial rejuvenation",
+        "Natural, balanced results",
+        "No surgical downtime",
+        "Customized treatment plan"
+      ]
+    }
+  ],
+  "facialPackages": [
+    {
+      "id": "signature-refresh",
+      "name": "Signature Refresh",
+      "description": "Perfect introduction to facial aesthetics",
+      "treatments": ["Botox (30 units)", "Lip Enhancement", "Consultation"],
+      "originalPrice": 980,
+      "packagePrice": 850,
+      "savings": 130,
+      "duration": "90 minutes",
+      "bestFor": "First-time patients"
+    },
+    {
+      "id": "complete-rejuvenation",
+      "name": "Complete Rejuvenation",
+      "description": "Comprehensive facial transformation",
+      "treatments": ["Liquid Facelift", "Chemical Peel", "RF Microneedling"],
+      "originalPrice": 3200,
+      "packagePrice": 2800,
+      "savings": 400,
+      "duration": "3 sessions over 6 weeks",
+      "bestFor": "Maximum results"
+    },
+    {
+      "id": "maintenance-plan",
+      "name": "Maintenance Plan",
+      "description": "Quarterly touch-up program",
+      "treatments": ["Botox refresh", "Filler touch-up", "Skincare consultation"],
+      "originalPrice": 1400,
+      "packagePrice": 1200,
+      "savings": 200,
+      "duration": "Every 3-4 months",
+      "bestFor": "Ongoing care"
+    }
+  ],
+  "beforeAfter": [
+    {
+      "id": "lip-enhancement",
+      "treatment": "Lip Enhancement",
+      "before": "/api/placeholder/300/400",
+      "after": "/api/placeholder/300/400",
+      "description": "Natural lip volume enhancement with hyaluronic acid fillers"
+    },
+    {
+      "id": "cheek-augmentation",
+      "treatment": "Cheek Augmentation",
+      "before": "/api/placeholder/300/400",
+      "after": "/api/placeholder/300/400",
+      "description": "Mid-face volume restoration for youthful contours"
+    },
+    {
+      "id": "liquid-facelift",
+      "treatment": "Liquid Facelift",
+      "before": "/api/placeholder/300/400",
+      "after": "/api/placeholder/300/400",
+      "description": "Complete facial rejuvenation without surgery"
+    }
+  ],
+  "testimonials": [
+    {
+      "id": 1,
+      "name": "Sarah M.",
+      "rating": 5,
+      "text": "Dr. Pedro's expertise in facial aesthetics is unmatched. My liquid facelift results are natural and beautiful.",
+      "treatment": "Liquid Facelift",
+      "image": "/api/placeholder/80/80"
+    },
+    {
+      "id": 2,
+      "name": "Jennifer L.",
+      "rating": 5,
+      "text": "The lip enhancement exceeded my expectations. Subtle, natural, and exactly what I wanted.",
+      "treatment": "Lip Enhancement",
+      "image": "/api/placeholder/80/80"
+    },
+    {
+      "id": 3,
+      "name": "Maria R.",
+      "rating": 5,
+      "text": "Professional, comfortable environment. The results from my cheek fillers are stunning.",
+      "treatment": "Dermal Fillers",
+      "image": "/api/placeholder/80/80"
+    }
+  ],
+  "financing": {
+    "providers": [
+      {
+        "name": "CareCredit",
+        "description": "Healthcare financing with promotional offers",
+        "benefits": ["0% interest for 6-24 months", "Instant approval", "No prepayment penalty"],
+        "logo": "/api/placeholder/120/60"
+      },
+      {
+        "name": "Cherry",
+        "description": "Point-of-sale financing for aesthetic treatments",
+        "benefits": ["Quick application", "Flexible terms", "Digital payments"],
+        "logo": "/api/placeholder/120/60"
+      }
+    ],
+    "plans": [
+      {
+        "amount": 1000,
+        "term": 12,
+        "monthly": 91,
+        "apr": "9.99%"
+      },
+      {
+        "amount": 2500,
+        "term": 18,
+        "monthly": 154,
+        "apr": "12.99%"
+      },
+      {
+        "amount": 5000,
+        "term": 24,
+        "monthly": 241,
+        "apr": "15.99%"
+      }
+    ]
+  },
+  "contact": {
+    "phone": "(555) 123-4567",
+    "email": "aboutface@gregpedromd.com",
+    "address": "123 Aesthetic Ave, Beauty City, BC 12345",
+    "hours": {
+      "monday": "9:00 AM - 6:00 PM",
+      "tuesday": "9:00 AM - 6:00 PM",
+      "wednesday": "9:00 AM - 6:00 PM",
+      "thursday": "9:00 AM - 6:00 PM",
+      "friday": "9:00 AM - 5:00 PM",
+      "saturday": "9:00 AM - 3:00 PM",
+      "sunday": "Closed"
+    }
+  }
+}

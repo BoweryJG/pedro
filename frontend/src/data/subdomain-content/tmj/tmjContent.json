@@ -1,0 +1,366 @@
+{
+  "hero": {
+    "title": "TMJ & Temporomandibular Disorder Specialist",
+    "subtitle": "Dr. Greg Pedro - The Staten Island TMJ Expert Who Wrote the Book on TMJ Syndrome",
+    "description": "Comprehensive TMJ treatment using advanced technologies including BOTOX, electrophoresis, acoustic shockwave therapy, and personalized treatment plans for lasting relief.",
+    "statistics": [
+      {
+        "number": "30+",
+        "label": "Years of TMJ Experience"
+      },
+      {
+        "number": "95%",
+        "label": "Patient Pain Relief Rate"
+      },
+      {
+        "number": "1000+",
+        "label": "TMJ Cases Treated"
+      }
+    ],
+    "primaryButton": {
+      "text": "Schedule TMJ Evaluation",
+      "action": "book_appointment"
+    },
+    "secondaryButton": {
+      "text": "Call (718) 356-9700",
+      "action": "phone_call"
+    }
+  },
+  "doctor": {
+    "name": "Dr. Gregory Pedro, DMD",
+    "title": "Board-Certified TMJ Specialist & Prosthodontist",
+    "credentials": [
+      "Temple University School of Dentistry - DMD",
+      "ADA Certified Prosthodontist",
+      "TMJ Specialist Certification - BOTOX FOR DENTISTS",
+      "Yomi Robotic System Certified",
+      "Staten Island Hall of Fame Inductee"
+    ],
+    "experience": "Over 30 years of experience treating TMJ disorders with extensive training in jaw anatomy and bite dysfunction diagnosis",
+    "expertise": [
+      "TMJ/TMD Diagnosis and Treatment",
+      "Advanced BOTOX Therapy for TMJ",
+      "Electrophoresis Customized Serums",
+      "Acoustic Shockwave Therapy",
+      "Digital TMJ Analysis",
+      "Comprehensive Bite Evaluation"
+    ],
+    "book_title": "TMJ Syndrome: A Comprehensive Guide",
+    "book_description": "Dr. Pedro's published TMJ eBook covers diagnosis, short-term solutions, long-term treatment options, and cutting-edge technological approaches to treating TMJ disorders."
+  },
+  "symptoms": [
+    {
+      "id": 1,
+      "name": "Jaw Pain & Clicking",
+      "description": "Persistent pain in jaw joints with audible clicking or popping sounds during movement",
+      "severity": "high",
+      "frequency": "Most common TMJ symptom",
+      "impact": "High impact on daily activities"
+    },
+    {
+      "id": 2,
+      "name": "Chronic Headaches",
+      "description": "Recurring headaches often mistaken for migraines, caused by jaw muscle tension",
+      "severity": "high",
+      "frequency": "90% of TMJ patients",
+      "impact": "High impact on work and daily life"
+    },
+    {
+      "id": 3,
+      "name": "Facial Pain",
+      "description": "Radiating pain throughout face, cheeks, and around the ears",
+      "severity": "medium",
+      "frequency": "80% of cases",
+      "impact": "Moderate impact on social activities"
+    },
+    {
+      "id": 4,
+      "name": "Neck & Shoulder Tension",
+      "description": "Muscle stiffness and pain extending from jaw to neck and shoulders",
+      "severity": "medium",
+      "frequency": "75% of patients",
+      "impact": "Affects posture and movement"
+    },
+    {
+      "id": 5,
+      "name": "Limited Jaw Movement",
+      "description": "Difficulty opening mouth fully or jaw locking in open/closed position",
+      "severity": "high",
+      "frequency": "65% of cases",
+      "impact": "Significantly affects eating and speaking"
+    },
+    {
+      "id": 6,
+      "name": "Teeth Grinding (Bruxism)",
+      "description": "Unconscious grinding or clenching of teeth, especially during sleep",
+      "severity": "medium",
+      "frequency": "70% of TMJ patients",
+      "impact": "Causes tooth damage and sleep disruption"
+    },
+    {
+      "id": 7,
+      "name": "Ear Problems",
+      "description": "Ear pain, ringing (tinnitus), or feeling of fullness in ears",
+      "severity": "medium",
+      "frequency": "60% of patients",
+      "impact": "Affects hearing and concentration"
+    },
+    {
+      "id": 8,
+      "name": "Sleep Disturbances",
+      "description": "Poor sleep quality due to pain and unconscious jaw clenching",
+      "severity": "high",
+      "frequency": "85% of severe cases",
+      "impact": "Severely impacts overall health and energy"
+    }
+  ],
+  "treatments": [
+    {
+      "id": 1,
+      "name": "Advanced BOTOX Therapy",
+      "description": "FDA-approved BOTOX injections specifically for TMJ muscle relaxation and pain relief",
+      "features": [
+        "Pain-free injection technique",
+        "Immediate muscle relaxation",
+        "3-6 month effectiveness",
+        "Non-surgical solution",
+        "Minimal downtime"
+      ],
+      "effectiveness": "95% success rate",
+      "duration": "3-6 months per treatment",
+      "candidacy": "Ideal for muscle-related TMJ pain and bruxism"
+    },
+    {
+      "id": 2,
+      "name": "Electrophoresis Customized Serums",
+      "description": "Advanced delivery system for customized therapeutic compounds directly to affected tissues",
+      "features": [
+        "Targeted drug delivery",
+        "Reduced systemic side effects",
+        "Enhanced healing response",
+        "Customized medication cocktails",
+        "Accelerated recovery"
+      ],
+      "effectiveness": "90% improvement",
+      "duration": "Series of treatments",
+      "candidacy": "Patients with inflammation and tissue damage"
+    },
+    {
+      "id": 3,
+      "name": "Acoustic Shockwave Therapy",
+      "description": "Non-invasive acoustic wave treatment to stimulate healing and reduce inflammation",
+      "features": [
+        "Promotes tissue regeneration",
+        "Improves blood circulation",
+        "Reduces inflammation",
+        "Pain-free treatment",
+        "No side effects"
+      ],
+      "effectiveness": "85% pain reduction",
+      "duration": "4-6 sessions",
+      "candidacy": "Excellent for chronic TMJ pain and stiffness"
+    },
+    {
+      "id": 4,
+      "name": "Digital TMJ Analysis",
+      "description": "State-of-the-art digital imaging and bite analysis for precise diagnosis",
+      "features": [
+        "3D jaw joint imaging",
+        "Bite pressure mapping",
+        "Movement pattern analysis",
+        "Precise treatment planning",
+        "Progress monitoring"
+      ],
+      "effectiveness": "99% diagnostic accuracy",
+      "duration": "Single assessment",
+      "candidacy": "Essential for all TMJ patients"
+    },
+    {
+      "id": 5,
+      "name": "Custom Oral Appliances",
+      "description": "Precisely fitted oral devices designed to correct bite alignment and reduce stress",
+      "features": [
+        "Custom bite correction",
+        "Night guard protection",
+        "Jaw position optimization",
+        "Teeth protection",
+        "Comfortable wear"
+      ],
+      "effectiveness": "80% improvement",
+      "duration": "Ongoing use",
+      "candidacy": "Ideal for bite-related TMJ and bruxism"
+    },
+    {
+      "id": 6,
+      "name": "Laser Therapy",
+      "description": "Advanced laser treatment for pain reduction and tissue healing",
+      "features": [
+        "Deep tissue penetration",
+        "Anti-inflammatory effects",
+        "Accelerated healing",
+        "Pain reduction",
+        "No recovery time"
+      ],
+      "effectiveness": "88% pain relief",
+      "duration": "Multiple sessions",
+      "candidacy": "Good for acute pain and inflammation"
+    }
+  ],
+  "treatmentTimeline": [
+    {
+      "phase": "1",
+      "title": "Comprehensive Evaluation",
+      "description": "Thorough assessment to identify the root cause of your TMJ symptoms",
+      "duration": "1-2 weeks",
+      "steps": [
+        "Complete medical and dental history review",
+        "Digital TMJ imaging and analysis",
+        "Bite assessment and jaw movement evaluation",
+        "Pain level and symptom documentation",
+        "Custom treatment plan development"
+      ]
+    },
+    {
+      "phase": "2",
+      "title": "Immediate Pain Relief",
+      "description": "Quick relief strategies to reduce pain and discomfort",
+      "duration": "1-4 weeks",
+      "steps": [
+        "BOTOX injections for muscle relaxation",
+        "Anti-inflammatory medications",
+        "Trigger point therapy",
+        "Initial appliance fitting if needed",
+        "Patient education and home care instructions"
+      ]
+    },
+    {
+      "phase": "3",
+      "title": "Active Treatment",
+      "description": "Comprehensive treatment plan implementation for lasting results",
+      "duration": "2-6 months",
+      "steps": [
+        "Regular BOTOX maintenance treatments",
+        "Electrophoresis serum therapy sessions",
+        "Acoustic shockwave therapy",
+        "Custom appliance adjustments",
+        "Progress monitoring and plan modifications"
+      ]
+    },
+    {
+      "phase": "4",
+      "title": "Long-term Management",
+      "description": "Ongoing care to maintain results and prevent recurrence",
+      "duration": "Ongoing",
+      "steps": [
+        "Maintenance BOTOX treatments",
+        "Regular check-ups and monitoring",
+        "Appliance maintenance and adjustments",
+        "Lifestyle modification guidance",
+        "Prevention strategies implementation"
+      ]
+    }
+  ],
+  "whyChoose": [
+    {
+      "title": "Specialized TMJ Expertise",
+      "description": "Dr. Pedro is the only TMJ specialist on Staten Island with comprehensive certification in advanced TMJ treatments including BOTOX therapy."
+    },
+    {
+      "title": "Advanced Technology",
+      "description": "We offer the most comprehensive arsenal of TMJ treatment technologies available, from digital analysis to acoustic shockwave therapy."
+    },
+    {
+      "title": "Proven Results",
+      "description": "Over 95% of our patients experience immediate pain relief, with long-term success in managing TMJ symptoms."
+    },
+    {
+      "title": "Personalized Treatment",
+      "description": "Every treatment plan is customized based on precise digital analysis and individual patient needs, not a one-size-fits-all approach."
+    },
+    {
+      "title": "Published Authority",
+      "description": "Dr. Pedro literally wrote the book on TMJ syndrome, providing patients with evidence-based treatment backed by extensive research."
+    },
+    {
+      "title": "Comprehensive Care",
+      "description": "From diagnosis to long-term management, we provide complete TMJ care under one roof with the latest technologies."
+    }
+  ],
+  "caseStudies": [
+    {
+      "id": 1,
+      "title": "Chronic TMJ Pain Resolution",
+      "patient": "Professional (name withheld)",
+      "challenge": "15 years of chronic TMJ pain with failed treatments elsewhere",
+      "solution": "Combination BOTOX therapy with custom appliance and electrophoresis",
+      "outcome": "Complete pain elimination within 6 weeks, maintained for 2+ years"
+    },
+    {
+      "id": 2,
+      "title": "Severe Bruxism Management",
+      "patient": "Teacher, Age 34",
+      "challenge": "Severe teeth grinding causing tooth damage and jaw pain",
+      "solution": "BOTOX therapy combined with acoustic shockwave treatment",
+      "outcome": "90% reduction in grinding, significant pain relief, tooth damage prevention"
+    },
+    {
+      "id": 3,
+      "title": "Migraine-Type Headache Relief",
+      "patient": "Executive, Age 45",
+      "challenge": "Daily headaches misdiagnosed as migraines for 5 years",
+      "solution": "TMJ-focused BOTOX therapy with bite correction appliance",
+      "outcome": "Headaches reduced from daily to rare occurrences"
+    }
+  ],
+  "faq": [
+    {
+      "question": "What makes Dr. Pedro's TMJ treatment different?",
+      "answer": "Dr. Pedro is the only provider on Staten Island offering the complete range of advanced TMJ technologies including BOTOX, electrophoresis, and acoustic shockwave therapy. He takes a comprehensive, individualized approach rather than the one-size-fits-all bruxism appliance approach used by most providers."
+    },
+    {
+      "question": "How quickly will I see results?",
+      "answer": "Most patients experience immediate relief from BOTOX treatments within 24-48 hours. Comprehensive treatment plans typically show significant improvement within 2-6 weeks, with many patients achieving complete pain relief."
+    },
+    {
+      "question": "Is BOTOX safe for TMJ treatment?",
+      "answer": "Yes, BOTOX is FDA-approved for TMJ treatment and has an excellent safety profile when administered by trained specialists like Dr. Pedro. He is certified in TMJ BOTOX therapy and uses pain-free injection techniques."
+    },
+    {
+      "question": "Will insurance cover TMJ treatment?",
+      "answer": "Many insurance plans cover TMJ treatment, especially when medically necessary. We work with patients to maximize insurance benefits and offer financing options for any remaining costs."
+    },
+    {
+      "question": "What if other treatments haven't worked?",
+      "answer": "Many of our patients come to us after failed treatments elsewhere. Dr. Pedro's advanced diagnostic approach and comprehensive treatment options often succeed where others have failed. We specialize in complex TMJ cases."
+    },
+    {
+      "question": "How long do TMJ treatments last?",
+      "answer": "BOTOX treatments typically last 3-6 months. Other treatments like acoustic shockwave therapy provide longer-lasting benefits. With proper management, many patients achieve long-term relief with periodic maintenance."
+    }
+  ],
+  "contact": {
+    "phone": "(718) 356-9700",
+    "address": "2656 Hylan Boulevard, Suite #23, Staten Island, NY 10306",
+    "hours": {
+      "weekdays": "10:00 AM - 7:00 PM",
+      "saturday": "9:00 AM - 5:00 PM",
+      "sunday": "9:00 AM - 5:00 PM"
+    },
+    "email": "aboutfacedds@gmail.com"
+  },
+  "seo": {
+    "keywords": [
+      "TMJ treatment Staten Island",
+      "TMJ specialist NYC",
+      "BOTOX for TMJ",
+      "Dr. Greg Pedro TMJ",
+      "temporomandibular disorder treatment",
+      "jaw pain relief",
+      "TMJ BOTOX therapy",
+      "Staten Island TMJ doctor",
+      "TMJ headache treatment",
+      "acoustic shockwave TMJ therapy"
+    ],
+    "description": "Expert TMJ treatment by Dr. Greg Pedro, Staten Island's leading TMJ specialist. Advanced BOTOX therapy, electrophoresis, and acoustic shockwave treatments for lasting TMJ relief."
+  }
+}

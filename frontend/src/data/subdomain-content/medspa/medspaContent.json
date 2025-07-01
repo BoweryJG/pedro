@@ -1,0 +1,162 @@
+{
+  "hero": {
+    "title": "Transform Your Beauty at Dr. Pedro's MedSpa",
+    "subtitle": "Comprehensive aesthetic treatments combining advanced technology with artistic expertise",
+    "description": "Experience the ultimate in aesthetic excellence with our full range of cosmetic treatments. From Botox and fillers to body contouring and facial rejuvenation, discover your most confident self.",
+    "cta": "Book Your Aesthetic Consultation",
+    "backgroundImage": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Teeth-Whitening-Background.png",
+    "features": [
+      "FDA-Approved Treatments",
+      "Board-Certified Provider",
+      "Personalized Treatment Plans",
+      "Financing Available"
+    ]
+  },
+  "doctor": {
+    "name": "Dr. Gregory Pedro, DMD",
+    "title": "Aesthetic Medicine Specialist",
+    "description": "Dr. Pedro combines his expertise in facial anatomy with advanced aesthetic techniques to deliver natural, beautiful results.",
+    "credentials": [
+      "Board-Certified Dentist",
+      "Advanced Aesthetic Training",
+      "20+ Years Experience",
+      "Staten Island's Trusted Provider"
+    ],
+    "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/02/Katherine-Review.png"
+  },
+  "treatments": [
+    {
+      "id": "botox",
+      "name": "Botox & Dysport",
+      "description": "Smooth away wrinkles and fine lines with FDA-approved neurotoxins for a refreshed, youthful appearance.",
+      "duration": "30 minutes",
+      "priceRange": "$300-600",
+      "benefits": ["Reduces wrinkles", "Prevents new lines", "Quick procedure", "No downtime"],
+      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Teeth-Whitening-Logo-1.png"
+    },
+    {
+      "id": "fillers",
+      "name": "Dermal Fillers",
+      "description": "Restore volume and enhance facial contours with premium hyaluronic acid fillers.",
+      "duration": "45 minutes",
+      "priceRange": "$600-1200",
+      "benefits": ["Instant results", "Natural enhancement", "Long-lasting", "Reversible"],
+      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Dental-Implants-Logo.png"
+    },
+    {
+      "id": "emface",
+      "name": "EMFACE Treatment",
+      "description": "Non-invasive facial muscle toning and skin tightening for a natural facelift effect.",
+      "duration": "20 minutes",
+      "priceRange": "$800-1500",
+      "benefits": ["Muscle toning", "Skin tightening", "No downtime", "Pain-free"],
+      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/05/Implants-Featured-Image.png"
+    },
+    {
+      "id": "opus-plasma",
+      "name": "Opus Plasma",
+      "description": "Advanced plasma technology for skin resurfacing and rejuvenation.",
+      "duration": "60 minutes",
+      "priceRange": "$500-1000",
+      "benefits": ["Skin resurfacing", "Collagen stimulation", "Minimal downtime", "Dramatic results"],
+      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/05/Teeth-Whitening-Featured-Image.png"
+    },
+    {
+      "id": "teeth-whitening",
+      "name": "Professional Teeth Whitening",
+      "description": "Brighten your smile with professional-grade whitening treatments.",
+      "duration": "90 minutes",
+      "priceRange": "$400-800",
+      "benefits": ["Immediate results", "Safe procedure", "Long-lasting", "Professional grade"],
+      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Teeth-Whitening-Background.png"
+    },
+    {
+      "id": "combination-packages",
+      "name": "Treatment Combinations",
+      "description": "Custom packages combining multiple treatments for comprehensive aesthetic enhancement.",
+      "duration": "2-3 hours",
+      "priceRange": "$1500-3000",
+      "benefits": ["Package savings", "Comprehensive results", "Coordinated care", "Maximum value"],
+      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Implants-Background.jpg"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Complete Rejuvenation",
+      "treatments": ["Botox", "Fillers", "EMFACE", "Teeth Whitening"],
+      "originalPrice": 3200,
+      "packagePrice": 2400,
+      "savings": 800,
+      "description": "Our most comprehensive package for total facial rejuvenation"
+    },
+    {
+      "name": "Express Enhancement",
+      "treatments": ["Botox", "Teeth Whitening"],
+      "originalPrice": 1000,
+      "packagePrice": 800,
+      "savings": 200,
+      "description": "Quick refresh for busy lifestyles"
+    },
+    {
+      "name": "Volume & Glow",
+      "treatments": ["Fillers", "Opus Plasma"],
+      "originalPrice": 1700,
+      "packagePrice": 1400,
+      "savings": 300,
+      "description": "Restore volume and achieve radiant skin"
+    }
+  ],
+  "financing": {
+    "title": "Flexible Financing Options",
+    "description": "Make your aesthetic dreams affordable with our financing partners",
+    "options": [
+      {
+        "provider": "CareCredit",
+        "terms": "0% APR for 6-24 months",
+        "description": "Healthcare financing with flexible payment options"
+      },
+      {
+        "provider": "Cherry",
+        "terms": "Point-of-sale financing",
+        "description": "Instant approval for qualified applicants"
+      },
+      {
+        "provider": "Payment Plans",
+        "terms": "Custom arrangements",
+        "description": "Work with our team for personalized payment solutions"
+      }
+    ]
+  },
+  "testimonials": [
+    {
+      "name": "Sarah M.",
+      "rating": 5,
+      "comment": "Dr. Pedro is an outstanding dentist. I have a very difficult bite and needed a new bridge. Other dentists did not want to try– with time and expertise, Dr. Pedro succeeded in creating a perfect bridge! He has successfully branched into the field of aesthetics. I tried the deep moisturizing machine and received myriad compliments after the first treatment! I have also tried the Opus plasma treatment and my skin feels wonderful!!",
+      "treatment": "Opus Plasma & Bridge"
+    },
+    {
+      "name": "Jennifer K.",
+      "rating": 5,
+      "comment": "Dr Pedro, displays an easygoing attitude, attentively listens to your problems and offers solutions in easy to understand language all while maintaining a professional attitude. Marie at the desk shows the same qualities. Both exude warmth, understanding, and professionalism. I am very happy to have been introduced to Dr. Pedro and his practice.",
+      "treatment": "Botox & Fillers"
+    }
+  ],
+  "contact": {
+    "phone": "(718) 356-9700",
+    "email": "info@gregpedromd.com",
+    "address": "123 MedSpa Drive, Staten Island, NY 10301",
+    "hours": {
+      "monday": "9:00 AM - 6:00 PM",
+      "tuesday": "9:00 AM - 6:00 PM",
+      "wednesday": "9:00 AM - 6:00 PM",
+      "thursday": "9:00 AM - 6:00 PM",
+      "friday": "9:00 AM - 5:00 PM",
+      "saturday": "9:00 AM - 3:00 PM",
+      "sunday": "Closed"
+    },
+    "social": {
+      "instagram": "@drpedromedispa",
+      "facebook": "DrPedroMedSpa"
+    }
+  }
+}
