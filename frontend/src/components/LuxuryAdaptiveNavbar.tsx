@@ -169,43 +169,20 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                 },
               }}
             >
-              <Box
+              <LuxuryMedicalIcon
                 sx={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: '50%',
+                  fontSize: 42,
                   background: 'var(--gradient-luxury)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)',
-                  position: 'relative',
-                  overflow: 'hidden',
-                  '&::before': {
-                    content: '""',
-                    position: 'absolute',
-                    top: '-50%',
-                    left: '-50%',
-                    width: '200%',
-                    height: '200%',
-                    background: 'var(--gradient-holographic)',
-                    opacity: 0,
-                    transition: 'opacity 0.3s ease',
-                    animation: 'shimmer 3s linear infinite',
-                  },
-                  '&:hover::before': {
-                    opacity: 0.3,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  filter: 'drop-shadow(0 2px 8px rgba(102, 126, 234, 0.3))',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    filter: 'drop-shadow(0 4px 16px rgba(102, 126, 234, 0.5))',
+                    transform: 'scale(1.05)',
                   },
                 }}
-              >
-                <LuxuryMedicalIcon
-                  sx={{
-                    fontSize: 28,
-                    color: 'white',
-                    zIndex: 1,
-                  }}
-                />
-              </Box>
+              />
               <Typography
                 variant="h6"
                 sx={{
@@ -428,19 +405,24 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
             <IconButton
               onClick={handleEmergency}
               sx={{
-                background: 'rgba(255, 61, 87, 0.1)',
-                backdropFilter: 'blur(10px)',
-                color: '#FF3D57',
-                border: '1px solid rgba(255, 61, 87, 0.2)',
+                padding: 1.5,
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  background: 'rgba(255, 61, 87, 0.2)',
-                  borderColor: 'rgba(255, 61, 87, 0.4)',
-                  boxShadow: '0 0 20px rgba(255, 61, 87, 0.3)',
+                  background: 'transparent',
+                  transform: 'scale(1.1)',
                 },
               }}
             >
-              <LuxuryEmergencyIcon sx={{ fontSize: 24 }} />
+              <LuxuryEmergencyIcon 
+                sx={{ 
+                  fontSize: 28,
+                  filter: 'drop-shadow(0 2px 8px rgba(255, 61, 87, 0.3))',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    filter: 'drop-shadow(0 4px 16px rgba(255, 61, 87, 0.5))',
+                  },
+                }} 
+              />
             </IconButton>
           </motion.div>
         </Box>

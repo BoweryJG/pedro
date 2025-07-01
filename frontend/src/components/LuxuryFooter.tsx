@@ -78,20 +78,15 @@ const LuxuryFooter: React.FC = () => {
               transition={{ duration: 0.6 }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                <Box
-                  sx={{
-                    width: 56,
-                    height: 56,
-                    borderRadius: '50%',
+                <LuxuryMedicalIcon 
+                  sx={{ 
+                    fontSize: 48,
                     background: 'var(--gradient-luxury)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    boxShadow: '0 4px 20px rgba(102, 126, 234, 0.3)',
-                  }}
-                >
-                  <LuxuryMedicalIcon sx={{ fontSize: 32, color: 'white' }} />
-                </Box>
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    filter: 'drop-shadow(0 2px 8px rgba(102, 126, 234, 0.3))',
+                  }} 
+                />
                 <Typography
                   variant="h5"
                   sx={{
@@ -227,19 +222,14 @@ const LuxuryFooter: React.FC = () => {
               </Typography>
               <Stack spacing={2.5}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: '50%',
-                      background: alpha('#667eea', 0.1),
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <LuxuryChatIcon sx={{ fontSize: 20, color: '#667eea' }} />
-                  </Box>
+                  <LuxuryChatIcon 
+                    sx={{ 
+                      fontSize: 32,
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }} 
+                  />
                   <Box>
                     <Typography
                       variant="body2"
@@ -264,19 +254,14 @@ const LuxuryFooter: React.FC = () => {
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: '50%',
-                      background: alpha('#764ba2', 0.1),
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <LuxuryContactIcon sx={{ fontSize: 20, color: '#764ba2' }} />
-                  </Box>
+                  <LuxuryContactIcon 
+                    sx={{ 
+                      fontSize: 32,
+                      background: 'linear-gradient(135deg, #764ba2 0%, #f093fb 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }} 
+                  />
                   <Box>
                     <Typography
                       variant="body2"
@@ -301,19 +286,14 @@ const LuxuryFooter: React.FC = () => {
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-                  <Box
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      borderRadius: '50%',
-                      background: alpha('#f093fb', 0.1),
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <LocationOnIcon sx={{ fontSize: 20, color: '#f093fb' }} />
-                  </Box>
+                  <LocationOnIcon 
+                    sx={{ 
+                      fontSize: 32,
+                      background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }} 
+                  />
                   <Box>
                     <Typography
                       variant="body2"

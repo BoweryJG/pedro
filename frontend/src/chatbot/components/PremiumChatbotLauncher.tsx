@@ -34,82 +34,60 @@ export const PremiumChatbotLauncher: React.FC<PremiumChatbotLauncherProps> = ({
       <Box
         onClick={onToggle}
         sx={{
-          width: 56,
-          height: 56,
-          borderRadius: '50%',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          width: 64,
+          height: 64,
           cursor: 'pointer',
           position: 'relative',
-          overflow: 'hidden',
-          transition: 'all 0.3s ease',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          transition: 'all 0.3s ease',
           
-          // Subtle shadow
-          boxShadow: '0 4px 20px rgba(102, 126, 234, 0.25)',
+          // Sophisticated glass effect
+          background: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          boxShadow: `
+            0 8px 32px rgba(102, 126, 234, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.6),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.05)
+          `,
           
           // Hover state
           '&:hover': {
-            transform: 'translateY(-2px) scale(1.05)',
-            boxShadow: '0 6px 30px rgba(102, 126, 234, 0.35)',
-            '&::after': {
-              transform: 'translate(-50%, -50%) scale(1.5)',
-            },
+            transform: 'translateY(-3px)',
+            boxShadow: `
+              0 12px 40px rgba(102, 126, 234, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.8),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.05)
+            `,
             '& .chat-icon': {
-              transform: 'scale(1.1)',
+              transform: 'scale(1.1) rotate(5deg)',
             }
           },
           
           // Active state
           '&:active': {
-            transform: 'translateY(0) scale(0.98)',
-          },
-          
-          // Ambient glow
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            inset: -20,
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%)',
-            animation: 'pulse 3s ease-in-out infinite',
-          },
-          
-          // Inner light
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '80%',
-            height: '80%',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 60%)',
-            transition: 'transform 0.3s ease',
-          },
-          
-          '@keyframes pulse': {
-            '0%, 100%': {
-              transform: 'scale(1)',
-              opacity: 0.5,
-            },
-            '50%': {
-              transform: 'scale(1.1)',
-              opacity: 0.8,
-            },
+            transform: 'translateY(-1px)',
+            boxShadow: `
+              0 4px 20px rgba(102, 126, 234, 0.2),
+              inset 0 1px 0 rgba(255, 255, 255, 0.6),
+              inset 0 -1px 0 rgba(0, 0, 0, 0.05)
+            `,
           },
         }}
       >
         <LuxuryChatIcon 
           className="chat-icon"
           sx={{ 
-            fontSize: 28, 
-            color: 'white',
-            position: 'relative',
-            zIndex: 1,
-            transition: 'transform 0.3s ease',
+            fontSize: 32,
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            filter: 'drop-shadow(0 2px 4px rgba(102, 126, 234, 0.2))',
+            transition: 'all 0.3s ease',
           }} 
         />
       </Box>

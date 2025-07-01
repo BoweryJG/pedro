@@ -265,26 +265,18 @@ const LuxuryCareConciergeHero: React.FC = () => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 80,
                 height: 80,
                 mb: 4,
-                borderRadius: '50%',
-                background: 'var(--gradient-luxury)',
-                boxShadow: '0 20px 60px rgba(102, 126, 234, 0.3)',
                 position: 'relative',
-                '&::before': {
-                  content: '""',
-                  position: 'absolute',
-                  inset: -20,
-                  borderRadius: '50%',
-                  background: 'var(--gradient-luxury)',
-                  opacity: 0.3,
-                  filter: 'blur(20px)',
-                  animation: 'pulse-glow 3s infinite',
-                },
               }}
             >
-              <LuxurySparkleIcon sx={{ color: 'white', fontSize: 40 }} />
+              <LuxurySparkleIcon 
+                sx={{ 
+                  fontSize: 64,
+                  filter: 'drop-shadow(0 8px 32px rgba(102, 126, 234, 0.4))',
+                  animation: 'float 3s ease-in-out infinite',
+                }} 
+              />
             </Box>
           </motion.div>
 
@@ -425,27 +417,14 @@ const LuxuryCareConciergeHero: React.FC = () => {
                   <Box
                     className="entry-icon"
                     sx={{
-                      width: 100,
-                      height: 100,
-                      borderRadius: '50%',
-                      background: 'rgba(102, 126, 234, 0.1)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       mx: 'auto',
                       mb: 3,
+                      height: 80,
                       transition: 'transform 0.3s ease',
                       position: 'relative',
-                      '&::before': {
-                        content: '""',
-                        position: 'absolute',
-                        inset: -2,
-                        borderRadius: '50%',
-                        background: entry.gradient,
-                        opacity: hoveredCard === index ? 0.5 : 0,
-                        filter: 'blur(10px)',
-                        transition: 'opacity 0.3s ease',
-                      },
                     }}
                   >
                     <Box 
@@ -453,11 +432,11 @@ const LuxuryCareConciergeHero: React.FC = () => {
                         background: entry.gradient, 
                         WebkitBackgroundClip: 'text', 
                         WebkitTextFillColor: 'transparent',
-                        position: 'relative',
-                        zIndex: 1,
+                        filter: hoveredCard === index ? 'drop-shadow(0 4px 20px rgba(102, 126, 234, 0.4))' : 'none',
+                        transition: 'filter 0.3s ease',
                       }}
                     >
-                      {entry.icon}
+                      {React.cloneElement(entry.icon, { sx: { fontSize: 64 } })}
                     </Box>
                   </Box>
                   
