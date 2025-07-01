@@ -43,97 +43,95 @@ export const LuxuryMedicalIcon: React.FC<SvgIconProps> = (props) => (
   </SvgIcon>
 );
 
-// Luxury Sparkle Icon for Hero
+// Luxury Diamond Icon for Hero - Represents premium quality and brilliance
 export const LuxurySparkleIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 48 48">
     <defs>
-      <linearGradient id="sparkleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#667eea" stopOpacity="1" />
-        <stop offset="33%" stopColor="#764ba2" stopOpacity="1" />
-        <stop offset="66%" stopColor="#f093fb" stopOpacity="1" />
-        <stop offset="100%" stopColor="#4facfe" stopOpacity="1" />
+      <linearGradient id="diamondGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#667eea" />
+        <stop offset="50%" stopColor="#764ba2" />
+        <stop offset="100%" stopColor="#f093fb" />
       </linearGradient>
-      <filter id="sparkleBlur">
-        <feGaussianBlur in="SourceGraphic" stdDeviation="1"/>
-      </filter>
+      <linearGradient id="diamondShine" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+        <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+      </linearGradient>
     </defs>
-    {/* Central star burst */}
-    <g transform="translate(24, 24)">
-      {/* Main sparkle */}
-      <path
-        d="M0,-20 Q-2,-10 -8,-8 Q-10,-2 -20,0 Q-10,2 -8,8 Q-2,10 0,20 Q2,10 8,8 Q10,2 20,0 Q10,-2 8,-8 Q2,-10 0,-20Z"
-        fill="url(#sparkleGradient)"
-        filter="url(#sparkleBlur)"
-      />
-      {/* Inner sparkle */}
-      <path
-        d="M0,-12 Q-1.2,-6 -4.8,-4.8 Q-6,-1.2 -12,0 Q-6,1.2 -4.8,4.8 Q-1.2,6 0,12 Q1.2,6 4.8,4.8 Q6,1.2 12,0 Q6,-1.2 4.8,-4.8 Q1.2,-6 0,-12Z"
-        fill="#ffffff"
-        opacity="0.8"
-      />
-      {/* Center gem */}
-      <circle r="3" fill="url(#sparkleGradient)" />
-      <circle r="2" fill="#ffffff" opacity="0.9" />
-    </g>
-    {/* Orbiting sparkles */}
-    <g opacity="0.7">
-      <circle cx="10" cy="10" r="2" fill="url(#sparkleGradient)">
-        <animate attributeName="r" values="2;3;2" dur="2s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="38" cy="10" r="2" fill="url(#sparkleGradient)">
-        <animate attributeName="r" values="2;3;2" dur="2s" begin="0.5s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="10" cy="38" r="2" fill="url(#sparkleGradient)">
-        <animate attributeName="r" values="2;3;2" dur="2s" begin="1s" repeatCount="indefinite" />
-      </circle>
-      <circle cx="38" cy="38" r="2" fill="url(#sparkleGradient)">
-        <animate attributeName="r" values="2;3;2" dur="2s" begin="1.5s" repeatCount="indefinite" />
+    {/* Diamond shape */}
+    <g>
+      {/* Bottom facets */}
+      <path d="M24 40 L8 20 L16 20 Z" fill="url(#diamondGradient)" opacity="0.7" />
+      <path d="M24 40 L16 20 L24 20 Z" fill="url(#diamondGradient)" opacity="0.8" />
+      <path d="M24 40 L24 20 L32 20 Z" fill="url(#diamondGradient)" opacity="0.9" />
+      <path d="M24 40 L32 20 L40 20 Z" fill="url(#diamondGradient)" opacity="0.7" />
+      
+      {/* Top facets */}
+      <path d="M8 20 L12 8 L20 8 L16 20 Z" fill="url(#diamondGradient)" />
+      <path d="M16 20 L20 8 L28 8 L24 20 Z" fill="url(#diamondGradient)" opacity="0.95" />
+      <path d="M24 20 L28 8 L36 8 L32 20 Z" fill="url(#diamondGradient)" />
+      <path d="M32 20 L36 8 L40 20 Z" fill="url(#diamondGradient)" opacity="0.85" />
+      
+      {/* Top crown */}
+      <path d="M12 8 L20 8 L24 4 Z" fill="url(#diamondShine)" />
+      <path d="M20 8 L28 8 L24 4 Z" fill="url(#diamondShine)" opacity="0.9" />
+      <path d="M28 8 L36 8 L24 4 Z" fill="url(#diamondShine)" />
+      
+      {/* Sparkle effect */}
+      <circle cx="24" cy="16" r="2" fill="#ffffff" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite" />
       </circle>
     </g>
   </SvgIcon>
 );
 
-// Luxury Navigation Icon for "I Know What I Need"
+// Luxury Target Icon for "I Know What I Need" - Represents precision and clarity
 export const LuxuryNavigationIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 48 48">
     <defs>
-      <linearGradient id="navGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="targetGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#667eea" />
         <stop offset="100%" stopColor="#764ba2" />
       </linearGradient>
-      <filter id="navShadow">
-        <feDropShadow dx="0" dy="2" stdDeviation="2" floodOpacity="0.2"/>
+      <filter id="targetGlow">
+        <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+        <feMerge>
+          <feMergeNode in="coloredBlur"/>
+          <feMergeNode in="SourceGraphic"/>
+        </feMerge>
       </filter>
     </defs>
-    {/* Luxury compass rose background */}
-    <g opacity="0.1">
-      <path
-        d="M24,4 L28,20 L44,24 L28,28 L24,44 L20,28 L4,24 L20,20 Z"
-        fill="url(#navGradient)"
-      />
+    {/* Luxury target rings */}
+    <g filter="url(#targetGlow)">
+      {/* Outer ring */}
+      <circle cx="24" cy="24" r="20" fill="none" stroke="url(#targetGradient)" strokeWidth="2" opacity="0.3" />
+      
+      {/* Middle ring */}
+      <circle cx="24" cy="24" r="14" fill="none" stroke="url(#targetGradient)" strokeWidth="2.5" opacity="0.5" />
+      
+      {/* Inner ring */}
+      <circle cx="24" cy="24" r="8" fill="none" stroke="url(#targetGradient)" strokeWidth="3" opacity="0.7" />
+      
+      {/* Center bullseye */}
+      <circle cx="24" cy="24" r="4" fill="url(#targetGradient)" />
+      <circle cx="24" cy="24" r="2" fill="#ffffff" opacity="0.9" />
+      
+      {/* Precision crosshairs */}
+      <path d="M24 4 L24 12 M24 36 L24 44 M4 24 L12 24 M36 24 L44 24" 
+            stroke="url(#targetGradient)" 
+            strokeWidth="1.5" 
+            opacity="0.4" />
+      
+      {/* Corner guides */}
+      <path d="M12 12 L16 12 L12 16 M36 12 L32 12 L36 16 M12 36 L16 36 L12 32 M36 36 L32 36 L36 32" 
+            fill="url(#targetGradient)" 
+            opacity="0.6" />
     </g>
-    {/* Main navigation arrow with premium design */}
-    <g filter="url(#navShadow)">
-      {/* Arrow base */}
-      <path
-        d="M24,8 C24,8 36,18 40,22 C42,24 40,26 38,24 L28,20 L28,36 C28,38 26,40 24,40 C22,40 20,38 20,36 L20,20 L10,24 C8,26 6,24 8,22 C12,18 24,8 24,8Z"
-        fill="url(#navGradient)"
-      />
-      {/* Premium details */}
-      <path
-        d="M24,8 L30,16 L24,14 L18,16 Z"
-        fill="#ffffff"
-        opacity="0.6"
-      />
-      {/* Center line detail */}
-      <rect x="23" y="16" width="2" height="20" fill="#ffffff" opacity="0.4" rx="1" />
-    </g>
-    {/* Floating direction indicators */}
-    <g opacity="0.6">
-      <circle cx="24" cy="8" r="3" fill="url(#navGradient)" />
-      <circle cx="24" cy="8" r="2" fill="#ffffff" />
-      <text x="24" y="42" textAnchor="middle" fill="url(#navGradient)" fontSize="6" fontWeight="bold">N</text>
-    </g>
+    
+    {/* Animated pulse */}
+    <circle cx="24" cy="24" r="4" fill="none" stroke="url(#targetGradient)" strokeWidth="1" opacity="0.6">
+      <animate attributeName="r" values="4;8;4" dur="2s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite" />
+    </circle>
   </SvgIcon>
 );
 
@@ -159,31 +157,36 @@ export const LuxuryExploreIcon: React.FC<SvgIconProps> = (props) => (
       <ellipse cx="24" cy="24" rx="18" ry="8" fill="none" stroke="url(#exploreGradient)" strokeWidth="1" transform="rotate(-45 24 24)" />
       <ellipse cx="24" cy="24" rx="18" ry="8" fill="none" stroke="url(#exploreGradient)" strokeWidth="1" transform="rotate(90 24 24)" />
     </g>
-    {/* Central discovery eye */}
+    {/* Luxury compass with pathways */}
     <g filter="url(#exploreGlow)">
-      {/* Outer eye shape */}
-      <path
-        d="M24,16 C32,16 38,24 38,24 C38,24 32,32 24,32 C16,32 10,24 10,24 C10,24 16,16 24,16Z"
-        fill="url(#exploreGradient)"
-        opacity="0.9"
-      />
-      {/* Iris */}
-      <circle cx="24" cy="24" r="7" fill="#ffffff" opacity="0.9" />
-      <circle cx="24" cy="24" r="6" fill="url(#exploreGradient)" />
-      {/* Pupil with shine */}
-      <circle cx="24" cy="24" r="3" fill="#0A0A0A" />
-      <circle cx="26" cy="22" r="1.5" fill="#ffffff" opacity="0.8" />
-    </g>
-    {/* Orbiting nodes */}
-    <g>
-      <circle cx="12" cy="24" r="3" fill="url(#exploreGradient)" opacity="0.8">
-        <animateTransform attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="8s" repeatCount="indefinite" />
+      {/* Compass base */}
+      <circle cx="24" cy="24" r="18" fill="none" stroke="url(#exploreGradient)" strokeWidth="2" />
+      
+      {/* Cardinal directions */}
+      <path d="M24 6 L28 14 L24 18 L20 14 Z" fill="url(#exploreGradient)" />
+      <path d="M42 24 L34 28 L30 24 L34 20 Z" fill="url(#exploreGradient)" opacity="0.7" />
+      <path d="M24 42 L20 34 L24 30 L28 34 Z" fill="url(#exploreGradient)" opacity="0.7" />
+      <path d="M6 24 L14 20 L18 24 L14 28 Z" fill="url(#exploreGradient)" opacity="0.7" />
+      
+      {/* Center pivot */}
+      <circle cx="24" cy="24" r="4" fill="url(#exploreGradient)" />
+      <circle cx="24" cy="24" r="2" fill="#ffffff" opacity="0.9" />
+      
+      {/* Connecting pathways */}
+      <path d="M24 18 L24 30 M18 24 L30 24" stroke="#ffffff" strokeWidth="1" opacity="0.5" />
+      
+      {/* Discovery markers */}
+      <circle cx="24" cy="10" r="1.5" fill="#ffffff" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite" />
       </circle>
-      <circle cx="36" cy="24" r="3" fill="url(#exploreGradient)" opacity="0.8">
-        <animateTransform attributeName="transform" type="rotate" from="180 24 24" to="540 24 24" dur="8s" repeatCount="indefinite" />
+      <circle cx="38" cy="24" r="1.5" fill="#ffffff" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" begin="0.5s" repeatCount="indefinite" />
       </circle>
-      <circle cx="24" cy="12" r="3" fill="url(#exploreGradient)" opacity="0.8">
-        <animateTransform attributeName="transform" type="rotate" from="90 24 24" to="450 24 24" dur="8s" repeatCount="indefinite" />
+      <circle cx="24" cy="38" r="1.5" fill="#ffffff" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" begin="1s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="10" cy="24" r="1.5" fill="#ffffff" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" begin="1.5s" repeatCount="indefinite" />
       </circle>
     </g>
   </SvgIcon>

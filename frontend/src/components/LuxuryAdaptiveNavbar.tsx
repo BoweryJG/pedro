@@ -326,7 +326,7 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                         },
                       }}
                     >
-                      {isMobile ? 'Choose Care' : 'Choose Your Care'}
+                      {isMobile ? 'Begin' : 'Begin Your Journey'}
                     </Button>
                   </Box>
                 </motion.div>
