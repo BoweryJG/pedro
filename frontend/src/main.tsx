@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { BrowserRouter } from 'react-router-dom'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { AdaptiveNavigationProvider } from './contexts/AdaptiveNavigationContext'
 import theme from './theme'
 import App from './App.tsx'
 import './styles/animations.css'
@@ -15,7 +16,9 @@ createRoot(document.getElementById('root')!).render(
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <App />
+          <AdaptiveNavigationProvider>
+            <App />
+          </AdaptiveNavigationProvider>
         </LocalizationProvider>
       </ThemeProvider>
     </BrowserRouter>

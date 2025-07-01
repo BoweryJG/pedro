@@ -7,6 +7,12 @@ import {
   useTheme,
   Skeleton,
   Stack,
+  Card,
+  CardContent,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from '@mui/material';
 import { motion, useScroll, useSpring } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +22,7 @@ import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturi
 import HealingIcon from '@mui/icons-material/Healing';
 import FaceIcon from '@mui/icons-material/Face';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import TestimonialCarousel from '../components/TestimonialCarousel';
 import BeforeAfterGallery from '../components/BeforeAfterGallery';
 import ServiceComparison from '../components/ServiceComparison';
@@ -193,6 +200,165 @@ const EnhancedHomePage = () => {
               ))}
             </Box>
           </motion.div>
+        </Container>
+      </Box>
+
+      {/* Specialized Care Centers Section */}
+      <Box
+        sx={{
+          py: { xs: 8, md: 12 },
+          background: 'linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%)',
+          position: 'relative',
+        }}
+      >
+        <Container maxWidth="lg">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <Typography
+              variant="h2"
+              align="center"
+              gutterBottom
+              sx={{
+                fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },
+                fontWeight: 800,
+                mb: 2,
+              }}
+            >
+              Specialized Care Centers
+            </Typography>
+            <Typography
+              variant="h6"
+              align="center"
+              color="text.secondary"
+              paragraph
+              sx={{ 
+                mb: { xs: 4, md: 8 }, 
+                maxWidth: 700, 
+                mx: 'auto',
+                fontSize: { xs: '1rem', sm: '1.125rem', md: '1.25rem' }
+              }}
+            >
+              Explore our dedicated centers for specialized treatments and aesthetic services
+            </Typography>
+          </motion.div>
+
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
+            {[
+              {
+                title: 'TMJ & Orofacial Pain Center',
+                description: 'Comprehensive diagnosis and treatment for jaw disorders and facial pain',
+                path: '/tmj',
+                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                features: ['Expert TMJ diagnosis', 'Custom treatment plans', 'Pain management'],
+              },
+              {
+                title: 'Dental Implants Center',
+                description: 'State-of-the-art implant solutions with traditional expertise',
+                path: '/implants',
+                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                features: ['Single & full arch', 'Bone grafting', 'Lifetime warranty'],
+              },
+              {
+                title: 'Robotic Surgery Center',
+                description: 'Advanced Yomi robotic technology for precise implant placement',
+                path: '/robotic',
+                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                features: ['Computer-guided precision', 'Minimally invasive', '50% faster healing'],
+              },
+              {
+                title: 'MedSpa & Aesthetics',
+                description: 'Non-invasive facial rejuvenation and aesthetic treatments',
+                path: '/medspa',
+                gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                features: ['EMFACE treatments', 'Facial contouring', 'Anti-aging solutions'],
+              },
+              {
+                title: 'AboutFace Aesthetics',
+                description: 'Advanced facial aesthetics and smile design treatments',
+                path: '/aboutface',
+                gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
+                features: ['Smile makeovers', 'Veneers', 'Teeth whitening'],
+              },
+            ].map((center, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <Card
+                  sx={{
+                    height: '100%',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease-in-out',
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: theme.shadows[10],
+                    },
+                  }}
+                  onClick={() => navigate(center.path)}
+                >
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      height: 6,
+                      background: center.gradient,
+                    }}
+                  />
+                  <CardContent sx={{ p: 4 }}>
+                    <Typography
+                      variant="h5"
+                      gutterBottom
+                      sx={{ fontWeight: 700, mb: 2 }}
+                    >
+                      {center.title}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      color="text.secondary"
+                      sx={{ mb: 3 }}
+                    >
+                      {center.description}
+                    </Typography>
+                    <List dense>
+                      {center.features.map((feature, idx) => (
+                        <ListItem key={idx} sx={{ px: 0 }}>
+                          <ListItemIcon sx={{ minWidth: 36 }}>
+                            <CheckCircleIcon sx={{ fontSize: 20, color: 'primary.main' }} />
+                          </ListItemIcon>
+                          <ListItemText primary={feature} />
+                        </ListItem>
+                      ))}
+                    </List>
+                    <Button
+                      endIcon={<ArrowForwardIcon />}
+                      sx={{
+                        mt: 2,
+                        background: center.gradient,
+                        color: 'white',
+                        '&:hover': {
+                          background: center.gradient,
+                          filter: 'brightness(1.1)',
+                        },
+                      }}
+                    >
+                      Learn More
+                    </Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </Box>
         </Container>
       </Box>
 
