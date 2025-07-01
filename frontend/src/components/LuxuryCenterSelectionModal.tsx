@@ -118,6 +118,8 @@ const LuxuryCenterSelectionModal: React.FC<LuxuryCenterSelectionModalProps> = ({
     setCurrentCenter(centerId as any);
     setMode('center-focused');
     addToJourneyPath(`selected-${centerId}`);
+    // Scroll to top before navigation
+    window.scrollTo({ top: 0, behavior: 'instant' });
     navigate(`/${centerId}`);
     onClose();
   };

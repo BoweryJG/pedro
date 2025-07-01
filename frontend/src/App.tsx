@@ -13,6 +13,7 @@ import { Chatbot } from './chatbot/components/Chatbot';
 import LuxurySystemStatus from './components/LuxurySystemStatus';
 import { ChatFirstContactWidget } from './components/ChatFirstContactWidget';
 import { MobileChatOptimized } from './components/MobileChatOptimized';
+import ScrollToTop from './components/ScrollToTop';
 import { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 
@@ -30,6 +31,7 @@ function App() {
 
   return (
     <>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
