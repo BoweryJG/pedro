@@ -196,7 +196,7 @@ const CenterSelectionModal: React.FC<CenterSelectionModalProps> = ({ open, onClo
                           width: 50,
                           height: 50,
                           borderRadius: 2,
-                          background: alpha(center.gradient, 0.1),
+                          background: 'rgba(102, 126, 234, 0.1)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',

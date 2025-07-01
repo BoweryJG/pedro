@@ -213,7 +213,7 @@ const CareConciergeHero: React.FC = () => {
                           width: 100,
                           height: 100,
                           borderRadius: '50%',
-                          background: alpha(entry.gradient, 0.1),
+                          background: 'rgba(102, 126, 234, 0.1)',
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
