@@ -2,7 +2,7 @@ import React from 'react';
 import { SvgIcon } from '@mui/material';
 import type { SvgIconProps } from '@mui/material/SvgIcon';
 
-// Premium Medical Cross for Dr. Pedro Logo
+// Premium Medical Cross for Dr. Pedro Logo - Refined geometric design
 export const LuxuryMedicalIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 48 48">
     <defs>
@@ -11,134 +11,125 @@ export const LuxuryMedicalIcon: React.FC<SvgIconProps> = (props) => (
         <stop offset="50%" stopColor="#764ba2" />
         <stop offset="100%" stopColor="#f093fb" />
       </linearGradient>
-      <filter id="medicalGlow">
-        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
     </defs>
-    {/* Outer shield shape */}
-    <path
-      d="M24 2C24 2 8 8 8 24C8 40 24 46 24 46C24 46 40 40 40 24C40 8 24 2 24 2Z"
-      fill="url(#medicalGradient)"
-      opacity="0.1"
-    />
-    {/* Premium medical cross with rounded corners */}
-    <g filter="url(#medicalGlow)">
+    {/* Abstract medical cross with golden ratio proportions */}
+    <g>
       <path
-        d="M28 16H32C33.1 16 34 16.9 34 18V22H38C39.1 22 40 22.9 40 24C40 25.1 39.1 26 38 26H34V30C34 31.1 33.1 32 32 32H28C26.9 32 26 31.1 26 30V26H22V30C22 31.1 21.1 32 20 32H16C14.9 32 14 31.1 14 30V26H10C8.9 26 8 25.1 8 24C8 22.9 8.9 22 10 22H14V18C14 16.9 14.9 16 16 16H20C21.1 16 22 16.9 22 18V22H26V18C26 16.9 26.9 16 28 16Z"
+        d="M24 12 L28 16 L28 20 L32 20 L36 24 L32 28 L28 28 L28 32 L24 36 L20 32 L20 28 L16 28 L12 24 L16 20 L20 20 L20 16 Z"
         fill="url(#medicalGradient)"
+        opacity="0.9"
       />
-      {/* Center gem */}
-      <circle cx="24" cy="24" r="3" fill="#ffffff" opacity="0.9" />
-      <circle cx="24" cy="24" r="2" fill="url(#medicalGradient)" />
+      {/* Inner geometric accent */}
+      <circle cx="24" cy="24" r="3" fill="#ffffff" opacity="0.8" />
     </g>
-    {/* Decorative corner elements */}
-    <circle cx="12" cy="12" r="1.5" fill="url(#medicalGradient)" opacity="0.6" />
-    <circle cx="36" cy="12" r="1.5" fill="url(#medicalGradient)" opacity="0.6" />
-    <circle cx="12" cy="36" r="1.5" fill="url(#medicalGradient)" opacity="0.6" />
-    <circle cx="36" cy="36" r="1.5" fill="url(#medicalGradient)" opacity="0.6" />
   </SvgIcon>
 );
 
-// Luxury Smile Icon for Hero - Perfect smile representation
+// Luxury Lotus Icon for Hero - Abstract wellness and transformation
 export const LuxurySparkleIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 48 48">
     <defs>
-      <linearGradient id="smileGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <linearGradient id="lotusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
         <stop offset="0%" stopColor="#667eea" />
         <stop offset="50%" stopColor="#764ba2" />
         <stop offset="100%" stopColor="#f093fb" />
       </linearGradient>
-    </defs>
-    {/* Perfect smile curve */}
-    <path 
-      d="M8 20 Q24 36 40 20" 
-      fill="none" 
-      stroke="url(#smileGradient)" 
-      strokeWidth="4" 
-      strokeLinecap="round"
-    />
-    {/* Teeth highlights */}
-    <rect x="14" y="20" width="4" height="8" fill="url(#smileGradient)" opacity="0.3" rx="2" />
-    <rect x="20" y="20" width="4" height="10" fill="url(#smileGradient)" opacity="0.4" rx="2" />
-    <rect x="26" y="20" width="4" height="10" fill="url(#smileGradient)" opacity="0.4" rx="2" />
-    <rect x="32" y="20" width="4" height="8" fill="url(#smileGradient)" opacity="0.3" rx="2" />
-    {/* Sparkle points - static, no animation */}
-    <circle cx="12" cy="16" r="2" fill="url(#smileGradient)" opacity="0.6" />
-    <circle cx="36" cy="16" r="2" fill="url(#smileGradient)" opacity="0.6" />
-  </SvgIcon>
-);
-
-// Luxury Tooth Icon for "I Know What I Need" - Direct dental care
-export const LuxuryNavigationIcon: React.FC<SvgIconProps> = (props) => (
-  <SvgIcon {...props} viewBox="0 0 48 48">
-    <defs>
-      <linearGradient id="toothGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#667eea" />
-        <stop offset="100%" stopColor="#764ba2" />
+      <linearGradient id="lotusGradient2" x1="100%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#f093fb" />
+        <stop offset="50%" stopColor="#4facfe" />
+        <stop offset="100%" stopColor="#667eea" />
       </linearGradient>
     </defs>
-    {/* Premium tooth shape */}
-    <path
-      d="M24 6 C20 6 16 8 14 12 C12 16 12 20 13 24 C14 28 15 32 16 36 C17 40 18 42 20 42 C22 42 23 40 24 36 C25 40 26 42 28 42 C30 42 31 40 32 36 C33 32 34 28 35 24 C36 20 36 16 34 12 C32 8 28 6 24 6 Z"
-      fill="url(#toothGradient)"
-    />
-    {/* Crown highlight */}
-    <ellipse cx="24" cy="14" rx="8" ry="6" fill="#ffffff" opacity="0.3" />
-    {/* Root separation */}
-    <path d="M24 24 L24 38" stroke="#ffffff" strokeWidth="1" opacity="0.2" />
-    {/* Shine effect */}
-    <circle cx="20" cy="12" r="2" fill="#ffffff" opacity="0.5" />
-  </SvgIcon>
-);
-
-// Luxury Exploration Icon for "Help Me Explore"
-export const LuxuryExploreIcon: React.FC<SvgIconProps> = (props) => (
-  <SvgIcon {...props} viewBox="0 0 48 48">
-    <defs>
-      <linearGradient id="exploreGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%" stopColor="#00d2ff" />
-        <stop offset="100%" stopColor="#3a7bd5" />
-      </linearGradient>
-      <filter id="exploreGlow">
-        <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
-    </defs>
-    {/* Dental mirror with examination light */}
+    {/* Abstract lotus petals using overlapping ellipses */}
     <g>
-      {/* Mirror head */}
-      <circle cx="16" cy="16" r="12" fill="none" stroke="url(#exploreGradient)" strokeWidth="3" />
-      <circle cx="16" cy="16" r="10" fill="url(#exploreGradient)" opacity="0.2" />
-      
-      {/* Mirror reflection */}
-      <ellipse cx="16" cy="16" rx="8" ry="6" fill="#ffffff" opacity="0.3" />
-      
-      {/* Handle */}
-      <path d="M24 24 L36 36" stroke="url(#exploreGradient)" strokeWidth="3" strokeLinecap="round" />
-      
-      {/* Examination light rays - static */}
-      <path d="M26 16 L32 16 M24 20 L30 22 M24 12 L30 10" 
-            stroke="url(#exploreGradient)" 
-            strokeWidth="1.5" 
-            opacity="0.5" 
-            strokeLinecap="round" />
-      
-      {/* Tooth being examined */}
-      <path d="M12 14 C12 12 13 11 14 11 C15 11 16 12 16 14 L16 18 C16 19 15.5 20 15 20 C14.5 20 14 19 14 18 L14 14"
-            fill="#ffffff" 
-            opacity="0.6" />
+      {/* Center petal */}
+      <ellipse cx="24" cy="16" rx="6" ry="12" fill="url(#lotusGradient)" opacity="0.7" />
+      {/* Left petal */}
+      <ellipse cx="24" cy="16" rx="6" ry="12" fill="url(#lotusGradient)" opacity="0.6" transform="rotate(-30 24 24)" />
+      {/* Right petal */}
+      <ellipse cx="24" cy="16" rx="6" ry="12" fill="url(#lotusGradient)" opacity="0.6" transform="rotate(30 24 24)" />
+      {/* Far left petal */}
+      <ellipse cx="24" cy="16" rx="5" ry="10" fill="url(#lotusGradient2)" opacity="0.5" transform="rotate(-60 24 24)" />
+      {/* Far right petal */}
+      <ellipse cx="24" cy="16" rx="5" ry="10" fill="url(#lotusGradient2)" opacity="0.5" transform="rotate(60 24 24)" />
+      {/* Center circle */}
+      <circle cx="24" cy="24" r="4" fill="url(#lotusGradient)" opacity="0.9" />
+      <circle cx="24" cy="24" r="2" fill="#ffffff" opacity="0.8" />
     </g>
   </SvgIcon>
 );
 
-// Luxury Emergency Icon
+// Luxury Precision Icon for "I Know What I Need" - Geometric clarity
+export const LuxuryNavigationIcon: React.FC<SvgIconProps> = (props) => (
+  <SvgIcon {...props} viewBox="0 0 48 48">
+    <defs>
+      <linearGradient id="precisionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#667eea" />
+        <stop offset="100%" stopColor="#764ba2" />
+      </linearGradient>
+    </defs>
+    {/* Overlapping circles forming a mandala-like pattern */}
+    <g>
+      {/* Central hexagon formed by circles */}
+      <circle cx="24" cy="14" r="8" fill="none" stroke="url(#precisionGradient)" strokeWidth="1.5" opacity="0.8" />
+      <circle cx="32" cy="20" r="8" fill="none" stroke="url(#precisionGradient)" strokeWidth="1.5" opacity="0.8" />
+      <circle cx="32" cy="28" r="8" fill="none" stroke="url(#precisionGradient)" strokeWidth="1.5" opacity="0.8" />
+      <circle cx="24" cy="34" r="8" fill="none" stroke="url(#precisionGradient)" strokeWidth="1.5" opacity="0.8" />
+      <circle cx="16" cy="28" r="8" fill="none" stroke="url(#precisionGradient)" strokeWidth="1.5" opacity="0.8" />
+      <circle cx="16" cy="20" r="8" fill="none" stroke="url(#precisionGradient)" strokeWidth="1.5" opacity="0.8" />
+      
+      {/* Center focus point */}
+      <circle cx="24" cy="24" r="3" fill="url(#precisionGradient)" />
+      <circle cx="24" cy="24" r="1.5" fill="#ffffff" opacity="0.9" />
+      
+      {/* Connecting lines for structure */}
+      <path d="M24 14 L32 20 L32 28 L24 34 L16 28 L16 20 Z" 
+            fill="none" 
+            stroke="url(#precisionGradient)" 
+            strokeWidth="0.5" 
+            opacity="0.3" />
+    </g>
+  </SvgIcon>
+);
+
+// Luxury Pathways Icon for "Help Me Explore" - Abstract guidance
+export const LuxuryExploreIcon: React.FC<SvgIconProps> = (props) => (
+  <SvgIcon {...props} viewBox="0 0 48 48">
+    <defs>
+      <linearGradient id="pathwayGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#00d2ff" />
+        <stop offset="100%" stopColor="#3a7bd5" />
+      </linearGradient>
+      <linearGradient id="pathwayGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor="#667eea" />
+        <stop offset="100%" stopColor="#764ba2" />
+      </linearGradient>
+    </defs>
+    {/* Abstract constellation/pathway design */}
+    <g>
+      {/* Main pathway curves */}
+      <path d="M12 36 Q24 24 36 12" fill="none" stroke="url(#pathwayGradient)" strokeWidth="2" opacity="0.6" />
+      <path d="M12 12 Q24 24 36 36" fill="none" stroke="url(#pathwayGradient2)" strokeWidth="2" opacity="0.6" />
+      
+      {/* Connection nodes */}
+      <circle cx="12" cy="12" r="3" fill="url(#pathwayGradient2)" opacity="0.8" />
+      <circle cx="36" cy="12" r="3" fill="url(#pathwayGradient)" opacity="0.8" />
+      <circle cx="12" cy="36" r="3" fill="url(#pathwayGradient)" opacity="0.8" />
+      <circle cx="36" cy="36" r="3" fill="url(#pathwayGradient2)" opacity="0.8" />
+      
+      {/* Central convergence point */}
+      <circle cx="24" cy="24" r="5" fill="none" stroke="url(#pathwayGradient)" strokeWidth="1.5" />
+      <circle cx="24" cy="24" r="2.5" fill="url(#pathwayGradient2)" />
+      <circle cx="24" cy="24" r="1" fill="#ffffff" opacity="0.9" />
+      
+      {/* Subtle guide lines */}
+      <line x1="12" y1="24" x2="36" y2="24" stroke="url(#pathwayGradient)" strokeWidth="0.5" opacity="0.3" />
+      <line x1="24" y1="12" x2="24" y2="36" stroke="url(#pathwayGradient2)" strokeWidth="0.5" opacity="0.3" />
+    </g>
+  </SvgIcon>
+);
+
+// Luxury Emergency Icon - Refined geometric shield
 export const LuxuryEmergencyIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 48 48">
     <defs>
@@ -146,39 +137,41 @@ export const LuxuryEmergencyIcon: React.FC<SvgIconProps> = (props) => (
         <stop offset="0%" stopColor="#f857a6" />
         <stop offset="100%" stopColor="#ff5858" />
       </linearGradient>
-      <filter id="emergencyPulse">
-        <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
     </defs>
-    {/* Static emergency background */}
-    <circle cx="24" cy="24" r="20" fill="url(#emergencyGradient)" opacity="0.15" />
-    {/* Shield with cross */}
-    <g filter="url(#emergencyPulse)">
-      {/* Premium shield shape */}
+    {/* Geometric shield design */}
+    <g>
+      {/* Modern shield shape using straight lines */}
       <path
-        d="M24,6 L36,12 C38,13 38,15 38,18 C38,30 30,40 24,42 C18,40 10,30 10,18 C10,15 10,13 12,12 L24,6Z"
+        d="M24 6 L38 14 L38 26 L24 42 L10 26 L10 14 Z"
+        fill="none"
+        stroke="url(#emergencyGradient)"
+        strokeWidth="2"
+      />
+      
+      {/* Inner shield */}
+      <path
+        d="M24 10 L34 16 L34 24 L24 36 L14 24 L14 16 Z"
         fill="url(#emergencyGradient)"
+        opacity="0.2"
       />
-      {/* Medical cross with rounded corners */}
+      
+      {/* Elegant plus sign */}
       <path
-        d="M27,18 L27,15 C27,14 26,13 25,13 L23,13 C22,13 21,14 21,15 L21,18 L18,18 C17,18 16,19 16,20 L16,22 C16,23 17,24 18,24 L21,24 L21,27 C21,28 22,29 23,29 L25,29 C26,29 27,28 27,27 L27,24 L30,24 C31,24 32,23 32,22 L32,20 C32,19 31,18 30,18 L27,18Z"
-        fill="#ffffff"
-        opacity="0.95"
+        d="M24 18 L24 30 M18 24 L30 24"
+        stroke="url(#emergencyGradient)"
+        strokeWidth="3"
+        strokeLinecap="round"
       />
-    </g>
-    {/* Static alert indicators */}
-    <g opacity="0.8">
-      <circle cx="10" cy="10" r="2" fill="url(#emergencyGradient)" />
-      <circle cx="38" cy="10" r="2" fill="url(#emergencyGradient)" />
+      
+      {/* Corner accents */}
+      <circle cx="24" cy="6" r="1.5" fill="url(#emergencyGradient)" />
+      <circle cx="38" cy="14" r="1.5" fill="url(#emergencyGradient)" opacity="0.7" />
+      <circle cx="10" cy="14" r="1.5" fill="url(#emergencyGradient)" opacity="0.7" />
     </g>
   </SvgIcon>
 );
 
-// Luxury Chat Icon
+// Luxury Chat Icon - Abstract communication bubbles
 export const LuxuryChatIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 48 48">
     <defs>
@@ -187,26 +180,32 @@ export const LuxuryChatIcon: React.FC<SvgIconProps> = (props) => (
         <stop offset="100%" stopColor="#764ba2" />
       </linearGradient>
     </defs>
-    {/* Premium chat bubble */}
-    <path
-      d="M8,8 L32,8 C36,8 40,12 40,16 L40,28 C40,32 36,36 32,36 L16,36 L8,42 L8,36 C4,36 4,32 4,28 L4,16 C4,12 4,8 8,8Z"
-      fill="url(#chatGradient)"
-      opacity="0.1"
-    />
-    <path
-      d="M10,10 L30,10 C34,10 36,12 36,16 L36,26 C36,30 34,32 30,32 L18,32 L10,38 L10,32 C6,32 6,30 6,26 L6,16 C6,12 6,10 10,10Z"
-      fill="url(#chatGradient)"
-    />
-    {/* Static dots */}
-    <g fill="#ffffff">
-      <circle cx="14" cy="21" r="2" />
-      <circle cx="21" cy="21" r="2" />
-      <circle cx="28" cy="21" r="2" />
+    {/* Overlapping abstract speech bubbles */}
+    <g>
+      {/* Primary bubble */}
+      <path
+        d="M8 12 Q8 8 12 8 L28 8 Q32 8 32 12 L32 22 Q32 26 28 26 L20 26 L14 32 L14 26 L12 26 Q8 26 8 22 Z"
+        fill="none"
+        stroke="url(#chatGradient)"
+        strokeWidth="2"
+      />
+      
+      {/* Secondary overlapping bubble */}
+      <path
+        d="M18 18 Q18 16 20 16 L36 16 Q38 16 38 18 L38 28 Q38 30 36 30 L34 30 L34 34 L30 30 L20 30 Q18 30 18 28 Z"
+        fill="url(#chatGradient)"
+        opacity="0.3"
+      />
+      
+      {/* Communication dots */}
+      <circle cx="14" cy="17" r="1.5" fill="url(#chatGradient)" />
+      <circle cx="20" cy="17" r="1.5" fill="url(#chatGradient)" />
+      <circle cx="26" cy="17" r="1.5" fill="url(#chatGradient)" />
     </g>
   </SvgIcon>
 );
 
-// Luxury Contact Icon
+// Luxury Contact Icon - Abstract envelope with geometric accents
 export const LuxuryContactIcon: React.FC<SvgIconProps> = (props) => (
   <SvgIcon {...props} viewBox="0 0 48 48">
     <defs>
@@ -214,33 +213,31 @@ export const LuxuryContactIcon: React.FC<SvgIconProps> = (props) => (
         <stop offset="0%" stopColor="#764ba2" />
         <stop offset="100%" stopColor="#f093fb" />
       </linearGradient>
-      <filter id="contactGlow">
-        <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
-        <feMerge>
-          <feMergeNode in="coloredBlur"/>
-          <feMergeNode in="SourceGraphic"/>
-        </feMerge>
-      </filter>
     </defs>
-    {/* Luxury envelope */}
-    <g filter="url(#contactGlow)">
-      {/* Envelope back */}
-      <path
-        d="M6,16 L6,36 C6,38 8,40 10,40 L38,40 C40,40 42,38 42,36 L42,16 L24,28 L6,16Z"
-        fill="url(#contactGradient)"
-        opacity="0.9"
-      />
-      {/* Envelope flap */}
-      <path
-        d="M6,12 C6,10 8,8 10,8 L38,8 C40,8 42,10 42,12 L42,16 L24,28 L6,16 L6,12Z"
-        fill="url(#contactGradient)"
-      />
-      {/* Letter inside */}
-      <rect x="12" y="18" width="24" height="16" fill="#ffffff" opacity="0.3" rx="2" />
-      {/* Wax seal */}
-      <circle cx="24" cy="24" r="6" fill="#ffffff" opacity="0.9" />
-      <circle cx="24" cy="24" r="5" fill="url(#contactGradient)" />
-      <text x="24" y="28" textAnchor="middle" fill="#ffffff" fontSize="8" fontWeight="bold">P</text>
+    {/* Geometric envelope design */}
+    <g>
+      {/* Envelope body */}
+      <rect x="8" y="14" width="32" height="22" rx="2" 
+            fill="none" 
+            stroke="url(#contactGradient)" 
+            strokeWidth="2" />
+      
+      {/* Envelope flap as triangles */}
+      <path d="M8 14 L24 26 L40 14" 
+            fill="none" 
+            stroke="url(#contactGradient)" 
+            strokeWidth="2" />
+      
+      {/* Inner geometric pattern */}
+      <path d="M8 36 L24 24 L40 36" 
+            fill="none" 
+            stroke="url(#contactGradient)" 
+            strokeWidth="1" 
+            opacity="0.5" />
+      
+      {/* Center seal */}
+      <circle cx="24" cy="25" r="4" fill="url(#contactGradient)" opacity="0.3" />
+      <circle cx="24" cy="25" r="2" fill="url(#contactGradient)" />
     </g>
   </SvgIcon>
 );
