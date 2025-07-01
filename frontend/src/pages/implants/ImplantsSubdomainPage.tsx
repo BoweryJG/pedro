@@ -1,4 +1,3 @@
-import React from 'react'
 import { Container, Box } from '@mui/material'
 import ImplantHero from '../../components/subdomain-components/implants/ImplantHero'
 import ImplantFinancingWizard from '../../components/subdomain-components/implants/ImplantFinancingWizard'

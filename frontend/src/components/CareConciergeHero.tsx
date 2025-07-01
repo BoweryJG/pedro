@@ -6,7 +6,6 @@ import {
   Card,
   CardContent,
   Button,
-  Grid,
   useTheme,
   useMediaQuery,
   alpha,
@@ -170,9 +169,9 @@ const CareConciergeHero: React.FC = () => {
             </Typography>
           </Box>
 
-          <Grid container spacing={4} sx={{ mt: 4 }}>
+          <Box sx={{ mt: 4, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
             {entryPoints.map((entry, index) => (
-              <Grid item xs={12} md={4} key={index}>
+              <Box key={index} sx={{ flex: '1 1 300px', minWidth: 0 }}>
                 <motion.div
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -270,9 +269,9 @@ const CareConciergeHero: React.FC = () => {
                     </CardContent>
                   </Card>
                 </motion.div>
-              </Grid>
+              </Box>
             ))}
-          </Grid>
+          </Box>
         </motion.div>
       </Container>
     </Box>

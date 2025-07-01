@@ -24,7 +24,7 @@ import {
   Star,
   Face
 } from '@mui/icons-material'
-import aboutFaceContent from '../data/aboutFaceContent.json'
+import aboutFaceContent from '../../data/subdomain-content/aboutface/aboutFaceContent.json'
 
 interface TabPanelProps {
   children?: React.ReactNode

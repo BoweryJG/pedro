@@ -5,7 +5,6 @@ import {
   Typography,
   Card,
   CardContent,
-  Grid,
   Button,
   Accordion,
   AccordionSummary,
@@ -32,7 +31,7 @@ import {
   Timeline,
   TouchApp
 } from '@mui/icons-material'
-import roboticContent from '../data/roboticContent.json'
+import roboticContent from '../../data/subdomain-content/robotic/roboticContent.json'
 
 interface TechnologyFeature {
   icon: React.ReactNode

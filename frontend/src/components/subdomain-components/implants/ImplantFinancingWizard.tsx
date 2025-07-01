@@ -4,7 +4,7 @@ import {
   Container,
   Typography,
   Button,
-  Grid2 as Grid,
+  Grid,
   Card,
   CardContent,
   TextField,
@@ -32,7 +32,7 @@ import {
   Psychology,
   AttachMoney
 } from '@mui/icons-material'
-import { implantApiService, FinancingApplication } from '../services/implantApi'
+import { implantApiService } from '../../services/implantApi'
 
 interface FinancingData {
   personalInfo: {

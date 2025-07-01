@@ -1,4 +1,3 @@
-import React from 'react'
 import { Container, Box } from '@mui/material'
 import YomiHero from '../../components/subdomain-components/robotic/YomiHero'
 import YomiTechnologyShowcase from '../../components/subdomain-components/robotic/YomiTechnologyShowcase'

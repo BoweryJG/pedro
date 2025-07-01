@@ -35,7 +35,7 @@ import {
   CreditCard,
   Schedule
 } from '@mui/icons-material'
-import { implantApiService, implantApiUtils } from '../services/implantApi'
+import { implantApiService, implantApiUtils } from '../../services/implantApi'
 
 interface CostBreakdown {
   implantCost: number

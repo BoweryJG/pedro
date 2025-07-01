@@ -18,7 +18,7 @@ import {
   Tab
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { PhotoLibrary, Star, Close, BeforeAfter } from '@mui/icons-material'
+import { PhotoLibrary, Star, Close, Compare } from '@mui/icons-material'
 
 interface Treatment {
   id: string
@@ -246,7 +246,7 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
                             boxShadow: 2
                           }}
                         >
-                          <BeforeAfter sx={{ color: 'primary.main' }} />
+                          <Compare sx={{ color: 'primary.main' }} />
                         </Box>
                       </Box>
                       

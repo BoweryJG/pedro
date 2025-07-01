@@ -24,7 +24,8 @@ import {
   CalendarToday
 } from '@mui/icons-material'
 import { motion, AnimatePresence } from 'framer-motion'
-import ChatService, { ChatMessage, ChatServiceConfig } from '../../../../shared/services/chatService'
+import ChatService from '../../../../../shared/services/chatService'
+import type { ChatMessage, ChatServiceConfig } from '../../../../../shared/services/chatService'
 
 interface TMJChatbotProps {
   chatbotConfig?: any

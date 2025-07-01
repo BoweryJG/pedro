@@ -4,7 +4,6 @@ import {
   DialogContent,
   Box,
   Typography,
-  Grid,
   Card,
   CardContent,
   IconButton,
@@ -153,9 +152,9 @@ const CenterSelectionModal: React.FC<CenterSelectionModalProps> = ({ open, onClo
           </Typography>
         </Box>
 
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
           {centers.map((center, index) => (
-            <Grid item xs={12} md={6} lg={4} key={center.id}>
+            <Box key={center.id} sx={{ flex: '1 1 300px', minWidth: 0, maxWidth: { xs: '100%', md: '50%', lg: '33.333%' } }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -282,9 +281,9 @@ const CenterSelectionModal: React.FC<CenterSelectionModalProps> = ({ open, onClo
                   </CardContent>
                 </Card>
               </motion.div>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </DialogContent>
     </Dialog>
   );

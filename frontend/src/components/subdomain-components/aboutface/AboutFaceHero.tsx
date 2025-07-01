@@ -13,7 +13,7 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Spa, Star, Schedule, Phone } from '@mui/icons-material'
-import aboutFaceContent from '../data/aboutFaceContent.json'
+import aboutFaceContent from '../../data/subdomain-content/aboutface/aboutFaceContent.json'
 
 const AboutFaceHero: React.FC = () => {
   const { hero, doctor } = aboutFaceContent
