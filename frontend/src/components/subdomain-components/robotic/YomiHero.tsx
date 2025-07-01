@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Phone, CalendarToday, LocationOn, Star, Engineering, SmartToy } from '@mui/icons-material'
-import roboticContent from '../../data/subdomain-content/robotic/roboticContent.json'
+import roboticContent from '../../../data/subdomain-content/robotic/roboticContent.json'
 
 const YomiHero: React.FC = () => {
   const { hero, doctor } = roboticContent

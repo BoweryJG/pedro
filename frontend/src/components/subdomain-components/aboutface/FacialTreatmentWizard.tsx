@@ -26,7 +26,7 @@ import {
   NavigateNext,
   NavigateBefore
 } from '@mui/icons-material'
-import aboutFaceContent from '../../data/subdomain-content/aboutface/aboutFaceContent.json'
+import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFaceContent.json'
 
 const FacialTreatmentWizard: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0)

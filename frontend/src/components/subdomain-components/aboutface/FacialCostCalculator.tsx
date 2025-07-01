@@ -23,7 +23,7 @@ import {
   Schedule,
   Savings
 } from '@mui/icons-material'
-import aboutFaceContent from '../../data/subdomain-content/aboutface/aboutFaceContent.json'
+import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFaceContent.json'
 
 const FacialCostCalculator: React.FC = () => {
   const [selectedTreatments, setSelectedTreatments] = useState<string[]>([])

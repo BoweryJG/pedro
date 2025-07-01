@@ -37,7 +37,7 @@ import {
   Psychology,
   CompareArrows
 } from '@mui/icons-material'
-import { yomiApiService, yomiApiUtils } from '../../services/yomiApi'
+import { yomiApiService, yomiApiUtils } from '../../../services/yomiApi'
 
 interface Message {
   id: string

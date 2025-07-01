@@ -31,7 +31,7 @@ import {
   CheckCircle,
   Schedule
 } from '@mui/icons-material'
-import { implantApiService } from '../../services/implantApi'
+import { implantApiService } from '../../../services/implantApi'
 
 interface Message {
   id: string

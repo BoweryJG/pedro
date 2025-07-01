@@ -32,7 +32,7 @@ import {
   Psychology,
   AttachMoney
 } from '@mui/icons-material'
-import { implantApiService } from '../../services/implantApi'
+import { implantApiService } from '../../../services/implantApi'
 
 interface FinancingData {
   personalInfo: {

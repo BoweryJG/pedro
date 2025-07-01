@@ -12,7 +12,7 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Phone, CalendarToday, LocationOn, Star, Psychology, AttachMoney } from '@mui/icons-material'
-import implantContent from '../../data/subdomain-content/implants/implantContent.json'
+import implantContent from '../../../data/subdomain-content/implants/implantContent.json'
 
 const ImplantHero: React.FC = () => {
   const { hero, doctor } = implantContent
