@@ -13,6 +13,8 @@ import {
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import { LuxuryNavigationIcon, LuxuryExploreIcon, LuxuryEmergencyIcon, LuxurySparkleIcon } from './icons/LuxuryIcons';
+import { CalendarMonth } from '@mui/icons-material';
+import { BookAppointmentButton } from './BookAppointmentButton';
 
 // Removed ParticleField component for performance optimization
 
@@ -399,6 +401,71 @@ const LuxuryCareConciergeHero: React.FC = () => {
             </motion.div>
           ))}
         </Box>
+
+        {/* Direct Booking Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          <Box
+            sx={{
+              mt: { xs: 6, md: 8 },
+              textAlign: 'center',
+              p: { xs: 4, md: 6 },
+              background: alpha(theme.palette.background.paper, 0.8),
+              backdropFilter: 'blur(20px)',
+              borderRadius: 4,
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                fontFamily: 'var(--font-primary)',
+                fontWeight: 700,
+                mb: 2,
+                color: 'var(--luxury-black)',
+              }}
+            >
+              Ready to Book Your Appointment?
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{
+                mb: 4,
+                maxWidth: 600,
+                mx: 'auto',
+                fontFamily: 'var(--font-secondary)',
+              }}
+            >
+              Skip the exploration and book directly with our award-winning dental team
+            </Typography>
+            <BookAppointmentButton
+              size="large"
+              sx={{
+                background: 'var(--gradient-luxury)',
+                color: 'white',
+                fontFamily: 'var(--font-secondary)',
+                fontWeight: 600,
+                fontSize: '1.1rem',
+                letterSpacing: '0.02em',
+                px: 5,
+                py: 2,
+                borderRadius: '50px',
+                textTransform: 'none',
+                boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  background: 'var(--gradient-luxury)',
+                  transform: 'translateY(-3px)',
+                  boxShadow: '0 15px 40px rgba(102, 126, 234, 0.4)',
+                },
+              }}
+            />
+          </Box>
+        </motion.div>
 
       </Container>
     </Box>
