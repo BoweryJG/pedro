@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/material';
 import { motion } from 'framer-motion';
+import { LuxuryChatIcon } from '../../components/icons/LuxuryIcons';
 
 interface PremiumChatbotLauncherProps {
   isOpen: boolean;
@@ -101,39 +102,15 @@ export const PremiumChatbotLauncher: React.FC<PremiumChatbotLauncherProps> = ({
           },
         }}
       >
-        {/* Elegant Chat Icon */}
-        <Box
+        <LuxuryChatIcon 
           className="chat-icon"
-          sx={{
-            width: 24,
-            height: 24,
+          sx={{ 
+            fontSize: 28, 
+            color: 'white',
             position: 'relative',
             zIndex: 1,
             transition: 'transform 0.3s ease',
-            
-            // Message bubble shape
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              inset: 0,
-              background: 'white',
-              borderRadius: '50% 50% 50% 0',
-              transform: 'rotate(-45deg)',
-            },
-            
-            // Three dots
-            '&::after': {
-              content: '"..."',
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%) rotate(45deg)',
-              fontSize: 16,
-              fontWeight: 'bold',
-              color: '#667eea',
-              letterSpacing: 2,
-            }
-          }}
+          }} 
         />
       </Box>
     </motion.div>

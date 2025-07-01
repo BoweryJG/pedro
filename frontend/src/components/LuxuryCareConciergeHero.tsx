@@ -12,10 +12,7 @@ import {
 } from '@mui/material';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
-import DirectionsIcon from '@mui/icons-material/Directions';
-import QuizIcon from '@mui/icons-material/Quiz';
-import EmergencyShareIcon from '@mui/icons-material/EmergencyShare';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { LuxuryNavigationIcon, LuxuryExploreIcon, LuxuryEmergencyIcon, LuxurySparkleIcon } from './icons/LuxuryIcons';
 
 // Particle system component
 const ParticleField: React.FC = () => {
@@ -171,7 +168,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
     {
       title: "I Know What I Need",
       subtitle: "Direct access to our specialized centers",
-      icon: <DirectionsIcon sx={{ fontSize: 48 }} />,
+      icon: <LuxuryNavigationIcon sx={{ fontSize: 48 }} />,
       gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       action: handleKnowWhatINeed,
       delay: 0,
@@ -179,7 +176,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
     {
       title: "Help Me Explore",
       subtitle: "AI-guided recommendations based on your needs",
-      icon: <QuizIcon sx={{ fontSize: 48 }} />,
+      icon: <LuxuryExploreIcon sx={{ fontSize: 48 }} />,
       gradient: 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)',
       action: handleHelpMeExplore,
       delay: 0.1,
@@ -187,7 +184,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
     {
       title: "Emergency Care",
       subtitle: "Immediate assistance for urgent dental needs",
-      icon: <EmergencyShareIcon sx={{ fontSize: 48 }} />,
+      icon: <LuxuryEmergencyIcon sx={{ fontSize: 48 }} />,
       gradient: 'linear-gradient(135deg, #f857a6 0%, #ff5858 100%)',
       action: handleEmergencyCare,
       delay: 0.2,
@@ -287,7 +284,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
                 },
               }}
             >
-              <AutoAwesomeIcon sx={{ color: 'white', fontSize: 40 }} />
+              <LuxurySparkleIcon sx={{ color: 'white', fontSize: 40 }} />
             </Box>
           </motion.div>
 

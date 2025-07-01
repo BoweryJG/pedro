@@ -15,11 +15,8 @@ import {
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
-import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
-import ExploreIcon from '@mui/icons-material/Explore';
 import HomeIcon from '@mui/icons-material/Home';
-import EmergencyIcon from '@mui/icons-material/Emergency';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import { LuxuryMedicalIcon, LuxuryExploreIcon, LuxuryEmergencyIcon, LuxurySparkleIcon } from './icons/LuxuryIcons';
 
 // Enhanced center configuration with luxury branding
 const centerConfig = {
@@ -64,11 +61,6 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   
-  // Mouse position for magnetic effect
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const smoothMouseX = useSpring(mouseX, { stiffness: 300, damping: 30 });
-  const smoothMouseY = useSpring(mouseY, { stiffness: 300, damping: 30 });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -78,18 +70,6 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle mouse movement for magnetic effect
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (navRef.current) {
-        const rect = navRef.current.getBoundingClientRect();
-        mouseX.set(e.clientX - rect.left - rect.width / 2);
-        mouseY.set(e.clientY - rect.top - rect.height / 2);
-      }
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [mouseX, mouseY]);
 
   // Determine current center from URL
   useEffect(() => {
@@ -218,7 +198,7 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                   },
                 }}
               >
-                <LocalHospitalIcon
+                <LuxuryMedicalIcon
                   sx={{
                     fontSize: 28,
                     color: 'white',
@@ -323,10 +303,6 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                 transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
               >
                 <motion.div
-                  style={{
-                    x: smoothMouseX,
-                    y: smoothMouseY,
-                  }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -351,7 +327,7 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                     <Button
                       variant="contained"
                       size="large"
-                      startIcon={<AutoAwesomeIcon />}
+                      startIcon={<LuxurySparkleIcon sx={{ fontSize: 24 }} />}
                       sx={{
                         background: 'rgba(255, 255, 255, 0.95)',
                         color: 'var(--luxury-black)',
@@ -423,7 +399,7 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                 >
                   <Button
                     variant="contained"
-                    startIcon={<ExploreIcon />}
+                    startIcon={<LuxuryExploreIcon sx={{ fontSize: 24 }} />}
                     onClick={handleChooseCare}
                     sx={{
                       background: 'rgba(255, 255, 255, 0.95)',
@@ -464,7 +440,7 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                 },
               }}
             >
-              <EmergencyIcon />
+              <LuxuryEmergencyIcon sx={{ fontSize: 24 }} />
             </IconButton>
           </motion.div>
         </Box>

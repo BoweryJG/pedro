@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
 import LuxuryAdaptiveNavbar from './LuxuryAdaptiveNavbar';
-import Footer from './Footer';
+import LuxuryFooter from './LuxuryFooter';
 import LuxuryCenterSelectionModal from './LuxuryCenterSelectionModal';
 import AIQuestionnaire from './AIQuestionnaire';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
@@ -15,7 +15,7 @@ const Layout = () => {
       <Box component="main" sx={{ flexGrow: 1, mt: { xs: 8, md: 10 } }}>
         <Outlet />
       </Box>
-      <Footer />
+      <LuxuryFooter />
       
       {/* Center Selection Modal */}
       <LuxuryCenterSelectionModal 
