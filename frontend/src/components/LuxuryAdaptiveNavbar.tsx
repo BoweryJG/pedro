@@ -129,7 +129,7 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
           background: 'var(--gradient-aurora)',
           backgroundSize: '300% 300%',
           opacity: scrolled ? 0.1 : 0,
-          animation: 'aurora 8s ease infinite',
+          animation: 'none',
           pointerEvents: 'none',
           transition: 'opacity 0.6s ease',
           zIndex: -1,
@@ -292,12 +292,12 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
                       borderRadius: '50px',
                       background: 'var(--gradient-luxury)',
                       backgroundSize: '200% 200%',
-                      animation: 'gradient-shift 4s ease infinite',
+                      animation: 'none',
                       boxShadow: '0 4px 30px rgba(102, 126, 234, 0.3)',
                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       '&:hover': {
                         boxShadow: '0 8px 40px rgba(102, 126, 234, 0.5)',
-                        animation: 'pulse-glow 2s infinite, gradient-shift 4s ease infinite',
+                        animation: 'none',
                       },
                     }}
                   >

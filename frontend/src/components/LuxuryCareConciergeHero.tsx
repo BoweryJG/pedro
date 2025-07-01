@@ -219,8 +219,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
         }}
       />
       
-      {/* Particle system */}
-      <ParticleField />
+      {/* Particle system - removed for performance */}
       
       {/* Floating orbs */}
       <Box
@@ -274,7 +273,6 @@ const LuxuryCareConciergeHero: React.FC = () => {
                 sx={{ 
                   fontSize: 64,
                   filter: 'drop-shadow(0 8px 32px rgba(102, 126, 234, 0.4))',
-                  animation: 'float 3s ease-in-out infinite',
                 }} 
               />
             </Box>
