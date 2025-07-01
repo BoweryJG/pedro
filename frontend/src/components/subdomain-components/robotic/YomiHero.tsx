@@ -359,7 +359,7 @@ const YomiHero: React.FC = () => {
                     sx={{
                       mt: 3,
                       p: 2,
-                      bgcolor: 'linear-gradient(135deg, #9C27B0 0%, #673AB7 100%)',
+                      background: 'linear-gradient(135deg, #9C27B0 0%, #673AB7 100%)',
                       borderRadius: 2,
                       textAlign: 'center'
                     }}
