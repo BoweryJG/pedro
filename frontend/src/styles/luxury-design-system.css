@@ -1,0 +1,244 @@
+/* LUXURY DENTAL DESIGN SYSTEM */
+
+/* Premium Typography - Import luxury fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* CSS Variables for Luxury Design System */
+:root {
+  /* Typography Scale */
+  --font-primary: 'Playfair Display', Georgia, serif;
+  --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-accent: 'Bebas Neue', Impact, sans-serif;
+  
+  /* Luxury Color Palette */
+  --luxury-black: #0A0A0A;
+  --luxury-white: #FAFAFA;
+  --luxury-gold: #D4AF37;
+  --luxury-silver: #C0C0C0;
+  --luxury-pearl: #F8F6F0;
+  
+  /* Sophisticated Gradients */
+  --gradient-aurora: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #667eea 100%);
+  --gradient-luxury: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  --gradient-metallic: linear-gradient(135deg, #B8B8B8 0%, #F5F5F5 50%, #B8B8B8 100%);
+  --gradient-holographic: linear-gradient(45deg, #00F5FF, #FF00E5, #FFE500, #00F5FF);
+  --gradient-pearl: linear-gradient(135deg, #F8F6F0 0%, #E8E6E0 50%, #F8F6F0 100%);
+  --gradient-midnight: linear-gradient(135deg, #0A0A0A 0%, #1A1A2A 50%, #0A0A0A 100%);
+  
+  /* Glass Effects */
+  --glass-white: rgba(255, 255, 255, 0.1);
+  --glass-black: rgba(0, 0, 0, 0.1);
+  --glass-blur: blur(10px);
+  --glass-blur-heavy: blur(20px);
+  
+  /* Animation Timing */
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --transition-luxury: cubic-bezier(0.87, 0, 0.13, 1);
+  
+  /* Shadows */
+  --shadow-luxury: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 40px rgba(102, 126, 234, 0.3);
+  --shadow-elegant: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Global Typography Styles */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 900;
+}
+
+h2 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+}
+
+h3 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+body {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
+  background-color: var(--luxury-white);
+  color: var(--luxury-black);
+}
+
+/* Luxury Animations */
+@keyframes aurora {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Utility Classes */
+.luxury-gradient {
+  background: var(--gradient-luxury);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.aurora-border {
+  position: relative;
+  background: var(--gradient-aurora);
+  background-size: 300% 300%;
+  animation: aurora 6s ease infinite;
+  padding: 2px;
+  border-radius: 12px;
+}
+
+.glassmorphism {
+  background: var(--glass-white);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.luxury-text-gradient {
+  background: var(--gradient-luxury);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.hover-magnetic {
+  transition: all 0.3s var(--transition-luxury);
+}
+
+.hover-magnetic:hover {
+  transform: translateY(-2px);
+}
+
+/* Premium Button Styles */
+.luxury-button {
+  position: relative;
+  padding: 1rem 2.5rem;
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--luxury-white);
+  background: var(--gradient-luxury);
+  background-size: 200% 200%;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s var(--transition-luxury);
+}
+
+.luxury-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-holographic);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.luxury-button:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+  animation: pulse-glow 2s infinite;
+}
+
+.luxury-button:hover::before {
+  opacity: 0.3;
+}
+
+/* Noise Texture Overlay */
+.noise-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.03;
+  z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5' /%3E%3C/svg%3E");
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--luxury-pearl);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradient-luxury);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gradient-metallic);
+}
+
+/* Loading Animation */
+.luxury-loading {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+
+.luxury-loading:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid transparent;
+  border-color: var(--luxury-gold) transparent var(--luxury-gold) transparent;
+  animation: luxury-loading 1.2s linear infinite;
+}
+
+@keyframes luxury-loading {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

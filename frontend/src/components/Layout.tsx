@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
-import AdaptiveNavbar from './AdaptiveNavbar';
+import LuxuryAdaptiveNavbar from './LuxuryAdaptiveNavbar';
 import Footer from './Footer';
-import CenterSelectionModal from './CenterSelectionModal';
+import LuxuryCenterSelectionModal from './LuxuryCenterSelectionModal';
 import AIQuestionnaire from './AIQuestionnaire';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 
@@ -11,14 +11,14 @@ const Layout = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <AdaptiveNavbar />
+      <LuxuryAdaptiveNavbar />
       <Box component="main" sx={{ flexGrow: 1, mt: { xs: 8, md: 10 } }}>
         <Outlet />
       </Box>
       <Footer />
       
       {/* Center Selection Modal */}
-      <CenterSelectionModal 
+      <LuxuryCenterSelectionModal 
         open={showCenterSelector} 
         onClose={() => setShowCenterSelector(false)} 
       />

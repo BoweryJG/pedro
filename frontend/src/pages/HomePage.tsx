@@ -1,4 +1,4 @@
-import CareConciergeHero from '../components/CareConciergeHero';
+import LuxuryCareConciergeHero from '../components/LuxuryCareConciergeHero';
 import { Box } from '@mui/material';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -7,7 +7,7 @@ const HomePage = () => {
   
   return (
     <Box>
-      <CareConciergeHero />
+      <LuxuryCareConciergeHero />
       {/* Additional homepage sections can be added here */}
     </Box>
   );

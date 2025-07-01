@@ -10,7 +10,7 @@ import ContactPage from './pages/ContactPage';
 import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import InstagramDashboard from './components/InstagramDashboard';
 import { Chatbot } from './chatbot/components/Chatbot';
-import BackendStatus from './components/BackendStatus';
+import LuxurySystemStatus from './components/LuxurySystemStatus';
 import { ChatFirstContactWidget } from './components/ChatFirstContactWidget';
 import { MobileChatOptimized } from './components/MobileChatOptimized';
 import { useState } from 'react';
@@ -56,7 +56,9 @@ function App() {
       ) : (
         <ChatFirstContactWidget onChatOpen={() => setChatOpen(true)} />
       )}
-      <BackendStatus />
+      <LuxurySystemStatus />
+      {/* Luxury noise texture overlay */}
+      <div className="noise-overlay" />
     </>
   );
 }

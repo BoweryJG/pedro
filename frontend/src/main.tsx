@@ -9,6 +9,7 @@ import { AdaptiveNavigationProvider } from './contexts/AdaptiveNavigationContext
 import theme from './theme'
 import App from './App.tsx'
 import './styles/animations.css'
+import './styles/luxury-design-system.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
