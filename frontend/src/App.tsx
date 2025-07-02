@@ -17,6 +17,11 @@ import { MobileChatOptimized } from './components/MobileChatOptimized';
 import ScrollToTop from './components/ScrollToTop';
 import { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
+import DashboardPage from './pages/DashboardPage';
+import LoginPage from './pages/auth/LoginPage';
+import UnauthorizedPage from './pages/auth/UnauthorizedPage';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import { AuthProvider } from './contexts/AuthContext';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
@@ -31,7 +36,7 @@ function App() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <>
+    <AuthProvider>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>
@@ -53,6 +58,18 @@ function App() {
           <Route path="medspa/*" element={<MedSpaSubdomainPage />} />
           <Route path="aboutface/*" element={<AboutFaceSubdomainPage />} />
         </Route>
+        
+        {/* Protected Dashboard Routes */}
+        <Route path="/dr-pedro/login" element={<LoginPage />} />
+        <Route path="/dr-pedro/unauthorized" element={<UnauthorizedPage />} />
+        <Route
+          path="/dr-pedro/dashboard"
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       {chatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
       {isMobile ? (
@@ -63,7 +80,7 @@ function App() {
       <LuxurySystemStatus />
       {/* Luxury noise texture overlay */}
       <div className="noise-overlay" />
-    </>
+    </AuthProvider>
   );
 }
 
