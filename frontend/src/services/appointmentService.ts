@@ -253,49 +253,17 @@ export class AppointmentService {
       .eq('id', appointmentData.staffId)
       .single();
     
-    if (patient?.phone) {
+    // SMS is now sent automatically by database trigger
+    console.log('SMS will be sent automatically via database trigger');
+    
+    // Show confirmation to user
+    if (patient) {
       const formattedDate = appointmentData.date.format('MMMM D, YYYY');
       const formattedTime = dayjs(`2000-01-01 ${appointmentData.time}`).format('h:mm A');
       
-      const message = `Hi ${patient.first_name}, your appointment for ${service?.name} with ${staff?.title} ${staff?.last_name} on ${formattedDate} at ${formattedTime} is confirmed. Code: ${confirmationCode}. Call (929) 242-4535 to reschedule.`;
-      
-      // Try to send SMS via Supabase Edge Function
-      try {
-        console.log('Attempting to send SMS to:', patient.phone);
-        const { data: smsResult, error: smsError } = await bookingSupabase.functions.invoke('send-appointment-sms', {
-          body: {
-            appointmentId: appointment.id,
-            phone: patient.phone.startsWith('+') ? patient.phone : `+1${patient.phone.replace(/\D/g, '')}`,
-            message: message
-          }
-        });
-        
-        if (smsError || smsResult?.error) {
-          console.error('SMS Error:', smsError || smsResult);
-          // Update SMS queue status if it exists
-          await bookingSupabase
-            .from('sms_queue')
-            .update({ status: 'failed', error: smsError?.message || smsResult?.error })
-            .eq('appointment_id', appointment.id);
-            
-          throw smsError || new Error(smsResult?.error);
-        } else {
-          console.log('SMS SENT SUCCESSFULLY!', smsResult);
-          // Update SMS queue status
-          await bookingSupabase
-            .from('sms_queue')
-            .update({ status: 'sent', sent_at: new Date().toISOString() })
-            .eq('appointment_id', appointment.id);
-        }
-      } catch (smsErr) {
-        // SMS failed, but appointment was created successfully
-        console.error('SMS sending failed:', smsErr);
-        console.log('📱 SMS Message (not sent due to error):', message);
-        console.log('Appointment was created successfully with confirmation code:', confirmationCode);
-        
-        // Show the message in an alert for demo purposes
-        alert(`Appointment confirmed!\n\nConfirmation Code: ${confirmationCode}\n\n(SMS notification could not be sent)`);
-      }
+      console.log(`Appointment confirmed for ${patient.first_name}`);
+      console.log(`Date: ${formattedDate} at ${formattedTime}`);
+      console.log(`Confirmation Code: ${confirmationCode}`);
     }
     
     return appointment.id;
