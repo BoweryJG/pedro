@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase, subscribeToTable, unsubscribeFromTable } from '../services/supabaseClient';
 import { MetricsCalculator } from '../services/analytics/metricsCalculator';
+import { useAuth } from '../contexts/AuthContext';
 import type {
   WatchMetrics
 } from '../types/watch.types';
