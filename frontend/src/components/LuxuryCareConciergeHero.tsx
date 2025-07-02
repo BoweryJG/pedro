@@ -78,11 +78,14 @@ const LuxuryCareConciergeHero: React.FC = () => {
       delay: 0,
     },
     {
-      title: "Help Me Explore",
-      subtitle: "AI-guided recommendations based on your needs",
-      icon: <LuxuryExploreIcon sx={{ fontSize: 48 }} />,
+      title: "Chat with Julie",
+      subtitle: "Your personal dental care assistant - available 24/7",
+      icon: <Typography fontSize="2.5rem">👩‍⚕️</Typography>,
       gradient: 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)',
-      action: handleHelpMeExplore,
+      action: () => {
+        const chatButton = document.querySelector('[aria-label="Chat with Julie!"]') as HTMLElement;
+        if (chatButton) chatButton.click();
+      },
       delay: 0.1,
     },
     {

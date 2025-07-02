@@ -43,9 +43,9 @@ const chatbotConfig = {
   temperature: 0.7,
   maxTokens: 500,
   personality: {
-    name: 'Sophie',
-    role: 'Virtual Smile Consultant',
-    tone: ['warm', 'professional', 'empathetic'],
+    name: 'Julie',
+    role: 'Your Personal Dental Care Assistant',
+    tone: ['warm', 'caring', 'empathetic', 'helpful'],
     localReferences: true,
     socraticLevel: 'moderate' as const
   }
@@ -58,7 +58,7 @@ const initialState = {
     {
       id: '1',
       role: 'assistant' as const,
-      content: "Hi! I'm Sophie, your virtual smile consultant at Staten Island Advanced Dentistry. 😊 Whether you're curious about our robotic dental implants, dealing with jaw pain, or interested in facial rejuvenation, I'm here to help. What brings you to our practice today?",
+      content: "Hi! I'm Julie, and I'm here to help you smile brighter! 😊 I understand that dental care can sometimes feel overwhelming, but I'm here to make everything easier for you. Whether you need to book an appointment, have questions about our procedures, want to check insurance coverage, or explore financing options - I'm here to help. What can I assist you with today?",
       timestamp: new Date()
     }
   ],
@@ -76,9 +76,10 @@ const initialState = {
   },
   analytics: null,
   suggestedResponses: [
-    "I'm missing a tooth",
-    "My jaw clicks and hurts", 
-    "Tell me about facial rejuvenation"
+    "Book an appointment",
+    "Check insurance coverage",
+    "I need help with financing", 
+    "Tell me about your services"
   ],
   showFinancingWidget: false,
   financingProcedure: undefined
@@ -136,6 +137,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       const wantsFinancing = content.toLowerCase().match(/financing|finance|payment|cost|insurance|coverage|afford|qualify/);
       const wantsInsuranceCheck = content.toLowerCase().match(/verify insurance|check insurance|insurance coverage|benefits/);
       
+      // Check if user wants to book an appointment
+      const wantsToBook = content.toLowerCase().match(/book|appointment|schedule|available|opening|slot|cancel|reschedule/);
+      
       // Update suggested responses based on stage
       const newStage = determineStage([...state.messages, userMessage, assistantMessage]);
       const suggestedResponses = openAIService.generateSuggestedResponses(newStage);
@@ -153,6 +157,13 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         showFinancingWidget: (wantsFinancing || wantsInsuranceCheck) && detectedProcedure ? true : state.showFinancingWidget,
         financingProcedure: (wantsFinancing || wantsInsuranceCheck) && detectedProcedure ? detectedProcedure : state.financingProcedure
       }));
+      
+      // If user wants to book, open the booking page
+      if (wantsToBook && response.toLowerCase().includes('booking page')) {
+        setTimeout(() => {
+          window.location.href = '/booking';
+        }, 1500);
+      }
       
       // Track analytics
       get().trackAnalytics('message_sent', {

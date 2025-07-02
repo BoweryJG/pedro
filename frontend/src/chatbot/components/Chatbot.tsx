@@ -139,7 +139,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
               <Box>
                 <Box display="flex" alignItems="center" gap={0.5}>
                   <Typography variant="h6" fontWeight="bold">
-                    Sophie
+                    Julie
                   </Typography>
                   <SparkleIcon sx={{ fontSize: 16, color: '#FFD700' }} />
                 </Box>
@@ -163,7 +163,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                       animation: 'pulse 2s infinite'
                     }}
                   />
-                  Active Now • Smile Specialist
+                  Active Now • Your Personal Dental Care Assistant
                 </Typography>
               </Box>
             </Box>
@@ -343,7 +343,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                     </motion.div>
                   </Box>
                   <Typography variant="caption" color="text.secondary" fontStyle="italic">
-                    Sophie is thinking...
+                    Julie is thinking...
                   </Typography>
                 </Paper>
               </Box>

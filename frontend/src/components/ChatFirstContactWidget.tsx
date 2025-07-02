@@ -81,9 +81,14 @@ export const ChatFirstContactWidget: React.FC<ChatFirstContactWidgetProps> = ({ 
           }}
         >
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 2 }}>
-            <Typography variant="h6" fontWeight="bold">
-              How can we help?
-            </Typography>
+            <Box>
+              <Typography variant="h6" fontWeight="bold">
+                Need help? Ask Julie!
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Your Personal Dental Care Assistant
+              </Typography>
+            </Box>
             <IconButton size="small" onClick={() => setShowOptions(false)}>
               <CloseIcon fontSize="small" />
             </IconButton>
@@ -109,10 +114,10 @@ export const ChatFirstContactWidget: React.FC<ChatFirstContactWidgetProps> = ({ 
             >
               <Box sx={{ textAlign: 'left' }}>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Start Live Chat
+                  Chat with Julie
                 </Typography>
                 <Typography variant="caption" sx={{ opacity: 0.9 }}>
-                  {CONTACT_INFO.chat.availability}
+                  Available 24/7 to help you
                 </Typography>
               </Box>
             </Button>
@@ -125,7 +130,7 @@ export const ChatFirstContactWidget: React.FC<ChatFirstContactWidgetProps> = ({ 
                 '& .MuiAlert-message': { fontSize: '0.875rem' }
               }}
             >
-              Most patients get answers in under 2 minutes!
+              Julie can help with booking, insurance, and questions!
             </Alert>
 
             <Divider sx={{ my: 1 }}>
@@ -177,7 +182,7 @@ export const ChatFirstContactWidget: React.FC<ChatFirstContactWidgetProps> = ({ 
       )}
 
       <Tooltip 
-        title={!hasInteracted ? "Chat with us!" : ""} 
+        title={!hasInteracted ? "Chat with Julie!" : ""} 
         placement="left"
         arrow
       >

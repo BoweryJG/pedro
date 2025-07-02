@@ -107,7 +107,7 @@ const ContactPage = () => {
       <Box ref={formRef} sx={{ py: 10 }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {/* Contact Form */}
+            {/* Chat with Julie */}
             <Box sx={{ width: { xs: '100%', md: '58.333%' }, px: 3 }}>
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -116,120 +116,73 @@ const ContactPage = () => {
               >
                 <Card>
                   <CardContent sx={{ p: 4 }}>
-                    <Typography variant="h4" fontWeight={600} gutterBottom>
-                      Schedule Your Appointment
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      color="text.secondary"
-                      paragraph
-                    >
-                      Fill out the form below and we'll contact you within 24 hours.
-                    </Typography>
-
-                    <Box
-                      component="form"
-                      onSubmit={handleSubmit}
-                      sx={{ mt: 3 }}
-                    >
-                      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3 }}>
-                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
-                          <TextField
-                            fullWidth
-                            label="Full Name"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                          />
-                        </Box>
-                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
-                          <TextField
-                            fullWidth
-                            label="Email"
-                            name="email"
-                            type="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            required
-                          />
-                        </Box>
-                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
-                          <TextField
-                            fullWidth
-                            label="Phone Number"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            required
-                          />
-                        </Box>
-                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
-                          <TextField
-                            fullWidth
-                            select
-                            label="Service Interested In"
-                            name="service"
-                            value={formData.service}
-                            onChange={handleChange}
-                            required
-                          >
-                            {services.map((service) => (
-                              <MenuItem key={service} value={service}>
-                                {service}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </Box>
-                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
-                          <TextField
-                            fullWidth
-                            label="Preferred Date"
-                            name="preferredDate"
-                            type="date"
-                            value={formData.preferredDate}
-                            onChange={handleChange}
-                            InputLabelProps={{ shrink: true }}
-                          />
-                        </Box>
-                        <Box sx={{ width: { xs: '100%', sm: '50%' }, px: 1.5 }}>
-                          <TextField
-                            fullWidth
-                            select
-                            label="Preferred Time"
-                            name="preferredTime"
-                            value={formData.preferredTime}
-                            onChange={handleChange}
-                          >
-                            {timeSlots.map((time) => (
-                              <MenuItem key={time} value={time}>
-                                {time}
-                              </MenuItem>
-                            ))}
-                          </TextField>
-                        </Box>
-                        <Box sx={{ width: '100%', px: 1.5 }}>
-                          <TextField
-                            fullWidth
-                            label="Additional Message"
-                            name="message"
-                            value={formData.message}
-                            onChange={handleChange}
-                            multiline
-                            rows={4}
-                          />
-                        </Box>
-                        <Box sx={{ width: '100%', px: 1.5 }}>
-                          <Button
-                            type="submit"
-                            variant="contained"
-                            size="large"
-                            fullWidth
-                            sx={{ py: 1.5 }}
-                          >
-                            Request Appointment
-                          </Button>
-                        </Box>
+                    <Box sx={{ textAlign: 'center', py: 4 }}>
+                      <Box sx={{ fontSize: '4rem', mb: 2 }}>👩‍⚕️</Box>
+                      <Typography variant="h4" fontWeight={600} gutterBottom>
+                        Chat with Julie
+                      </Typography>
+                      <Typography
+                        variant="h6"
+                        color="text.secondary"
+                        paragraph
+                      >
+                        Your Personal Dental Care Assistant
+                      </Typography>
+                      <Typography
+                        variant="body1"
+                        color="text.secondary"
+                        paragraph
+                        sx={{ maxWidth: 500, mx: 'auto', mb: 4 }}
+                      >
+                        Julie can help you schedule appointments, check insurance coverage, 
+                        explore financing options, and answer any questions about our services - 
+                        all in real-time!
+                      </Typography>
+                      
+                      <Stack spacing={2} sx={{ maxWidth: 400, mx: 'auto' }}>
+                        <Button
+                          variant="contained"
+                          size="large"
+                          onClick={() => {
+                            const chatButton = document.querySelector('[aria-label="Chat with Julie!"]') as HTMLElement;
+                            if (chatButton) chatButton.click();
+                          }}
+                          sx={{ 
+                            py: 2,
+                            fontSize: '1.1rem',
+                            background: 'linear-gradient(45deg, #1a73e8 30%, #4285f4 90%)',
+                            boxShadow: '0 3px 5px 2px rgba(26, 115, 232, .3)',
+                            '&:hover': {
+                              transform: 'translateY(-2px)',
+                              boxShadow: '0 6px 10px 2px rgba(26, 115, 232, .3)',
+                            },
+                          }}
+                        >
+                          Start Chatting with Julie
+                        </Button>
+                        
+                        <Typography variant="body2" color="text.secondary">
+                          Available 24/7 • Instant responses • No waiting
+                        </Typography>
+                      </Stack>
+                      
+                      <Box sx={{ mt: 4, p: 3, bgcolor: 'grey.50', borderRadius: 2 }}>
+                        <Typography variant="subtitle2" gutterBottom>
+                          Julie can help with:
+                        </Typography>
+                        <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap">
+                          {[
+                            '📅 Booking appointments',
+                            '💰 Financing options',
+                            '🦷 Treatment questions',
+                            '📋 Insurance verification',
+                            '❌ Cancellations'
+                          ].map((item) => (
+                            <Typography key={item} variant="caption" sx={{ p: 1 }}>
+                              {item}
+                            </Typography>
+                          ))}
+                        </Stack>
                       </Box>
                     </Box>
                   </CardContent>
