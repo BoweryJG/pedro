@@ -2,6 +2,29 @@ import { supabase } from '../supabase';
 
 export class RealtimeAggregator {
   private subscriptions: any[] = [];
+  private aggregationInterval: NodeJS.Timeout | null = null;
+
+  // Start real-time aggregation
+  startAggregation(callback: (data: any) => void, intervalMs: number = 5000) {
+    this.stopAggregation(); // Clear any existing interval
+    
+    // Initial aggregation
+    this.aggregateMetrics().then(callback);
+    
+    // Set up periodic aggregation
+    this.aggregationInterval = setInterval(async () => {
+      const metrics = await this.aggregateMetrics();
+      callback(metrics);
+    }, intervalMs);
+  }
+
+  // Stop real-time aggregation
+  stopAggregation() {
+    if (this.aggregationInterval) {
+      clearInterval(this.aggregationInterval);
+      this.aggregationInterval = null;
+    }
+  }
 
   // Subscribe to appointment changes
   subscribeToAppointments(callback: (payload: any) => void) {

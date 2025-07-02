@@ -4,6 +4,9 @@ import BreitlingChronomat from './watches/BreitlingChronomat';
 import { useWatchTime } from '../../hooks/useWatchTime';
 import { useSupabaseData, useSupabaseConnection } from '../../hooks/useSupabaseData';
 import type { DataMode } from '../../types/watch.types';
+import ErrorBoundary from '../ErrorBoundary';
+import LoadingState from './LoadingState';
+import ErrorState from './ErrorState';
 
 const DentalDashboard: React.FC = () => {
   const theme = useTheme();
@@ -184,39 +187,57 @@ const DentalDashboard: React.FC = () => {
             gap: 3
           }}
         >
-          <Paper
-            elevation={24}
-            sx={{
-              background: 'rgba(0, 0, 0, 0.02)',
-              backdropFilter: 'blur(20px)',
-              borderRadius: 4,
-              padding: 4,
-              border: `1px solid ${theme.palette.divider}`,
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: '-50%',
-                left: '-50%',
-                width: '200%',
-                height: '200%',
-                background: 'radial-gradient(circle at 30% 30%, rgba(255,215,0,0.1) 0%, transparent 60%)',
-                pointerEvents: 'none'
-              }
-            }}
-          >
-            <BreitlingChronomat
-              model="chronomat"
-              size={watchSize}
-              dataMode={dataMode}
-              realTimeUpdates={realTimeUpdates}
-              interactiveMode={interactiveMode}
-              onModeChange={handleModeChange}
-              metrics={displayMetrics}
-              currentTime={currentTime}
-            />
-          </Paper>
+          <ErrorBoundary>
+            <Paper
+              elevation={24}
+              sx={{
+                background: 'rgba(0, 0, 0, 0.02)',
+                backdropFilter: 'blur(20px)',
+                borderRadius: 4,
+                padding: 4,
+                border: `1px solid ${theme.palette.divider}`,
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: '-50%',
+                  left: '-50%',
+                  width: '200%',
+                  height: '200%',
+                  background: 'radial-gradient(circle at 30% 30%, rgba(255,215,0,0.1) 0%, transparent 60%)',
+                  pointerEvents: 'none'
+                }
+              }}
+            >
+              {loading && !metrics ? (
+                <LoadingState size="large" message="Initializing dashboard..." />
+              ) : error ? (
+                <ErrorState 
+                  error={error} 
+                  type="data"
+                  onRetry={refetch} 
+                />
+              ) : connectionError ? (
+                <ErrorState 
+                  error={connectionError} 
+                  type="connection"
+                  onRetry={refetch} 
+                />
+              ) : (
+                <BreitlingChronomat
+                  model="chronomat"
+                  size={watchSize}
+                  dataMode={dataMode}
+                  realTimeUpdates={realTimeUpdates}
+                  interactiveMode={interactiveMode}
+                  onModeChange={handleModeChange}
+                  metrics={displayMetrics}
+                  currentTime={currentTime}
+                />
+              )}
+            </Paper>
+          </ErrorBoundary>
 
           {/* Control Panel */}
           <Paper

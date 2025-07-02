@@ -168,6 +168,139 @@
   }
 }
 
+/* Pulse animation for indicators */
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* LED glow animation */
+.led-glow {
+  animation: ledGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes ledGlow {
+  from {
+    filter: drop-shadow(0 0 5px currentColor);
+  }
+  to {
+    filter: drop-shadow(0 0 20px currentColor) drop-shadow(0 0 30px currentColor);
+  }
+}
+
+/* Subdial hand animations */
+.subdial-hand {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.subdial-hand:hover {
+  filter: brightness(1.2);
+}
+
+/* Digital display animation */
+.digital-timer {
+  animation: digitalFlicker 10s ease-in-out infinite;
+}
+
+@keyframes digitalFlicker {
+  0%, 100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 0.8;
+  }
+  94% {
+    opacity: 1;
+  }
+}
+
+/* Bezel screw hover effect */
+.bezel-screw {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.bezel-screw:hover {
+  transform: rotate(90deg);
+  filter: brightness(1.3);
+}
+
+/* Floating subdial effect */
+.floating-subdial {
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-subdial:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.floating-subdial:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.floating-subdial:nth-child(3) {
+  animation-delay: 4s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Data mode transition */
+.data-mode-transition {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading state animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error state pulse */
+.error-pulse {
+  animation: errorPulse 1s ease-in-out infinite;
+}
+
+@keyframes errorPulse {
+  0%, 100% {
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+  50% {
+    background-color: rgba(239, 68, 68, 0.3);
+  }
+}
+
 /* Glass reflection effect */
 .watch-container::after {
   content: '';

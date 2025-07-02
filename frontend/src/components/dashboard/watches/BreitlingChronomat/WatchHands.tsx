@@ -10,29 +10,28 @@ interface WatchHandsProps {
   dataMode: DataMode;
 }
 
-const WatchHands: React.FC<WatchHandsProps> = ({
-  currentTime,
-  chronoElapsed,
+const WatchHands: React.FC<WatchHandsProps> = ({ 
+  currentTime, 
+  chronoElapsed, 
   isChronoRunning,
   metrics,
-  dataMode
+  dataMode 
 }) => {
-  const center = 200; // Assuming medium size as default
-  const radius = 180;
-
-  // Calculate time-based hand positions
   const hours = currentTime.getHours() % 12;
   const minutes = currentTime.getMinutes();
   const seconds = currentTime.getSeconds();
   const milliseconds = currentTime.getMilliseconds();
 
-  // Convert to angles (0 degrees = 12 o'clock, clockwise)
-  const hourAngle = (hours * 30) + (minutes * 0.5);
-  const minuteAngle = (minutes * 6) + (seconds * 0.1);
-  const secondAngle = (seconds * 6) + (milliseconds * 0.006);
+  const radius = 200; // Based on 400px diameter
+  const center = radius;
 
-  // Calculate chronometer hand positions
-  const chronoSeconds = Math.floor(chronoElapsed / 1000) % 60;
+  // Calculate angles for time hands
+  const hourAngle = (hours + minutes / 60) * 30;
+  const minuteAngle = (minutes + seconds / 60) * 6;
+  const secondAngle = (seconds + milliseconds / 1000) * 6;
+
+  // Calculate chronometer positions
+  const chronoSeconds = (chronoElapsed / 1000) % 60;
   const chronoMinutes = Math.floor(chronoElapsed / 60000) % 30;
   const chronoHours = Math.floor(chronoElapsed / 3600000) % 12;
 
@@ -40,29 +39,42 @@ const WatchHands: React.FC<WatchHandsProps> = ({
   const chronoMinuteAngle = chronoMinutes * 12;
   const chronoHourAngle = chronoHours * 30;
 
-  // Get data-driven hand positions
+  // Get data-driven values
   const dataValues = MetricsCalculator.metricsToWatchValues(metrics, dataMode);
 
-  // Convert angles to coordinates
+  // Convert angles to coordinates with safety check
   const getHandCoordinates = (angle: number, length: number) => {
-    const radian = (angle - 90) * (Math.PI / 180);
+    const safeAngle = isNaN(angle) ? 0 : angle;
+    const radian = (safeAngle - 90) * (Math.PI / 180);
     return {
       x: center + length * Math.cos(radian),
       y: center + length * Math.sin(radian)
     };
   };
 
+  // Main hands
   const hourHand = getHandCoordinates(hourAngle, radius * 0.5);
-  const minuteHand = getHandCoordinates(minuteAngle, radius * 0.7);
-  const secondHand = getHandCoordinates(secondAngle, radius * 0.8);
+  const minuteHand = getHandCoordinates(minuteAngle, radius * 0.65);
+  const secondHand = getHandCoordinates(secondAngle, radius * 0.75);
 
-  // Subdial coordinates
-  const subdial1Center = { x: center - radius * 0.6, y: center }; // 9 o'clock
-  const subdial2Center = { x: center, y: center + radius * 0.6 }; // 6 o'clock
-  const subdial3Center = { x: center + radius * 0.6, y: center }; // 3 o'clock
+  // Subdial positions (matching WatchFace layout)
+  const subdialPositions = [
+    { cx: center - radius * 0.5, cy: center - radius * 0.2 }, // Left subdial
+    { cx: center + radius * 0.5, cy: center - radius * 0.2 }, // Right subdial
+    { cx: center, cy: center + radius * 0.45 } // Bottom subdial
+  ];
 
-  // Chronometer hands
-  const chronoSecondHand = getHandCoordinates(chronoSecondAngle, radius * 0.85);
+  // Data hands for subdials
+  const subdialRadius = radius * 0.25;
+  const getSubdialHand = (value: number, max: number, subdialCenter: { cx: number; cy: number }) => {
+    const percentage = Math.min(value / max, 1);
+    const angle = percentage * 270 - 135; // -135 to 135 degrees
+    const radian = (angle - 90) * (Math.PI / 180);
+    return {
+      x: subdialCenter.cx + (subdialRadius * 0.7) * Math.cos(radian),
+      y: subdialCenter.cy + (subdialRadius * 0.7) * Math.sin(radian)
+    };
+  };
 
   return (
     <svg
@@ -73,202 +85,188 @@ const WatchHands: React.FC<WatchHandsProps> = ({
       style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}
     >
       <defs>
-        <linearGradient id="handGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        {/* Elegant hand gradients */}
+        <linearGradient id="elegantHandGradient" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#f8fafc" />
-          <stop offset="50%" stopColor="#e2e8f0" />
-          <stop offset="100%" stopColor="#94a3b8" />
+          <stop offset="50%" stopColor="#cbd5e1" />
+          <stop offset="100%" stopColor="#64748b" />
         </linearGradient>
 
-        <linearGradient id="chronoHandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#ef4444" />
-          <stop offset="50%" stopColor="#dc2626" />
-          <stop offset="100%" stopColor="#b91c1c" />
+        {/* Glowing green gradient for real-time indicators */}
+        <linearGradient id="glowingGreenGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#86efac" />
+          <stop offset="50%" stopColor="#22c55e" />
+          <stop offset="100%" stopColor="#16a34a" />
         </linearGradient>
 
+        {/* Electric blue gradient for data */}
+        <linearGradient id="electricBlueGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#7dd3fc" />
+          <stop offset="50%" stopColor="#0ea5e9" />
+          <stop offset="100%" stopColor="#0369a1" />
+        </linearGradient>
+
+        {/* Hand shadow filter */}
         <filter id="handShadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="1" dy="2" stdDeviation="2" floodOpacity="0.4"/>
+          <feDropShadow dx="0" dy="1" stdDeviation="2" floodOpacity="0.3"/>
+        </filter>
+
+        {/* Glow filter */}
+        <filter id="glowFilter">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
         </filter>
       </defs>
 
       {/* Main Time Hands */}
-      {/* Hour Hand */}
-      <line
-        x1={center}
-        y1={center}
-        x2={hourHand.x}
-        y2={hourHand.y}
-        stroke="url(#handGradient)"
-        strokeWidth="6"
-        strokeLinecap="round"
-        filter="url(#handShadow)"
-        style={{
-          transition: 'all 0.5s ease-in-out',
-          transformOrigin: `${center}px ${center}px`
-        }}
-      />
-
-      {/* Minute Hand */}
-      <line
-        x1={center}
-        y1={center}
-        x2={minuteHand.x}
-        y2={minuteHand.y}
-        stroke="url(#handGradient)"
-        strokeWidth="4"
-        strokeLinecap="round"
-        filter="url(#handShadow)"
-        style={{
-          transition: 'all 0.5s ease-in-out',
-          transformOrigin: `${center}px ${center}px`
-        }}
-      />
-
-      {/* Second Hand (also serves as chronometer hand when running) */}
-      <line
-        x1={center}
-        y1={center}
-        x2={isChronoRunning ? chronoSecondHand.x : secondHand.x}
-        y2={isChronoRunning ? chronoSecondHand.y : secondHand.y}
-        stroke={isChronoRunning ? "url(#chronoHandGradient)" : "#ef4444"}
-        strokeWidth="2"
-        strokeLinecap="round"
-        filter="url(#handShadow)"
-        style={{
-          transition: isChronoRunning ? 'none' : 'all 0.1s ease-out',
-          transformOrigin: `${center}px ${center}px`
-        }}
-      />
-
-      {/* Data-driven Main Dial Hand (shows primary metric) */}
-      {dataValues && (
+      
+      {/* Hour Hand - Elegant mechanical style */}
+      <g filter="url(#handShadow)">
         <line
           x1={center}
-          y1={center}
-          x2={center + (radius * 0.6) * Math.cos((dataValues.mainDial * 30 - 90) * Math.PI / 180)}
-          y2={center + (radius * 0.6) * Math.sin((dataValues.mainDial * 30 - 90) * Math.PI / 180)}
-          stroke="#22c55e"
-          strokeWidth="3"
+          y1={center + 20}
+          x2={hourHand.x}
+          y2={hourHand.y}
+          stroke="url(#elegantHandGradient)"
+          strokeWidth="6"
           strokeLinecap="round"
-          opacity="0.8"
-          style={{
-            transition: 'all 1s ease-in-out',
-            transformOrigin: `${center}px ${center}px`
-          }}
         />
-      )}
+        <circle cx={hourHand.x} cy={hourHand.y} r="3" fill="#f8fafc" />
+      </g>
+
+      {/* Minute Hand - Sleek and precise */}
+      <g filter="url(#handShadow)">
+        <line
+          x1={center}
+          y1={center + 20}
+          x2={minuteHand.x}
+          y2={minuteHand.y}
+          stroke="url(#elegantHandGradient)"
+          strokeWidth="4"
+          strokeLinecap="round"
+        />
+        <circle cx={minuteHand.x} cy={minuteHand.y} r="2" fill="#f8fafc" />
+      </g>
+
+      {/* Second Hand - Glowing green real-time indicator */}
+      <g filter="url(#glowFilter)">
+        <line
+          x1={center}
+          y1={center + 30}
+          x2={secondHand.x}
+          y2={secondHand.y}
+          stroke="url(#glowingGreenGradient)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.9"
+        />
+        <circle cx={secondHand.x} cy={secondHand.y} r="4" fill="#22c55e" opacity="0.8" />
+      </g>
 
       {/* Subdial Hands */}
-      {/* 30-minute Chronometer Hand (9 o'clock) - Data Subdial 1 */}
-      <line
-        x1={subdial1Center.x}
-        y1={subdial1Center.y}
-        x2={subdial1Center.x + (radius * 0.15) * Math.cos((chronoMinuteAngle - 90) * Math.PI / 180)}
-        y2={subdial1Center.y + (radius * 0.15) * Math.sin((chronoMinuteAngle - 90) * Math.PI / 180)}
-        stroke={isChronoRunning ? "url(#chronoHandGradient)" : "#64748b"}
-        strokeWidth="2"
-        strokeLinecap="round"
-        style={{
-          transition: 'all 0.3s ease-in-out',
-          transformOrigin: `${subdial1Center.x}px ${subdial1Center.y}px`
-        }}
-      />
-
-      {/* Running Seconds Hand (6 o'clock) */}
-      <line
-        x1={subdial2Center.x}
-        y1={subdial2Center.y}
-        x2={subdial2Center.x + (radius * 0.18) * Math.cos((secondAngle - 90) * Math.PI / 180)}
-        y2={subdial2Center.y + (radius * 0.18) * Math.sin((secondAngle - 90) * Math.PI / 180)}
-        stroke="#64748b"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        style={{
-          transition: 'all 0.1s ease-out',
-          transformOrigin: `${subdial2Center.x}px ${subdial2Center.y}px`
-        }}
-      />
-
-      {/* 12-hour Chronometer Hand (3 o'clock) - Data Subdial 3 */}
-      <line
-        x1={subdial3Center.x}
-        y1={subdial3Center.y}
-        x2={subdial3Center.x + (radius * 0.15) * Math.cos((chronoHourAngle - 90) * Math.PI / 180)}
-        y2={subdial3Center.y + (radius * 0.15) * Math.sin((chronoHourAngle - 90) * Math.PI / 180)}
-        stroke={isChronoRunning ? "url(#chronoHandGradient)" : "#64748b"}
-        strokeWidth="2"
-        strokeLinecap="round"
-        style={{
-          transition: 'all 0.3s ease-in-out',
-          transformOrigin: `${subdial3Center.x}px ${subdial3Center.y}px`
-        }}
-      />
-
-      {/* Data-driven Subdial Hands */}
+      
+      {/* Left Subdial - Upcoming Appointments */}
       {dataValues && (
-        <>
-          {/* Subdial 1 Data Hand */}
+        <g>
           <line
-            x1={subdial1Center.x}
-            y1={subdial1Center.y}
-            x2={subdial1Center.x + (radius * 0.16) * Math.cos((dataValues.subdial1 * 6 - 90) * Math.PI / 180)}
-            y2={subdial1Center.y + (radius * 0.16) * Math.sin((dataValues.subdial1 * 6 - 90) * Math.PI / 180)}
-            stroke="#16a34a"
+            x1={subdialPositions[0].cx}
+            y1={subdialPositions[0].cy}
+            x2={getSubdialHand(dataValues.subdial1, 10, subdialPositions[0]).x}
+            y2={getSubdialHand(dataValues.subdial1, 10, subdialPositions[0]).y}
+            stroke="url(#electricBlueGradient)"
             strokeWidth="2"
             strokeLinecap="round"
-            opacity="0.7"
-            style={{
-              transition: 'all 1s ease-in-out',
-              transformOrigin: `${subdial1Center.x}px ${subdial1Center.y}px`
-            }}
+            filter="url(#glowFilter)"
           />
-
-          {/* Subdial 3 Data Hand */}
-          <line
-            x1={subdial3Center.x}
-            y1={subdial3Center.y}
-            x2={subdial3Center.x + (radius * 0.16) * Math.cos((dataValues.subdial3 * 6 - 90) * Math.PI / 180)}
-            y2={subdial3Center.y + (radius * 0.16) * Math.sin((dataValues.subdial3 * 6 - 90) * Math.PI / 180)}
-            stroke="#16a34a"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity="0.7"
-            style={{
-              transition: 'all 1s ease-in-out',
-              transformOrigin: `${subdial3Center.x}px ${subdial3Center.y}px`
-            }}
-          />
-        </>
+          <text
+            x={subdialPositions[0].cx}
+            y={subdialPositions[0].cy + 5}
+            textAnchor="middle"
+            fill="#0ea5e9"
+            fontSize="16"
+            fontWeight="bold"
+            fontFamily="'Helvetica Neue', sans-serif"
+          >
+            {Math.round(dataValues.subdial1)}
+          </text>
+        </g>
       )}
 
-      {/* Center Caps for subdials */}
-      <circle
-        cx={subdial1Center.x}
-        cy={subdial1Center.y}
-        r="2"
-        fill="#64748b"
-      />
-      <circle
-        cx={subdial2Center.x}
-        cy={subdial2Center.y}
-        r="2"
-        fill="#64748b"
-      />
-      <circle
-        cx={subdial3Center.x}
-        cy={subdial3Center.y}
-        r="2"
-        fill="#64748b"
-      />
+      {/* Right Subdial - Average Duration */}
+      {dataValues && (
+        <g>
+          <line
+            x1={subdialPositions[1].cx}
+            y1={subdialPositions[1].cy}
+            x2={getSubdialHand(dataValues.subdial2, 120, subdialPositions[1]).x}
+            y2={getSubdialHand(dataValues.subdial2, 120, subdialPositions[1]).y}
+            stroke="url(#electricBlueGradient)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            filter="url(#glowFilter)"
+          />
+          <text
+            x={subdialPositions[1].cx}
+            y={subdialPositions[1].cy + 5}
+            textAnchor="middle"
+            fill="#0ea5e9"
+            fontSize="16"
+            fontWeight="bold"
+            fontFamily="'Helvetica Neue', sans-serif"
+          >
+            {Math.round(dataValues.subdial2)}m
+          </text>
+        </g>
+      )}
 
-      {/* Main center cap */}
-      <circle
-        cx={center}
-        cy={center}
-        r="4"
-        fill="#ffffff"
-        stroke="#22c55e"
-        strokeWidth="1"
-      />
+      {/* Bottom Subdial - Completion Percentage */}
+      {dataValues && (
+        <g>
+          <line
+            x1={subdialPositions[2].cx}
+            y1={subdialPositions[2].cy}
+            x2={getSubdialHand(dataValues.subdial3, 100, subdialPositions[2]).x}
+            y2={getSubdialHand(dataValues.subdial3, 100, subdialPositions[2]).y}
+            stroke="url(#glowingGreenGradient)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            filter="url(#glowFilter)"
+          />
+          <text
+            x={subdialPositions[2].cx}
+            y={subdialPositions[2].cy + 5}
+            textAnchor="middle"
+            fill="#22c55e"
+            fontSize="16"
+            fontWeight="bold"
+            fontFamily="'Helvetica Neue', sans-serif"
+          >
+            {Math.round(dataValues.subdial3)}%
+          </text>
+        </g>
+      )}
+
+      {/* Center cap with luxury finish */}
+      <g filter="url(#handShadow)">
+        <circle cx={center} cy={center} r="10" fill="#374151" />
+        <circle cx={center} cy={center} r="8" fill="#1f2937" />
+        <circle cx={center} cy={center} r="4" fill="#00ff88" filter="url(#glowFilter)" />
+      </g>
+
+      {/* Chrono indicator (if running) */}
+      {isChronoRunning && (
+        <circle
+          cx={center}
+          cy={center - radius * 0.85}
+          r="3"
+          fill="#ef4444"
+          filter="url(#glowFilter)"
+          className="pulse-animation"
+        />
+      )}
     </svg>
   );
 };

@@ -4,38 +4,84 @@ export class MetricsCalculator {
     hours: number;
     minutes: number;
     seconds: number;
+    mainDial: number;
+    subdial1: number;
+    subdial2: number;
+    subdial3: number;
   } {
+    // Safe number helper
+    const safeNumber = (value: any, defaultValue: number = 0): number => {
+      const num = Number(value);
+      return isNaN(num) || !isFinite(num) ? defaultValue : num;
+    };
+
+    if (!metrics) {
+      return {
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+        mainDial: 0,
+        subdial1: 0,
+        subdial2: 0,
+        subdial3: 0
+      };
+    }
+
     let value = 0;
     let max = 100;
+    let subdial1Value = 0;
+    let subdial2Value = 0;
+    let subdial3Value = 0;
 
     switch (dataMode) {
       case 'appointments':
-        value = metrics.todayAppointments || 0;
+        value = safeNumber(metrics.appointments?.todayCount, 0);
         max = 20; // Max 20 appointments per day
+        subdial1Value = safeNumber(metrics.appointments?.weeklyUpcoming, 0);
+        subdial2Value = safeNumber(metrics.appointments?.averageDuration, 60);
+        subdial3Value = safeNumber(metrics.appointments?.completionRate, 0);
         break;
       case 'patients':
-        value = metrics.newPatientsToday || 0;
+        value = safeNumber(metrics.patients?.newThisMonth, 0);
         max = 10; // Max 10 new patients per day
+        subdial1Value = safeNumber(metrics.patients?.totalActive, 0);
+        subdial2Value = safeNumber(metrics.patients?.satisfactionAverage, 0) * 20; // Convert 0-5 to 0-100
+        subdial3Value = safeNumber(metrics.patients?.returningPercentage, 0);
         break;
       case 'services':
-        value = metrics.servicesCompleted || 0;
+        value = safeNumber(metrics.services?.totalServices, 0);
         max = 30; // Max 30 services per day
+        subdial1Value = safeNumber(metrics.services?.yomiProcedures, 0);
+        subdial2Value = safeNumber(metrics.services?.revenuePerService, 0) / 10; // Scale down for display
+        subdial3Value = safeNumber(metrics.services?.bookingTrends, 0);
         break;
       case 'performance':
-        value = metrics.productionPercentage || 0;
-        max = 100; // Percentage
+        value = safeNumber(metrics.performance?.dailyRevenue, 0);
+        max = 10000; // Max $10,000 daily revenue
+        subdial1Value = (safeNumber(metrics.performance?.dailyRevenue, 0) / safeNumber(metrics.performance?.weeklyTarget, 15000)) * 100;
+        subdial2Value = safeNumber(metrics.performance?.staffProductivity, 0);
+        subdial3Value = safeNumber(metrics.performance?.testimonialRating, 0) * 20; // Convert 0-5 to 0-100
         break;
     }
 
-    // Convert to 12-hour format
-    const percentage = Math.min(value / max, 1);
-    const totalMinutes = percentage * 720; // 12 hours = 720 minutes
+    // Convert to 12-hour format with safe calculations
+    const percentage = Math.min(safeNumber(value / max, 0), 1);
+    const totalMinutes = safeNumber(percentage * 720, 0); // 12 hours = 720 minutes
     
     const hours = Math.floor(totalMinutes / 60);
     const minutes = Math.floor(totalMinutes % 60);
     const seconds = Math.floor((totalMinutes * 60) % 60);
+    const mainDial = safeNumber(percentage * 12, 0); // 0-12 position
 
-    return { hours, minutes, seconds };
+    return { 
+      hours: safeNumber(hours, 0), 
+      minutes: safeNumber(minutes, 0), 
+      seconds: safeNumber(seconds, 0),
+      mainDial: safeNumber(mainDial, 0),
+      subdial1: safeNumber(subdial1Value, 0),
+      subdial2: safeNumber(subdial2Value, 0),
+      subdial3: safeNumber(subdial3Value, 0)
+    };
   }
   // Calculate production metrics
   static calculateDailyProduction(appointments: any[]): number {

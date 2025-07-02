@@ -9,353 +9,301 @@ interface WatchFaceProps {
 
 const WatchFace: React.FC<WatchFaceProps> = ({ size, dataMode, interactiveMode }) => {
   const sizeMap = {
-    small: { width: 300, height: 300 },
-    medium: { width: 400, height: 400 },
-    large: { width: 500, height: 500 }
+    small: 300,
+    medium: 400,
+    large: 500
   };
 
-  const dimensions = sizeMap[size];
-  const center = dimensions.width / 2;
-  const radius = dimensions.width * 0.45;
-  const bezelRadius = dimensions.width * 0.48;
+  const diameter = sizeMap[size];
+  const radius = diameter / 2;
+  const center = radius;
+
+  // Define subdial positions (floating symmetrically)
+  const subdialRadius = radius * 0.25;
+  const subdialPositions = [
+    { cx: center - radius * 0.5, cy: center - radius * 0.2, label: 'UPCOMING' }, // Left subdial
+    { cx: center + radius * 0.5, cy: center - radius * 0.2, label: 'DURATION' }, // Right subdial
+    { cx: center, cy: center + radius * 0.45, label: 'COMPLETION' } // Bottom subdial
+  ];
 
   return (
     <svg
-      width={dimensions.width}
-      height={dimensions.height}
-      viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+      width={diameter}
+      height={diameter}
+      viewBox={`0 0 ${diameter} ${diameter}`}
       className="watch-face-svg"
+      style={{ position: 'absolute', top: 0, left: 0 }}
     >
       <defs>
-        {/* Gradients for realistic metallic effects */}
-        <radialGradient id="caseGradient" cx="0.3" cy="0.3">
-          <stop offset="0%" stopColor="#f8f9fa" />
-          <stop offset="30%" stopColor="#e9ecef" />
-          <stop offset="70%" stopColor="#adb5bd" />
-          <stop offset="100%" stopColor="#6c757d" />
+        {/* Dark navy gradient background */}
+        <radialGradient id="bgGradient">
+          <stop offset="0%" stopColor="#1a2942" />
+          <stop offset="70%" stopColor="#0f1824" />
+          <stop offset="100%" stopColor="#050a12" />
         </radialGradient>
 
-        <radialGradient id="bezelGradient" cx="0.3" cy="0.3">
-          <stop offset="0%" stopColor="#f1f3f4" />
-          <stop offset="50%" stopColor="#dee2e6" />
-          <stop offset="100%" stopColor="#9ca3af" />
-        </radialGradient>
+        {/* Brushed steel texture effect */}
+        <pattern id="brushedSteel" x="0" y="0" width="4" height="4" patternUnits="userSpaceOnUse">
+          <rect width="4" height="1" fill="#d1d5db" opacity="0.1" />
+          <rect y="2" width="4" height="1" fill="#e5e7eb" opacity="0.05" />
+        </pattern>
 
-        <radialGradient id="dialGradient" cx="0.5" cy="0.3">
-          <stop offset="0%" stopColor="#22c55e" />
-          <stop offset="50%" stopColor="#16a34a" />
-          <stop offset="100%" stopColor="#15803d" />
-        </radialGradient>
+        {/* Soft glow filter */}
+        <filter id="softGlow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
 
-        <linearGradient id="subdialGradient" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#f8fafc" />
-          <stop offset="100%" stopColor="#e2e8f0" />
+        {/* LED ring glow */}
+        <filter id="ledGlow">
+          <feGaussianBlur stdDeviation="2" result="glow"/>
+          <feFlood floodColor="#00ff88" floodOpacity="0.6"/>
+          <feComposite in2="glow" operator="in"/>
+          <feMerge>
+            <feMergeNode/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+
+        {/* Glass reflection */}
+        <linearGradient id="glassReflection" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="white" stopOpacity="0.2" />
+          <stop offset="50%" stopColor="white" stopOpacity="0.05" />
+          <stop offset="100%" stopColor="white" stopOpacity="0" />
         </linearGradient>
-
-        {/* Filter for realistic shadows */}
-        <filter id="dropShadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feDropShadow dx="2" dy="2" stdDeviation="3" floodOpacity="0.3"/>
-        </filter>
-
-        <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
-          <feOffset dx="1" dy="1" result="offset"/>
-          <feFlood floodColor="#000000" floodOpacity="0.2"/>
-          <feComposite in2="offset" operator="in"/>
-        </filter>
       </defs>
 
-      {/* Watch Case */}
+      {/* Main background with soft glow edges */}
       <circle
         cx={center}
         cy={center}
-        r={bezelRadius}
-        fill="url(#caseGradient)"
-        stroke="#6c757d"
-        strokeWidth="2"
-        filter="url(#dropShadow)"
+        r={radius - 5}
+        fill="url(#bgGradient)"
+        filter="url(#softGlow)"
       />
 
-      {/* Tachymeter Bezel */}
+      {/* Outer bezel with micro-screws */}
+      <g className="bezel">
+        {/* Beveled outer ring */}
+        <circle
+          cx={center}
+          cy={center}
+          r={radius - 2}
+          fill="none"
+          stroke="#434956"
+          strokeWidth="4"
+          opacity="0.8"
+        />
+        <circle
+          cx={center}
+          cy={center}
+          r={radius - 8}
+          fill="none"
+          stroke="#2a3140"
+          strokeWidth="2"
+          opacity="0.6"
+        />
+
+        {/* Micro-screws at cardinal points */}
+        {[0, 90, 180, 270].map((angle) => {
+          const screwX = center + (radius - 12) * Math.cos((angle - 90) * Math.PI / 180);
+          const screwY = center + (radius - 12) * Math.sin((angle - 90) * Math.PI / 180);
+          return (
+            <g key={angle} className="bezel-screw">
+              <circle cx={screwX} cy={screwY} r="3" fill="#6b7280" />
+              <circle cx={screwX} cy={screwY} r="2" fill="#374151" />
+              <line
+                x1={screwX - 1.5}
+                y1={screwY}
+                x2={screwX + 1.5}
+                y2={screwY}
+                stroke="#1f2937"
+                strokeWidth="0.5"
+              />
+            </g>
+          );
+        })}
+      </g>
+
+      {/* Main dial with brushed steel texture */}
       <circle
         cx={center}
         cy={center}
-        r={bezelRadius - 10}
-        fill="url(#bezelGradient)"
-        stroke="#495057"
-        strokeWidth="1"
+        r={radius - 20}
+        fill="url(#brushedSteel)"
+        opacity="0.3"
       />
 
-      {/* Tachymeter Scale Markings */}
-      {[...Array(60)].map((_, i) => {
-        const angle = (i * 6) * (Math.PI / 180);
-        const innerR = bezelRadius - 20;
-        const outerR = bezelRadius - 15;
-        const x1 = center + innerR * Math.cos(angle - Math.PI / 2);
-        const y1 = center + innerR * Math.sin(angle - Math.PI / 2);
-        const x2 = center + outerR * Math.cos(angle - Math.PI / 2);
-        const y2 = center + outerR * Math.sin(angle - Math.PI / 2);
-
-        return (
-          <line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="#343a40"
-            strokeWidth={i % 5 === 0 ? "2" : "1"}
-          />
-        );
-      })}
-
-      {/* Tachymeter Numbers */}
-      {[500, 400, 300, 250, 200, 180, 150, 120, 100, 90, 80, 75, 70, 65, 60].map((num, i) => {
-        const angle = (i * 24) * (Math.PI / 180);
-        const textR = bezelRadius - 25;
-        const x = center + textR * Math.cos(angle - Math.PI / 2);
-        const y = center + textR * Math.sin(angle - Math.PI / 2);
-
-        return (
-          <text
-            key={num}
-            x={x}
-            y={y + 4}
-            textAnchor="middle"
-            fontSize="8"
-            fill="#343a40"
-            fontFamily="Arial, sans-serif"
-            fontWeight="bold"
-          >
-            {num}
-          </text>
-        );
-      })}
-
-      {/* Main Dial */}
-      <circle
-        cx={center}
-        cy={center}
-        r={radius}
-        fill="url(#dialGradient)"
-        stroke="#15803d"
-        strokeWidth="1"
-        filter="url(#innerShadow)"
-      />
-
-      {/* Hour Markers */}
+      {/* Hour markers with luminous effect */}
       {[...Array(12)].map((_, i) => {
-        const angle = (i * 30) * (Math.PI / 180);
-        const markerLength = i % 3 === 0 ? 20 : 15;
-        const innerR = radius - markerLength;
-        const outerR = radius - 5;
-        const x1 = center + innerR * Math.cos(angle - Math.PI / 2);
-        const y1 = center + innerR * Math.sin(angle - Math.PI / 2);
-        const x2 = center + outerR * Math.cos(angle - Math.PI / 2);
-        const y2 = center + outerR * Math.sin(angle - Math.PI / 2);
+        const angle = (i * 30 - 90) * (Math.PI / 180);
+        const isCardinal = i % 3 === 0;
+        const markerLength = isCardinal ? radius * 0.08 : radius * 0.05;
+        const innerRadius = radius - 30;
+        const outerRadius = innerRadius - markerLength;
 
         return (
-          <line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="#ffffff"
-            strokeWidth={i % 3 === 0 ? "4" : "2"}
-            strokeLinecap="round"
+          <g key={i}>
+            <line
+              x1={center + innerRadius * Math.cos(angle)}
+              y1={center + innerRadius * Math.sin(angle)}
+              x2={center + outerRadius * Math.cos(angle)}
+              y2={center + outerRadius * Math.sin(angle)}
+              stroke={isCardinal ? "#00ff88" : "#e5e7eb"}
+              strokeWidth={isCardinal ? "3" : "1.5"}
+              strokeLinecap="round"
+              filter={isCardinal ? "url(#ledGlow)" : "none"}
+              opacity={isCardinal ? 0.9 : 0.6}
+            />
+            {/* Luminous dots for cardinal points */}
+            {isCardinal && (
+              <circle
+                cx={center + (outerRadius - 5) * Math.cos(angle)}
+                cy={center + (outerRadius - 5) * Math.sin(angle)}
+                r="2"
+                fill="#00ff88"
+                filter="url(#ledGlow)"
+              />
+            )}
+          </g>
+        );
+      })}
+
+      {/* Subdials with LED rings */}
+      {subdialPositions.map((subdial, index) => (
+        <g key={index} className="floating-subdial">
+          {/* LED ring background */}
+          <circle
+            cx={subdial.cx}
+            cy={subdial.cy}
+            r={subdialRadius + 3}
+            fill="none"
+            stroke="#00ff88"
+            strokeWidth="1"
+            opacity="0.2"
+            filter="url(#ledGlow)"
           />
-        );
-      })}
+          
+          {/* Subdial background */}
+          <circle
+            cx={subdial.cx}
+            cy={subdial.cy}
+            r={subdialRadius}
+            fill="#0a0f1a"
+            stroke="#2a3140"
+            strokeWidth="1"
+          />
 
-      {/* Hour Numbers */}
-      {[12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((num, i) => {
-        const angle = (i * 30) * (Math.PI / 180);
-        const textR = radius - 35;
-        const x = center + textR * Math.cos(angle - Math.PI / 2);
-        const y = center + textR * Math.sin(angle - Math.PI / 2);
+          {/* Subdial markers */}
+          {[0, 90, 180, 270].map((angle) => {
+            const markerAngle = (angle - 90) * (Math.PI / 180);
+            const innerR = subdialRadius - 5;
+            const outerR = subdialRadius - 10;
+            return (
+              <line
+                key={angle}
+                x1={subdial.cx + innerR * Math.cos(markerAngle)}
+                y1={subdial.cy + innerR * Math.sin(markerAngle)}
+                x2={subdial.cx + outerR * Math.cos(markerAngle)}
+                y2={subdial.cy + outerR * Math.sin(markerAngle)}
+                stroke="#4ade80"
+                strokeWidth="1"
+                opacity="0.6"
+              />
+            );
+          })}
 
-        return (
+          {/* Subdial label */}
           <text
-            key={num}
-            x={x}
-            y={y + 6}
+            x={subdial.cx}
+            y={subdial.cy + subdialRadius + 15}
             textAnchor="middle"
-            fontSize="16"
-            fill="#ffffff"
-            fontFamily="Arial, sans-serif"
-            fontWeight="bold"
+            fill="#94a3b8"
+            fontSize="9"
+            fontFamily="'Helvetica Neue', sans-serif"
+            fontWeight="300"
+            letterSpacing="1.5"
           >
-            {num}
+            {subdial.label}
           </text>
-        );
-      })}
+        </g>
+      ))}
 
-      {/* Subdials */}
-      {/* 30-minute Chronometer (9 o'clock) */}
-      <circle
-        cx={center - radius * 0.6}
-        cy={center}
-        r={radius * 0.25}
-        fill="url(#subdialGradient)"
-        stroke="#cbd5e1"
-        strokeWidth="1"
-      />
+      {/* Digital chrono-timer at 6 o'clock */}
+      <g className="digital-display digital-timer">
+        <rect
+          x={center - 40}
+          y={center + radius * 0.15}
+          width="80"
+          height="25"
+          rx="3"
+          fill="#0a0f1a"
+          stroke="#2a3140"
+          strokeWidth="1"
+        />
+        <text
+          x={center}
+          y={center + radius * 0.15 + 17}
+          textAnchor="middle"
+          fill="#00ff88"
+          fontSize="14"
+          fontFamily="monospace"
+          fontWeight="bold"
+          filter="url(#ledGlow)"
+        >
+          {new Date().toLocaleTimeString('en-US', { 
+            hour12: false, 
+            hour: '2-digit', 
+            minute: '2-digit',
+            second: '2-digit'
+          })}
+        </text>
+      </g>
 
-      {/* Running Seconds (6 o'clock) */}
+      {/* Center pivot with beveled effect */}
+      <circle cx={center} cy={center} r="8" fill="#374151" />
+      <circle cx={center} cy={center} r="6" fill="#1f2937" />
+      <circle cx={center} cy={center} r="3" fill="#00ff88" filter="url(#ledGlow)" />
+
+      {/* Glass overlay with reflection */}
       <circle
         cx={center}
-        cy={center + radius * 0.6}
-        r={radius * 0.25}
-        fill="url(#subdialGradient)"
-        stroke="#cbd5e1"
-        strokeWidth="1"
-      />
-
-      {/* 12-hour Chronometer (3 o'clock) */}
-      <circle
-        cx={center + radius * 0.6}
         cy={center}
-        r={radius * 0.25}
-        fill="url(#subdialGradient)"
-        stroke="#cbd5e1"
-        strokeWidth="1"
+        r={radius - 25}
+        fill="url(#glassReflection)"
+        opacity="0.3"
+        pointerEvents="none"
       />
 
-      {/* Subdial Markings */}
-      {/* 30-minute subdial markings */}
-      {[...Array(30)].map((_, i) => {
-        const angle = (i * 12) * (Math.PI / 180);
-        const subdialCenter = { x: center - radius * 0.6, y: center };
-        const subdialRadius = radius * 0.25;
-        const innerR = subdialRadius - 8;
-        const outerR = subdialRadius - 3;
-        const x1 = subdialCenter.x + innerR * Math.cos(angle - Math.PI / 2);
-        const y1 = subdialCenter.y + innerR * Math.sin(angle - Math.PI / 2);
-        const x2 = subdialCenter.x + outerR * Math.cos(angle - Math.PI / 2);
-        const y2 = subdialCenter.y + outerR * Math.sin(angle - Math.PI / 2);
-
-        return (
-          <line
-            key={`chrono30-${i}`}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="#64748b"
-            strokeWidth={i % 5 === 0 ? "2" : "1"}
-          />
-        );
-      })}
-
-      {/* Breitling Logo */}
+      {/* Data mode indicator */}
       <text
         x={center}
-        y={center - radius * 0.3}
+        y={center - radius * 0.5}
         textAnchor="middle"
-        fontSize="12"
-        fill="#ffffff"
-        fontFamily="serif"
-        fontWeight="bold"
-      >
-        BREITLING
-      </text>
-
-      <text
-        x={center}
-        y={center - radius * 0.2}
-        textAnchor="middle"
-        fontSize="8"
-        fill="#ffffff"
-        fontFamily="Arial, sans-serif"
-      >
-        CHRONOMAT
-      </text>
-
-      {/* Data Mode Indicator */}
-      <text
-        x={center}
-        y={center + radius * 0.2}
-        textAnchor="middle"
-        fontSize="10"
-        fill="#ffffff"
-        fontFamily="Arial, sans-serif"
-        className={`mode-indicator ${dataMode}`}
+        fill="#64748b"
+        fontSize="11"
+        fontFamily="'Helvetica Neue', sans-serif"
+        fontWeight="500"
+        letterSpacing="2"
+        opacity="0.8"
       >
         {dataMode.toUpperCase()}
       </text>
 
-      {/* Date Window */}
-      <rect
-        x={center + radius * 0.3}
-        y={center - 8}
-        width="24"
-        height="16"
-        fill="#ffffff"
-        stroke="#cbd5e1"
-        strokeWidth="1"
-        rx="2"
-      />
-
-      <text
-        x={center + radius * 0.3 + 12}
-        y={center + 4}
-        textAnchor="middle"
-        fontSize="10"
-        fill="#1f2937"
-        fontFamily="Arial, sans-serif"
-        fontWeight="bold"
-      >
-        {new Date().getDate()}
-      </text>
-
-      {/* Crown */}
-      <rect
-        x={center + bezelRadius}
-        y={center - 6}
-        width="8"
-        height="12"
-        fill="url(#caseGradient)"
-        stroke="#6c757d"
-        strokeWidth="1"
-        rx="2"
-        className={interactiveMode ? "interactive-crown" : ""}
-      />
-
-      {/* Pushers */}
-      <rect
-        x={center + bezelRadius}
-        y={center - 25}
-        width="6"
-        height="8"
-        fill="url(#caseGradient)"
-        stroke="#6c757d"
-        strokeWidth="1"
-        rx="2"
-        className={interactiveMode ? "interactive-pusher" : ""}
-      />
-
-      <rect
-        x={center + bezelRadius}
-        y={center + 17}
-        width="6"
-        height="8"
-        fill="url(#caseGradient)"
-        stroke="#6c757d"
-        strokeWidth="1"
-        rx="2"
-        className={interactiveMode ? "interactive-pusher" : ""}
-      />
-
-      {/* Center Dot */}
-      <circle
-        cx={center}
-        cy={center}
-        r="3"
-        fill="#ffffff"
-        stroke="#22c55e"
-        strokeWidth="1"
-      />
+      {/* Interactive mode indicator */}
+      {interactiveMode && (
+        <circle
+          cx={center + radius * 0.7}
+          cy={center - radius * 0.7}
+          r="5"
+          fill="#00ff88"
+          filter="url(#ledGlow)"
+          className="pulse-animation"
+        />
+      )}
     </svg>
   );
 };
