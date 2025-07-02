@@ -179,14 +179,17 @@ const LuxuryServicesShowcase: React.FC = () => {
                       height: 250,
                       overflow: 'hidden',
                       position: 'relative',
-                      background: service.gradient,
                     }}
                   >
                     <Box
+                      component="img"
+                      src={service.image}
+                      alt={service.title}
                       className="service-image"
                       sx={{
+                        width: '100%',
                         height: '100%',
-                        background: `url(${service.image}) center/cover`,
+                        objectFit: 'cover',
                         transition: 'transform 0.6s ease',
                       }}
                     />
