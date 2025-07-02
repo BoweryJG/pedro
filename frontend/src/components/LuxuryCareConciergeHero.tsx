@@ -15,6 +15,7 @@ import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import { LuxuryNavigationIcon, LuxuryExploreIcon, LuxuryEmergencyIcon, LuxurySparkleIcon } from './icons/LuxuryIcons';
 import { CalendarMonth } from '@mui/icons-material';
 import { BookAppointmentButton } from './BookAppointmentButton';
+import { useChatStore } from '../chatbot/store/chatStore';
 
 // Removed ParticleField component for performance optimization
 
@@ -24,6 +25,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
   const { setMode, setShowCenterSelector, addToJourneyPath } = useAdaptiveNavigation();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const toggleChat = useChatStore((state) => state.toggleChat);
   
   // Mouse position tracking for parallax
   const mouseX = useMotionValue(0);
@@ -82,10 +84,7 @@ const LuxuryCareConciergeHero: React.FC = () => {
       subtitle: "Your personal dental care assistant - available 24/7",
       icon: <Typography fontSize="2.5rem">👩‍⚕️</Typography>,
       gradient: 'linear-gradient(135deg, #00d2ff 0%, #3a7bd5 100%)',
-      action: () => {
-        const chatButton = document.querySelector('[aria-label="Chat with Julie!"]') as HTMLElement;
-        if (chatButton) chatButton.click();
-      },
+      action: toggleChat,
       delay: 0.1,
     },
     {

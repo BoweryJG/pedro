@@ -24,11 +24,13 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { usePageTitle } from '../hooks/usePageTitle';
 import { CONTACT_INFO } from '../constants/contact';
+import { useChatStore } from '../chatbot/store/chatStore';
 
 const ContactPage = () => {
   usePageTitle('Contact Us');
   
   const [formRef, formInView] = useInView({ triggerOnce: true });
+  const toggleChat = useChatStore((state) => state.toggleChat);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -143,10 +145,7 @@ const ContactPage = () => {
                         <Button
                           variant="contained"
                           size="large"
-                          onClick={() => {
-                            const chatButton = document.querySelector('[aria-label="Chat with Julie!"]') as HTMLElement;
-                            if (chatButton) chatButton.click();
-                          }}
+                          onClick={toggleChat}
                           sx={{ 
                             py: 2,
                             fontSize: '1.1rem',
