@@ -44,7 +44,7 @@ function App() {
           <Route path="smile-simulator" element={<SmileSimulatorPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="instagram-dashboard" element={<InstagramDashboard />} />
-          <Route path="test-booking" element={<TestBooking />} />
+          <Route path="booking" element={<TestBooking />} />
           
           {/* Subdomain Routes */}
           <Route path="tmj/*" element={<TMJSubdomainPage />} />
