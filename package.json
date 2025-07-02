@@ -19,8 +19,8 @@
     "start:backend": "npm run start --workspace=backend",
     "lint": "npm run lint --workspace=frontend",
     "preview": "npm run preview --workspace=frontend",
-    "install:all": "npm install && npm run install:workspaces",
-    "install:workspaces": "npm install --workspace=frontend && npm install --workspace=backend",
+    "install:all": "npm install --legacy-peer-deps && npm run install:workspaces",
+    "install:workspaces": "npm install --workspace=frontend --legacy-peer-deps && npm install --workspace=backend --legacy-peer-deps",
     "new-client": "node scripts/new-client-setup.js"
   },
   "devDependencies": {
