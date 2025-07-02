@@ -44,7 +44,7 @@ interface TMJHeroProps {
 const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
   const handlePrimaryAction = () => {
     if (content.primaryButton.action === 'schedule') {
-      window.open('tel:+17189482020', '_blank')
+      window.open('tel:+19292424535', '_blank')
     }
   }
 

@@ -475,7 +475,7 @@ const YomiTechnologyShowcase: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('tel:+17189480870', '_blank')}
+                  onClick={() => window.open('tel:+19292424535', '_blank')}
                   sx={{
                     bgcolor: 'white',
                     color: 'primary.main',

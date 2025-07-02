@@ -166,7 +166,7 @@ const ImplantCostCalculator: React.FC = () => {
   }
 
   const handleScheduleConsultation = () => {
-    window.open('tel:+17189480870', '_blank')
+    window.open('tel:+19292424535', '_blank')
   }
 
   useEffect(() => {

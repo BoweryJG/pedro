@@ -151,7 +151,7 @@ export class AppointmentService {
       const formattedDate = appointmentData.date.format('MMMM D, YYYY');
       const formattedTime = dayjs(`2000-01-01 ${appointmentData.time}`).format('h:mm A');
       
-      const message = `Hi ${patient.first_name}, your appointment for ${service?.name} with ${staff?.title} ${staff?.last_name} on ${formattedDate} at ${formattedTime} is confirmed. Code: ${confirmationCode}. Call (718) 720-5600 to reschedule.`;
+      const message = `Hi ${patient.first_name}, your appointment for ${service?.name} with ${staff?.title} ${staff?.last_name} on ${formattedDate} at ${formattedTime} is confirmed. Code: ${confirmationCode}. Call (929) 242-4535 to reschedule.`;
       
       // Send SMS via Supabase Edge Function
       const { data: smsResult, error: smsError } = await supabase.functions.invoke('send-appointment-sms', {

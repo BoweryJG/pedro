@@ -165,7 +165,7 @@ const YomiChatbot: React.FC = () => {
       )
     } else if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('consultation')) {
       addMessage(
-        "Excellent! Dr. Pedro offers complimentary robotic consultations where you can:\n\n🔬 SEE THE TECHNOLOGY:\n• Live Yomi system demonstration\n• 3D planning visualization\n• Precision placement simulation\n• Q&A with certified robotic surgeon\n\nCall (718) 948-0870 now or would you prefer I help you understand more about the robotic process first?",
+        "Excellent! Dr. Pedro offers complimentary robotic consultations where you can:\n\n🔬 SEE THE TECHNOLOGY:\n• Live Yomi system demonstration\n• 3D planning visualization\n• Precision placement simulation\n• Q&A with certified robotic surgeon\n\nCall (929) 242-4535 now or would you prefer I help you understand more about the robotic process first?",
         'bot'
       )
       setConversationStage('scheduling')
@@ -512,10 +512,10 @@ const YomiChatbot: React.FC = () => {
               <Button
                 variant="contained"
                 startIcon={<Phone />}
-                onClick={() => window.open('tel:+17189480870', '_blank')}
+                onClick={() => window.open('tel:+19292424535', '_blank')}
                 sx={{ px: 3 }}
               >
-                Call: (718) 948-0870
+                Call: (929) 242-4535
               </Button>
               <Button
                 variant="outlined"

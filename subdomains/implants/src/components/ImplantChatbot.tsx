@@ -137,7 +137,7 @@ const ImplantChatbot: React.FC = () => {
       setConversationStage('qualifying')
     } else if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('consultation')) {
       addMessage(
-        "Perfect! Dr. Pedro offers complimentary consultations. You can call us directly at (718) 948-0870 or I can help connect you. What works better for you?",
+        "Perfect! Dr. Pedro offers complimentary consultations. You can call us directly at (929) 242-4535 or I can help connect you. What works better for you?",
         'bot'
       )
       setConversationStage('scheduling')
@@ -437,10 +437,10 @@ const ImplantChatbot: React.FC = () => {
               <Button
                 variant="contained"
                 startIcon={<Phone />}
-                onClick={() => window.open('tel:+17189480870', '_blank')}
+                onClick={() => window.open('tel:+19292424535', '_blank')}
                 sx={{ px: 3 }}
               >
-                Call Now: (718) 948-0870
+                Call Now: (929) 242-4535
               </Button>
               <Button
                 variant="outlined"

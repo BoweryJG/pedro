@@ -38,10 +38,10 @@ export const CONTACT_INFO = {
   },
   emergencyNote: 'For dental emergencies, please call directly',
   address: {
-    street: '123 Advanced Dental Plaza',
+    street: '4300 Hylan Blvd',
     city: 'Staten Island',
     state: 'NY',
-    zip: '10301',
-    full: '123 Advanced Dental Plaza, Staten Island, NY 10301',
+    zip: '10312',
+    full: '4300 Hylan Blvd, Staten Island, NY 10312',
   },
 };

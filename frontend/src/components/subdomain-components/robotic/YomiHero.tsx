@@ -26,7 +26,7 @@ const YomiHero: React.FC = () => {
 
   const handleSecondaryAction = () => {
     if (hero.secondaryButton.action === 'book_consultation') {
-      window.open('tel:+17189480870', '_blank')
+      window.open('tel:+19292424535', '_blank')
     }
   }
 

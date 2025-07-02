@@ -22,7 +22,7 @@
       "action": "book_consultation"
     },
     "secondaryButton": {
-      "text": "Call (718) 948-0870",
+      "text": "Call (929) 242-4535",
       "action": "phone_call"
     }
   },
@@ -137,7 +137,7 @@
     }
   ],
   "contact": {
-    "phone": "(718) 948-0870",
+    "phone": "(929) 242-4535",
     "email": "hello@statenislandimplantdr.com",
     "address": "Staten Island, NY",
     "hours": {

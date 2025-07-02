@@ -371,7 +371,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('tel:+17189480870', '_blank')}
+                  onClick={() => window.open('tel:+19292424535', '_blank')}
                   sx={{ mr: 2 }}
                 >
                   Schedule Your Consultation
@@ -396,7 +396,7 @@ const ImplantFinancingWizard: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('tel:+17189480870', '_blank')}
+                  onClick={() => window.open('tel:+19292424535', '_blank')}
                 >
                   Call for Personal Consultation
                 </Button>

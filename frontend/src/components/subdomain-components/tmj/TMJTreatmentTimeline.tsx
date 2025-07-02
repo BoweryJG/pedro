@@ -307,9 +307,9 @@ const TMJTreatmentTimeline: React.FC<TMJTreatmentTimelineProps> = ({ timeline, t
                 cursor: 'pointer',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
               }}
-              onClick={() => window.open('tel:+17189482020', '_blank')}
+              onClick={() => window.open('tel:+19292424535', '_blank')}
             >
-              Call (718) 948-2020
+              Call (929) 242-4535
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}

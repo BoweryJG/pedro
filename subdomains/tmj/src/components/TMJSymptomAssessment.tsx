@@ -192,7 +192,7 @@ const TMJSymptomAssessment: React.FC<TMJSymptomAssessmentProps> = ({ symptoms })
               <Button
                 variant="contained"
                 size="large"
-                onClick={() => window.open('tel:+17189482020', '_blank')}
+                onClick={() => window.open('tel:+19292424535', '_blank')}
                 sx={{ mr: 2, mb: 2 }}
               >
                 Schedule Consultation
