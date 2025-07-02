@@ -1,5 +1,5 @@
 import React from 'react';
-import { WatchMetrics, DataMode } from '../../../../types/watch.types';
+import type { WatchMetrics, DataMode } from '../../../../types/watch.types';
 
 interface DataDisplayProps {
   metrics: WatchMetrics;

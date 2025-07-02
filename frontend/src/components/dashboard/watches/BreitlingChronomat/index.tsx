@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { WatchComponentProps, WatchMetrics } from '../../../../types/watch.types';
+import type { WatchComponentProps, WatchMetrics } from '../../../../types/watch.types';
 import WatchFace from './WatchFace';
 import WatchHands from './WatchHands';
 import Chronometer from './Chronometer';

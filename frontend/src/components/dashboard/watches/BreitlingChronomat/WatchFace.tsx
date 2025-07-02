@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataMode } from '../../../../types/watch.types';
+import type { DataMode } from '../../../../types/watch.types';
 
 interface WatchFaceProps {
   size: 'small' | 'medium' | 'large';

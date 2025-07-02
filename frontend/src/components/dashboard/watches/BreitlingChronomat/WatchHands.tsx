@@ -1,6 +1,6 @@
 import React from 'react';
-import { WatchMetrics, DataMode } from '../../../../types/watch.types';
-import { MetricsCalculator } from '../../../services/metricsCalculator';
+import type { WatchMetrics, DataMode } from '../../../../types/watch.types';
+import { MetricsCalculator } from '../../../../services/analytics/metricsCalculator';
 
 interface WatchHandsProps {
   currentTime: Date;

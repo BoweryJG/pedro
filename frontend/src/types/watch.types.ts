@@ -1,3 +1,4 @@
+// Watch Metrics Types
 export interface WatchMetrics {
   appointments: AppointmentMetrics;
   patients: PatientMetrics;
@@ -37,8 +38,10 @@ export interface PerformanceMetrics {
   performanceStatus: string;
 }
 
+// Data Mode Type
 export type DataMode = 'appointments' | 'patients' | 'services' | 'performance';
 
+// Watch Component Props
 export interface WatchComponentProps {
   model: 'chronomat' | 'windrider';
   size: 'small' | 'medium' | 'large';
@@ -48,6 +51,7 @@ export interface WatchComponentProps {
   onModeChange?: (mode: DataMode) => void;
 }
 
+// Watch Time Types
 export interface WatchTime {
   hours: number;
   minutes: number;
@@ -71,7 +75,7 @@ export interface WatchHandPositions {
   chronoHours: number;
 }
 
-// Supabase data types
+// Supabase Data Types
 export interface Appointment {
   id: string;
   patient_id: string;
@@ -123,4 +127,3 @@ export interface Staff {
   created_at: string;
   updated_at: string;
 }
-

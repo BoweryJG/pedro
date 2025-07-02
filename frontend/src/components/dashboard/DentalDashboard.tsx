@@ -3,7 +3,7 @@ import { Box, Container, Typography, Paper, useTheme } from '@mui/material';
 import BreitlingChronomat from './watches/BreitlingChronomat';
 import { useWatchTime } from '../../hooks/useWatchTime';
 import { useSupabaseData, useSupabaseConnection } from '../../hooks/useSupabaseData';
-import { DataMode } from '../../types/watch.types';
+import type { DataMode } from '../../types/watch.types';
 
 const DentalDashboard: React.FC = () => {
   const theme = useTheme();
