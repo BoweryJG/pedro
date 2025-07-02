@@ -29,6 +29,7 @@ import ImplantsSubdomainPage from './pages/implants/ImplantsSubdomainPage';
 import RoboticSubdomainPage from './pages/robotic/RoboticSubdomainPage';
 import MedSpaSubdomainPage from './pages/medspa/MedSpaSubdomainPage';
 import AboutFaceSubdomainPage from './pages/aboutface/AboutFaceSubdomainPage';
+import SMSQueue from './pages/admin/SMSQueue';
 
 function App() {
   const [chatOpen, setChatOpen] = useState(false);
@@ -67,6 +68,14 @@ function App() {
           element={
             <ProtectedRoute>
               <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dr-pedro/sms"
+          element={
+            <ProtectedRoute>
+              <SMSQueue />
             </ProtectedRoute>
           }
         />

@@ -261,19 +261,31 @@ export class AppointmentService {
       
       // Try to send SMS via Supabase Edge Function
       try {
+        console.log('Attempting to send SMS to:', patient.phone);
         const { data: smsResult, error: smsError } = await bookingSupabase.functions.invoke('send-appointment-sms', {
           body: {
             appointmentId: appointment.id,
-            phone: patient.phone.startsWith('+') ? patient.phone : `+1${patient.phone}`,
+            phone: patient.phone.startsWith('+') ? patient.phone : `+1${patient.phone.replace(/\D/g, '')}`,
             message: message
           }
         });
         
         if (smsError || smsResult?.error) {
           console.error('SMS Error:', smsError || smsResult);
+          // Update SMS queue status if it exists
+          await bookingSupabase
+            .from('sms_queue')
+            .update({ status: 'failed', error: smsError?.message || smsResult?.error })
+            .eq('appointment_id', appointment.id);
+            
           throw smsError || new Error(smsResult?.error);
         } else {
           console.log('SMS SENT SUCCESSFULLY!', smsResult);
+          // Update SMS queue status
+          await bookingSupabase
+            .from('sms_queue')
+            .update({ status: 'sent', sent_at: new Date().toISOString() })
+            .eq('appointment_id', appointment.id);
         }
       } catch (smsErr) {
         // SMS failed, but appointment was created successfully
