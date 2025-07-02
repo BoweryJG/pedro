@@ -3,11 +3,33 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials not found in environment variables');
+const isSupabaseConfigured = supabaseUrl && supabaseAnonKey;
+
+if (!isSupabaseConfigured) {
+  console.warn('Supabase credentials not found in environment variables. Booking functionality will be disabled.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Create a dummy client if credentials are missing to prevent crashes
+export const supabase = isSupabaseConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : {
+      from: () => ({
+        select: () => Promise.resolve({ data: [], error: new Error('Supabase not configured') }),
+        insert: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') }),
+        update: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') }),
+        delete: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') }),
+      }),
+      rpc: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') }),
+      auth: {
+        signUp: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') }),
+        signIn: () => Promise.resolve({ data: null, error: new Error('Supabase not configured') }),
+      },
+      channel: () => ({
+        on: () => ({ subscribe: () => ({ unsubscribe: () => {} }) }),
+      }),
+    } as any;
+
+export const isSupabaseEnabled = isSupabaseConfigured;
 
 export type Tables = {
   patients: {
