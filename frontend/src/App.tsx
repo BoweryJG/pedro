@@ -9,6 +9,7 @@ import EmfacePage from './pages/EmfacePage';
 import ContactPage from './pages/ContactPage';
 import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import InstagramDashboard from './components/InstagramDashboard';
+import TestBooking from './pages/TestBooking';
 import { Chatbot } from './chatbot/components/Chatbot';
 import LuxurySystemStatus from './components/LuxurySystemStatus';
 import { ChatFirstContactWidget } from './components/ChatFirstContactWidget';
@@ -43,6 +44,7 @@ function App() {
           <Route path="smile-simulator" element={<SmileSimulatorPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="instagram-dashboard" element={<InstagramDashboard />} />
+          <Route path="test-booking" element={<TestBooking />} />
           
           {/* Subdomain Routes */}
           <Route path="tmj/*" element={<TMJSubdomainPage />} />

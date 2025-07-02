@@ -16,11 +16,13 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.39.7",
-    "express": "^4.19.2",
-    "cors": "^2.8.5",
     "@anthropic-ai/sdk": "^0.20.0",
-    "axios": "^1.6.8"
+    "@supabase/supabase-js": "^2.50.2",
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2",
+    "twilio": "^5.7.1"
   },
   "devDependencies": {
     "supabase": "^2.22.4"

@@ -39,8 +39,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
-import { AppointmentService, TimeSlot, AvailableProvider } from '../services/appointmentService';
-import { Tables } from '../lib/supabase';
+import { AppointmentService, type TimeSlot, type AvailableProvider } from '../services/appointmentService';
+import type { Tables } from '../types/supabase';
 
 interface EnhancedBookingFormProps {
   open: boolean;

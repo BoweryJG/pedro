@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, ButtonProps, Snackbar, Alert } from '@mui/material';
+import { Button, Snackbar, Alert } from '@mui/material';
+import type { ButtonProps } from '@mui/material';
 import { CalendarMonth, Phone } from '@mui/icons-material';
 import { EnhancedBookingForm } from './EnhancedBookingForm';
 import { isSupabaseEnabled } from '../lib/supabase';
