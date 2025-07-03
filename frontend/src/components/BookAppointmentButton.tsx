@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
-import { Button, Snackbar, Alert } from '@mui/material';
+import React from 'react';
+import { Button } from '@mui/material';
 import type { ButtonProps } from '@mui/material';
-import { CalendarMonth, Phone } from '@mui/icons-material';
-import { EnhancedBookingForm } from './EnhancedBookingForm';
-import { isSupabaseEnabled } from '../lib/supabase';
-import { CONTACT_INFO } from '../constants/contact';
+import { CalendarMonth } from '@mui/icons-material';
+import { useChatStore } from '../chatbot/store/chatStore';
 
 interface BookAppointmentButtonProps extends Omit<ButtonProps, 'onClick'> {
   initialService?: string;
@@ -20,73 +18,31 @@ export const BookAppointmentButton: React.FC<BookAppointmentButtonProps> = ({
   size = "large",
   ...buttonProps
 }) => {
-  const [bookingOpen, setBookingOpen] = useState(false);
-  const [showPhoneAlert, setShowPhoneAlert] = useState(false);
-
-  const handleSuccess = (appointmentId: string) => {
-    setBookingOpen(false);
-    if (onSuccess) {
-      onSuccess(appointmentId);
-    }
-  };
+  const chatStore = useChatStore();
 
   const handleClick = () => {
-    if (isSupabaseEnabled) {
-      setBookingOpen(true);
+    // Send a message with the service context if provided
+    if (initialService) {
+      chatStore.sendMessage(`I'd like to book an appointment for ${initialService}`);
     } else {
-      // If Supabase is not configured, show call prompt
-      setShowPhoneAlert(true);
+      chatStore.sendMessage("I'd like to book an appointment");
     }
-  };
-
-  const handleCallNow = () => {
-    window.location.href = `tel:${CONTACT_INFO.phone}`;
+    
+    // Open chat if not already open
+    if (!chatStore.isOpen) {
+      chatStore.toggleChat();
+    }
   };
 
   return (
-    <>
-      <Button
-        variant={variant}
-        size={size}
-        startIcon={startIcon}
-        onClick={handleClick}
-        {...buttonProps}
-      >
-        {children}
-      </Button>
-      
-      {isSupabaseEnabled && (
-        <EnhancedBookingForm
-          open={bookingOpen}
-          onClose={() => setBookingOpen(false)}
-          initialService={initialService}
-          onSuccess={handleSuccess}
-        />
-      )}
-      
-      <Snackbar
-        open={showPhoneAlert}
-        autoHideDuration={6000}
-        onClose={() => setShowPhoneAlert(false)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      >
-        <Alert 
-          onClose={() => setShowPhoneAlert(false)} 
-          severity="info"
-          action={
-            <Button 
-              color="inherit" 
-              size="small" 
-              startIcon={<Phone />}
-              onClick={handleCallNow}
-            >
-              Call Now
-            </Button>
-          }
-        >
-          Please call {CONTACT_INFO.phone} to book your appointment
-        </Alert>
-      </Snackbar>
-    </>
+    <Button
+      variant={variant}
+      size={size}
+      startIcon={startIcon}
+      onClick={handleClick}
+      {...buttonProps}
+    >
+      {children}
+    </Button>
   );
 };

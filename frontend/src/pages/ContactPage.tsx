@@ -4,9 +4,7 @@ import {
   Typography,
   Card,
   CardContent,
-  TextField,
   Button,
-  MenuItem,
   Stack,
   Paper,
   List,
@@ -14,7 +12,6 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -31,46 +28,6 @@ const ContactPage = () => {
   
   const [formRef, formInView] = useInView({ triggerOnce: true });
   const toggleChat = useChatStore((state) => state.toggleChat);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    preferredDate: '',
-    preferredTime: '',
-    message: '',
-  });
-
-  const services = [
-    'Yomi Robotic Surgery Consultation',
-    'TMJ Treatment Evaluation',
-    'EMFACE Consultation',
-    'General Dentistry',
-    'Cosmetic Dentistry',
-    'Emergency Care',
-    'Other',
-  ];
-
-  const timeSlots = [
-    '9:00 AM',
-    '10:00 AM',
-    '11:00 AM',
-    '2:00 PM',
-    '3:00 PM',
-    '4:00 PM',
-  ];
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-  };
 
   return (
     <Box>
@@ -108,25 +65,38 @@ const ContactPage = () => {
       {/* Contact Form & Info Section */}
       <Box ref={formRef} sx={{ py: 10 }}>
         <Container maxWidth="lg">
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {/* Chat with Julie */}
-            <Box sx={{ width: { xs: '100%', md: '58.333%' }, px: 3 }}>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
+            {/* Chat with Julie - Now the main focus */}
+            <Box sx={{ width: { xs: '100%', md: '66.667%' }, px: 3 }}>
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 animate={formInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.6 }}
               >
-                <Card>
-                  <CardContent sx={{ p: 4 }}>
-                    <Box sx={{ textAlign: 'center', py: 4 }}>
-                      <Box sx={{ fontSize: '4rem', mb: 2 }}>👩‍⚕️</Box>
-                      <Typography variant="h4" fontWeight={600} gutterBottom>
+                <Card 
+                  sx={{ 
+                    background: 'linear-gradient(135deg, rgba(224, 242, 254, 0.5), rgba(255, 255, 255, 0.9))',
+                    border: '1px solid rgba(129, 230, 217, 0.2)',
+                    boxShadow: '0 10px 40px rgba(129, 230, 217, 0.1)',
+                  }}
+                >
+                  <CardContent sx={{ p: { xs: 3, md: 6 } }}>
+                    <Box sx={{ textAlign: 'center', py: 2 }}>
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ type: "spring", duration: 0.6 }}
+                      >
+                        <Box sx={{ fontSize: '5rem', mb: 3 }}>👩‍⚕️</Box>
+                      </motion.div>
+                      <Typography variant="h3" fontWeight={700} gutterBottom>
                         Chat with Julie
                       </Typography>
                       <Typography
-                        variant="h6"
+                        variant="h5"
                         color="text.secondary"
                         paragraph
+                        sx={{ fontWeight: 300 }}
                       >
                         Your Personal Dental Care Assistant
                       </Typography>
@@ -134,54 +104,75 @@ const ContactPage = () => {
                         variant="body1"
                         color="text.secondary"
                         paragraph
-                        sx={{ maxWidth: 500, mx: 'auto', mb: 4 }}
+                        sx={{ maxWidth: 600, mx: 'auto', mb: 4, lineHeight: 1.8 }}
                       >
-                        Julie can help you schedule appointments, check insurance coverage, 
-                        explore financing options, and answer any questions about our services - 
-                        all in real-time!
+                        Skip the forms and phone calls! Julie can help you schedule appointments, 
+                        verify insurance coverage, explore financing options, and answer any questions 
+                        about our services - all through a simple conversation.
                       </Typography>
                       
-                      <Stack spacing={2} sx={{ maxWidth: 400, mx: 'auto' }}>
-                        <Button
-                          variant="contained"
-                          size="large"
-                          onClick={toggleChat}
-                          sx={{ 
-                            py: 2,
-                            fontSize: '1.1rem',
-                            background: 'linear-gradient(45deg, #1a73e8 30%, #4285f4 90%)',
-                            boxShadow: '0 3px 5px 2px rgba(26, 115, 232, .3)',
-                            '&:hover': {
-                              transform: 'translateY(-2px)',
-                              boxShadow: '0 6px 10px 2px rgba(26, 115, 232, .3)',
-                            },
-                          }}
+                      <Stack spacing={3} sx={{ maxWidth: 500, mx: 'auto' }}>
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          Start Chatting with Julie
-                        </Button>
+                          <Button
+                            variant="contained"
+                            size="large"
+                            onClick={toggleChat}
+                            sx={{ 
+                              py: 2.5,
+                              px: 6,
+                              fontSize: '1.25rem',
+                              fontWeight: 600,
+                              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                              borderRadius: 3,
+                              boxShadow: '0 4px 20px rgba(118, 75, 162, 0.3)',
+                              '&:hover': {
+                                transform: 'translateY(-2px)',
+                                boxShadow: '0 8px 30px rgba(118, 75, 162, 0.4)',
+                              },
+                            }}
+                          >
+                            Start Chatting with Julie
+                          </Button>
+                        </motion.div>
                         
-                        <Typography variant="body2" color="text.secondary">
+                        <Typography variant="body2" color="text.secondary" sx={{ opacity: 0.8 }}>
                           Available 24/7 • Instant responses • No waiting
                         </Typography>
                       </Stack>
                       
-                      <Box sx={{ mt: 4, p: 3, bgcolor: 'grey.50', borderRadius: 2 }}>
-                        <Typography variant="subtitle2" gutterBottom>
-                          Julie can help with:
+                      <Box sx={{ mt: 6, p: 4, bgcolor: 'rgba(129, 230, 217, 0.05)', borderRadius: 3 }}>
+                        <Typography variant="h6" gutterBottom sx={{ mb: 3 }}>
+                          How Julie Can Help You:
                         </Typography>
-                        <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap">
+                        <Box sx={{ 
+                          display: 'grid', 
+                          gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+                          gap: 2 
+                        }}>
                           {[
-                            '📅 Booking appointments',
-                            '💰 Financing options',
-                            '🦷 Treatment questions',
-                            '📋 Insurance verification',
-                            '❌ Cancellations'
+                            { icon: '📅', title: 'Book Appointments', desc: 'Find the perfect time slot' },
+                            { icon: '💰', title: 'Financing Options', desc: 'Explore payment plans' },
+                            { icon: '🦷', title: 'Treatment Info', desc: 'Learn about procedures' },
+                            { icon: '📋', title: 'Insurance Check', desc: 'Verify your coverage' },
+                            { icon: '❌', title: 'Cancellations', desc: 'Reschedule easily' },
+                            { icon: '🚨', title: 'Emergency Care', desc: 'Get immediate help' }
                           ].map((item) => (
-                            <Typography key={item} variant="caption" sx={{ p: 1 }}>
-                              {item}
-                            </Typography>
+                            <Box key={item.title} sx={{ textAlign: 'left', p: 2, bgcolor: 'white', borderRadius: 2 }}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                                <Typography sx={{ fontSize: '1.5rem' }}>{item.icon}</Typography>
+                                <Typography variant="subtitle2" fontWeight={600}>
+                                  {item.title}
+                                </Typography>
+                              </Box>
+                              <Typography variant="caption" color="text.secondary">
+                                {item.desc}
+                              </Typography>
+                            </Box>
                           ))}
-                        </Stack>
+                        </Box>
                       </Box>
                     </Box>
                   </CardContent>

@@ -11,7 +11,6 @@ import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import InstagramDashboard from './components/InstagramDashboard';
 import TestBooking from './pages/TestBooking';
 import { Chatbot } from './chatbot/components/Chatbot';
-import LuxurySystemStatus from './components/LuxurySystemStatus';
 import { ChatFirstContactWidget } from './components/ChatFirstContactWidget';
 import { MobileChatOptimized } from './components/MobileChatOptimized';
 import ScrollToTop from './components/ScrollToTop';
@@ -102,7 +101,6 @@ function App() {
       ) : (
         <ChatFirstContactWidget onChatOpen={handleOpenChat} />
       )}
-      <LuxurySystemStatus />
       {/* Luxury noise texture overlay */}
       <div className="noise-overlay" />
     </AuthProvider>

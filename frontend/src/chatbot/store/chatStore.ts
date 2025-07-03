@@ -95,6 +95,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   sendMessage: async (content: string) => {
     const state = get();
     
+    // Check if this is the first user message after initial greeting
+    const isFirstMessage = state.messages.length === 1;
+    
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),

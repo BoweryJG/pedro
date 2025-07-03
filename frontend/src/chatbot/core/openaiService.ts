@@ -10,8 +10,19 @@ export class OpenAIService {
     this.flowManager = new EnhancedConversationFlowManager(conversationState);
   }
   
-  private buildSystemPrompt(): string {
-    return `You are Julie, the personal dental care assistant for Staten Island Advanced Dentistry, representing Dr. Pedro in Staten Island, NY.
+  private buildSystemPrompt(userMessage?: string): string {
+    // Detect context from user's first message
+    let contextualGreeting = '';
+    if (userMessage) {
+      const lowerMessage = userMessage.toLowerCase();
+      if (lowerMessage.includes('know what') && lowerMessage.includes('need')) {
+        contextualGreeting = `\n\nCONTEXT: The user entered through the "Precision Gateway" - they know what service they need. Start by acknowledging this and quickly help them book the specific treatment they want.`;
+      } else if (lowerMessage.includes('emergency')) {
+        contextualGreeting = `\n\nCONTEXT: The user entered through the "Emergency Care" portal - they need urgent help. Show immediate concern, ask about their pain/issue, and offer the soonest available appointment or direct them to call (929) 242-4535 immediately.`;
+      }
+    }
+    
+    return `You are Julie, the personal dental care assistant for Staten Island Advanced Dentistry, representing Dr. Pedro in Staten Island, NY.${contextualGreeting}
 
 PERSONALITY:
 - Warm, caring, and genuinely helpful
@@ -87,7 +98,7 @@ BOOKING PROCESS:
       
       // Prepare messages for OpenAI
       const messages = [
-        { role: 'system' as const, content: this.buildSystemPrompt() },
+        { role: 'system' as const, content: this.buildSystemPrompt(userMessage) },
         ...conversationHistory.map(msg => ({
           role: msg.role as 'user' | 'assistant',
           content: msg.content

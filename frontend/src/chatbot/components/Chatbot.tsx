@@ -11,7 +11,8 @@ import {
   Slide,
   Avatar,
   Divider,
-  LinearProgress
+  LinearProgress,
+  Tooltip
 } from '@mui/material';
 import {
   Send as SendIcon,
@@ -25,6 +26,45 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useChatStore } from '../store/chatStore';
 import { FinancingWidget } from './FinancingWidget';
+import axios from 'axios';
+
+// Mini status indicator component
+const StatusIndicator: React.FC = () => {
+  const [isConnected, setIsConnected] = useState(true);
+  
+  useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+        await axios.get(`${apiUrl}/health`, { timeout: 5000 });
+        setIsConnected(true);
+      } catch {
+        setIsConnected(false);
+      }
+    };
+    
+    checkConnection();
+    const interval = setInterval(checkConnection, 60000); // Check every minute
+    return () => clearInterval(interval);
+  }, []);
+  
+  return (
+    <Tooltip title={isConnected ? "All systems operational" : "Limited connectivity - Some features may be unavailable"}>
+      <Box 
+        component="span" 
+        sx={{
+          width: 8,
+          height: 8,
+          borderRadius: '50%',
+          bgcolor: isConnected ? '#4CAF50' : '#ff9800',
+          display: 'inline-block',
+          animation: 'pulse 2s infinite',
+          cursor: 'help'
+        }}
+      />
+    </Tooltip>
+  );
+};
 
 interface ChatbotProps {
   onClose?: () => void;
@@ -91,14 +131,16 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           elevation={10}
           sx={{
             position: 'fixed',
-            bottom: 24,
-            right: 24,
-            width: { xs: '90vw', sm: 400 },
-            height: { xs: '80vh', sm: 600 },
+            bottom: { xs: 0, sm: 24 },
+            right: { xs: 0, sm: 24 },
+            left: { xs: 0, sm: 'auto' },
+            width: { xs: '100vw', sm: 400 },
+            height: { xs: '100vh', sm: 600 },
+            maxHeight: { xs: '100vh', sm: 600 },
             display: 'flex',
             flexDirection: 'column',
             zIndex: 1001,
-            borderRadius: 2,
+            borderRadius: { xs: 0, sm: 2 },
             overflow: 'hidden'
           }}
         >
@@ -152,17 +194,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                     gap: 0.5
                   }}
                 >
-                  <Box 
-                    component="span" 
-                    sx={{
-                      width: 8,
-                      height: 8,
-                      borderRadius: '50%',
-                      bgcolor: '#4CAF50',
-                      display: 'inline-block',
-                      animation: 'pulse 2s infinite'
-                    }}
-                  />
+                  <StatusIndicator />
                   Active Now • Your Personal Dental Care Assistant
                 </Typography>
               </Box>
@@ -406,8 +438,17 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           
           <Divider />
           
-          {/* Input */}
-          <Box sx={{ p: 2, display: 'flex', gap: 1 }}>
+          {/* Input - Mobile optimized */}
+          <Box sx={{ 
+            p: { xs: 1.5, sm: 2 }, 
+            display: 'flex', 
+            gap: 1,
+            bgcolor: 'background.paper',
+            borderTop: '1px solid',
+            borderColor: 'divider',
+            // Safe area for iPhone notch/home indicator
+            pb: { xs: 'env(safe-area-inset-bottom, 16px)', sm: 2 }
+          }}>
             <TextField
               fullWidth
               variant="outlined"
@@ -421,7 +462,11 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
               maxRows={3}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  borderRadius: 3
+                  borderRadius: 3,
+                  fontSize: { xs: 16, sm: 14 }, // Prevents zoom on iOS
+                  '& textarea': {
+                    fontSize: { xs: 16, sm: 14 }, // Prevents zoom on iOS
+                  }
                 }
               }}
             />
@@ -432,6 +477,8 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
               sx={{
                 bgcolor: 'primary.main',
                 color: 'white',
+                minWidth: { xs: 48, sm: 40 },
+                minHeight: { xs: 48, sm: 40 },
                 '&:hover': {
                   bgcolor: 'primary.dark'
                 },
