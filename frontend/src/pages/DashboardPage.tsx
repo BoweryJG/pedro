@@ -10,6 +10,7 @@ import TMJDashboard from '../components/dashboard/subdomains/TMJDashboard';
 import ImplantsDashboard from '../components/dashboard/subdomains/ImplantsDashboard';
 import RoboticDashboard from '../components/dashboard/subdomains/RoboticDashboard';
 import MedSpaDashboard from '../components/dashboard/subdomains/MedSpaDashboard';
+import { VoiceCallsDashboard } from '../components/VoiceCallsDashboard';
 import { useSupabase } from '../hooks/useSupabase';
 import { AnalyticsService } from '../services/analytics/analyticsService';
 
@@ -157,6 +158,7 @@ const DashboardPage: React.FC = () => {
             <Tab label="Week Overview" />
             <Tab label="Staff Schedule" />
             <Tab label="Analytics" />
+            <Tab label="Voice Calls" />
             <Tab label="Subdomains" />
           </Tabs>
         </Box>
@@ -182,6 +184,10 @@ const DashboardPage: React.FC = () => {
         </TabPanel>
 
         <TabPanel value={tabValue} index={5}>
+          <VoiceCallsDashboard />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={6}>
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
             {['TMJ', 'Implants', 'Robotic', 'MedSpa'].map((subdomain) => (
               <motion.div

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { createClient } from '@supabase/supabase-js';
 import VoiceService from './voiceService.js';
 
 // WebRTC Voice Service - No phone numbers needed!
@@ -6,6 +7,16 @@ class WebRTCVoiceService extends VoiceService {
   constructor() {
     super();
     this.webrtcConnections = new Map();
+    
+    // Initialize Supabase client
+    const supabaseUrl = process.env.SUPABASE_URL || 'https://tsmtaarwgodklafqlbhm.supabase.co';
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+    
+    if (supabaseUrl && supabaseKey) {
+      this.supabase = createClient(supabaseUrl, supabaseKey);
+    } else {
+      console.warn('Supabase credentials not found - transcripts will not be saved');
+    }
   }
 
   // Handle WebRTC signaling
@@ -33,7 +44,7 @@ class WebRTCVoiceService extends VoiceService {
   }
 
   // Start a new WebRTC call session
-  startCall(ws, sessionId) {
+  async startCall(ws, sessionId) {
     const connection = {
       ws,
       sessionId: sessionId || uuidv4(),
@@ -41,10 +52,34 @@ class WebRTCVoiceService extends VoiceService {
       vad: new this.VAD(),
       conversationManager: new this.ConversationManager(),
       isProcessing: false,
-      startTime: Date.now()
+      startTime: Date.now(),
+      transcript: [],
+      dbRecordId: null
     };
     
     this.webrtcConnections.set(connection.sessionId, connection);
+    
+    // Create database record
+    if (this.supabase) {
+      try {
+        const { data, error } = await this.supabase
+          .from('voice_calls')
+          .insert({
+            session_id: connection.sessionId,
+            call_type: 'webrtc',
+            transcript: []
+          })
+          .select()
+          .single();
+          
+        if (data) {
+          connection.dbRecordId = data.id;
+        }
+        if (error) console.error('Error creating voice call record:', error);
+      } catch (err) {
+        console.error('Supabase error:', err);
+      }
+    }
     
     // Send session ready
     ws.send(JSON.stringify({
@@ -133,15 +168,36 @@ class WebRTCVoiceService extends VoiceService {
     }
   }
 
-  // Send text response to frontend
-  sendTextResponse(connection, text, role = 'assistant') {
+  // Send text response to frontend and save to database
+  async sendTextResponse(connection, text, role = 'assistant') {
+    const timestamp = Date.now();
+    
+    // Add to connection transcript
+    connection.transcript.push({ role, text, timestamp });
+    
+    // Send to frontend
     if (connection.ws.readyState === 1) { // WebSocket.OPEN
       connection.ws.send(JSON.stringify({
         type: 'transcript',
         role,
         text,
-        timestamp: Date.now()
+        timestamp
       }));
+    }
+    
+    // Update database
+    if (this.supabase && connection.dbRecordId) {
+      try {
+        await this.supabase
+          .from('voice_calls')
+          .update({
+            transcript: connection.transcript,
+            patient_info: connection.conversationManager.state.patientInfo
+          })
+          .eq('id', connection.dbRecordId);
+      } catch (err) {
+        console.error('Error updating transcript:', err);
+      }
     }
   }
 
@@ -171,11 +227,33 @@ class WebRTCVoiceService extends VoiceService {
   }
 
   // End call and cleanup
-  endCall(sessionId) {
+  async endCall(sessionId) {
     const connection = this.webrtcConnections.get(sessionId);
     if (connection) {
       const duration = Math.floor((Date.now() - connection.startTime) / 1000);
       console.log(`Call ended. Session: ${sessionId}, Duration: ${duration}s`);
+      
+      // Update database with final info
+      if (this.supabase && connection.dbRecordId) {
+        try {
+          // Generate summary
+          const summary = this.generateCallSummary(connection);
+          
+          await this.supabase
+            .from('voice_calls')
+            .update({
+              ended_at: new Date().toISOString(),
+              duration_seconds: duration,
+              transcript: connection.transcript,
+              patient_info: connection.conversationManager.state.patientInfo,
+              summary,
+              appointment_booked: connection.conversationManager.state.appointmentDetails !== null
+            })
+            .eq('id', connection.dbRecordId);
+        } catch (err) {
+          console.error('Error updating final call record:', err);
+        }
+      }
       
       // Send call ended confirmation
       if (connection.ws.readyState === 1) {
@@ -187,6 +265,28 @@ class WebRTCVoiceService extends VoiceService {
       
       this.webrtcConnections.delete(sessionId);
     }
+  }
+  
+  // Generate call summary
+  generateCallSummary(connection) {
+    const { patientInfo, appointmentDetails, stage } = connection.conversationManager.state;
+    let summary = `Call duration: ${Math.floor((Date.now() - connection.startTime) / 1000)}s. `;
+    
+    if (patientInfo.name) {
+      summary += `Patient: ${patientInfo.name}. `;
+    }
+    
+    if (appointmentDetails) {
+      summary += `Appointment booked for ${appointmentDetails.date} at ${appointmentDetails.time}. `;
+    }
+    
+    if (stage === 'emergency') {
+      summary += `Emergency call - patient was advised appropriately. `;
+    }
+    
+    summary += `Total messages: ${connection.transcript.length}.`;
+    
+    return summary;
   }
 
   // Inherit VAD and ConversationManager from parent
