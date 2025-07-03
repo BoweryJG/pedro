@@ -25,19 +25,25 @@ export const GatewaySelection: React.FC = () => {
   const chatStore = useChatStore();
 
   const handleGatewayClick = (gateway: GatewayOption) => {
-    // Open chat first
-    if (!chatStore.isOpen) {
-      chatStore.toggleChat();
-    }
-    
-    // Then send context message after a small delay to ensure chat is ready
-    setTimeout(() => {
-      if (gateway.id === 'precision') {
-        chatStore.sendMessage("I know what service I need and I'm ready to book an appointment.");
-      } else if (gateway.id === 'emergency') {
-        chatStore.sendMessage("I need emergency dental care as soon as possible.");
+    if (gateway.id === 'precision') {
+      // Scroll to services section for users who know what they need
+      const servicesSection = document.getElementById('services-section');
+      if (servicesSection) {
+        servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }, 300);
+    } else {
+      // Open chat for other gateways
+      if (!chatStore.isOpen) {
+        chatStore.toggleChat();
+      }
+      
+      // Send context message after a small delay
+      setTimeout(() => {
+        if (gateway.id === 'emergency') {
+          chatStore.sendMessage("I need emergency dental care as soon as possible.");
+        }
+      }, 300);
+    }
   };
 
   const gateways: GatewayOption[] = [

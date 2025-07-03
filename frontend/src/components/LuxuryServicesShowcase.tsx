@@ -62,6 +62,7 @@ const LuxuryServicesShowcase: React.FC = () => {
 
   return (
     <Box
+      id="services-section"
       sx={{
         py: { xs: 8, md: 12 },
         background: 'white',
