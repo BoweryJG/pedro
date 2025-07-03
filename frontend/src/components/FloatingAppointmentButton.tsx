@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react';
 import { Fab, Zoom, Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import PhoneIcon from '@mui/icons-material/Phone';
+import ChatIcon from '@mui/icons-material/Chat';
 import { useNavigate } from 'react-router-dom';
 import { CONTACT_INFO } from '../constants/contact';
-import { trackEvent, trackPhoneClick } from '../utils/analytics';
+import { trackEvent, trackChatOpen } from '../utils/analytics';
+import { useChatStore } from '../chatbot/store/chatStore';
 
 const FloatingAppointmentButton = () => {
   const [showButton, setShowButton] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
+  const chatStore = useChatStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,10 +25,13 @@ const FloatingAppointmentButton = () => {
 
   const handleClick = () => {
     if (expanded) {
-      trackEvent('floating_button_book', {
-        action: 'navigate_to_contact'
+      trackEvent('floating_button_chat', {
+        action: 'book_appointment'
       });
-      navigate('/contact');
+      trackChatOpen('floating_button');
+      chatStore.sendMessage("I'd like to book an appointment");
+      chatStore.setIsOpen(true);
+      setExpanded(false);
     } else {
       trackEvent('floating_button_expand', {
         action: 'expand'
@@ -36,10 +41,15 @@ const FloatingAppointmentButton = () => {
     }
   };
 
-  const handleCall = (e: React.MouseEvent) => {
+  const handleTextJulie = (e: React.MouseEvent) => {
     e.stopPropagation();
-    trackPhoneClick('floating_button');
-    window.location.href = CONTACT_INFO.phone.href;
+    trackEvent('floating_button_chat', {
+      action: 'text_julie'
+    });
+    trackChatOpen('floating_button_text');
+    chatStore.sendMessage("Hi Julie, I have a question about your services");
+    chatStore.setIsOpen(true);
+    setExpanded(false);
   };
 
   return (
@@ -83,15 +93,15 @@ const FloatingAppointmentButton = () => {
                   >
                     <Fab
                       size="small"
-                      color="success"
-                      onClick={handleCall}
+                      color="primary"
+                      onClick={handleTextJulie}
                       sx={{ boxShadow: 2 }}
                     >
-                      <PhoneIcon />
+                      <ChatIcon />
                     </Fab>
                     <Box sx={{ px: 2, display: 'flex', alignItems: 'center' }}>
                       <Typography variant="body2" fontWeight={600}>
-                        Call Now
+                        Text Julie
                       </Typography>
                     </Box>
                   </Box>

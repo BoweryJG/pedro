@@ -6,16 +6,21 @@ import {
   IconButton,
   Stack,
   Divider,
+  Button,
 } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import EmailIcon from '@mui/icons-material/Email';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ChatIcon from '@mui/icons-material/Chat';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { CONTACT_INFO } from '../constants/contact';
+import { useChatStore } from '../chatbot/store/chatStore';
 
 const Footer = () => {
+  const toggleChat = useChatStore((state) => state.toggleChat);
+  
   return (
     <Box
       component="footer"
@@ -56,12 +61,27 @@ const Footer = () => {
               Contact Information
             </Typography>
             <Stack spacing={2}>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <PhoneIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
+              <Button
+                onClick={toggleChat}
+                sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center',
+                  textTransform: 'none',
+                  p: 0,
+                  minWidth: 'auto',
+                  justifyContent: 'flex-start',
+                  color: 'text.primary',
+                  '&:hover': {
+                    backgroundColor: 'transparent',
+                    color: 'primary.main',
+                  }
+                }}
+              >
+                <ChatIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">
-                  {CONTACT_INFO.phone.display}
+                  Chat with Julie 24/7
                 </Typography>
-              </Box>
+              </Button>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <EmailIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">

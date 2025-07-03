@@ -160,10 +160,10 @@ export const MobileChatOptimized: React.FC<MobileChatOptimizedProps> = ({ onChat
               <PhoneIcon sx={{ fontSize: 32, color: 'text.secondary' }} />
               <Box flex={1}>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Direct Call (If Needed)
+                  Voice Support Available
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  {CONTACT_INFO.phone.display} • Julie is faster!
+                  Chat with Julie for fastest response!
                 </Typography>
               </Box>
             </Box>

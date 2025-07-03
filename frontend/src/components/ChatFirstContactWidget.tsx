@@ -52,9 +52,10 @@ export const ChatFirstContactWidget: React.FC<ChatFirstContactWidgetProps> = ({ 
 
   const handlePhoneClick = () => {
     setHasInteracted(true);
-    trackPhoneClick('contact_widget');
-    trackContactMethodChoice('phone', 'widget');
-    window.location.href = CONTACT_INFO.phone.href;
+    trackChatOpen('contact_widget_phone');
+    trackContactMethodChoice('chat_for_phone', 'widget');
+    chatStore.sendMessage("I'd like to speak with someone about scheduling an appointment");
+    onChatOpen();
   };
 
   return (
@@ -155,10 +156,10 @@ export const ChatFirstContactWidget: React.FC<ChatFirstContactWidgetProps> = ({ 
             >
               <Box sx={{ textAlign: 'left' }}>
                 <Typography variant="subtitle2">
-                  Call {CONTACT_INFO.phone.display}
+                  Need immediate assistance?
                 </Typography>
                 <Typography variant="caption" color="text.disabled">
-                  {CONTACT_INFO.businessHours.weekdays}
+                  Julie can help you right away
                 </Typography>
               </Box>
             </Button>

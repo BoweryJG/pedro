@@ -193,13 +193,24 @@ const ContactPage = () => {
                       Get in Touch
                     </Typography>
                     <List>
-                      <ListItem disableGutters>
+                      <ListItem 
+                        disableGutters
+                        button
+                        onClick={toggleChat}
+                        sx={{ 
+                          borderRadius: 1,
+                          '&:hover': { 
+                            bgcolor: 'action.hover',
+                            cursor: 'pointer'
+                          }
+                        }}
+                      >
                         <ListItemIcon>
                           <PhoneIcon color="primary" />
                         </ListItemIcon>
                         <ListItemText
                           primary="Phone"
-                          secondary={CONTACT_INFO.phone.display}
+                          secondary="Chat with Julie for immediate assistance"
                         />
                       </ListItem>
                       <ListItem disableGutters>
@@ -249,14 +260,24 @@ const ContactPage = () => {
                     </List>
                   </Paper>
 
-                  <Paper sx={{ p: 3, bgcolor: 'primary.main', color: 'white' }}>
+                  <Paper 
+                    sx={{ 
+                      p: 3, 
+                      bgcolor: 'primary.main', 
+                      color: 'white',
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s',
+                      '&:hover': { transform: 'scale(1.02)' }
+                    }}
+                    onClick={toggleChat}
+                  >
                     <CalendarTodayIcon sx={{ fontSize: 40, mb: 2 }} />
                     <Typography variant="h6" fontWeight={600} gutterBottom>
                       Emergency Appointments Available
                     </Typography>
                     <Typography variant="body2">
                       We understand dental emergencies can't wait. 
-                      Call us for same-day emergency appointments.
+                      Chat with Julie now for immediate assistance and same-day appointments.
                     </Typography>
                   </Paper>
                 </Stack>
