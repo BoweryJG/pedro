@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
-import LuxuryAdaptiveNavbar from './LuxuryAdaptiveNavbar';
+import EnhancedLuxuryNavbar from './EnhancedLuxuryNavbar';
 import LuxuryFooter from './LuxuryFooter';
 import LuxuryCenterSelectionModal from './LuxuryCenterSelectionModal';
 import AIQuestionnaire from './AIQuestionnaire';
@@ -11,7 +11,7 @@ const Layout = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <LuxuryAdaptiveNavbar />
+      <EnhancedLuxuryNavbar />
       <Box component="main" sx={{ flexGrow: 1, mt: { xs: 8, md: 10 } }}>
         <Outlet />
       </Box>
