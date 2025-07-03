@@ -28,7 +28,7 @@ import {
   Event as EventIcon,
   Close as CloseIcon,
 } from '@mui/icons-material';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../services/supabaseClient';
 import { format } from 'date-fns';
 
 interface VoiceCall {

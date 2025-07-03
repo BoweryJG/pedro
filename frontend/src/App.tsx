@@ -11,9 +11,7 @@ import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import InstagramDashboard from './components/InstagramDashboard';
 import TestBooking from './pages/TestBooking';
 import { Chatbot } from './chatbot/components/Chatbot';
-import { ChatFirstContactWidget } from './components/ChatFirstContactWidget';
-import { MobileChatOptimized } from './components/MobileChatOptimized';
-import { VoiceCallButton } from './components/VoiceCallButton';
+import { JulieProfessionalLauncher } from './components/JulieProfessionalLauncher';
 import ScrollToTop from './components/ScrollToTop';
 import { useMediaQuery, useTheme } from '@mui/material';
 import DashboardPage from './pages/DashboardPage';
@@ -97,15 +95,8 @@ function App() {
         />
       </Routes>
       {chatStore.isOpen && <Chatbot onClose={handleCloseChat} />}
-      {!chatStore.isOpen && (
-        isMobile ? (
-          <MobileChatOptimized onChatOpen={handleOpenChat} />
-        ) : (
-          <ChatFirstContactWidget onChatOpen={handleOpenChat} />
-        )
-      )}
-      {/* Voice Call Button - Works without phone numbers! */}
-      <VoiceCallButton />
+      {/* Julie Professional Medical Launcher */}
+      <JulieProfessionalLauncher />
       {/* Luxury noise texture overlay */}
       <div className="noise-overlay" />
     </AuthProvider>
