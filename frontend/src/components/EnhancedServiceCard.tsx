@@ -12,6 +12,7 @@ import GlassmorphicCard from './effects/GlassmorphicCard';
 import AnimatedGradientBorder from './effects/AnimatedGradientBorder';
 import SoftAnimatedIcon from './effects/SoftAnimatedIcon';
 import NoiseTexture from './effects/NoiseTexture';
+import { trackEvent, trackProcedureInterest } from '../utils/analytics';
 
 interface EnhancedServiceCardProps {
   icon: React.ReactElement;
@@ -78,7 +79,15 @@ const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
                   },
                 },
               }}
-              onClick={() => onNavigate(path)}
+              onClick={() => {
+                trackEvent('service_card_click', {
+                  service_title: title,
+                  service_path: path,
+                  action: 'navigate'
+                });
+                trackProcedureInterest(title.toLowerCase());
+                onNavigate(path);
+              }}
             >
               <NoiseTexture opacity={0.02} />
               
@@ -258,7 +267,16 @@ const EnhancedServiceCard: React.FC<EnhancedServiceCardProps> = ({
                 },
               },
             }}
-            onClick={() => onNavigate(path)}
+            onClick={() => {
+              trackEvent('service_card_click', {
+                service_title: title,
+                service_path: path,
+                action: 'navigate',
+                variant: 'mobile'
+              });
+              trackProcedureInterest(title.toLowerCase());
+              onNavigate(path);
+            }}
           >
             <NoiseTexture opacity={0.02} />
             

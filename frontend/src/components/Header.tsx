@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import { trackEvent } from '../utils/analytics';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import { motion } from 'framer-motion';
 
@@ -43,6 +44,12 @@ const Header = () => {
   };
 
   const handleNavigation = (path: string) => {
+    const menuItem = menuItems.find(item => item.path === path);
+    trackEvent('navigation_click', {
+      destination: path,
+      menu_label: menuItem?.label || 'unknown',
+      is_mobile: isMobile
+    });
     navigate(path);
     setMobileOpen(false);
   };
@@ -60,7 +67,12 @@ const Header = () => {
         <Toolbar sx={{ py: 1 }}>
           <IconButton
             edge="start"
-            onClick={() => navigate('/')}
+            onClick={() => {
+              trackEvent('logo_click', {
+                from_page: location.pathname
+              });
+              navigate('/');
+            }}
             sx={{ mr: 2 }}
           >
             <LocalHospitalIcon sx={{ fontSize: 32, color: 'primary.main' }} />

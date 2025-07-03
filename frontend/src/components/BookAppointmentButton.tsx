@@ -3,6 +3,7 @@ import { Button } from '@mui/material';
 import type { ButtonProps } from '@mui/material';
 import { CalendarMonth } from '@mui/icons-material';
 import { useChatStore } from '../chatbot/store/chatStore';
+import { trackEvent, trackChatOpen, trackProcedureInterest } from '../utils/analytics';
 
 interface BookAppointmentButtonProps extends Omit<ButtonProps, 'onClick'> {
   initialService?: string;
@@ -21,6 +22,20 @@ export const BookAppointmentButton: React.FC<BookAppointmentButtonProps> = ({
   const chatStore = useChatStore();
 
   const handleClick = () => {
+    // Track button click
+    trackEvent('book_appointment_button_click', {
+      initial_service: initialService || 'none',
+      location: window.location.pathname
+    });
+    
+    // Track chat open
+    trackChatOpen('appointment_button');
+    
+    // Track procedure interest if service is specified
+    if (initialService) {
+      trackProcedureInterest(initialService);
+    }
+    
     // Send a message with the service context if provided
     if (initialService) {
       chatStore.sendMessage(`I'd like to book an appointment for ${initialService}`);

@@ -26,6 +26,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { procedureKnowledge } from '../knowledge/procedures';
+import { trackEvent, trackProcedureInterest, trackConversion } from '../../utils/analytics';
 
 interface BookingFormProps {
   open: boolean;
@@ -56,6 +57,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   onSubmit
 }) => {
   const [activeStep, setActiveStep] = useState(0);
+  
+  // Track form open
+  React.useEffect(() => {
+    if (open) {
+      trackEvent('booking_form_open', {
+        initial_procedure: initialProcedure || 'none',
+        source: 'chatbot'
+      });
+    }
+  }, [open, initialProcedure]);
   const [formData, setFormData] = useState<BookingData>({
     firstName: '',
     lastName: '',
@@ -72,7 +83,15 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   
   const handleNext = () => {
     if (validateStep()) {
-      setActiveStep((prev) => prev + 1);
+      const nextStep = activeStep + 1;
+      setActiveStep(nextStep);
+      
+      // Track step progression
+      trackEvent('booking_form_step', {
+        from_step: activeStep,
+        to_step: nextStep,
+        step_name: activeStep === 0 ? 'contact_info' : 'procedure_selection'
+      });
     }
   };
   
@@ -113,10 +132,25 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   const handleFieldChange = (field: keyof BookingData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setErrors(prev => ({ ...prev, [field]: undefined }));
+    
+    // Track procedure selection
+    if (field === 'procedure' && value) {
+      trackProcedureInterest(value);
+    }
   };
   
   const handleSubmit = () => {
     if (validateStep()) {
+      // Track form submission
+      trackEvent('booking_form_submit', {
+        procedure: formData.procedure,
+        has_insurance: formData.insurance !== 'none',
+        insurance_type: formData.insurance
+      });
+      
+      // Track conversion
+      trackConversion('appointment', formData.procedure);
+      
       onSubmit(formData);
       onClose();
     }

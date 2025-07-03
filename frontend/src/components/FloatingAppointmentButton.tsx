@@ -5,6 +5,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { useNavigate } from 'react-router-dom';
 import { CONTACT_INFO } from '../constants/contact';
+import { trackEvent, trackPhoneClick } from '../utils/analytics';
 
 const FloatingAppointmentButton = () => {
   const [showButton, setShowButton] = useState(false);
@@ -22,8 +23,14 @@ const FloatingAppointmentButton = () => {
 
   const handleClick = () => {
     if (expanded) {
+      trackEvent('floating_button_book', {
+        action: 'navigate_to_contact'
+      });
       navigate('/contact');
     } else {
+      trackEvent('floating_button_expand', {
+        action: 'expand'
+      });
       setExpanded(true);
       setTimeout(() => setExpanded(false), 5000);
     }
@@ -31,6 +38,7 @@ const FloatingAppointmentButton = () => {
 
   const handleCall = (e: React.MouseEvent) => {
     e.stopPropagation();
+    trackPhoneClick('floating_button');
     window.location.href = CONTACT_INFO.phone.href;
   };
 
