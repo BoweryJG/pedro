@@ -15,7 +15,6 @@ import LuxurySystemStatus from './components/LuxurySystemStatus';
 import { ChatFirstContactWidget } from './components/ChatFirstContactWidget';
 import { MobileChatOptimized } from './components/MobileChatOptimized';
 import ScrollToTop from './components/ScrollToTop';
-import { useState } from 'react';
 import { useMediaQuery, useTheme } from '@mui/material';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/auth/LoginPage';
@@ -24,6 +23,7 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
 import DirectAccessPage from './pages/auth/DirectAccessPage';
+import { useChatStore } from './chatbot/store/chatStore';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
@@ -34,9 +34,9 @@ import AboutFaceSubdomainPage from './pages/aboutface/AboutFaceSubdomainPage';
 import SMSQueue from './pages/admin/SMSQueue';
 
 function App() {
-  const [chatOpen, setChatOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const { isOpen: chatOpen, toggleChat } = useChatStore();
 
   return (
     <AuthProvider>
@@ -84,11 +84,11 @@ function App() {
           }
         />
       </Routes>
-      {chatOpen && <Chatbot onClose={() => setChatOpen(false)} />}
+      {chatOpen && <Chatbot onClose={toggleChat} />}
       {isMobile ? (
-        <MobileChatOptimized onChatOpen={() => setChatOpen(true)} />
+        <MobileChatOptimized onChatOpen={toggleChat} />
       ) : (
-        <ChatFirstContactWidget onChatOpen={() => setChatOpen(true)} />
+        <ChatFirstContactWidget onChatOpen={toggleChat} />
       )}
       <LuxurySystemStatus />
       {/* Luxury noise texture overlay */}
