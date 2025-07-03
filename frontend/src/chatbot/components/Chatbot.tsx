@@ -201,17 +201,26 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
             </Box>
             <IconButton 
               onClick={() => {
-                toggleChat();
-                onClose?.();
+                if (onClose) {
+                  onClose();
+                } else {
+                  toggleChat();
+                }
               }} 
               sx={{ 
                 color: 'white',
+                width: { xs: 44, sm: 40 },
+                height: { xs: 44, sm: 40 },
                 '&:hover': {
                   bgcolor: 'rgba(255,255,255,0.1)'
+                },
+                '&:active': {
+                  bgcolor: 'rgba(255,255,255,0.2)',
+                  transform: 'scale(0.95)'
                 }
               }}
             >
-              <CloseIcon />
+              <CloseIcon sx={{ fontSize: { xs: 28, sm: 24 } }} />
             </IconButton>
           </Box>
           
