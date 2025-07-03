@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { createClient } from '@supabase/supabase-js';
 import VoiceService from './voiceService.js';
+import twilio from 'twilio';
 
 // WebRTC Voice Service - No phone numbers needed!
 class WebRTCVoiceService extends VoiceService {
@@ -16,6 +17,17 @@ class WebRTCVoiceService extends VoiceService {
       this.supabase = createClient(supabaseUrl, supabaseKey);
     } else {
       console.warn('Supabase credentials not found - transcripts will not be saved');
+    }
+    
+    // Initialize Twilio client for SMS
+    const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
+    const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
+    this.twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER || '+19292424535';
+    
+    if (twilioAccountSid && twilioAuthToken) {
+      this.twilioClient = twilio(twilioAccountSid, twilioAuthToken);
+    } else {
+      console.warn('Twilio credentials not found - SMS confirmations will not be sent');
     }
   }
 
@@ -149,11 +161,24 @@ class WebRTCVoiceService extends VoiceService {
         // Send transcript to frontend for display
         this.sendTextResponse(connection, transcript, 'user');
         
+        // Extract appointment info if in booking stage
+        if (connection.conversationManager.state.stage === 'appointment_booking') {
+          const appointmentInfo = connection.conversationManager.extractAppointmentInfo(transcript);
+          connection.conversationManager.updatePatientInfo(appointmentInfo);
+          connection.conversationManager.updateAppointmentDetails(appointmentInfo);
+        }
+        
         // Generate response
         const response = await this.generateResponse(
           connection.conversationManager,
           transcript
         );
+        
+        // Check if appointment was confirmed
+        if (response.toLowerCase().includes('booked your appointment') || 
+            response.toLowerCase().includes('confirmed your appointment')) {
+          await this.bookAppointment(connection);
+        }
         
         // Send text response for display
         await this.sendTextResponse(connection, response, 'assistant');
@@ -247,7 +272,8 @@ class WebRTCVoiceService extends VoiceService {
               transcript: connection.transcript,
               patient_info: connection.conversationManager.state.patientInfo,
               summary,
-              appointment_booked: connection.conversationManager.state.appointmentDetails !== null
+              appointment_booked: connection.conversationManager.state.appointmentDetails?.confirmed || false,
+              appointment_details: connection.conversationManager.state.appointmentDetails
             })
             .eq('id', connection.dbRecordId);
         } catch (err) {
@@ -354,6 +380,10 @@ Current conversation stage: ${this.state.stage}
 Patient information collected so far:
 ${JSON.stringify(this.state.patientInfo, null, 2)}
 
+${this.state.appointmentDetails ? `Appointment being booked:
+${JSON.stringify(this.state.appointmentDetails, null, 2)}
+` : ''}
+
 Your capabilities:
 - Answer questions about dental services and pricing
 - Book new appointments or reschedule existing ones
@@ -374,8 +404,10 @@ Always:
 
 For appointment booking:
 - Collect: name, phone number, preferred date/time, dental concern
-- Offer available slots (pretend to check calendar)
-- Confirm all details before booking`;
+- Offer available slots like: "I have openings tomorrow at 10 AM or 2 PM, or Thursday at 3 PM"
+- Once you have all details, say: "Perfect! Let me confirm: [appointment details]. Shall I book this for you?"
+- After patient confirms, say: "Wonderful! I've booked your appointment. You'll receive a text confirmation shortly."
+- Mark appointmentDetails.confirmed = true when patient confirms`;
       }
 
       determineStage(transcript) {
@@ -388,6 +420,62 @@ For appointment booking:
         } else if (this.state.context.length > 8) {
           this.state.stage = 'closing';
         }
+      }
+      
+      extractAppointmentInfo(transcript) {
+        const lowerTranscript = transcript.toLowerCase();
+        const info = {};
+        
+        // Extract name
+        const nameMatch = transcript.match(/(?:my name is|i'm|i am|this is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
+        if (nameMatch) {
+          info.name = nameMatch[1];
+        }
+        
+        // Extract phone
+        const phoneMatch = transcript.match(/\b(\d{3})[\s.-]?(\d{3})[\s.-]?(\d{4})\b/);
+        if (phoneMatch) {
+          info.phone = phoneMatch[0].replace(/[^\d]/g, '');
+        }
+        
+        // Extract time preferences
+        const timeMatch = lowerTranscript.match(/\b(\d{1,2})(?:\s*(?:am|pm))|morning|afternoon|evening/);
+        if (timeMatch) {
+          info.timePreference = timeMatch[0];
+        }
+        
+        // Extract date preferences
+        const dateMatch = lowerTranscript.match(/tomorrow|today|monday|tuesday|wednesday|thursday|friday|next week/);
+        if (dateMatch) {
+          info.datePreference = dateMatch[0];
+        }
+        
+        // Extract dental concern
+        const concernMatch = lowerTranscript.match(/(?:for|about|regarding|have|need)\s+(?:a\s+)?([\w\s]+?)(?:\.|,|$)/);
+        if (concernMatch) {
+          info.concern = concernMatch[1].trim();
+        }
+        
+        return info;
+      }
+      
+      updateAppointmentDetails(info) {
+        if (!this.state.appointmentDetails) {
+          this.state.appointmentDetails = {
+            patientName: null,
+            phoneNumber: null,
+            date: null,
+            time: null,
+            concern: null,
+            confirmed: false
+          };
+        }
+        
+        if (info.name) this.state.appointmentDetails.patientName = info.name;
+        if (info.phone) this.state.appointmentDetails.phoneNumber = info.phone;
+        if (info.timePreference) this.state.appointmentDetails.time = info.timePreference;
+        if (info.datePreference) this.state.appointmentDetails.date = info.datePreference;
+        if (info.concern) this.state.appointmentDetails.concern = info.concern;
       }
     };
   }
@@ -409,6 +497,175 @@ For appointment booking:
     }
     
     return pcm16;
+  }
+  
+  // Book appointment in database and send SMS
+  async bookAppointment(connection) {
+    const details = connection.conversationManager.state.appointmentDetails;
+    if (!details || !details.patientName || !details.phoneNumber) {
+      console.error('Missing appointment details');
+      return;
+    }
+    
+    try {
+      // Parse date and time into proper format
+      const appointmentDate = this.parseDate(details.date);
+      const appointmentTime = this.parseTime(details.time);
+      
+      // First, find or create patient record
+      let patientId;
+      const { data: existingPatient } = await this.supabase
+        .from('patients')
+        .select('id')
+        .eq('phone', details.phoneNumber)
+        .single();
+      
+      if (existingPatient) {
+        patientId = existingPatient.id;
+      } else {
+        // Create new patient (minimal info for now)
+        const nameParts = details.patientName.split(' ');
+        const { data: newPatient, error: patientError } = await this.supabase
+          .from('patients')
+          .insert({
+            first_name: nameParts[0] || details.patientName,
+            last_name: nameParts[1] || '',
+            email: `patient_${Date.now()}@temporary.com`, // Placeholder
+            phone: details.phoneNumber,
+            auth_user_id: 'a0000000-0000-0000-0000-000000000000' // System user
+          })
+          .select()
+          .single();
+        
+        if (patientError) {
+          console.error('Error creating patient:', patientError);
+          return;
+        }
+        patientId = newPatient.id;
+      }
+      
+      // Get general checkup service ID
+      const { data: service } = await this.supabase
+        .from('services')
+        .select('id')
+        .eq('name', 'General Checkup')
+        .single();
+      
+      const serviceId = service?.id || 'a0000000-0000-0000-0000-000000000001'; // Fallback
+      
+      // Create appointment
+      const { data: appointment, error: appointmentError } = await this.supabase
+        .from('appointments')
+        .insert({
+          patient_id: patientId,
+          service_id: serviceId,
+          appointment_date: appointmentDate,
+          appointment_time: appointmentTime,
+          status: 'scheduled',
+          notes: `Concern: ${details.concern || 'General checkup'}. Booked via AI voice assistant.`
+        })
+        .select()
+        .single();
+      
+      if (appointmentError) {
+        console.error('Error creating appointment:', appointmentError);
+        return;
+      }
+      
+      // Update connection record
+      connection.conversationManager.state.appointmentDetails.confirmed = true;
+      connection.conversationManager.state.appointmentDetails.appointmentId = appointment.id;
+      
+      // Send SMS confirmation
+      await this.sendSMSConfirmation(details, appointmentDate, appointmentTime);
+      
+      console.log(`Appointment booked: ${appointment.id}`);
+    } catch (error) {
+      console.error('Error booking appointment:', error);
+    }
+  }
+  
+  // Send SMS confirmation
+  async sendSMSConfirmation(details, date, time) {
+    if (!this.twilioClient) {
+      console.warn('Twilio not configured - SMS not sent');
+      return;
+    }
+    
+    try {
+      const message = `Hi ${details.patientName}, this is Dr. Pedro's office confirming your appointment on ${date} at ${time}. ` +
+                      `Reply YES to confirm or call ${process.env.PRACTICE_PHONE || '(929) 242-4535'} to reschedule. Thank you!`;
+      
+      await this.twilioClient.messages.create({
+        body: message,
+        from: this.twilioPhoneNumber,
+        to: `+1${details.phoneNumber}`
+      });
+      
+      console.log(`SMS confirmation sent to ${details.phoneNumber}`);
+    } catch (error) {
+      console.error('Error sending SMS:', error);
+    }
+  }
+  
+  // Parse natural language date
+  parseDate(dateStr) {
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    const dateStrLower = dateStr.toLowerCase();
+    
+    if (dateStrLower.includes('today')) {
+      return today.toISOString().split('T')[0];
+    } else if (dateStrLower.includes('tomorrow')) {
+      return tomorrow.toISOString().split('T')[0];
+    } else if (dateStrLower.includes('monday')) {
+      return this.getNextWeekday(1).toISOString().split('T')[0];
+    } else if (dateStrLower.includes('tuesday')) {
+      return this.getNextWeekday(2).toISOString().split('T')[0];
+    } else if (dateStrLower.includes('wednesday')) {
+      return this.getNextWeekday(3).toISOString().split('T')[0];
+    } else if (dateStrLower.includes('thursday')) {
+      return this.getNextWeekday(4).toISOString().split('T')[0];
+    } else if (dateStrLower.includes('friday')) {
+      return this.getNextWeekday(5).toISOString().split('T')[0];
+    }
+    
+    // Default to tomorrow if unclear
+    return tomorrow.toISOString().split('T')[0];
+  }
+  
+  // Parse natural language time
+  parseTime(timeStr) {
+    const timeStrLower = timeStr.toLowerCase();
+    
+    // Extract specific times
+    const timeMatch = timeStrLower.match(/(\d{1,2})(?:\s*(?:am|pm))/);
+    if (timeMatch) {
+      let hour = parseInt(timeMatch[1]);
+      if (timeStrLower.includes('pm') && hour < 12) hour += 12;
+      if (timeStrLower.includes('am') && hour === 12) hour = 0;
+      return `${hour.toString().padStart(2, '0')}:00:00`;
+    }
+    
+    // Default times based on preference
+    if (timeStrLower.includes('morning')) return '10:00:00';
+    if (timeStrLower.includes('afternoon')) return '14:00:00';
+    if (timeStrLower.includes('evening')) return '17:00:00';
+    
+    // Default to 2 PM
+    return '14:00:00';
+  }
+  
+  // Get next occurrence of a weekday
+  getNextWeekday(dayOfWeek) {
+    const today = new Date();
+    const todayDay = today.getDay();
+    const daysUntilNext = (dayOfWeek - todayDay + 7) % 7 || 7;
+    const nextDate = new Date(today);
+    nextDate.setDate(today.getDate() + daysUntilNext);
+    return nextDate;
   }
 }
 

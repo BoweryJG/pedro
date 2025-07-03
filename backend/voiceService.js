@@ -125,8 +125,10 @@ Always:
 
 For appointment booking:
 - Collect: name, phone number, preferred date/time, dental concern
-- Offer available slots (pretend to check calendar)
-- Confirm all details before booking`;
+- Offer available slots like: "I have openings tomorrow at 10 AM or 2 PM, or Thursday at 3 PM"
+- Once you have all details, say: "Perfect! Let me confirm: [appointment details]. Shall I book this for you?"
+- After patient confirms, say: "Wonderful! I've booked your appointment. You'll receive a text confirmation shortly."
+- Mark appointmentDetails.confirmed = true when patient confirms`;
 
     return basePrompt;
   }
@@ -141,6 +143,62 @@ For appointment booking:
     } else if (this.state.context.length > 8) {
       this.state.stage = 'closing';
     }
+  }
+  
+  extractAppointmentInfo(transcript) {
+    const lowerTranscript = transcript.toLowerCase();
+    const info = {};
+    
+    // Extract name
+    const nameMatch = transcript.match(/(?:my name is|i'm|i am|this is)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i);
+    if (nameMatch) {
+      info.name = nameMatch[1];
+    }
+    
+    // Extract phone
+    const phoneMatch = transcript.match(/\b(\d{3})[\s.-]?(\d{3})[\s.-]?(\d{4})\b/);
+    if (phoneMatch) {
+      info.phone = phoneMatch[0].replace(/[^\d]/g, '');
+    }
+    
+    // Extract time preferences
+    const timeMatch = lowerTranscript.match(/\b(\d{1,2})(?:\s*(?:am|pm))|morning|afternoon|evening/);
+    if (timeMatch) {
+      info.timePreference = timeMatch[0];
+    }
+    
+    // Extract date preferences
+    const dateMatch = lowerTranscript.match(/tomorrow|today|monday|tuesday|wednesday|thursday|friday|next week/);
+    if (dateMatch) {
+      info.datePreference = dateMatch[0];
+    }
+    
+    // Extract dental concern
+    const concernMatch = lowerTranscript.match(/(?:for|about|regarding|have|need)\s+(?:a\s+)?([\w\s]+?)(?:\.|,|$)/);
+    if (concernMatch) {
+      info.concern = concernMatch[1].trim();
+    }
+    
+    return info;
+  }
+  
+  updateAppointmentDetails(info) {
+    if (!this.state.appointmentDetails) {
+      this.state.appointmentDetails = {
+        patientName: null,
+        phoneNumber: null,
+        date: null,
+        time: null,
+        concern: null,
+        confirmed: false
+      };
+    }
+    
+    if (info.name) this.state.appointmentDetails.patientName = info.name;
+    if (info.phone) this.state.appointmentDetails.phoneNumber = info.phone;
+    if (info.timePreference) this.state.appointmentDetails.time = info.timePreference;
+    if (info.datePreference) this.state.appointmentDetails.date = info.datePreference;
+    if (info.concern) this.state.appointmentDetails.concern = info.concern;
   }
 }
 
