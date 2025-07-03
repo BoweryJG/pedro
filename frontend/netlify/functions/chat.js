@@ -26,7 +26,7 @@ exports.handler = async (event, context) => {
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || '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'}`,
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://gregpedromd.com',
         'X-Title': 'Dr Pedro Dental Assistant'
