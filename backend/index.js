@@ -1,9 +1,22 @@
 import express from 'express';
 import cors from 'cors';
 import fetch from 'node-fetch';
+import { createServer } from 'http';
+import { WebSocketServer } from 'ws';
+import VoiceService from './voiceService.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+const server = createServer(app);
+
+// Initialize WebSocket server for Twilio Media Streams
+const wss = new WebSocketServer({ 
+  server,
+  path: '/voice-websocket'
+});
+
+// Initialize voice service
+const voiceService = new VoiceService();
 
 app.use(cors());
 app.use(express.json());
@@ -25,7 +38,8 @@ app.get('/api/status', (req, res) => {
       appointments: 'handled by Supabase',
       sms: 'handled by Supabase Edge Functions + Twilio',
       database: 'Supabase PostgreSQL',
-      chat: 'OpenRouter AI'
+      chat: 'OpenRouter AI',
+      voice: 'Twilio Media Streams + Whisper STT + TTS'
     }
   });
 });
@@ -41,11 +55,17 @@ app.post('/chat', async (req, res) => {
       });
     }
     
+    if (!process.env.OPENROUTER_API_KEY) {
+      return res.status(500).json({ 
+        error: 'OpenRouter API key not configured' 
+      });
+    }
+    
     // Use OpenRouter API
     const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY || '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'}`,
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://gregpedromd.com',
         'X-Title': 'Dr Pedro Dental Assistant'
@@ -87,7 +107,12 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
     services: {
       api: { status: 'operational' },
-      chat: { status: 'operational' }
+      chat: { status: 'operational' },
+      voice: { 
+        status: 'operational',
+        activeConnections: voiceService.connections.size,
+        websocket: wss ? 'ready' : 'not initialized'
+      }
     }
   });
 });
@@ -258,7 +283,73 @@ app.post('/insurance/zuub', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend server running on port ${PORT}`);
-  console.log('Note: Main functionality is handled by Supabase');
+// WebSocket connection handler for Twilio Media Streams
+wss.on('connection', (ws, req) => {
+  console.log('New WebSocket connection for voice');
+  
+  // Extract call SID from query params or headers
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const callSid = url.searchParams.get('callSid') || `call_${Date.now()}`;
+  
+  voiceService.handleConnection(ws, callSid);
+});
+
+// Twilio voice webhook endpoint
+app.post('/voice/incoming', (req, res) => {
+  // Determine protocol based on environment
+  const protocol = req.headers['x-forwarded-proto'] === 'https' || process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
+  const host = req.headers['x-forwarded-host'] || req.headers.host;
+  
+  const twiml = `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say>Please wait while I connect you to our AI assistant.</Say>
+  <Connect>
+    <Stream url="${protocol}://${host}/voice-websocket?callSid=${req.body.CallSid}">
+      <Parameter name="callSid" value="${req.body.CallSid}" />
+    </Stream>
+  </Connect>
+</Response>`;
+
+  res.type('text/xml');
+  res.send(twiml);
+});
+
+// Twilio voice status callback
+app.post('/voice/status', (req, res) => {
+  console.log('Call status:', req.body.CallStatus, 'for call:', req.body.CallSid);
+  res.sendStatus(200);
+});
+
+// Voice service test endpoint
+app.get('/voice/test', async (req, res) => {
+  try {
+    // Test TTS
+    const testText = "Hello, this is a test of the voice system.";
+    const audioData = await voiceService.textToSpeech(testText);
+    
+    res.json({
+      status: 'operational',
+      tests: {
+        tts: audioData && audioData.length > 0 ? 'passed' : 'failed',
+        websocket: wss ? 'ready' : 'not initialized',
+        connections: voiceService.connections.size
+      },
+      endpoints: {
+        incoming: '/voice/incoming',
+        websocket: '/voice-websocket',
+        status: '/voice/status'
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+});
+
+server.listen(PORT, () => {
+  console.log(`Backend server with WebSocket support running on port ${PORT}`);
+  console.log(`WebSocket endpoint: ws://localhost:${PORT}/voice-websocket`);
+  console.log('Voice webhook endpoint: /voice/incoming');
 });
