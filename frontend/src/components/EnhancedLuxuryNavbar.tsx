@@ -18,7 +18,6 @@ import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import { LuxuryMedicalIcon, LuxuryExploreIcon, LuxuryEmergencyIcon, LuxurySparkleIcon } from './icons/LuxuryIcons';
 
 // Enhanced center configuration with better colors
 const centerConfig = {
@@ -205,7 +204,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    fontFamily: '"Playfair Display", serif',
+                    fontFamily: '"Playfair Display", Georgia, serif',
                     fontWeight: 800,
                     fontSize: { xs: '1.3rem', md: '1.5rem' },
                     letterSpacing: '-0.02em',
@@ -449,3 +448,5 @@ const EnhancedLuxuryNavbar: React.FC = () => {
     </AppBar>
   );
 };
+
+export default EnhancedLuxuryNavbar;
