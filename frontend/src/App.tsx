@@ -96,10 +96,12 @@ function App() {
         />
       </Routes>
       {chatStore.isOpen && <Chatbot onClose={handleCloseChat} />}
-      {isMobile ? (
-        <MobileChatOptimized onChatOpen={handleOpenChat} />
-      ) : (
-        <ChatFirstContactWidget onChatOpen={handleOpenChat} />
+      {!chatStore.isOpen && (
+        isMobile ? (
+          <MobileChatOptimized onChatOpen={handleOpenChat} />
+        ) : (
+          <ChatFirstContactWidget onChatOpen={handleOpenChat} />
+        )
       )}
       {/* Luxury noise texture overlay */}
       <div className="noise-overlay" />

@@ -46,24 +46,24 @@ export const MobileChatOptimized: React.FC<MobileChatOptimizedProps> = ({ onChat
       <Box
         sx={{
           position: 'fixed',
-          bottom: 20,
-          right: 20,
+          bottom: 16,
+          right: 16,
           zIndex: 1200,
         }}
       >
         <Fab
           color="primary"
-          size="large"
+          size="medium"
           onClick={() => setShowDrawer(true)}
           sx={{
-            background: 'linear-gradient(45deg, #1a73e8 30%, #4285f4 90%)',
-            boxShadow: '0 3px 5px 2px rgba(26, 115, 232, .3)',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            boxShadow: '0 2px 10px rgba(118, 75, 162, 0.3)',
             '&:active': {
               transform: 'scale(0.95)',
             },
           }}
         >
-          <ChatIcon />
+          <ChatIcon sx={{ fontSize: 22 }} />
         </Fab>
       </Box>
 

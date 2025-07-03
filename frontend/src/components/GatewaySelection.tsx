@@ -51,8 +51,8 @@ export const GatewaySelection: React.FC = () => {
       id: 'precision',
       icon: <PrecisionIcon sx={{ fontSize: 48 }} />,
       title: "I Know What I Need",
-      subtitle: "Precision Gateway",
-      description: "Direct booking for specific treatments",
+      subtitle: "Browse Services",
+      description: "See our treatment options",
       gradient: 'radial-gradient(circle at 50% 50%, rgba(196, 181, 253, 0.3), rgba(255, 255, 255, 0.9))',
       backgroundElements: (
         <>
@@ -279,7 +279,8 @@ export const GatewaySelection: React.FC = () => {
             <Card
               onClick={() => handleGatewayClick(gateway)}
               sx={{
-                height: { xs: '50vh', sm: '45vh', md: 420 },
+                height: { xs: '40vh', sm: '45vh', md: 420 },
+                minHeight: { xs: 280, sm: 320, md: 420 },
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: 'pointer',
@@ -291,13 +292,16 @@ export const GatewaySelection: React.FC = () => {
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                 '&:hover': {
-                  transform: 'translateY(-8px)',
+                  transform: { xs: 'none', md: 'translateY(-8px)' },
                   boxShadow: gateway.id === 'precision' ? '0 20px 40px rgba(124, 58, 237, 0.15)' :
                              gateway.id === 'chat' ? '0 20px 40px rgba(8, 145, 178, 0.15)' :
                              '0 20px 40px rgba(220, 38, 38, 0.15)',
                   borderColor: gateway.id === 'precision' ? 'rgba(124, 58, 237, 0.3)' : 
                               gateway.id === 'chat' ? 'rgba(8, 145, 178, 0.3)' : 'rgba(220, 38, 38, 0.3)',
                 },
+                '&:active': {
+                  transform: 'scale(0.98)',
+                }
               }}
             >
               {gateway.backgroundElements}
