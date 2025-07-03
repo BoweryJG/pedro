@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { Google, Email } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../services/supabase';
+import { supabase } from '../../lib/supabase';
 
 const LoginPage: React.FC = () => {
   const { signInWithGoogle, user, isAuthorized } = useAuth();
