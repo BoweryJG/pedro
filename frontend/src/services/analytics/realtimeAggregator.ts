@@ -1,4 +1,4 @@
-import { supabase } from '../supabase';
+import { supabase } from '../../lib/supabase';
 
 export class RealtimeAggregator {
   private subscriptions: any[] = [];
@@ -81,7 +81,7 @@ export class RealtimeAggregator {
     const { data: appointments } = await supabase
       .from('appointments')
       .select('*')
-      .gte('date', thirtyDaysAgo.toISOString().split('T')[0]);
+      .gte('appointment_date', thirtyDaysAgo.toISOString().split('T')[0]);
 
     // Fetch patients
     const { data: patients } = await supabase
@@ -108,7 +108,7 @@ export class RealtimeAggregator {
     
     // Calculate key metrics
     const todayAppointments = data.appointments.filter(a => 
-      a.date === new Date().toISOString().split('T')[0]
+      a.appointment_date === new Date().toISOString().split('T')[0]
     );
 
     const metrics = {

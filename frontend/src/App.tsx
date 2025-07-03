@@ -22,6 +22,7 @@ import LoginPage from './pages/auth/LoginPage';
 import UnauthorizedPage from './pages/auth/UnauthorizedPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
+import { GoogleAnalytics } from './components/GoogleAnalytics';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
@@ -38,6 +39,7 @@ function App() {
 
   return (
     <AuthProvider>
+      <GoogleAnalytics />
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Layout />}>

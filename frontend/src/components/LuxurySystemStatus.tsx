@@ -26,7 +26,7 @@ const LuxurySystemStatus: React.FC = () => {
 
   const checkStatus = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
       const response = await axios.get(`${apiUrl}/health`, { timeout: 5000 });
       
       if (response.data) {
@@ -72,8 +72,9 @@ const LuxurySystemStatus: React.FC = () => {
     <Box
       sx={{
         position: 'fixed',
-        bottom: 24,
-        right: 24,
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
         zIndex: 1000,
       }}
     >

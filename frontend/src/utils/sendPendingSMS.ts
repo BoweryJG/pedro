@@ -1,10 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-// Create Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://tsmtaarwgodklafqlbhm.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzbXRhYXJ3Z29ka2xhZnFsYmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU3NTIzNTIsImV4cCI6MjA1MTMyODM1Mn0.qKtWF3SQ9rVevhqVZGX3V_SdW1OFrBvaSrV4S9OU-0w';
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from '../lib/supabase';
 
 export async function sendPendingSMS() {
   try {

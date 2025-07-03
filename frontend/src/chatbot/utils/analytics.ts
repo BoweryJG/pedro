@@ -54,8 +54,12 @@ class ChatbotAnalytics {
   
   private sendToAnalyticsService(event: AnalyticsEvent) {
     // In production, send to your analytics service
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', event.event, event.properties);
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      try {
+        (window as any).gtag('event', event.event, event.properties);
+      } catch (error) {
+        console.warn('Analytics tracking error:', error);
+      }
     }
     
     // Log to console in development

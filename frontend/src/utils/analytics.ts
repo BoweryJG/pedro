@@ -14,12 +14,21 @@ export const trackEvent = ({
   label,
   value
 }: AnalyticsEvent) => {
-  if (typeof window !== 'undefined' && window.gtag) {
-    window.gtag('event', action, {
-      event_category: category,
-      event_label: label,
-      value: value,
-    });
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+    try {
+      window.gtag('event', action, {
+        event_category: category,
+        event_label: label,
+        value: value,
+      });
+    } catch (error) {
+      console.warn('Analytics tracking error:', error);
+    }
+  } else {
+    // Log analytics events in development when gtag is not available
+    if (import.meta.env.DEV) {
+      console.log('Analytics Event (not sent):', { action, category, label, value });
+    }
   }
 };
 

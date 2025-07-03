@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '../../lib/supabase';
 import { MetricsCalculator } from './metricsCalculator';
 import { RealtimeAggregator } from './realtimeAggregator';
 import { PredictiveAnalytics } from './predictiveAnalytics';
@@ -18,10 +18,8 @@ export class AnalyticsService {
   constructor(practiceId: string) {
     this.practiceId = practiceId;
     
-    // Initialize Supabase client
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-    this.supabase = createClient(supabaseUrl, supabaseAnonKey);
+    // Use shared Supabase client
+    this.supabase = supabase;
 
     // Initialize services
     this.metricsCalculator = new MetricsCalculator(this.supabase, practiceId);

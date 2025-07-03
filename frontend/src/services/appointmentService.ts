@@ -193,29 +193,10 @@ export class AppointmentService {
       throw err;
     }
     
-    const appointmentError = !appointment;
-    
-    if (appointmentError) {
-      console.error('Error creating appointment:', appointmentError);
-      console.error('Error details:', {
-        code: appointmentError.code,
-        message: appointmentError.message,
-        details: appointmentError.details,
-        hint: appointmentError.hint
-      });
-      
-      // If auth error, return a mock appointment ID
-      if (appointmentError.code === '42501' || appointmentError.message?.includes('401') || appointmentError.message?.includes('RLS')) {
-        console.log('Auth/RLS error - returning mock appointment for demo');
-        console.log('Mock confirmation code:', confirmationCode);
-        
-        // Show mock SMS message in console
-        const mockMessage = `Hi ${appointmentData.patientId}, your appointment on ${appointmentData.date.format('MMMM D, YYYY')} at ${appointmentData.time} is confirmed. Code: ${confirmationCode}. Call (929) 242-4535 to reschedule.`;
-        console.log('📱 SMS (Mock):', mockMessage);
-        
-        return `DEMO-${confirmationCode}`;
-      }
-      throw appointmentError;
+    if (!appointment) {
+      const error = new Error('Failed to create appointment - no data returned');
+      console.error('Error creating appointment:', error);
+      throw error;
     }
     
     // Mark time slot as unavailable
