@@ -118,25 +118,7 @@ BOOKING PROCESS:
       });
       
       if (!response.ok) {
-        // Fallback to Netlify function if backend is unavailable
-        const netlifyResponse = await fetch('/.netlify/functions/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            messages: messages.slice(1),
-            systemPrompt: messages[0].content,
-          }),
-        });
-        
-        if (!netlifyResponse.ok) {
-          throw new Error(`API request failed: ${netlifyResponse.status}`);
-        }
-        
-        const netlifyData = await netlifyResponse.json();
-        return netlifyData.response || 
-          "I apologize, I'm having trouble responding right now. How can I help you learn about our dental services?";
+        throw new Error(`Backend API request failed: ${response.status}`);
       }
       
       const data = await response.json();

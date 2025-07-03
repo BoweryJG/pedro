@@ -44,10 +44,9 @@ const LuxurySystemStatus: React.FC = () => {
     }
   };
 
-  // Only show warnings for critical services (not API since we use Netlify functions)
-  const isHealthy = true; // Always show as healthy since backend is optional
-  const hasWarning = false;
-  const isOffline = false;
+  const isHealthy = status.api;
+  const hasWarning = !isHealthy;
+  const isOffline = !status.api;
 
   const getStatusColor = () => {
     if (loading) return 'rgba(102, 126, 234, 0.5)';
@@ -61,12 +60,7 @@ const LuxurySystemStatus: React.FC = () => {
     if (isHealthy) return 'All systems operational';
     if (isOffline) return 'System offline';
     
-    const issues = [];
-    if (!status.api) issues.push('API');
-    if (!status.instagram) issues.push('Messaging');
-    if (!status.database) issues.push('Database');
-    
-    return `Limited functionality: ${issues.join(', ')}`;
+    return 'Backend offline - Chat may be unavailable';
   };
 
   return (

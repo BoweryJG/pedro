@@ -102,8 +102,7 @@ function App() {
       ) : (
         <ChatFirstContactWidget onChatOpen={handleOpenChat} />
       )}
-      {/* Status indicator disabled - backend is optional */}
-      {/* <LuxurySystemStatus /> */}
+      <LuxurySystemStatus />
       {/* Luxury noise texture overlay */}
       <div className="noise-overlay" />
     </AuthProvider>
