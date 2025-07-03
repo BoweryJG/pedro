@@ -1,6 +1,17 @@
 # 🦷 Dr. Pedro Advanced Dental Practice - Complete Ecosystem
 
-> **A comprehensive multi-subdomain dental platform featuring AI-powered patient engagement, Instagram DM automation, WebRTC voice calling, and specialized service delivery across 5 distinct subdomains.**
+> **Production-ready dental platform with enterprise-grade security, featuring AI-powered patient engagement, Instagram DM automation, WebRTC voice calling, and specialized service delivery across 5 distinct subdomains.**
+
+## 🔒 Security Status
+
+✅ **Production Ready** - All security vulnerabilities have been addressed:
+- No hardcoded credentials
+- CORS properly configured
+- Rate limiting implemented
+- Security headers active
+- Structured logging in place
+
+⚠️ **Action Required**: See [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md) for credential rotation instructions.
 
 ## 📋 Table of Contents
 
@@ -190,6 +201,9 @@ SUPABASE_URL=...
 # Frontend (Netlify)
 VITE_ENVIRONMENT=production
 VITE_API_URL=https://pedro-backend.onrender.com
+
+# Netlify Functions (Important!)
+OPENROUTER_API_KEY=your_openrouter_key  # Set in Netlify dashboard
 ```
 
 ---
@@ -476,15 +490,25 @@ const financingProviders = {
 
 ## 🔒 Security & Compliance
 
+### **Production Security Features** (NEW)
+- **Rate Limiting**: 100 requests/15min general, 10/15min for sensitive endpoints
+- **Helmet.js**: Security headers (CSP, HSTS, X-Frame-Options, etc.)
+- **CORS Protection**: Whitelist-based origin validation
+- **Request Validation**: Size limits and input sanitization
+- **Structured Logging**: Morgan for production-grade logging
+- **Environment Security**: All secrets in environment variables
+
 ### **Data Protection**
 - **HIPAA Compliance**: Patient data encryption and access controls
 - **Row-Level Security**: Database-level patient data isolation
 - **API Security**: Rate limiting, input validation, CORS protection
+- **No Hardcoded Secrets**: All credentials in environment variables
 
 ### **Authentication & Authorization**
 - **Multi-factor Authentication**: Optional 2FA for patient accounts
 - **Session Management**: Secure token handling
 - **Role-based Access**: Admin, staff, patient permission levels
+- **Webhook Verification**: Cryptographic signature validation
 
 ### **Voice Security**
 - **End-to-End Encryption**: WebRTC SRTP for voice data
@@ -495,6 +519,7 @@ const financingProviders = {
 - **SSL/TLS**: End-to-end encryption
 - **Environment Isolation**: Separate development/staging/production
 - **Backup Strategy**: Automated daily database backups
+- **Monitoring Ready**: Structured logs for Sentry/Datadog integration
 
 ---
 
@@ -510,7 +535,8 @@ const financingProviders = {
 ### **Technical Documentation**
 - [Frontend README](frontend/README.md) - Main website development guide
 - [Backend README](backend/README.md) - API server, Instagram, and voice automation
-- [Deployment Guide](DEPLOYMENT.md) - Production setup instructions
+- **[PRODUCTION DEPLOYMENT](PRODUCTION_DEPLOYMENT.md)** - 🔒 **Critical security setup guide**
+- [Deployment Guide](DEPLOYMENT.md) - General deployment instructions
 - [Quick Deploy](DEPLOY_NOW.md) - Rapid deployment checklist
 - [AI Context](CLAUDE.md) - Context for AI assistants
 
@@ -593,4 +619,4 @@ cp -r subdomains/tmj subdomains/newservice
 
 ---
 
-*Last Updated: January 2025 | Version 2.0.0*
+*Last Updated: January 2025 | Version 2.1.0 - Production Security Update*
