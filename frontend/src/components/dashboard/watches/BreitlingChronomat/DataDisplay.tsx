@@ -6,14 +6,26 @@ interface DataDisplayProps {
   dataMode: DataMode;
   onModeSwitch: () => void;
   interactiveMode: boolean;
+  size: 'small' | 'medium' | 'large';
 }
 
 const DataDisplay: React.FC<DataDisplayProps> = ({
   metrics,
   dataMode,
   onModeSwitch,
-  interactiveMode
+  interactiveMode,
+  size
 }) => {
+  // Calculate dimensions based on size
+  const sizeMap = {
+    small: 300,
+    medium: 400,
+    large: 500
+  };
+  
+  const diameter = sizeMap[size];
+  const radius = diameter / 2;
+  const center = radius;
   const getModeDisplayData = () => {
     switch (dataMode) {
       case 'appointments':
@@ -92,14 +104,14 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
       {/* Mode Indicator and Switcher */}
       <div className="mode-indicator" style={{
         position: 'absolute',
-        top: '50px',
+        top: `${radius * 0.25}px`,
         left: '50%',
         transform: 'translateX(-50%)',
         background: 'rgba(0, 0, 0, 0.7)',
         color: '#22c55e',
         padding: '2px 8px',
         borderRadius: '3px',
-        fontSize: '8px',
+        fontSize: `${diameter * 0.02}px`,
         fontWeight: 'bold',
         border: '1px solid #374151',
         cursor: interactiveMode ? 'pointer' : 'default',
@@ -115,7 +127,7 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
       {/* Primary Metric Display */}
       <div className="primary-metric" style={{
         position: 'absolute',
-        top: '140px',
+        top: `${radius * 0.7}px`,
         left: '50%',
         transform: 'translateX(-50%)',
         textAlign: 'center',
@@ -123,14 +135,14 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
         textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
       }}>
         <div style={{
-          fontSize: '20px',
+          fontSize: `${diameter * 0.05}px`,
           fontWeight: 'bold',
           marginBottom: '2px'
         }}>
           {displayData.primaryValue}
         </div>
         <div style={{
-          fontSize: '8px',
+          fontSize: `${diameter * 0.02}px`,
           opacity: 0.8
         }}>
           {displayData.primaryLabel}
@@ -139,65 +151,67 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
 
       {/* Subdial Labels */}
       <div className="subdial-labels">
-        {/* Left Subdial (9 o'clock) */}
+        {/* Left Subdial (9 o'clock) - matches WatchFace position */}
         <div style={{
           position: 'absolute',
-          left: '20px',
-          top: '180px',
-          fontSize: '7px',
+          left: `${center - radius * 0.5 - 30}px`,
+          top: `${center - radius * 0.2}px`,
+          fontSize: `${diameter * 0.0175}px`,
           color: '#64748b',
           textAlign: 'center',
-          width: '60px'
+          width: `${diameter * 0.15}px`,
+          transform: 'translateY(-50%)'
         }}>
           <div style={{ fontWeight: 'bold' }}>{displayData.subdials[0].value}</div>
           <div style={{ opacity: 0.8 }}>{displayData.subdials[0].label}</div>
         </div>
 
-        {/* Bottom Subdial (6 o'clock) */}
+        {/* Right Subdial (3 o'clock) - matches WatchFace position */}
         <div style={{
           position: 'absolute',
-          bottom: '80px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          fontSize: '7px',
+          left: `${center + radius * 0.5 - 30}px`,
+          top: `${center - radius * 0.2}px`,
+          fontSize: `${diameter * 0.0175}px`,
           color: '#64748b',
           textAlign: 'center',
-          width: '60px'
-        }}>
-          <div style={{ fontWeight: 'bold' }}>{displayData.subdials[1].value}</div>
-          <div style={{ opacity: 0.8 }}>{displayData.subdials[1].label}</div>
-        </div>
-
-        {/* Right Subdial (3 o'clock) */}
-        <div style={{
-          position: 'absolute',
-          right: '20px',
-          top: '180px',
-          fontSize: '7px',
-          color: '#64748b',
-          textAlign: 'center',
-          width: '60px'
+          width: `${diameter * 0.15}px`,
+          transform: 'translateY(-50%)'
         }}>
           <div style={{ fontWeight: 'bold' }}>{displayData.subdials[2].value}</div>
           <div style={{ opacity: 0.8 }}>{displayData.subdials[2].label}</div>
+        </div>
+
+        {/* Bottom Subdial (6 o'clock) - matches WatchFace position */}
+        <div style={{
+          position: 'absolute',
+          left: '50%',
+          top: `${center + radius * 0.45}px`,
+          transform: 'translate(-50%, -50%)',
+          fontSize: `${diameter * 0.0175}px`,
+          color: '#64748b',
+          textAlign: 'center',
+          width: `${diameter * 0.15}px`
+        }}>
+          <div style={{ fontWeight: 'bold' }}>{displayData.subdials[1].value}</div>
+          <div style={{ opacity: 0.8 }}>{displayData.subdials[1].label}</div>
         </div>
       </div>
 
       {/* Digital Information Display */}
       <div className="digital-info" style={{
         position: 'absolute',
-        bottom: '50px',
+        bottom: `${radius * 0.25}px`,
         left: '50%',
         transform: 'translateX(-50%)',
         background: 'rgba(0, 0, 0, 0.8)',
         color: '#22c55e',
         padding: '3px 6px',
         borderRadius: '3px',
-        fontSize: '9px',
+        fontSize: `${diameter * 0.0225}px`,
         fontFamily: 'monospace',
         fontWeight: 'bold',
         border: '1px solid #374151',
-        maxWidth: '120px',
+        maxWidth: `${diameter * 0.3}px`,
         textAlign: 'center',
         whiteSpace: 'nowrap',
         overflow: 'hidden',
@@ -209,10 +223,10 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
       {/* Data Quality Indicator */}
       <div className="data-quality" style={{
         position: 'absolute',
-        top: '30px',
-        right: '30px',
-        width: '6px',
-        height: '6px',
+        top: `${radius * 0.15}px`,
+        right: `${radius * 0.15}px`,
+        width: `${diameter * 0.015}px`,
+        height: `${diameter * 0.015}px`,
         borderRadius: '50%',
         background: metrics ? '#22c55e' : '#ef4444',
         boxShadow: '0 0 4px rgba(34, 197, 94, 0.5)'
@@ -224,9 +238,9 @@ const DataDisplay: React.FC<DataDisplayProps> = ({
       {interactiveMode && (
         <div style={{
           position: 'absolute',
-          bottom: '10px',
-          right: '10px',
-          fontSize: '6px',
+          bottom: `${radius * 0.05}px`,
+          right: `${radius * 0.05}px`,
+          fontSize: `${diameter * 0.015}px`,
           color: '#64748b',
           opacity: 0.7
         }}>

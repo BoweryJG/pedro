@@ -87,6 +87,7 @@ const BreitlingChronomat: React.FC<BreitlingChronomatProps> = ({
           dataMode={dataMode}
           onModeSwitch={handleModeSwitch}
           interactiveMode={interactiveMode}
+          size={size}
         />
       </div>
     </div>

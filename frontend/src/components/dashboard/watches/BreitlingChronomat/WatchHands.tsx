@@ -154,17 +154,39 @@ const WatchHands: React.FC<WatchHandsProps> = ({
 
       {/* Second Hand - Glowing green real-time indicator */}
       <g filter="url(#glowFilter)">
+        {/* Thicker base section */}
         <line
           x1={center}
           y1={center}
-          x2={secondHand.x}
-          y2={secondHand.y}
+          x2={center + (secondHand.x - center) * 0.2}
+          y2={center + (secondHand.y - center) * 0.2}
           stroke="url(#glowingGreenGradient)"
-          strokeWidth="2"
+          strokeWidth="4"
           strokeLinecap="round"
           opacity="0.9"
         />
-        <circle cx={secondHand.x} cy={secondHand.y} r="4" fill="#22c55e" opacity="0.8" />
+        {/* Main needle section */}
+        <line
+          x1={center + (secondHand.x - center) * 0.15}
+          y1={center + (secondHand.y - center) * 0.15}
+          x2={secondHand.x}
+          y2={secondHand.y}
+          stroke="url(#glowingGreenGradient)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          opacity="0.9"
+        />
+        {/* Small counterweight */}
+        <line
+          x1={center}
+          y1={center}
+          x2={center - (secondHand.x - center) * 0.15}
+          y2={center - (secondHand.y - center) * 0.15}
+          stroke="url(#glowingGreenGradient)"
+          strokeWidth="3"
+          strokeLinecap="round"
+          opacity="0.9"
+        />
       </g>
 
       {/* Subdial Hands */}

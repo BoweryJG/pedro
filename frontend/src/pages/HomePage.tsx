@@ -1,4 +1,4 @@
-import { GatewaySelection } from '../components/GatewaySelection';
+import CenterCarouselHero from '../components/CenterCarouselHero';
 import LuxuryServicesShowcase from '../components/LuxuryServicesShowcase';
 import LuxuryStatsSection from '../components/LuxuryStatsSection';
 import LuxuryTrustIndicators from '../components/LuxuryTrustIndicators';
@@ -11,7 +11,7 @@ const HomePage = () => {
   
   return (
     <Box sx={{ backgroundColor: 'var(--luxury-warm-white)' }}>
-      {/* Main Gateway Selection - Hero Section */}
+      {/* Main Carousel Hero Section */}
       <Box 
         className="luxury-section"
         sx={{ 
@@ -23,7 +23,7 @@ const HomePage = () => {
           overflow: 'hidden',
         }}
       >
-        <GatewaySelection />
+        <CenterCarouselHero />
       </Box>
       
       {/* Services Section with Alternating Background */}
