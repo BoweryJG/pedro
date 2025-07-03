@@ -36,7 +36,19 @@ import SMSQueue from './pages/admin/SMSQueue';
 function App() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const { isOpen: chatOpen, toggleChat } = useChatStore();
+  const chatStore = useChatStore();
+
+  const handleOpenChat = () => {
+    if (!chatStore.isOpen) {
+      chatStore.toggleChat();
+    }
+  };
+
+  const handleCloseChat = () => {
+    if (chatStore.isOpen) {
+      chatStore.toggleChat();
+    }
+  };
 
   return (
     <AuthProvider>
@@ -84,11 +96,11 @@ function App() {
           }
         />
       </Routes>
-      {chatOpen && <Chatbot onClose={toggleChat} />}
+      {chatStore.isOpen && <Chatbot onClose={handleCloseChat} />}
       {isMobile ? (
-        <MobileChatOptimized onChatOpen={toggleChat} />
+        <MobileChatOptimized onChatOpen={handleOpenChat} />
       ) : (
-        <ChatFirstContactWidget onChatOpen={toggleChat} />
+        <ChatFirstContactWidget onChatOpen={handleOpenChat} />
       )}
       <LuxurySystemStatus />
       {/* Luxury noise texture overlay */}

@@ -120,7 +120,7 @@ export const chatAPI = {
 // Health check to verify backend connection
 export const healthCheck = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axios.get(`${API_URL}/`);
     return response.data;
   } catch (error) {
     console.error('Backend health check failed:', error);
