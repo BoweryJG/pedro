@@ -25,17 +25,19 @@ export const GatewaySelection: React.FC = () => {
   const chatStore = useChatStore();
 
   const handleGatewayClick = (gateway: GatewayOption) => {
-    // Set context in chat store before opening
-    if (gateway.id === 'precision') {
-      chatStore.sendMessage("I know what service I need and I'm ready to book an appointment.");
-    } else if (gateway.id === 'emergency') {
-      chatStore.sendMessage("I need emergency dental care as soon as possible.");
-    }
-    
-    // Open chat
+    // Open chat first
     if (!chatStore.isOpen) {
       chatStore.toggleChat();
     }
+    
+    // Then send context message after a small delay to ensure chat is ready
+    setTimeout(() => {
+      if (gateway.id === 'precision') {
+        chatStore.sendMessage("I know what service I need and I'm ready to book an appointment.");
+      } else if (gateway.id === 'emergency') {
+        chatStore.sendMessage("I need emergency dental care as soon as possible.");
+      }
+    }, 300);
   };
 
   const gateways: GatewayOption[] = [
@@ -271,17 +273,24 @@ export const GatewaySelection: React.FC = () => {
             <Card
               onClick={() => handleGatewayClick(gateway)}
               sx={{
-                height: { xs: '60vh', sm: '50vh', md: 400 },
+                height: { xs: '50vh', sm: '45vh', md: 420 },
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: 'pointer',
                 background: gateway.gradient,
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                borderRadius: 3,
-                transition: 'all 0.3s ease',
+                border: '1px solid',
+                borderColor: gateway.id === 'precision' ? 'rgba(124, 58, 237, 0.1)' : 
+                            gateway.id === 'chat' ? 'rgba(8, 145, 178, 0.1)' : 'rgba(220, 38, 38, 0.1)',
+                borderRadius: 4,
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)',
+                  transform: 'translateY(-8px)',
+                  boxShadow: gateway.id === 'precision' ? '0 20px 40px rgba(124, 58, 237, 0.15)' :
+                             gateway.id === 'chat' ? '0 20px 40px rgba(8, 145, 178, 0.15)' :
+                             '0 20px 40px rgba(220, 38, 38, 0.15)',
+                  borderColor: gateway.id === 'precision' ? 'rgba(124, 58, 237, 0.3)' : 
+                              gateway.id === 'chat' ? 'rgba(8, 145, 178, 0.3)' : 'rgba(220, 38, 38, 0.3)',
                 },
               }}
             >

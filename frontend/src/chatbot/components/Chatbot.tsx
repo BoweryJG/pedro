@@ -19,7 +19,8 @@ import {
   Close as CloseIcon,
   Person as PersonIcon,
   AutoAwesome as SparkleIcon,
-  LocalOffer as OfferIcon
+  LocalOffer as OfferIcon,
+  AutoAwesome
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
@@ -215,38 +216,105 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
             </IconButton>
           </Box>
           
-          {/* Enhanced Stage Indicator */}
-          <Box sx={{ px: 2, py: 1.5, bgcolor: 'grey.50' }}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-              <Box display="flex" alignItems="center" gap={0.5}>
-                <Typography variant="caption" color="text.secondary" fontWeight="medium">
+          {/* Path Switcher and Progress */}
+          <Box sx={{ bgcolor: 'grey.50' }}>
+            {/* Path Switcher */}
+            <Box sx={{ px: 2, pt: 1.5, pb: 0.5, display: 'flex', gap: 0.5, justifyContent: 'center' }}>
+              <Chip
+                size="small"
+                icon={<AutoAwesome />}
+                label="I Know"
+                onClick={() => sendMessage("I know what service I need and I'm ready to book an appointment.")}
+                sx={{
+                  bgcolor: 'white',
+                  border: '1px solid',
+                  borderColor: '#7c3aed',
+                  color: '#7c3aed',
+                  fontSize: '0.75rem',
+                  height: 26,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: 'rgba(124, 58, 237, 0.04)',
+                  },
+                  '& .MuiChip-icon': {
+                    fontSize: 16,
+                    color: '#7c3aed'
+                  }
+                }}
+              />
+              <Chip
+                size="small"
+                icon={<PersonIcon />}
+                label="Explore"
+                onClick={() => sendMessage("I'd like to explore my options and learn more.")}
+                sx={{
+                  bgcolor: 'white',
+                  border: '1px solid',
+                  borderColor: '#0891b2',
+                  color: '#0891b2',
+                  fontSize: '0.75rem',
+                  height: 26,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: 'rgba(8, 145, 178, 0.04)',
+                  },
+                  '& .MuiChip-icon': {
+                    fontSize: 16,
+                    color: '#0891b2'
+                  }
+                }}
+              />
+              <Chip
+                size="small"
+                icon={<LocalOffer />}
+                label="Emergency"
+                onClick={() => sendMessage("I need emergency dental care.")}
+                sx={{
+                  bgcolor: 'white',
+                  border: '1px solid',
+                  borderColor: '#dc2626',
+                  color: '#dc2626',
+                  fontSize: '0.75rem',
+                  height: 26,
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: 'rgba(220, 38, 38, 0.04)',
+                  },
+                  '& .MuiChip-icon': {
+                    fontSize: 16,
+                    color: '#dc2626'
+                  }
+                }}
+              />
+            </Box>
+            {/* Journey Progress */}
+            <Box sx={{ px: 2, pt: 0.5, pb: 1 }}>
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+                <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
                   Journey Progress
                 </Typography>
-                {bookingIntent > 60 && (
-                  <OfferIcon sx={{ fontSize: 14, color: '#4CAF50' }} />
-                )}
+                <Typography variant="caption" color="primary" fontWeight="bold" sx={{ fontSize: '0.7rem' }}>
+                  {bookingIntent}% Ready
+                </Typography>
               </Box>
-              <Typography variant="caption" color="primary" fontWeight="bold">
-                {bookingIntent}% Ready to Book
-              </Typography>
+              <LinearProgress 
+                variant="determinate" 
+                value={bookingIntent} 
+                sx={{
+                  height: 4,
+                  borderRadius: 2,
+                  bgcolor: 'grey.200',
+                  '& .MuiLinearProgress-bar': {
+                    borderRadius: 2,
+                    background: bookingIntent > 80 
+                      ? 'linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%)'
+                      : bookingIntent > 50
+                      ? 'linear-gradient(90deg, #2196F3 0%, #03A9F4 100%)'
+                      : 'linear-gradient(90deg, #9C27B0 0%, #E91E63 100%)',
+                  }
+                }}
+              />
             </Box>
-            <LinearProgress 
-              variant="determinate" 
-              value={bookingIntent} 
-              sx={{
-                height: 6,
-                borderRadius: 3,
-                bgcolor: 'grey.200',
-                '& .MuiLinearProgress-bar': {
-                  borderRadius: 3,
-                  background: bookingIntent > 80 
-                    ? 'linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%)'
-                    : bookingIntent > 50
-                    ? 'linear-gradient(90deg, #2196F3 0%, #03A9F4 100%)'
-                    : 'linear-gradient(90deg, #9C27B0 0%, #E91E63 100%)',
-                }
-              }}
-            />
           </Box>
           
           {/* Messages or Financing Widget */}
