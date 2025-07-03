@@ -131,10 +131,10 @@ export const MobileChatOptimized: React.FC<MobileChatOptimizedProps> = ({ onChat
               <ChatIcon sx={{ fontSize: 32 }} />
               <Box flex={1}>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Start Live Chat
+                  Chat with Julie - Recommended
                 </Typography>
                 <Typography variant="caption">
-                  Get instant answers 24/7
+                  AI assistant who can connect you with our team instantly
                 </Typography>
               </Box>
             </Box>
@@ -157,13 +157,13 @@ export const MobileChatOptimized: React.FC<MobileChatOptimizedProps> = ({ onChat
                 },
               }}
             >
-              <PhoneIcon sx={{ fontSize: 32, color: 'primary.main' }} />
+              <PhoneIcon sx={{ fontSize: 32, color: 'text.secondary' }} />
               <Box flex={1}>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Call {CONTACT_INFO.phone.display}
+                  Direct Call (If Needed)
                 </Typography>
                 <Typography variant="caption" color="text.secondary">
-                  {CONTACT_INFO.businessHours.weekdays}
+                  {CONTACT_INFO.phone.display} • Julie is faster!
                 </Typography>
               </Box>
             </Box>
