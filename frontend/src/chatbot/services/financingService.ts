@@ -101,8 +101,9 @@ class FinancingService {
   }
 
   private async checkSunbit(data: PatientFinancingData): Promise<FinancingResult> {
-    // Simulated Sunbit API call - replace with actual API endpoint
-    const response = await axios.post('/.netlify/functions/financing-sunbit', {
+    // Call backend API endpoint
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+    const response = await axios.post(`${apiUrl}/financing/sunbit`, {
       applicant: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -136,8 +137,9 @@ class FinancingService {
   }
 
   private async checkCherry(data: PatientFinancingData): Promise<FinancingResult> {
-    // Simulated Cherry API call
-    const response = await axios.post('/.netlify/functions/financing-cherry', {
+    // Call backend API endpoint
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+    const response = await axios.post(`${apiUrl}/financing/cherry`, {
       patient: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -208,8 +210,9 @@ class FinancingService {
   }
 
   private async verifyWithZuub(data: InsuranceVerificationData): Promise<InsuranceResult> {
-    // Simulated Zuub API call
-    const response = await axios.post('/.netlify/functions/insurance-zuub', {
+    // Call backend API endpoint
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+    const response = await axios.post(`${apiUrl}/insurance/zuub`, {
       patient: {
         firstName: data.patientFirstName,
         lastName: data.patientLastName,
@@ -240,8 +243,9 @@ class FinancingService {
   }
 
   private async verifyWithPVerify(data: InsuranceVerificationData): Promise<InsuranceResult> {
-    // Simulated pVerify API call
-    const response = await axios.post('/.netlify/functions/insurance-pverify', {
+    // Call backend API endpoint
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+    const response = await axios.post(`${apiUrl}/insurance/pverify`, {
       subscriber: {
         firstName: data.patientFirstName,
         lastName: data.patientLastName,
