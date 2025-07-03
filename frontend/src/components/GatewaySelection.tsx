@@ -237,15 +237,14 @@ export const GatewaySelection: React.FC = () => {
     <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
       <Box sx={{ mb: 6, textAlign: 'center' }}>
         <Typography
-          variant="h2"
+          variant="h1"
+          className="text-gradient"
           sx={{
-            fontSize: { xs: '2rem', md: '3rem' },
-            fontWeight: 800,
-            mb: 2,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            backgroundClip: 'text',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
+            fontSize: { xs: '2.5rem', md: '4rem' },
+            fontWeight: 900,
+            mb: 3,
+            fontFamily: 'var(--font-primary)',
+            letterSpacing: '-0.03em',
           }}
         >
           How Can We Help You Today?
@@ -277,6 +276,7 @@ export const GatewaySelection: React.FC = () => {
             whileTap={{ scale: 0.98 }}
           >
             <Card
+              className="luxury-card hover-lift"
               onClick={() => handleGatewayClick(gateway)}
               sx={{
                 height: { xs: '40vh', sm: '45vh', md: 420 },
@@ -284,18 +284,15 @@ export const GatewaySelection: React.FC = () => {
                 position: 'relative',
                 overflow: 'hidden',
                 cursor: 'pointer',
-                background: gateway.gradient,
-                border: '1px solid',
-                borderColor: gateway.id === 'precision' ? 'rgba(124, 58, 237, 0.1)' : 
-                            gateway.id === 'chat' ? 'rgba(8, 145, 178, 0.1)' : 'rgba(220, 38, 38, 0.1)',
-                borderRadius: 4,
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                background: 'white',
+                border: '2px solid',
+                borderColor: 'var(--luxury-border-gray)',
+                borderRadius: '16px',
+                transition: 'all 0.3s var(--transition-smooth)',
+                boxShadow: 'var(--shadow-card)',
                 '&:hover': {
-                  transform: { xs: 'none', md: 'translateY(-8px)' },
-                  boxShadow: gateway.id === 'precision' ? '0 20px 40px rgba(124, 58, 237, 0.15)' :
-                             gateway.id === 'chat' ? '0 20px 40px rgba(8, 145, 178, 0.15)' :
-                             '0 20px 40px rgba(220, 38, 38, 0.15)',
+                  transform: { xs: 'none', md: 'translateY(-4px)' },
+                  boxShadow: 'var(--shadow-card-hover)',
                   borderColor: gateway.id === 'precision' ? 'rgba(124, 58, 237, 0.3)' : 
                               gateway.id === 'chat' ? 'rgba(8, 145, 178, 0.3)' : 'rgba(220, 38, 38, 0.3)',
                 },
