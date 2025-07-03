@@ -12,14 +12,17 @@ import {
   Avatar,
   Divider,
   LinearProgress,
-  Tooltip
+  Tooltip,
+  useMediaQuery,
+  useTheme
 } from '@mui/material';
 import {
   Send as SendIcon,
   Close as CloseIcon,
   Person as PersonIcon,
   AutoAwesome as SparkleIcon,
-  LocalOffer as OfferIcon
+  LocalOffer as OfferIcon,
+  ArrowBack as ArrowBackIcon
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
@@ -71,6 +74,9 @@ interface ChatbotProps {
 }
 
 export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  
   const {
     isOpen,
     isLoading,
@@ -125,6 +131,28 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
   
   return (
     <>
+      {/* Mobile Backdrop */}
+      {isMobile && isOpen && (
+        <Box
+          onClick={() => {
+            if (onClose) {
+              onClose();
+            } else {
+              toggleChat();
+            }
+          }}
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            bgcolor: 'rgba(0, 0, 0, 0.5)',
+            zIndex: 1000,
+          }}
+        />
+      )}
+      
       {/* Chat Window */}
       <Slide direction="up" in={isOpen} mountOnEnter unmountOnExit>
         <Paper
@@ -135,8 +163,8 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
             right: { xs: 0, sm: 24 },
             left: { xs: 0, sm: 'auto' },
             width: { xs: '100vw', sm: 400 },
-            height: { xs: '100vh', sm: 600 },
-            maxHeight: { xs: '100vh', sm: 600 },
+            height: { xs: '92vh', sm: 600 },
+            maxHeight: { xs: '92vh', sm: 600 },
             display: 'flex',
             flexDirection: 'column',
             zIndex: 1001,
@@ -144,13 +172,47 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
             overflow: 'hidden'
           }}
         >
-          {/* Enhanced Header */}
+          {/* Mobile Header with Back Button */}
+          {isMobile && (
+            <Box
+              sx={{
+                p: 2,
+                bgcolor: 'white',
+                borderBottom: '1px solid',
+                borderColor: 'divider',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <IconButton
+                onClick={() => {
+                  if (onClose) {
+                    onClose();
+                  } else {
+                    toggleChat();
+                  }
+                }}
+                sx={{ p: 0 }}
+              >
+                <ArrowBackIcon />
+              </IconButton>
+              <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                Chat with Julie
+              </Typography>
+              <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
+                <Typography fontSize="1.2rem">👩‍⚕️</Typography>
+              </Avatar>
+            </Box>
+          )}
+          
+          {/* Desktop Header */}
           <Box
             sx={{
               p: 2,
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
-              display: 'flex',
+              display: { xs: 'none', sm: 'flex' },
               alignItems: 'center',
               justifyContent: 'space-between',
               position: 'relative',
