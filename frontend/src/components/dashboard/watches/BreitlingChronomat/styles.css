@@ -7,6 +7,7 @@
   border-radius: 20px;
   padding: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin: 0 auto;
 }
 
 .watch-container {
@@ -14,6 +15,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 /* Size variants */

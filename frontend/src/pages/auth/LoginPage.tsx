@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react';
-import { Box, Typography, Button, Card, CardContent } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, Typography, Button, Card, CardContent, TextField, Divider, Alert } from '@mui/material';
 import { motion } from 'framer-motion';
-import { Google } from '@mui/icons-material';
+import { Google, Email } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { supabase } from '../../services/supabase';
 
 const LoginPage: React.FC = () => {
   const { signInWithGoogle, user, isAuthorized } = useAuth();
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user && isAuthorized) {
@@ -20,6 +25,34 @@ const LoginPage: React.FC = () => {
       await signInWithGoogle();
     } catch (error) {
       console.error('Login failed:', error);
+      setError('Google sign-in failed. Try the email option below.');
+    }
+  };
+
+  const handleMagicLink = async () => {
+    if (!email) {
+      setError('Please enter your email');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setMessage('');
+
+    try {
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/dr-pedro/dashboard`,
+        },
+      });
+
+      if (error) throw error;
+      setMessage('Check your email for the login link!');
+    } catch (error: any) {
+      setError(error.message || 'Failed to send magic link');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -136,6 +169,18 @@ const LoginPage: React.FC = () => {
               </Typography>
             </Box>
 
+            {error && (
+              <Alert severity="error" sx={{ mb: 2 }}>
+                {error}
+              </Alert>
+            )}
+            
+            {message && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                {message}
+              </Alert>
+            )}
+
             <Button
               fullWidth
               variant="contained"
@@ -160,6 +205,64 @@ const LoginPage: React.FC = () => {
               }}
             >
               Sign in with Google
+            </Button>
+
+            <Divider sx={{ my: 3, color: 'rgba(255, 255, 255, 0.3)' }}>OR</Divider>
+
+            <TextField
+              fullWidth
+              type="email"
+              placeholder="Enter your authorized email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              sx={{
+                mb: 2,
+                '& .MuiOutlinedInput-root': {
+                  color: 'white',
+                  '& fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.5)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: '#22c55e',
+                  },
+                },
+                '& .MuiInputBase-input::placeholder': {
+                  color: 'rgba(255, 255, 255, 0.5)',
+                },
+              }}
+            />
+
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              onClick={handleMagicLink}
+              startIcon={<Email />}
+              disabled={loading}
+              sx={{
+                py: 2,
+                fontSize: '1.1rem',
+                fontWeight: 600,
+                background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
+                color: 'white',
+                borderRadius: 2,
+                textTransform: 'none',
+                boxShadow: '0 4px 20px rgba(34, 197, 94, 0.3)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, #16a34a 0%, #15803d 100%)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 8px 30px rgba(34, 197, 94, 0.4)',
+                },
+                '&:disabled': {
+                  background: 'rgba(255, 255, 255, 0.1)',
+                },
+                transition: 'all 0.3s ease',
+              }}
+            >
+              {loading ? 'Sending...' : 'Send Magic Link'}
             </Button>
 
             <Typography

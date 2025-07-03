@@ -9,8 +9,11 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { user, loading, isAuthorized } = useAuth();
+  
+  // Check for direct access bypass
+  const hasDirectAccess = localStorage.getItem('directAccess') === 'true';
 
-  if (loading) {
+  if (loading && !hasDirectAccess) {
     return (
       <Box
         sx={{
@@ -26,11 +29,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     );
   }
 
-  if (!user) {
+  if (!hasDirectAccess && !user) {
     return <Navigate to="/dr-pedro/login" replace />;
   }
 
-  if (!isAuthorized) {
+  if (!hasDirectAccess && !isAuthorized) {
     return <Navigate to="/dr-pedro/unauthorized" replace />;
   }
 

@@ -184,7 +184,8 @@ const DentalDashboard: React.FC = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            gap: 3
+            gap: 3,
+            width: '100%'
           }}
         >
           <ErrorBoundary>
@@ -198,6 +199,10 @@ const DentalDashboard: React.FC = () => {
                 border: `1px solid ${theme.palette.divider}`,
                 position: 'relative',
                 overflow: 'hidden',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                mx: 'auto',
                 '&::before': {
                   content: '""',
                   position: 'absolute',

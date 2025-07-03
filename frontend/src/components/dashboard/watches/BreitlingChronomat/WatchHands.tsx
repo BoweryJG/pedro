@@ -22,7 +22,8 @@ const WatchHands: React.FC<WatchHandsProps> = ({
   const seconds = currentTime.getSeconds();
   const milliseconds = currentTime.getMilliseconds();
 
-  const radius = 200; // Based on 400px diameter
+  const diameter = 400; // Match the viewBox size
+  const radius = diameter / 2;
   const center = radius;
 
   // Calculate angles for time hands
@@ -127,7 +128,7 @@ const WatchHands: React.FC<WatchHandsProps> = ({
       <g filter="url(#handShadow)">
         <line
           x1={center}
-          y1={center + 20}
+          y1={center}
           x2={hourHand.x}
           y2={hourHand.y}
           stroke="url(#elegantHandGradient)"
@@ -141,7 +142,7 @@ const WatchHands: React.FC<WatchHandsProps> = ({
       <g filter="url(#handShadow)">
         <line
           x1={center}
-          y1={center + 20}
+          y1={center}
           x2={minuteHand.x}
           y2={minuteHand.y}
           stroke="url(#elegantHandGradient)"
@@ -155,7 +156,7 @@ const WatchHands: React.FC<WatchHandsProps> = ({
       <g filter="url(#glowFilter)">
         <line
           x1={center}
-          y1={center + 30}
+          y1={center}
           x2={secondHand.x}
           y2={secondHand.y}
           stroke="url(#glowingGreenGradient)"

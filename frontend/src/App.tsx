@@ -23,6 +23,7 @@ import UnauthorizedPage from './pages/auth/UnauthorizedPage';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
+import DirectAccessPage from './pages/auth/DirectAccessPage';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
@@ -65,6 +66,7 @@ function App() {
         {/* Protected Dashboard Routes */}
         <Route path="/dr-pedro/login" element={<LoginPage />} />
         <Route path="/dr-pedro/unauthorized" element={<UnauthorizedPage />} />
+        <Route path="/dr-pedro/direct-access" element={<DirectAccessPage />} />
         <Route
           path="/dr-pedro/dashboard"
           element={
