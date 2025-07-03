@@ -4,6 +4,7 @@ import fetch from 'node-fetch';
 import { createServer } from 'http';
 import { WebSocketServer } from 'ws';
 import VoiceService from './voiceService.js';
+import WebRTCVoiceService from './webrtcVoiceService.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -15,8 +16,15 @@ const wss = new WebSocketServer({
   path: '/voice-websocket'
 });
 
-// Initialize voice service
+// Initialize WebSocket server for WebRTC signaling
+const webrtcWss = new WebSocketServer({ 
+  server,
+  path: '/webrtc-voice'
+});
+
+// Initialize voice services
 const voiceService = new VoiceService();
+const webrtcVoiceService = new WebRTCVoiceService();
 
 app.use(cors());
 app.use(express.json());
@@ -112,6 +120,11 @@ app.get('/health', (req, res) => {
         status: 'operational',
         activeConnections: voiceService.connections.size,
         websocket: wss ? 'ready' : 'not initialized'
+      },
+      webrtcVoice: {
+        status: 'operational',
+        activeConnections: webrtcVoiceService.webrtcConnections.size,
+        websocket: webrtcWss ? 'ready' : 'not initialized'
       }
     }
   });
@@ -294,6 +307,26 @@ wss.on('connection', (ws, req) => {
   voiceService.handleConnection(ws, callSid);
 });
 
+// WebRTC Voice connection handler - No phone numbers needed!
+webrtcWss.on('connection', (ws, req) => {
+  console.log('New WebRTC voice connection from browser');
+  
+  ws.on('message', (message) => {
+    webrtcVoiceService.handleSignaling(ws, message.toString());
+  });
+  
+  ws.on('close', () => {
+    console.log('WebRTC voice connection closed');
+  });
+  
+  ws.on('error', (error) => {
+    console.error('WebRTC connection error:', error);
+  });
+  
+  // Send ready signal
+  ws.send(JSON.stringify({ type: 'ready' }));
+});
+
 // Twilio voice webhook endpoint
 app.post('/voice/incoming', (req, res) => {
   // Determine protocol based on environment
@@ -350,6 +383,8 @@ app.get('/voice/test', async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`Backend server with WebSocket support running on port ${PORT}`);
-  console.log(`WebSocket endpoint: ws://localhost:${PORT}/voice-websocket`);
+  console.log(`Twilio WebSocket: ws://localhost:${PORT}/voice-websocket`);
+  console.log(`WebRTC Voice: ws://localhost:${PORT}/webrtc-voice`);
   console.log('Voice webhook endpoint: /voice/incoming');
+  console.log('WebRTC voice ready - no phone numbers needed!');
 });
