@@ -17,16 +17,32 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const server = createServer(app);
 
+// WebSocket origin validation function
+const verifyWebSocketClient = (info) => {
+  const origin = info.origin;
+  const allowedOrigins = process.env.ALLOWED_ORIGINS 
+    ? process.env.ALLOWED_ORIGINS.split(',')
+    : ['http://localhost:5173', 'http://localhost:5174'];
+  
+  // Allow connections with no origin (server-to-server)
+  if (!origin) return true;
+  
+  // Check if origin is in allowed list
+  return allowedOrigins.includes(origin);
+};
+
 // Initialize WebSocket server for Twilio Media Streams
 const wss = new WebSocketServer({ 
   server,
-  path: '/voice-websocket'
+  path: '/voice-websocket',
+  verifyClient: verifyWebSocketClient
 });
 
 // Initialize WebSocket server for WebRTC signaling
 const webrtcWss = new WebSocketServer({ 
   server,
-  path: '/webrtc-voice'
+  path: '/webrtc-voice',
+  verifyClient: verifyWebSocketClient
 });
 
 // Initialize voice services
