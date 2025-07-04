@@ -164,22 +164,6 @@ const DashboardPage: React.FC = () => {
         </Box>
 
         <TabPanel value={tabValue} index={0}>
-          <DentalDashboard />
-        </TabPanel>
-
-        <TabPanel value={tabValue} index={1}>
-          <DailySchedule />
-        </TabPanel>
-
-        <TabPanel value={tabValue} index={2}>
-          <WeeklyOverview />
-        </TabPanel>
-
-        <TabPanel value={tabValue} index={3}>
-          <StaffScheduler />
-        </TabPanel>
-
-        <TabPanel value={tabValue} index={4}>
           <Box sx={{ display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap', py: 4 }}>
             {/* Services Gauge */}
             <ProfessionalGaugeCluster
@@ -266,6 +250,22 @@ const DashboardPage: React.FC = () => {
               bottomDisplay="10% Up"
             />
           </Box>
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={1}>
+          <DailySchedule />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={2}>
+          <WeeklyOverview />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={3}>
+          <StaffScheduler />
+        </TabPanel>
+
+        <TabPanel value={tabValue} index={4}>
+          {analytics && <DentalDashboard />}
         </TabPanel>
 
         <TabPanel value={tabValue} index={5}>
