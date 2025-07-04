@@ -17,8 +17,9 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.0",
+    "@google-cloud/speech": "^7.1.0",
     "@supabase/supabase-js": "^2.50.2",
-    "axios": "^1.6.8",
+    "axios": "^1.10.0",
     "cors": "^2.8.5",
     "dotenv": "^17.0.1",
     "express": "^4.21.2",
@@ -26,6 +27,7 @@
     "form-data": "^4.0.1",
     "helmet": "^8.1.0",
     "morgan": "^1.10.0",
+    "multer": "^2.0.1",
     "node-fetch": "^3.3.2",
     "simple-peer": "^9.11.1",
     "twilio": "^5.7.2",
