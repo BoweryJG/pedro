@@ -115,9 +115,8 @@ BOOKING PROCESS:
         });
       }
       
-      // Generate response using backend API
-      const API_URL = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
-      const response = await fetch(`${API_URL}/chat`, {
+      // Generate response using Netlify function
+      const response = await fetch('/.netlify/functions/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +128,8 @@ BOOKING PROCESS:
       });
       
       if (!response.ok) {
-        throw new Error(`Backend API request failed: ${response.status}`);
+        const errorData = await response.text();
+        throw new Error(`Netlify function failed: ${response.status} - ${errorData}`);
       }
       
       const data = await response.json();

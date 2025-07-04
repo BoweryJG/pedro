@@ -8,6 +8,7 @@ interface WatchHandsProps {
   isChronoRunning: boolean;
   metrics: WatchMetrics;
   dataMode: DataMode;
+  size: 'small' | 'medium' | 'large';
 }
 
 const WatchHands: React.FC<WatchHandsProps> = ({ 
@@ -15,14 +16,21 @@ const WatchHands: React.FC<WatchHandsProps> = ({
   chronoElapsed, 
   isChronoRunning,
   metrics,
-  dataMode 
+  dataMode,
+  size 
 }) => {
   const hours = currentTime.getHours() % 12;
   const minutes = currentTime.getMinutes();
   const seconds = currentTime.getSeconds();
   const milliseconds = currentTime.getMilliseconds();
 
-  const diameter = 400; // Match the viewBox size
+  const sizeMap = {
+    small: 300,
+    medium: 400,
+    large: 500
+  };
+  
+  const diameter = sizeMap[size];
   const radius = diameter / 2;
   const center = radius;
 
@@ -79,9 +87,9 @@ const WatchHands: React.FC<WatchHandsProps> = ({
 
   return (
     <svg
-      width="400"
-      height="400"
-      viewBox="0 0 400 400"
+      width={diameter}
+      height={diameter}
+      viewBox={`0 0 ${diameter} ${diameter}`}
       className="watch-hands-svg"
       style={{ position: 'absolute', top: 0, left: 0, pointerEvents: 'none' }}
     >

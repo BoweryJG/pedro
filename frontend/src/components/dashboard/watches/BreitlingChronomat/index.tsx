@@ -72,6 +72,7 @@ const BreitlingChronomat: React.FC<BreitlingChronomatProps> = ({
           isChronoRunning={isChronoRunning}
           metrics={metrics}
           dataMode={dataMode}
+          size={size}
         />
 
         <Chronometer
