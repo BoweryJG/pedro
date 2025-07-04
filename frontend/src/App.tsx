@@ -82,7 +82,8 @@ function App() {
       </Routes>
       {/* Julie Professional Medical Launcher */}
       <JulieProfessionalLauncher />
-      {/* Luxury noise texture overlay */}
+      {/* Luxury texture overlays */}
+      <div className="swiss-grid-overlay" />
       <div className="noise-overlay" />
     </AuthProvider>
   );
