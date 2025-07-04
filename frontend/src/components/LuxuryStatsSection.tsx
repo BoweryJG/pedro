@@ -123,7 +123,7 @@ const LuxuryStatsSection: React.FC = () => {
                 <Box
                   sx={{
                     textAlign: 'center',
-                    p: 4,
+                    p: { xs: 2, sm: 3, md: 4 },
                     borderRadius: 4,
                     background: 'rgba(255, 255, 255, 0.05)',
                     backdropFilter: 'blur(20px)',
@@ -199,7 +199,9 @@ const LuxuryStatsSection: React.FC = () => {
                     sx={{
                       fontFamily: 'var(--font-secondary)',
                       color: 'rgba(255, 255, 255, 0.6)',
-                      fontSize: '0.875rem',
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      textAlign: 'center',
+                      px: { xs: 1, sm: 0 },
                     }}
                   >
                     {stat.description}

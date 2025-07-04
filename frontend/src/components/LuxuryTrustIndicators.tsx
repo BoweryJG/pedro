@@ -131,7 +131,7 @@ const LuxuryTrustIndicators: React.FC = () => {
                 <Paper
                   elevation={0}
                   sx={{
-                    p: { xs: 3, md: 4 },
+                    p: { xs: 2, sm: 3, md: 4 },
                     height: '100%',
                     textAlign: 'center',
                     background: 'rgba(250, 250, 250, 0.8)',
@@ -203,8 +203,10 @@ const LuxuryTrustIndicators: React.FC = () => {
                     sx={{
                       fontFamily: 'var(--font-secondary)',
                       color: 'text.secondary',
-                      fontSize: '0.875rem',
+                      fontSize: { xs: '0.75rem', sm: '0.875rem' },
                       lineHeight: 1.6,
+                      textAlign: 'center',
+                      px: { xs: 1, sm: 0 },
                     }}
                   >
                     {indicator.description}
