@@ -27,11 +27,17 @@ const AboutPage = () => {
   const doctors = [
     {
       name: 'Dr. Greg Pedro',
-      title: 'DDS, Prosthodontist',
+      title: 'DMD, Prosthodontist',
       image: '/images/gregpedro.jpg',
-      education: ['Columbia University', 'Prosthodontics Residency', 'Yomi Robotic Surgery Certification'],
-      specialties: ['Prosthodontics', 'TMJ Treatment', 'Yomi Robotic Surgery', 'EMFACE', 'General Dentistry', 'Cosmetic Dentistry', 'Dental Implants'],
-      bio: 'Staten Island\'s only Yomi-certified surgeon, Dr. Pedro brings cutting-edge technology and expertise to every patient, providing comprehensive dental care with a gentle touch.',
+      education: ['Fordham University - B.S. General Science', 'Temple University School of Dentistry - DMD (1992)', 'Board-Certified Prosthodontist (1994)', 'Robotic Dental Implant Surgery Certification'],
+      specialties: ['Prosthodontics', 'TMJ/TMD Treatment', 'Robotic Dental Implants (YOMI)', 'Complex Full-Mouth Reconstructions', 'Cosmetic Smile Makeovers', 'Advanced Denture Solutions'],
+      bio: 'Staten Island Sports Hall of Famer and championship athlete turned pioneering prosthodontist, Dr. Pedro brings 30+ years of excellence to every patient. As the owner of New York Robotic Institute for Dental Implants and founder of About Face Dental & Aesthetic Boutique, he combines cutting-edge technology with hometown values.',
+      extendedBio: {
+        championship: 'Dr. Pedro\'s journey began as a basketball star at St. Peter\'s Boys High School, where he led the 1982-83 Eagles to Staten Island\'s first and only CHSAA AA Intersectional championship. His athletic excellence earned him full scholarships to both Michigan State and Fordham University.',
+        innovation: 'As a pioneer in robotic dental implant surgery, Dr. Pedro utilizes advanced YOMI technology to achieve unprecedented precision. His expertise in TMJ/TMD treatment employs multiple unique modalities, providing relief to patients who have suffered for years with chronic jaw pain.',
+        community: 'After building a thriving practice in Pennsylvania for nearly 20 years, Dr. Pedro returned to Staten Island in 2023 with a mission: to give back to the community that shaped him. His state-of-the-art About Face Dental & Aesthetic Boutique represents Staten Island\'s first dental medi-spa, combining comprehensive dental care with aesthetic services.',
+        philosophy: 'Dr. Pedro is known for treating even the most anxious patients with exceptional patience and understanding. His practice philosophy centers on creating a comfortable, welcoming environment where patients feel confident in their dental health and smile. "The greatest victories are the ones that transform lives, one smile at a time."'
+      }
     },
   ];
 
@@ -126,13 +132,53 @@ const AboutPage = () => {
                         </Box>
                       </Box>
 
-                      <Typography paragraph sx={{ mb: 3 }}>
+                      <Typography paragraph sx={{ mb: 3, fontWeight: 500 }}>
                         {doctor.bio}
                       </Typography>
 
+                      {doctor.extendedBio && (
+                        <Box sx={{ mb: 4 }}>
+                          <Box sx={{ mb: 3 }}>
+                            <Typography variant="h6" gutterBottom color="primary">
+                              From Championship Courts to Dental Excellence
+                            </Typography>
+                            <Typography paragraph color="text.secondary">
+                              {doctor.extendedBio.championship}
+                            </Typography>
+                          </Box>
+
+                          <Box sx={{ mb: 3 }}>
+                            <Typography variant="h6" gutterBottom color="primary">
+                              Pioneering Dental Innovation
+                            </Typography>
+                            <Typography paragraph color="text.secondary">
+                              {doctor.extendedBio.innovation}
+                            </Typography>
+                          </Box>
+
+                          <Box sx={{ mb: 3 }}>
+                            <Typography variant="h6" gutterBottom color="primary">
+                              Giving Back to Staten Island
+                            </Typography>
+                            <Typography paragraph color="text.secondary">
+                              {doctor.extendedBio.community}
+                            </Typography>
+                          </Box>
+
+                          <Box sx={{ mb: 3 }}>
+                            <Typography variant="h6" gutterBottom color="primary">
+                              Patient-First Philosophy
+                            </Typography>
+                            <Typography paragraph color="text.secondary">
+                              {doctor.extendedBio.philosophy}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      )}
+
                       <Box sx={{ mb: 3 }}>
                         <Typography variant="h6" gutterBottom>
-                          Education
+                          Education & Credentials
                         </Typography>
                         <Stack spacing={1}>
                           {doctor.education.map((edu, i) => (
@@ -145,7 +191,7 @@ const AboutPage = () => {
 
                       <Box>
                         <Typography variant="h6" gutterBottom>
-                          Specialties
+                          Areas of Expertise
                         </Typography>
                         <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
                           {doctor.specialties.map((specialty, i) => (
@@ -168,18 +214,18 @@ const AboutPage = () => {
         </Container>
       </Box>
 
-      {/* Partnership Section */}
+      {/* Achievement Section */}
       <Box sx={{ py: 10, bgcolor: 'grey.50' }}>
         <Container maxWidth="lg">
           <Paper sx={{ p: 6, textAlign: 'center' }}>
             <Typography variant="h3" gutterBottom fontWeight={600}>
-              A Powerful Partnership
+              Excellence in Every Smile
             </Typography>
             <Typography variant="h6" color="text.secondary" paragraph sx={{ maxWidth: 800, mx: 'auto' }}>
-              Dr. Edwards and Dr. Pedro have joined forces to create Staten Island's most 
-              advanced dental practice. Combining Dr. Edwards' comprehensive approach to 
-              general dentistry with Dr. Pedro's cutting-edge specialties, including the 
-              exclusive Yomi robotic surgery system, we offer unparalleled care under one roof.
+              From the basketball courts where he earned a place in the Staten Island Sports Hall of Fame 
+              to the forefront of robotic dentistry, Dr. Pedro's commitment to excellence has never wavered. 
+              Today, he brings world-class prosthodontic care and cutting-edge technology to his hometown, 
+              transforming lives one smile at a time.
             </Typography>
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
@@ -189,21 +235,21 @@ const AboutPage = () => {
             >
               <Box>
                 <Typography variant="h3" color="primary.main" fontWeight={700}>
-                  35+
+                  30+
                 </Typography>
-                <Typography variant="h6">Years Combined Experience</Typography>
+                <Typography variant="h6">Years of Excellence</Typography>
               </Box>
               <Box>
                 <Typography variant="h3" color="primary.main" fontWeight={700}>
-                  5,000+
+                  10,000+
                 </Typography>
-                <Typography variant="h6">Happy Patients</Typography>
+                <Typography variant="h6">Lives Transformed</Typography>
               </Box>
               <Box>
                 <Typography variant="h3" color="primary.main" fontWeight={700}>
                   #1
                 </Typography>
-                <Typography variant="h6">Yomi Provider in Staten Island</Typography>
+                <Typography variant="h6">Robotic Implant Provider in Staten Island</Typography>
               </Box>
             </Stack>
           </Paper>

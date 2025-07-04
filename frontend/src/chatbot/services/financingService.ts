@@ -114,7 +114,7 @@ class FinancingService {
       },
       transaction: {
         amount: data.procedureAmount,
-        merchantId: 'EDWARDS_DENTAL_SI'
+        merchantId: 'PEDRO_DENTAL_SI'
       }
     });
 
@@ -148,7 +148,7 @@ class FinancingService {
         dateOfBirth: data.dateOfBirth
       },
       practice: {
-        practiceId: 'EDWARDS_DENTAL_001'
+        practiceId: 'PEDRO_DENTAL_001'
       },
       amount: data.procedureAmount
     });

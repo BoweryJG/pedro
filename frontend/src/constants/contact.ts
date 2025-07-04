@@ -4,7 +4,7 @@ export const CONTACT_INFO = {
     raw: '+19292424535',
     href: 'tel:+19292424535',
     legacy: '(718) 494-9700', // Previous number if needed
-    note: 'For best service, chat with Julie first - she can connect you with our team instantly!',
+    note: 'For best service, chat with Julie EPT⁴ first - Enhanced Physician Technology available 24/7!',
   },
   emails: {
     primary: 'drpedro@gregpedromd.com',
@@ -29,8 +29,8 @@ export const CONTACT_INFO = {
   },
   chat: {
     priority: 1,
-    defaultMessage: 'Talk or chat with Julie - our AI assistant who can instantly connect you with our team when needed!',
-    availability: '24/7 AI Assistant with Voice & Chat',
+    defaultMessage: 'Talk or chat with Julie EPT⁴ - Enhanced Physician Technology trained on Dr. Pedro\'s expertise!',
+    availability: '24/7 Enhanced Physician Technology with Voice & Chat',
     capabilities: [
       'Answer questions about services and pricing',
       'Schedule appointments',

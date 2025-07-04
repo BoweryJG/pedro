@@ -3,6 +3,7 @@ import LuxuryServicesShowcase from '../components/LuxuryServicesShowcase';
 import LuxuryStatsSection from '../components/LuxuryStatsSection';
 import LuxuryTrustIndicators from '../components/LuxuryTrustIndicators';
 import LuxuryGoogleReviews from '../components/LuxuryGoogleReviews';
+import MeetDrPedroSection from '../components/MeetDrPedroSection';
 import { Box } from '@mui/material';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -24,6 +25,11 @@ const HomePage = () => {
         }}
       >
         <CenterCarouselHero />
+      </Box>
+      
+      {/* Meet Dr. Pedro Section */}
+      <Box className="luxury-section">
+        <MeetDrPedroSection />
       </Box>
       
       {/* Services Section with Alternating Background */}

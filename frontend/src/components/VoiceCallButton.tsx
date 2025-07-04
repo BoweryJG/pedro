@@ -334,7 +334,7 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
               <Box>
                 <Typography variant="h6">Julie</Typography>
                 <Typography variant="caption">
-                  Dr. Pedro's AI Assistant
+                  Enhanced Physician Technology
                 </Typography>
               </Box>
             </Box>

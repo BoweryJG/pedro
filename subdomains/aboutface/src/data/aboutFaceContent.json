@@ -1,8 +1,8 @@
 {
   "hero": {
-    "title": "About Face",
-    "subtitle": "Premium Facial Aesthetics",
-    "description": "Discover the art of facial rejuvenation with Dr. Pedro's expertise in advanced facial aesthetics, dermal fillers, and personalized skincare treatments.",
+    "title": "Dr. Pedro's Aesthetic Studio",
+    "subtitle": "Premium Facial Aesthetics by Dr. Greg Pedro, DMD",
+    "description": "Discover the art of facial rejuvenation with Dr. Pedro's 30+ years of expertise in advanced facial aesthetics, dermal fillers, and personalized skincare treatments.",
     "cta": "Book Your Facial Consultation",
     "images": [
       "/api/placeholder/400/600",
@@ -11,14 +11,15 @@
     ]
   },
   "doctor": {
-    "name": "Dr. Pedro",
-    "title": "Board-Certified Facial Aesthetic Specialist",
+    "name": "Dr. Greg Pedro, DMD",
+    "title": "Board-Certified Prosthodontist & Aesthetic Specialist",
     "credentials": [
-      "DDS, Aesthetic Medicine Certification",
-      "Advanced Dermal Filler Training",
-      "Facial Anatomy & Injectable Specialist"
+      "Temple University School of Dentistry - DMD",
+      "Board-Certified Prosthodontist",
+      "Advanced Aesthetic Medicine Certification",
+      "Staten Island Sports Hall of Fame Inductee"
     ],
-    "experience": "15+ years",
+    "experience": "30+ years",
     "image": "/api/placeholder/300/400"
   },
   "treatments": [

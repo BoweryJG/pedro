@@ -37,11 +37,12 @@ const Footer = () => {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
           <Box sx={{ width: { xs: '100%', md: '33.333%' }, px: 2 }}>
             <Typography variant="h6" color="primary" gutterBottom>
-              Staten Island Advanced Dentistry
+              Dr. Greg Pedro, DMD
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph>
-              Leading the future of dental care with cutting-edge Yomi robotic surgery,
-              comprehensive TMJ treatment, and revolutionary EMFACE procedures.
+              Staten Island Sports Hall of Famer and board-certified prosthodontist with 30+ years of excellence. 
+              Pioneering robotic dental implants, TMJ treatment, and aesthetic dentistry. 
+              Enhanced by Julie EPT⁴ - available 24/7 for your convenience.
             </Typography>
             <Stack direction="row" spacing={1}>
               <IconButton color="primary" size="small">
@@ -79,7 +80,7 @@ const Footer = () => {
               >
                 <ChatIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
                 <Typography variant="body2">
-                  Chat with Julie 24/7
+                  Chat with Julie EPT⁴ 24/7
                 </Typography>
               </Button>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -123,7 +124,7 @@ const Footer = () => {
 
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap' }}>
           <Typography variant="body2" color="text.secondary">
-            © {new Date().getFullYear()} Staten Island Advanced Dentistry. All rights reserved.
+            © {new Date().getFullYear()} Dr. Greg Pedro, DMD - Advanced Dental Care & Aesthetics. All rights reserved.
           </Typography>
           <Stack direction="row" spacing={2}>
             <Link href="/privacy" color="inherit" underline="hover" variant="body2">

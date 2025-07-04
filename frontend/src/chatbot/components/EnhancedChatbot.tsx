@@ -106,7 +106,7 @@ export const EnhancedChatbot: React.FC = () => {
                     />
                   </motion.div>
                   
-                  <Tooltip title="Chat with our AI Assistant" placement="left">
+                  <Tooltip title="Chat with Julie EPT⁴ - Enhanced Physician Technology" placement="left">
                     <Badge
                       color="error"
                       variant="dot"

@@ -20,25 +20,25 @@ const trustIndicators = [
   {
     icon: <VerifiedIcon sx={{ fontSize: 48 }} />,
     title: 'Board Certified',
-    description: 'American Board of Oral & Maxillofacial Surgery',
+    description: 'Prosthodontist - Complex Dental Reconstruction',
     color: '#4285F4',
   },
   {
     icon: <WorkspacePremiumIcon sx={{ fontSize: 48 }} />,
-    title: 'Top 1% Provider',
-    description: 'Invisalign Diamond Plus Provider Status',
+    title: 'Robotic Surgery Pioneer',
+    description: 'YOMI Robotic Implant Technology Specialist',
     color: '#667eea',
   },
   {
     icon: <SchoolIcon sx={{ fontSize: 48 }} />,
-    title: 'Harvard Trained',
-    description: 'Advanced training from premier institutions',
+    title: 'Temple University',
+    description: 'DMD from Temple University School of Dentistry',
     color: '#f093fb',
   },
   {
     icon: <EmojiEventsIcon sx={{ fontSize: 48 }} />,
-    title: 'Award Winning',
-    description: 'Staten Island\'s Best Dentist 2020-2024',
+    title: 'Sports Hall of Fame',
+    description: 'Staten Island Sports Hall of Fame Inductee',
     color: '#fa709a',
   },
   {
@@ -49,8 +49,8 @@ const trustIndicators = [
   },
   {
     icon: <SecurityIcon sx={{ fontSize: 48 }} />,
-    title: 'Fully Accredited',
-    description: 'AAAHC Accredited Surgical Facility',
+    title: '30+ Years Excellence',
+    description: 'Three Decades of Advanced Dental Care',
     color: '#43e97b',
   },
 ];

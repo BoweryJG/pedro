@@ -107,9 +107,9 @@ export const GatewaySelection: React.FC = () => {
     {
       id: 'chat',
       icon: <ChatIcon sx={{ fontSize: 48 }} />,
-      title: "Chat with Julie",
-      subtitle: "Warm Companion AI",
-      description: "Let our AI assistant guide you",
+      title: "Chat with Julie EPT⁴",
+      subtitle: "Enhanced Physician Technology",
+      description: "Let Dr. Pedro's enhanced expertise guide you",
       gradient: 'linear-gradient(180deg, rgba(224, 242, 254, 0.8), rgba(178, 235, 242, 0.6))',
       backgroundElements: (
         <>

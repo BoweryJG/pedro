@@ -94,7 +94,7 @@ const Header = () => {
             }}
             onClick={() => navigate('/')}
           >
-            Dr. Pedro Advanced Dental Care
+            Dr. Greg Pedro, DMD
           </Typography>
 
           {isMobile ? (

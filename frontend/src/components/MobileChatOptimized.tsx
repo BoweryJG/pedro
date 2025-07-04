@@ -134,7 +134,7 @@ export const MobileChatOptimized: React.FC<MobileChatOptimizedProps> = ({ onChat
                   Chat with Julie - Recommended
                 </Typography>
                 <Typography variant="caption">
-                  AI assistant who can connect you with our team instantly
+                  Julie EPT⁴ - Enhanced Physician Technology available 24/7
                 </Typography>
               </Box>
             </Box>
