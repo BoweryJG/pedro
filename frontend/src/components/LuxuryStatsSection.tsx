@@ -158,14 +158,12 @@ const LuxuryStatsSection: React.FC = () => {
                   {/* Number */}
                   <Typography
                     variant="h2"
+                    className="panerai-statistic"
                     sx={{
                       fontFamily: 'var(--font-accent)',
                       fontSize: { xs: '3rem', md: '4rem' },
                       fontWeight: 400,
                       mb: 1,
-                      background: stat.gradient,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
                       lineHeight: 1,
                     }}
                   >

@@ -133,18 +133,16 @@ const LuxuryServicesShowcase: React.FC = () => {
               >
                 <Card
                   onClick={() => navigate(service.route)}
+                  className="panerai-card"
                   sx={{
                     height: '100%',
                     cursor: 'pointer',
                     position: 'relative',
                     overflow: 'hidden',
-                    background: 'white',
-                    border: '1px solid rgba(0, 0, 0, 0.08)',
                     borderRadius: 4,
                     transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                     '&:hover': {
                       transform: 'translateY(-8px)',
-                      boxShadow: '0 30px 60px rgba(0, 0, 0, 0.12)',
                       '& .service-overlay': {
                         opacity: 1,
                       },

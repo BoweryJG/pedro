@@ -204,14 +204,13 @@ const MeetDrPedroSection = () => {
                 size="large"
                 endIcon={<ArrowForwardIcon />}
                 onClick={() => navigate('/about')}
+                className="panerai-cta"
                 sx={{
                   py: 1.5,
                   px: 4,
                   fontSize: '1.1rem',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   '&:hover': {
                     transform: 'translateY(-2px)',
-                    boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
                   },
                 }}
               >

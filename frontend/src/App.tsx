@@ -22,6 +22,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
 import DirectAccessPage from './pages/auth/DirectAccessPage';
 import { useChatStore } from './chatbot/store/chatStore';
+import './theme/panerai.css';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';

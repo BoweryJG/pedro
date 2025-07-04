@@ -110,9 +110,10 @@ export const UnifiedContactButton: React.FC = () => {
                       size="small"
                       color="secondary"
                       onClick={handleVoiceClick}
+                      className="panerai-cta"
                       sx={{
-                        background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                        boxShadow: '0 2px 10px rgba(245, 87, 108, 0.3)',
+                        background: 'var(--panerai-gradient-dark)',
+                        boxShadow: '0 2px 10px var(--panerai-green-glow)',
                       }}
                     >
                       <PhoneIcon sx={{ fontSize: 20 }} />
@@ -135,10 +136,11 @@ export const UnifiedContactButton: React.FC = () => {
                     <Fab
                       size="small"
                       onClick={handleChatClick}
+                      className="panerai-cta"
                       sx={{
-                        bgcolor: '#667eea',
-                        '&:hover': { bgcolor: '#764ba2' },
-                        boxShadow: '0 2px 10px rgba(102, 126, 234, 0.3)',
+                        background: 'var(--panerai-gradient-medium)',
+                        '&:hover': { borderColor: 'var(--panerai-green)' },
+                        boxShadow: '0 2px 10px var(--panerai-green-glow)',
                       }}
                     >
                       <ChatIcon sx={{ fontSize: 20 }} />
@@ -154,14 +156,16 @@ export const UnifiedContactButton: React.FC = () => {
                 color="primary"
                 size={isMobile ? "medium" : "large"}
                 onClick={handleMainClick}
+                className="panerai-cta"
                 sx={{
                   background: showOptions 
-                    ? 'linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%)'
-                    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  boxShadow: '0 4px 20px rgba(118, 75, 162, 0.4)',
+                    ? 'var(--panerai-gradient-medium)'
+                    : 'var(--panerai-gradient-dark)',
+                  boxShadow: showOptions ? 'var(--panerai-shadow-outset)' : 'var(--panerai-glow)',
                   transition: 'all 0.3s ease',
                   '&:hover': {
                     transform: 'scale(1.05)',
+                    borderColor: 'var(--panerai-green)',
                   },
                 }}
               >

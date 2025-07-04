@@ -1,0 +1,82 @@
+/* Lightweight Panerai-inspired Design Variables */
+:root {
+  /* Carbon Fiber Gradients */
+  --panerai-gradient-dark: radial-gradient(circle at 30% 30%, #1e2128, #0f1117);
+  --panerai-gradient-medium: radial-gradient(circle at 30% 30%, #2a2d3a, #1a1d2a);
+  
+  /* Accent Colors */
+  --panerai-green: #00ff00;
+  --panerai-green-glow: rgba(0, 255, 0, 0.3);
+  --panerai-green-soft: rgba(0, 255, 0, 0.1);
+  
+  /* Borders & Shadows */
+  --panerai-border: 1px solid rgba(255, 255, 255, 0.1);
+  --panerai-border-accent: 1px solid var(--panerai-green);
+  --panerai-shadow-inset: inset 0 4px 8px rgba(0, 0, 0, 0.6);
+  --panerai-shadow-outset: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --panerai-glow: 0 0 20px var(--panerai-green-glow);
+  
+  /* Typography */
+  --panerai-text-primary: #ffffff;
+  --panerai-text-secondary: #aaaaaa;
+  --panerai-text-tertiary: #888888;
+}
+
+/* Utility Classes */
+.panerai-carbon {
+  background: var(--panerai-gradient-dark);
+  border: var(--panerai-border);
+  box-shadow: var(--panerai-shadow-inset);
+}
+
+.panerai-card {
+  background: var(--panerai-gradient-medium);
+  border: var(--panerai-border);
+  box-shadow: var(--panerai-shadow-outset);
+  transition: all 0.3s ease;
+}
+
+.panerai-card:hover {
+  border: var(--panerai-border-accent);
+  box-shadow: var(--panerai-shadow-outset), var(--panerai-glow);
+}
+
+.panerai-cta {
+  background: var(--panerai-gradient-dark);
+  border: var(--panerai-border);
+  color: var(--panerai-text-primary);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.panerai-cta:hover {
+  border-color: var(--panerai-green);
+  box-shadow: var(--panerai-glow);
+  color: var(--panerai-green);
+}
+
+.panerai-cta:hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--panerai-green-soft);
+  pointer-events: none;
+}
+
+.panerai-statistic {
+  color: var(--panerai-green);
+  text-shadow: 0 0 10px var(--panerai-green-glow);
+  font-family: 'Courier New', monospace;
+}
+
+.panerai-accent {
+  color: var(--panerai-green);
+}
+
+.panerai-border {
+  border: var(--panerai-border);
+}

@@ -55,6 +55,7 @@ export const BookAppointmentButton: React.FC<BookAppointmentButtonProps> = ({
       size={size}
       startIcon={startIcon}
       onClick={handleClick}
+      className="panerai-cta"
       {...buttonProps}
     >
       {children}
