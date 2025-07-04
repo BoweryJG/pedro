@@ -1,19 +1,9 @@
 import { supabase } from '../lib/supabase';
 import type { Tables } from '../types/supabase';
 import dayjs, { Dayjs } from 'dayjs';
-import { createClient } from '@supabase/supabase-js';
 
-// For public appointment booking, we'll use a client with anon key
-// This ensures appointment booking works without authentication
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-const bookingSupabase = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    persistSession: false,
-    autoRefreshToken: false,
-  }
-});
+// Use the existing supabase client from lib/supabase
+const bookingSupabase = supabase;
 
 export type TimeSlot = {
   start_time: string;

@@ -10,6 +10,7 @@ import theme from './theme'
 import App from './App.tsx'
 import './styles/animations.css'
 import './styles/luxury-design-system.css'
+import './styles/panerai-luxury.css'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
