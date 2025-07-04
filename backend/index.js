@@ -17,18 +17,49 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const server = createServer(app);
 
+// Production domains configuration
+const productionDomains = [
+  // Main domain
+  'https://gregpedromd.com',
+  'https://www.gregpedromd.com',
+  
+  // Subdomains
+  'https://tmj.gregpedromd.com',
+  'https://implants.gregpedromd.com',
+  'https://robotic.gregpedromd.com',
+  'https://medspa.gregpedromd.com',
+  'https://aboutface.gregpedromd.com',
+  
+  // Development
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:3000',
+  'http://localhost:3001'
+];
+
 // WebSocket origin validation function
 const verifyWebSocketClient = (info) => {
   const origin = info.origin;
-  const allowedOrigins = process.env.ALLOWED_ORIGINS 
-    ? process.env.ALLOWED_ORIGINS.split(',')
-    : ['http://localhost:5173', 'http://localhost:5174'];
   
   // Allow connections with no origin (server-to-server)
   if (!origin) return true;
   
+  const allowedOrigins = process.env.ALLOWED_ORIGINS 
+    ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+    : productionDomains;
+  
   // Check if origin is in allowed list
-  return allowedOrigins.includes(origin);
+  if (allowedOrigins.includes(origin)) {
+    return true;
+  }
+  
+  // Check for Netlify/Vercel preview deployments
+  if (origin.match(/https:\/\/.*\.(netlify|vercel)\.app$/)) {
+    return true;
+  }
+  
+  console.warn(`WebSocket: Rejected origin ${origin}`);
+  return false;
 };
 
 // Initialize WebSocket server for Twilio Media Streams
@@ -52,20 +83,31 @@ const webrtcVoiceService = new WebRTCVoiceService();
 // CORS configuration for production
 const corsOptions = {
   origin: function (origin, callback) {
-    const allowedOrigins = process.env.ALLOWED_ORIGINS 
-      ? process.env.ALLOWED_ORIGINS.split(',')
-      : ['http://localhost:5173', 'http://localhost:5174'];
-    
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    const allowedOrigins = process.env.ALLOWED_ORIGINS 
+      ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+      : productionDomains;
+    
+    // Check exact match
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     }
+    
+    // Check for Netlify/Vercel preview deployments
+    if (origin.match(/https:\/\/.*\.(netlify|vercel)\.app$/)) {
+      return callback(null, true);
+    }
+    
+    console.warn(`CORS: Rejected origin ${origin}`);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Content-Length', 'X-Request-Id'],
+  maxAge: 86400, // 24 hours
   optionsSuccessStatus: 200
 };
 
