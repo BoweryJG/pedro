@@ -19,6 +19,8 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { PhotoLibrary, Star, Close, Compare } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Treatment {
   id: string
@@ -55,9 +57,24 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
   treatments,
   testimonials
 }) => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [selectedTab, setSelectedTab] = useState(0)
   const [selectedImage, setSelectedImage] = useState<BeforeAfterImage | null>(null)
   const [dialogOpen, setDialogOpen] = useState(false)
+
+  const handleScheduleConsultation = () => {
+    trackChatOpen('medspa_aesthetic_gallery')
+    trackEvent({
+      action: 'consultation_request',
+      category: 'medspa',
+      label: 'aesthetic_gallery_cta'
+    })
+
+    toggleChat()
+    setTimeout(() => {
+      sendMessage("I've been looking at your before and after gallery and I'm really impressed with the results! I'd like to schedule a consultation to discuss which aesthetic treatments would be best for my goals.")
+    }, 500)
+  }
 
   // Mock before/after data (in real app, this would come from props)
   const beforeAfterImages: BeforeAfterImage[] = [
@@ -438,9 +455,9 @@ const AestheticGallery: React.FC<AestheticGalleryProps> = ({
               variant="contained"
               size="large"
               sx={{ px: 4, py: 1.5 }}
-              onClick={() => window.open('https://pedrobackend.onrender.com/appointments', '_blank')}
+              onClick={handleScheduleConsultation}
             >
-              Schedule Your Consultation
+              Chat with Julie about Your Transformation
             </Button>
           </Card>
         </motion.div>

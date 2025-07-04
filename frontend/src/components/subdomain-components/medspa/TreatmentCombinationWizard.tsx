@@ -17,6 +17,8 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { AutoAwesome, Schedule, CheckCircle } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Treatment {
   id: string
@@ -46,9 +48,39 @@ const TreatmentCombinationWizard: React.FC<TreatmentCombinationWizardProps> = ({
   treatments,
   packages
 }) => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [selectedTreatments, setSelectedTreatments] = useState<string[]>([])
   const [currentStep, setCurrentStep] = useState(0)
   const [recommendedPackage, setRecommendedPackage] = useState<Package | null>(null)
+
+  const handleBookConsultation = () => {
+    const selectedTreatmentNames = selectedTreatments
+      .map(treatmentId => treatments.find(t => t.id === treatmentId)?.name)
+      .filter(Boolean)
+      .join(', ')
+
+    const totalCost = calculateIndividualTotal()
+    const packageSavings = recommendedPackage?.savings || 0
+
+    trackChatOpen('medspa_treatment_wizard')
+    trackEvent({
+      action: 'consultation_request',
+      category: 'medspa',
+      label: 'treatment_wizard',
+      value: totalCost
+    })
+
+    toggleChat()
+    setTimeout(() => {
+      if (recommendedPackage) {
+        sendMessage(`I'm interested in the ${recommendedPackage.name} package that includes ${selectedTreatmentNames}. I understand this saves me $${packageSavings} compared to individual treatments. Can you help me schedule a consultation to discuss this package?`)
+      } else if (selectedTreatmentNames) {
+        sendMessage(`I'm interested in these aesthetic treatments: ${selectedTreatmentNames}. Can you help me understand the best way to combine these treatments and schedule a consultation?`)
+      } else {
+        sendMessage("I'm interested in combination aesthetic treatments and would like to schedule a consultation to discuss the best package for my goals.")
+      }
+    }, 500)
+  }
 
   const steps = ['Select Treatments', 'Review Combination', 'Book Consultation']
 
@@ -342,10 +374,10 @@ const TreatmentCombinationWizard: React.FC<TreatmentCombinationWizardProps> = ({
                     variant="contained"
                     fullWidth
                     size="large"
-                    onClick={() => setCurrentStep(2)}
+                    onClick={handleBookConsultation}
                     startIcon={<Schedule />}
                   >
-                    Book Consultation
+                    Chat with Julie about This Plan
                   </Button>
                 </Card>
               </Grid>
@@ -378,10 +410,10 @@ const TreatmentCombinationWizard: React.FC<TreatmentCombinationWizardProps> = ({
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('https://pedrobackend.onrender.com/appointments', '_blank')}
+                  onClick={handleBookConsultation}
                   startIcon={<Schedule />}
                 >
-                  Book Now
+                  Chat with Julie to Book
                 </Button>
               </Box>
             </Card>

@@ -8,19 +8,30 @@ import {
   CardContent,
   Chip,
   Stack,
-  Grid
+  Grid2 as Grid
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Phone, CalendarToday, LocationOn, Star, Psychology, AttachMoney } from '@mui/icons-material'
 import implantContent from '../../../data/subdomain-content/implants/implantContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 const ImplantHero: React.FC = () => {
   const { hero, doctor } = implantContent
+  const { toggleChat, sendMessage } = useChatStore()
 
   const handlePrimaryAction = () => {
-    if (hero.primaryButton.action === 'schedule') {
-      window.open('tel:+19292424535', '_blank')
-    }
+    trackChatOpen('implant_hero_primary')
+    trackEvent({
+      action: 'chat_open_implant_interest',
+      category: 'engagement',
+      label: 'hero_primary_button'
+    })
+    toggleChat()
+    // Send initial message with implant context
+    setTimeout(() => {
+      sendMessage("I'm interested in dental implants and would like to schedule a consultation")
+    }, 500)
   }
 
   const handleSecondaryAction = () => {
@@ -146,7 +157,7 @@ const ImplantHero: React.FC = () => {
                   variant="contained"
                   size="large"
                   onClick={handlePrimaryAction}
-                  startIcon={<Phone />}
+                  startIcon={<Psychology />}
                   sx={{
                     bgcolor: 'white',
                     color: 'primary.main',
@@ -160,7 +171,7 @@ const ImplantHero: React.FC = () => {
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  {hero.primaryButton.text}
+                  Chat with Julie about Implants
                 </Button>
 
                 <Button

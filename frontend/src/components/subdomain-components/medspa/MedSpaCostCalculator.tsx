@@ -19,6 +19,8 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Calculate, CreditCard, Timeline } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Treatment {
   id: string
@@ -51,9 +53,40 @@ const MedSpaCostCalculator: React.FC<MedSpaCostCalculatorProps> = ({
   treatments,
   financing
 }) => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [selectedTreatments, setSelectedTreatments] = useState<{[key: string]: number}>({})
   const [paymentPlan, setPaymentPlan] = useState<number>(6)
   const [selectedFinancing, setSelectedFinancing] = useState<string>('CareCredit')
+
+  const handleScheduleConsultation = () => {
+    const selectedTreatmentNames = Object.entries(selectedTreatments)
+      .filter(([_, quantity]) => quantity > 0)
+      .map(([treatmentId, quantity]) => {
+        const treatment = treatments.find(t => t.id === treatmentId)
+        return `${treatment?.name} (${quantity}x)`
+      })
+      .join(', ')
+
+    const totalCost = getTotalCost()
+    const monthlyPayment = getMonthlyPayment()
+
+    trackChatOpen('medspa_cost_calculator')
+    trackEvent({
+      action: 'consultation_request',
+      category: 'medspa',
+      label: 'cost_calculator',
+      value: totalCost
+    })
+
+    toggleChat()
+    setTimeout(() => {
+      if (selectedTreatmentNames) {
+        sendMessage(`I'm interested in scheduling a consultation for aesthetic treatments. I've been looking at: ${selectedTreatmentNames}. The estimated cost is $${totalCost.toLocaleString()} with potential monthly payments of $${monthlyPayment.toFixed(0)}. Can you help me schedule a consultation to discuss these treatments?`)
+      } else {
+        sendMessage("I'm interested in aesthetic treatments and would like to schedule a consultation to discuss pricing and financing options.")
+      }
+    }, 500)
+  }
 
   const handleTreatmentQuantityChange = (treatmentId: string, quantity: number) => {
     if (quantity === 0) {
@@ -306,9 +339,9 @@ const MedSpaCostCalculator: React.FC<MedSpaCostCalculatorProps> = ({
                     fullWidth
                     size="large"
                     startIcon={<Timeline />}
-                    onClick={() => window.open('https://pedrobackend.onrender.com/appointments', '_blank')}
+                    onClick={handleScheduleConsultation}
                   >
-                    Schedule Consultation
+                    Chat with Julie about This Plan
                   </Button>
                 </>
               ) : (

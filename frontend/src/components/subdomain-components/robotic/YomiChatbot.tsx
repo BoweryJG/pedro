@@ -28,7 +28,7 @@ import {
   Send,
   SmartToy,
   Science,
-  Phone,
+  Chat,
   Close,
   Memory,
   Speed,
@@ -38,6 +38,8 @@ import {
   CompareArrows
 } from '@mui/icons-material'
 import { yomiApiService, yomiApiUtils } from '../../../services/yomiApi'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Message {
   id: string
@@ -58,6 +60,7 @@ interface RoboticReadinessData {
 }
 
 const YomiChatbot: React.FC = () => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -165,7 +168,7 @@ const YomiChatbot: React.FC = () => {
       )
     } else if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('consultation')) {
       addMessage(
-        "Excellent! Dr. Pedro offers complimentary robotic consultations where you can:\n\n🔬 SEE THE TECHNOLOGY:\n• Live Yomi system demonstration\n• 3D planning visualization\n• Precision placement simulation\n• Q&A with certified robotic surgeon\n\nCall (929) 242-4535 now or would you prefer I help you understand more about the robotic process first?",
+        "Excellent! Dr. Pedro offers complimentary robotic consultations where you can:\n\n🔬 SEE THE TECHNOLOGY:\n• Live Yomi system demonstration\n• 3D planning visualization\n• Precision placement simulation\n• Q&A with certified robotic surgeon\n\nWould you like me to connect you with Julie, our patient care coordinator, to schedule your robotic consultation? She can help you find the perfect time and answer any questions about the appointment.",
         'bot'
       )
       setConversationStage('scheduling')
@@ -232,7 +235,10 @@ const YomiChatbot: React.FC = () => {
       case 'schedule':
         addMessage("I'd like to schedule a robotic consultation", 'user')
         setTimeout(() => {
-          generateBotResponse("schedule consultation")
+          addMessage(
+            "Perfect! I'd love to help you schedule a robotic consultation. Let me connect you with Julie, our patient care coordinator. She'll help you find the perfect time and can answer any questions about what to expect during your visit.\n\nWould you like me to open a chat with Julie now to schedule your Yomi robotic consultation?",
+            'bot'
+          )
           setIsTyping(false)
         }, 1000)
         setIsTyping(true)
@@ -511,11 +517,24 @@ const YomiChatbot: React.FC = () => {
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Button
                 variant="contained"
-                startIcon={<Phone />}
-                onClick={() => window.open('tel:+19292424535', '_blank')}
+                startIcon={<Chat />}
+                onClick={() => {
+                  trackChatOpen('yomi_chatbot_cta')
+                  trackEvent({
+                    action: 'yomi_consultation_request',
+                    category: 'robotic_surgery',
+                    label: 'chatbot_section'
+                  })
+                  
+                  toggleChat()
+                  
+                  setTimeout(() => {
+                    sendMessage("I'd like to schedule a robotic consultation to see the Yomi system in action and learn more about robotic dental implants.")
+                  }, 500)
+                }}
                 sx={{ px: 3 }}
               >
-                Call: (929) 242-4535
+                Chat with Julie to Schedule
               </Button>
               <Button
                 variant="outlined"

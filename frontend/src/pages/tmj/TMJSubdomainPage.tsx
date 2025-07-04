@@ -4,6 +4,7 @@ import TMJHero from '../../components/subdomain-components/tmj/TMJHero'
 import TMJSymptomAssessment from '../../components/subdomain-components/tmj/TMJSymptomAssessment'
 import TMJTreatmentTimeline from '../../components/subdomain-components/tmj/TMJTreatmentTimeline'
 import TMJChatbot from '../../components/subdomain-components/tmj/TMJChatbot'
+import Chatbot from '../../chatbot/components/Chatbot'
 import tmjContent from '../../data/subdomain-content/tmj/tmjContent.json'
 
 function TMJSubdomainPage() {
@@ -45,6 +46,9 @@ function TMJSubdomainPage() {
       <TMJChatbot
         contact={tmjContent.contact}
       />
+
+      {/* Julie Chatbot */}
+      <Chatbot />
     </Box>
   )
 }

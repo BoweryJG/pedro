@@ -22,9 +22,12 @@ import {
   Visibility,
   Close,
   Star,
-  Face
+  Face,
+  Chat
 } from '@mui/icons-material'
 import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFaceContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface TabPanelProps {
   children?: React.ReactNode
@@ -42,6 +45,20 @@ const FacialGallery: React.FC = () => {
   const [tabValue, setTabValue] = useState(0)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const { beforeAfter, testimonials } = aboutFaceContent
+  const { toggleChat, sendMessage } = useChatStore()
+
+  const handleChatWithJulie = async () => {
+    trackChatOpen('aboutface_gallery')
+    trackEvent({
+      action: 'gallery_consultation_interest',
+      category: 'engagement',
+      label: 'transformation_gallery'
+    })
+    toggleChat()
+    setTimeout(() => {
+      sendMessage("I'm interested in achieving similar transformation results with EmFace treatments at AboutFace Aesthetics")
+    }, 500)
+  }
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue)
@@ -280,10 +297,11 @@ const FacialGallery: React.FC = () => {
           <Button
             variant="contained"
             size="large"
-            startIcon={<AutoAwesome />}
+            startIcon={<Chat />}
+            onClick={handleChatWithJulie}
             sx={{ px: 6, py: 2 }}
           >
-            Book Your Consultation
+            Chat with Julie about Results
           </Button>
         </Box>
 

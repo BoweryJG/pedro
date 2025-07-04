@@ -24,8 +24,11 @@ import {
   MonitorHeart,
   LocalHospital,
   Science,
-  Timeline as TimelineIcon
+  Timeline as TimelineIcon,
+  Chat
 } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Treatment {
   name: string
@@ -50,12 +53,31 @@ interface TMJTreatmentTimelineProps {
 }
 
 const TMJTreatmentTimeline: React.FC<TMJTreatmentTimelineProps> = ({ timeline, treatments }) => {
+  const { toggleChat, sendMessage } = useChatStore()
+  
   const phaseIcons = [
     <Assessment color="primary" />,
     <LocalHospital color="primary" />,
     <Healing color="primary" />,
     <MonitorHeart color="primary" />
   ]
+
+  const handleChatWithJulie = async () => {
+    // Track the event
+    trackChatOpen('tmj-treatment-timeline')
+    trackEvent({
+      action: 'julie_chat_open',
+      category: 'tmj',
+      label: 'treatment_timeline_cta'
+    })
+    
+    // Open Julie and send treatment context
+    toggleChat()
+    
+    setTimeout(async () => {
+      await sendMessage("I'm interested in TMJ treatment and want to schedule a comprehensive consultation")
+    }, 500)
+  }
 
   return (
     <Container maxWidth="lg">
@@ -305,11 +327,15 @@ const TMJTreatmentTimeline: React.FC<TMJTreatmentTimelineProps> = ({ timeline, t
                 fontSize: '1rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
               }}
-              onClick={() => window.open('tel:+19292424535', '_blank')}
+              onClick={handleChatWithJulie}
             >
-              Call (929) 242-4535
+              <Chat sx={{ fontSize: '1.2rem' }} />
+              Chat with Julie
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.05 }}

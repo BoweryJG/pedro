@@ -4,7 +4,7 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
+  Grid2 as Grid,
   Card,
   CardContent,
   FormControl,
@@ -33,9 +33,12 @@ import {
   CheckCircle,
   ExpandMore,
   CreditCard,
-  Schedule
+  Schedule,
+  Psychology
 } from '@mui/icons-material'
 import { implantApiService, implantApiUtils } from '../../../services/implantApi'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface CostBreakdown {
   implantCost: number
@@ -54,6 +57,7 @@ interface FinancingOption {
 }
 
 const ImplantCostCalculator: React.FC = () => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [implantType, setImplantType] = useState<'single' | 'multiple' | 'full_mouth'>('single')
   const [quantity, setQuantity] = useState(1)
   const [includeCrown, setIncludeCrown] = useState(true)
@@ -166,7 +170,17 @@ const ImplantCostCalculator: React.FC = () => {
   }
 
   const handleScheduleConsultation = () => {
-    window.open('tel:+19292424535', '_blank')
+    trackChatOpen('implant_cost_calculator')
+    trackEvent({
+      action: 'schedule_from_calculator',
+      category: 'conversion',
+      label: 'implant_consultation',
+      value: costBreakdown?.total
+    })
+    toggleChat()
+    setTimeout(() => {
+      sendMessage(`I'm interested in dental implants. Based on the cost calculator, my estimated treatment cost is ${costBreakdown ? implantApiUtils.formatCurrency(costBreakdown.total) : 'around $3,500'}. I'd like to schedule a consultation.`)
+    }, 500)
   }
 
   useEffect(() => {
@@ -407,7 +421,7 @@ const ImplantCostCalculator: React.FC = () => {
                           variant="contained"
                           size="large"
                           onClick={handleScheduleConsultation}
-                          startIcon={<Schedule />}
+                          startIcon={<Psychology />}
                           sx={{
                             mr: 2,
                             py: 1.5,
@@ -415,7 +429,7 @@ const ImplantCostCalculator: React.FC = () => {
                             fontSize: '1.1rem'
                           }}
                         >
-                          Schedule Consultation
+                          Chat with Julie to Schedule
                         </Button>
                         
                         <Button

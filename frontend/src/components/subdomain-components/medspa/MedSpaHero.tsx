@@ -12,6 +12,8 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Spa, Star, Schedule, CreditCard } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface HeroContent {
   title: string
@@ -36,11 +38,27 @@ interface MedSpaHeroProps {
 }
 
 const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
+  const { toggleChat, sendMessage } = useChatStore()
+  
   const iconMap: { [key: string]: React.ReactElement } = {
     'FDA-Approved Treatments': <Star />,
     'Board-Certified Provider': <Spa />,
     'Personalized Treatment Plans': <Schedule />,
     'Financing Available': <CreditCard />
+  }
+
+  const handleChatOpen = () => {
+    trackChatOpen('medspa_hero')
+    trackEvent({
+      action: 'cta_click',
+      category: 'medspa',
+      label: 'hero_julie_chat'
+    })
+    toggleChat()
+    // Add context message about aesthetic treatments
+    setTimeout(() => {
+      sendMessage("I'm interested in aesthetic treatments at the MedSpa. Can you help me learn about your services and schedule a consultation?")
+    }, 500)
   }
 
   return (
@@ -170,9 +188,9 @@ const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
                     },
                     transition: 'all 0.3s ease-in-out'
                   }}
-                  onClick={() => window.open('https://pedrobackend.onrender.com/appointments', '_blank')}
+                  onClick={handleChatOpen}
                 >
-                  {content.cta}
+                  Chat with Julie about Aesthetic Treatments
                 </Button>
               </motion.div>
             </motion.div>

@@ -10,7 +10,9 @@ import {
   Stack
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Phone, CalendarToday, LocationOn, Star } from '@mui/icons-material'
+import { Chat, CalendarToday, LocationOn, Star } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface TMJHeroProps {
   content: {
@@ -42,9 +44,25 @@ interface TMJHeroProps {
 }
 
 const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
-  const handlePrimaryAction = () => {
+  const { toggleChat, sendMessage } = useChatStore()
+
+  const handlePrimaryAction = async () => {
     if (content.primaryButton.action === 'schedule') {
-      window.open('tel:+19292424535', '_blank')
+      // Track the event
+      trackChatOpen('tmj-hero-primary')
+      trackEvent({
+        action: 'julie_chat_open',
+        category: 'tmj',
+        label: 'hero_primary_button'
+      })
+      
+      // Open Julie and send TMJ context
+      toggleChat()
+      
+      // Wait a moment for chat to open, then send initial context
+      setTimeout(async () => {
+        await sendMessage("I'm experiencing TMJ symptoms and need consultation")
+      }, 500)
     }
   }
 
@@ -179,7 +197,7 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                   variant="contained"
                   size="large"
                   onClick={handlePrimaryAction}
-                  startIcon={<Phone />}
+                  startIcon={<Chat />}
                   sx={{
                     bgcolor: 'white',
                     color: 'primary.main',
@@ -193,7 +211,7 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  {content.primaryButton.text}
+                  Chat with Julie about TMJ
                 </Button>
 
                 <Button

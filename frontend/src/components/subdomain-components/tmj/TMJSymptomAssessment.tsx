@@ -16,7 +16,9 @@ import {
   Paper
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CheckCircle, Warning } from '@mui/icons-material'
+import { CheckCircle, Warning, Chat } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Symptom {
   name: string
@@ -34,6 +36,7 @@ const TMJSymptomAssessment: React.FC<TMJSymptomAssessmentProps> = ({ symptoms })
   const [currentStep, setCurrentStep] = useState(0)
   const [responses, setResponses] = useState<Record<string, string>>({})
   const [showResults, setShowResults] = useState(false)
+  const { toggleChat, sendMessage } = useChatStore()
 
   const questions = [
     {
@@ -138,6 +141,30 @@ const TMJSymptomAssessment: React.FC<TMJSymptomAssessmentProps> = ({ symptoms })
     setShowResults(false)
   }
 
+  const handleScheduleConsultation = async () => {
+    // Create assessment summary for Julie
+    const assessmentSummary = `I completed the TMJ assessment with a score of ${score}/32 (${recommendation.level}). My symptoms include: ${Object.entries(responses).map(([question, response]) => {
+      const q = questions.find(q => q.id === question)
+      return `${q?.question}: ${response}`
+    }).join(', ')}. I need help scheduling a consultation.`
+    
+    // Track the event
+    trackChatOpen('tmj-assessment-results')
+    trackEvent({
+      action: 'julie_chat_open',
+      category: 'tmj',
+      label: 'assessment_results',
+      value: score
+    })
+    
+    // Open Julie and send assessment context
+    toggleChat()
+    
+    setTimeout(async () => {
+      await sendMessage(assessmentSummary)
+    }, 500)
+  }
+
   const currentQuestion = questions[currentStep]
   const progress = ((currentStep + 1) / questions.length) * 100
   const score = calculateScore()
@@ -192,10 +219,11 @@ const TMJSymptomAssessment: React.FC<TMJSymptomAssessmentProps> = ({ symptoms })
               <Button
                 variant="contained"
                 size="large"
-                onClick={() => window.open('tel:+19292424535', '_blank')}
+                startIcon={<Chat />}
+                onClick={handleScheduleConsultation}
                 sx={{ mr: 2, mb: 2 }}
               >
-                Schedule Consultation
+                Chat with Julie to Schedule
               </Button>
               <Button
                 variant="outlined"

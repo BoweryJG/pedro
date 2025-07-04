@@ -17,6 +17,8 @@ import {
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Chat, Close, Send, Spa } from '@mui/icons-material'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Contact {
   phone: string
@@ -44,22 +46,24 @@ interface Message {
 }
 
 const MedSpaChatbot: React.FC<MedSpaChatbotProps> = ({ contact }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: "Hello! I'm your aesthetic consultation assistant. I'm here to help you learn about our treatments, pricing, and schedule your consultation. What aesthetic goals are you interested in achieving?",
-      sender: 'bot',
-      timestamp: new Date(),
-      suggestions: [
-        "Anti-aging treatments",
-        "Facial rejuvenation", 
-        "Teeth whitening",
-        "Treatment combinations",
-        "Pricing information"
-      ]
-    }
-  ])
+  const { isOpen, toggleChat, sendMessage } = useChatStore()
+
+  const handleChatOpen = () => {
+    trackChatOpen('medspa_chatbot')
+    trackEvent({
+      action: 'chatbot_open',
+      category: 'medspa',
+      label: 'floating_button'
+    })
+    toggleChat()
+    // Add context about aesthetic treatments
+    setTimeout(() => {
+      sendMessage("I'm interested in aesthetic treatments and would like to learn more about your MedSpa services.")
+    }, 500)
+  }
+
+  // Legacy props for backward compatibility (not used with Julie)
+  const [messages, setMessages] = useState<Message[]>([])
   const [inputText, setInputText] = useState('')
   const [isTyping, setIsTyping] = useState(false)
 
@@ -141,11 +145,23 @@ const MedSpaChatbot: React.FC<MedSpaChatbotProps> = ({ contact }) => {
   }
 
   const handleBookConsultation = () => {
-    window.open('https://pedrobackend.onrender.com/appointments', '_blank')
+    trackEvent({
+      action: 'consultation_request',
+      category: 'medspa',
+      label: 'legacy_dialog'
+    })
+    toggleChat()
+    setTimeout(() => {
+      sendMessage("I'd like to book a consultation for aesthetic treatments at the MedSpa. What times are available?")
+    }, 500)
   }
 
-  const handleCall = () => {
-    window.open(`tel:${contact.phone}`, '_self')
+  const handleJulieChat = () => {
+    trackChatOpen('medspa_legacy_dialog')
+    toggleChat()
+    setTimeout(() => {
+      sendMessage("I'm interested in aesthetic treatments and would like to learn more about pricing and scheduling.")
+    }, 500)
   }
 
   return (
@@ -164,7 +180,7 @@ const MedSpaChatbot: React.FC<MedSpaChatbotProps> = ({ contact }) => {
       >
         <Fab
           color="primary"
-          onClick={() => setIsOpen(true)}
+          onClick={handleChatOpen}
           sx={{
             background: 'linear-gradient(45deg, #B8860B 30%, #DAA520 90%)',
             '&:hover': {
@@ -309,10 +325,10 @@ const MedSpaChatbot: React.FC<MedSpaChatbotProps> = ({ contact }) => {
               <Button
                 variant="outlined"
                 size="small"
-                onClick={handleCall}
+                onClick={handleJulieChat}
                 sx={{ flex: 1 }}
               >
-                Call Now
+                Chat with Julie
               </Button>
             </Box>
           </Box>

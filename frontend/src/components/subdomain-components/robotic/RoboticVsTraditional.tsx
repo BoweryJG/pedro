@@ -35,9 +35,12 @@ import {
   TrendingUp,
   Science,
   AccessTime,
-  Engineering
+  Engineering,
+  Chat
 } from '@mui/icons-material'
 import roboticContent from '../../../data/subdomain-content/robotic/roboticContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface ComparisonMetric {
   category: string
@@ -50,6 +53,7 @@ interface ComparisonMetric {
 }
 
 const RoboticVsTraditional: React.FC = () => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [showDetails, setShowDetails] = useState(false)
   const [selectedMetric, setSelectedMetric] = useState<number | null>(null)
 
@@ -521,7 +525,21 @@ const RoboticVsTraditional: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('tel:+19292424535', '_blank')}
+                  startIcon={<Chat />}
+                  onClick={() => {
+                    trackChatOpen('robotic_vs_traditional_cta')
+                    trackEvent({
+                      action: 'robotic_comparison_consultation',
+                      category: 'robotic_surgery',
+                      label: 'comparison_section'
+                    })
+                    
+                    toggleChat()
+                    
+                    setTimeout(() => {
+                      sendMessage("I've been comparing robotic vs traditional implants and I'm interested in learning more about Yomi robotic surgery. Can you help me schedule a consultation to see the technology in action?")
+                    }, 500)
+                  }}
                   sx={{
                     bgcolor: 'white',
                     color: 'primary.main',
@@ -533,7 +551,7 @@ const RoboticVsTraditional: React.FC = () => {
                     }
                   }}
                 >
-                  Schedule Robotic Consultation
+                  Chat with Julie about Robotic Consultation
                 </Button>
                 <Button
                   variant="outlined"

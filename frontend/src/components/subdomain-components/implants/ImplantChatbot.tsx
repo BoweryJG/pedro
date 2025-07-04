@@ -32,6 +32,8 @@ import {
   Schedule
 } from '@mui/icons-material'
 import { implantApiService } from '../../../services/implantApi'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface Message {
   id: string
@@ -50,6 +52,7 @@ interface FinancingQualification {
 }
 
 const ImplantChatbot: React.FC = () => {
+  const { toggleChat, sendMessage: sendJulieMessage } = useChatStore()
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
@@ -136,7 +139,7 @@ const ImplantChatbot: React.FC = () => {
       setConversationStage('qualifying')
     } else if (lowerMessage.includes('schedule') || lowerMessage.includes('appointment') || lowerMessage.includes('consultation')) {
       addMessage(
-        "Perfect! Dr. Pedro offers complimentary consultations. You can call us directly at (929) 242-4535 or I can help connect you. What works better for you?",
+        "Perfect! Dr. Pedro offers complimentary consultations. I can connect you with Julie, our main assistant, who can help you schedule your appointment and answer any additional questions. Would you like me to open Julie's chat?",
         'bot'
       )
       setConversationStage('scheduling')
@@ -190,7 +193,23 @@ const ImplantChatbot: React.FC = () => {
       case 'schedule':
         addMessage("I'd like to schedule a consultation", 'user')
         setTimeout(() => {
-          generateBotResponse("schedule consultation")
+          addMessage(
+            "I'd be happy to help you schedule! Let me connect you with Julie, our main assistant, who can check availability and book your consultation with Dr. Pedro.",
+            'bot'
+          )
+          // Auto-open Julie chat after a brief delay
+          setTimeout(() => {
+            trackChatOpen('implant_chatbot_schedule')
+            trackEvent({
+              action: 'julie_handoff',
+              category: 'engagement',
+              label: 'implant_scheduling'
+            })
+            toggleChat()
+            setTimeout(() => {
+              sendJulieMessage("I'm interested in scheduling a dental implant consultation")
+            }, 500)
+          }, 2000)
           setIsTyping(false)
         }, 1000)
         setIsTyping(true)
@@ -435,11 +454,22 @@ const ImplantChatbot: React.FC = () => {
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Button
                 variant="contained"
-                startIcon={<Phone />}
-                onClick={() => window.open('tel:+19292424535', '_blank')}
+                startIcon={<Psychology />}
+                onClick={() => {
+                  trackChatOpen('implant_chatbot_cta')
+                  trackEvent({
+                    action: 'chat_with_julie',
+                    category: 'engagement',
+                    label: 'implant_specialist_chat'
+                  })
+                  toggleChat()
+                  setTimeout(() => {
+                    sendJulieMessage("I'm interested in dental implants and have questions about the process")
+                  }, 500)
+                }}
                 sx={{ px: 3 }}
               >
-                Call Now: (929) 242-4535
+                Chat with Julie about Implants
               </Button>
               <Button
                 variant="outlined"

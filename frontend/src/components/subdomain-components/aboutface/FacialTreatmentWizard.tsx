@@ -24,9 +24,12 @@ import {
   Schedule, 
   AttachMoney,
   NavigateNext,
-  NavigateBefore
+  NavigateBefore,
+  Chat
 } from '@mui/icons-material'
 import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFaceContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 const FacialTreatmentWizard: React.FC = () => {
   const [activeStep, setActiveStep] = useState(0)
@@ -34,6 +37,36 @@ const FacialTreatmentWizard: React.FC = () => {
   const [budget, setBudget] = useState<number>(1000)
   const [timeframe, setTimeframe] = useState('')
   const [recommendations, setRecommendations] = useState<any[]>([])
+  const { toggleChat, sendMessage } = useChatStore()
+
+  const handleChatWithJulie = async (context: string, treatmentName?: string) => {
+    trackChatOpen('aboutface_treatment_wizard')
+    trackEvent({
+      action: 'treatment_wizard_interest',
+      category: 'engagement',
+      label: context
+    })
+    toggleChat()
+    setTimeout(() => {
+      let message = `I've used the facial treatment planner and I'm interested in ${treatmentName || 'EmFace treatments'}.`
+      
+      if (selectedConcerns.length > 0) {
+        message += ` My main concerns are: ${selectedConcerns.join(', ')}.`
+      }
+      
+      if (budget) {
+        message += ` My budget range is around $${budget.toLocaleString()}.`
+      }
+      
+      if (timeframe) {
+        message += ` I'm looking for results ${timeframe}.`
+      }
+      
+      message += ' Can you help me schedule a consultation at AboutFace Aesthetics?'
+      
+      sendMessage(message)
+    }, 500)
+  }
 
   const steps = ['Facial Concerns', 'Budget & Timeline', 'Treatment Plan']
 
@@ -275,9 +308,10 @@ const FacialTreatmentWizard: React.FC = () => {
                       <Button
                         variant="contained"
                         fullWidth
-                        startIcon={<AutoAwesome />}
+                        startIcon={<Chat />}
+                        onClick={() => handleChatWithJulie('treatment_selection', rec.name)}
                       >
-                        Book This Treatment
+                        Chat with Julie about This
                       </Button>
                     </CardContent>
                   </Card>
@@ -344,9 +378,10 @@ const FacialTreatmentWizard: React.FC = () => {
             <Button
               variant="contained"
               size="large"
-              startIcon={<Schedule />}
+              startIcon={<Chat />}
+              onClick={() => handleChatWithJulie('final_consultation')}
             >
-              Schedule Consultation
+              Chat with Julie to Schedule
             </Button>
           )}
         </Box>

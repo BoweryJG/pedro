@@ -29,9 +29,12 @@ import {
   Science,
   AutoFixHigh,
   Timeline,
-  TouchApp
+  TouchApp,
+  Chat
 } from '@mui/icons-material'
 import roboticContent from '../../../data/subdomain-content/robotic/roboticContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 interface TechnologyFeature {
   icon: React.ReactNode
@@ -43,6 +46,7 @@ interface TechnologyFeature {
 }
 
 const YomiTechnologyShowcase: React.FC = () => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [selectedFeature, setSelectedFeature] = useState(0)
   const [activeStep, setActiveStep] = useState(0)
 
@@ -474,7 +478,21 @@ const YomiTechnologyShowcase: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('tel:+19292424535', '_blank')}
+                  startIcon={<Chat />}
+                  onClick={() => {
+                    trackChatOpen('yomi_technology_showcase_cta')
+                    trackEvent({
+                      action: 'yomi_technology_consultation',
+                      category: 'robotic_surgery',
+                      label: 'technology_showcase'
+                    })
+                    
+                    toggleChat()
+                    
+                    setTimeout(() => {
+                      sendMessage("I've been exploring the Yomi robotic technology features and I'm impressed by the precision and safety systems. I'd like to schedule a consultation to see this technology in action and learn if I'm a good candidate for robotic implants.")
+                    }, 500)
+                  }}
                   sx={{
                     bgcolor: 'white',
                     color: 'primary.main',
@@ -486,7 +504,7 @@ const YomiTechnologyShowcase: React.FC = () => {
                     }
                   }}
                 >
-                  Schedule Robotic Consultation
+                  Chat with Julie about Yomi Technology
                 </Button>
                 <Button
                   variant="outlined"

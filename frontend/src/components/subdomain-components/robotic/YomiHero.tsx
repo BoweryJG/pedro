@@ -11,11 +11,14 @@ import {
   Avatar
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Phone, CalendarToday, LocationOn, Star, Engineering, SmartToy } from '@mui/icons-material'
+import { CalendarToday, LocationOn, Star, Engineering, SmartToy, Chat } from '@mui/icons-material'
 import roboticContent from '../../../data/subdomain-content/robotic/roboticContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 const YomiHero: React.FC = () => {
   const { hero, doctor } = roboticContent
+  const { toggleChat, sendMessage } = useChatStore()
 
   const handlePrimaryAction = () => {
     if (hero.primaryButton.action === 'learn_more') {
@@ -24,9 +27,21 @@ const YomiHero: React.FC = () => {
     }
   }
 
-  const handleSecondaryAction = () => {
+  const handleSecondaryAction = async () => {
     if (hero.secondaryButton.action === 'book_consultation') {
-      window.open('tel:+19292424535', '_blank')
+      trackChatOpen('yomi_hero_cta')
+      trackEvent({
+        action: 'yomi_consultation_request',
+        category: 'robotic_surgery',
+        label: 'hero_section'
+      })
+      
+      toggleChat()
+      
+      // Add slight delay to ensure chat is open before sending message
+      setTimeout(() => {
+        sendMessage("I'm interested in Yomi robotic dental surgery and would like to schedule a consultation to learn more about the technology and see if I'm a good candidate.")
+      }, 500)
     }
   }
 
@@ -208,7 +223,7 @@ const YomiHero: React.FC = () => {
                   variant="outlined"
                   size="large"
                   onClick={handleSecondaryAction}
-                  startIcon={<Phone />}
+                  startIcon={<Chat />}
                   sx={{
                     borderColor: 'white',
                     color: 'white',
@@ -224,7 +239,7 @@ const YomiHero: React.FC = () => {
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  {hero.secondaryButton.text}
+                  Chat with Julie about Yomi
                 </Button>
 
                 <Button

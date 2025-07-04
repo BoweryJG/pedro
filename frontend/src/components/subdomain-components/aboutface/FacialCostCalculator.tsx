@@ -21,9 +21,12 @@ import {
   Calculate,
   CreditCard,
   Schedule,
-  Savings
+  Savings,
+  Chat
 } from '@mui/icons-material'
 import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFaceContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 const FacialCostCalculator: React.FC = () => {
   const [selectedTreatments, setSelectedTreatments] = useState<string[]>([])
@@ -31,6 +34,23 @@ const FacialCostCalculator: React.FC = () => {
   const [financingTerm, setFinancingTerm] = useState(12)
   const [monthlyPayment, setMonthlyPayment] = useState(0)
   const [showFinancing, setShowFinancing] = useState(false)
+  const { toggleChat, sendMessage } = useChatStore()
+
+  const handleChatWithJulie = async (context: string) => {
+    trackChatOpen('aboutface_cost_calculator')
+    trackEvent({
+      action: 'financing_interest',
+      category: 'conversion',
+      label: context
+    })
+    toggleChat()
+    setTimeout(() => {
+      const message = context === 'financing' 
+        ? `I'm interested in financing options for EmFace treatments. My estimated investment is $${totalAmount.toLocaleString()}`
+        : `I'd like to schedule a consultation for EmFace treatments at AboutFace Aesthetics`
+      sendMessage(message)
+    }, 500)
+  }
 
   const { treatments, facialPackages, financing } = aboutFaceContent
 
@@ -311,10 +331,11 @@ const FacialCostCalculator: React.FC = () => {
                       variant="contained"
                       fullWidth
                       size="large"
-                      startIcon={<Schedule />}
+                      startIcon={<Chat />}
+                      onClick={() => handleChatWithJulie('financing')}
                       sx={{ mt: 3 }}
                     >
-                      Apply for Financing
+                      Chat with Julie about Financing
                     </Button>
                   </Card>
                 </motion.div>
@@ -331,23 +352,27 @@ const FacialCostCalculator: React.FC = () => {
                 <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                   <Button
                     variant="contained"
+                    startIcon={<Chat />}
+                    onClick={() => handleChatWithJulie('consultation')}
                     sx={{ 
                       backgroundColor: 'white', 
                       color: '#C8A882',
                       '&:hover': { backgroundColor: '#f5f5f5' }
                     }}
                   >
-                    Book Consultation
+                    Chat with Julie
                   </Button>
                   <Button
                     variant="outlined"
+                    startIcon={<Schedule />}
+                    onClick={() => handleChatWithJulie('consultation')}
                     sx={{ 
                       borderColor: 'white', 
                       color: 'white',
                       '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' }
                     }}
                   >
-                    Call (555) 123-4567
+                    Book Consultation
                   </Button>
                 </Stack>
               </Card>

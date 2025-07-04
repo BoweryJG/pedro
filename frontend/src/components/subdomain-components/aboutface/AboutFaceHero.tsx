@@ -12,11 +12,28 @@ import {
   Stack
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Spa, Star, Schedule, Phone } from '@mui/icons-material'
+import { Spa, Star, Schedule, Chat } from '@mui/icons-material'
 import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFaceContent.json'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
 const AboutFaceHero: React.FC = () => {
   const { hero, doctor } = aboutFaceContent
+  const { toggleChat, sendMessage } = useChatStore()
+
+  const handleChatWithJulie = async () => {
+    trackChatOpen('aboutface_hero')
+    trackEvent({
+      action: 'emface_interest',
+      category: 'procedure_interest',
+      label: 'hero_cta'
+    })
+    toggleChat()
+    // Add a small delay to ensure chat opens, then send context message
+    setTimeout(() => {
+      sendMessage("I'm interested in EmFace treatments and would like to learn more about AboutFace Aesthetics services")
+    }, 500)
+  }
 
   return (
     <Box
@@ -82,18 +99,20 @@ const AboutFaceHero: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  startIcon={<Schedule />}
+                  startIcon={<Chat />}
+                  onClick={handleChatWithJulie}
                   sx={{ px: 4, py: 1.5 }}
                 >
-                  {hero.cta}
+                  Chat with Julie about EmFace
                 </Button>
                 <Button
                   variant="outlined"
                   size="large"
-                  startIcon={<Phone />}
+                  startIcon={<Schedule />}
+                  onClick={handleChatWithJulie}
                   sx={{ px: 4, py: 1.5 }}
                 >
-                  Call Now
+                  Book Consultation
                 </Button>
               </Stack>
 

@@ -4,7 +4,7 @@ import {
   Container,
   Typography,
   Button,
-  Grid,
+  Grid2 as Grid,
   Card,
   CardContent,
   TextField,
@@ -33,6 +33,19 @@ import {
   AttachMoney
 } from '@mui/icons-material'
 import { implantApiService } from '../../../services/implantApi'
+import { useChatStore } from '../../../chatbot/store/chatStore'
+import { trackChatOpen, trackEvent } from '../../../utils/analytics'
+
+interface FinancingApplication {
+  patientName: string
+  email: string
+  phone: string
+  creditScore: number
+  income: number
+  treatmentCost: number
+  provider: 'Cherry' | 'Sunbit' | 'CareCredit' | 'Affirm'
+  softCreditCheck: boolean
+}
 
 interface FinancingData {
   personalInfo: {
@@ -70,6 +83,7 @@ const financingProviders = [
 ]
 
 const ImplantFinancingWizard: React.FC = () => {
+  const { toggleChat, sendMessage } = useChatStore()
   const [activeStep, setActiveStep] = useState(0)
   const [isLoading, setIsLoading] = useState(false)
   const [financingData, setFinancingData] = useState<FinancingData>({
@@ -371,10 +385,22 @@ const ImplantFinancingWizard: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('tel:+19292424535', '_blank')}
+                  onClick={() => {
+                    trackChatOpen('implant_financing_success')
+                    trackEvent({
+                      action: 'financing_qualified_schedule',
+                      category: 'conversion',
+                      label: 'implant_consultation',
+                      value: qualificationResults.approvedAmount
+                    })
+                    toggleChat()
+                    setTimeout(() => {
+                      sendMessage(`Great news! I've been pre-qualified for dental implant financing up to $${qualificationResults.approvedAmount.toLocaleString()} with monthly payments of $${qualificationResults.monthlyPayment}. I'd like to schedule my consultation to move forward.`)
+                    }, 500)
+                  }}
                   sx={{ mr: 2 }}
                 >
-                  Schedule Your Consultation
+                  Chat with Julie to Schedule
                 </Button>
                 <Button
                   variant="outlined"
@@ -396,9 +422,20 @@ const ImplantFinancingWizard: React.FC = () => {
                 <Button
                   variant="contained"
                   size="large"
-                  onClick={() => window.open('tel:+19292424535', '_blank')}
+                  onClick={() => {
+                    trackChatOpen('implant_financing_assistance')
+                    trackEvent({
+                      action: 'additional_financing_help',
+                      category: 'engagement',
+                      label: 'implant_consultation'
+                    })
+                    toggleChat()
+                    setTimeout(() => {
+                      sendMessage("I went through the implant financing pre-qualification and need some additional assistance with my financing options. Can you help me explore other ways to make dental implants affordable?")
+                    }, 500)
+                  }}
                 >
-                  Call for Personal Consultation
+                  Chat with Julie for Help
                 </Button>
               </>
             )}

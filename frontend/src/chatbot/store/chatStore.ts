@@ -237,7 +237,7 @@ function detectProcedureFromMessage(message: string): 'yomi' | 'tmj' | 'emface' 
   if (lower.match(/jaw|tmj|headache|clicking|grinding|clench/)) {
     return 'tmj';
   }
-  if (lower.match(/facial|rejuvenation|lift|wrinkle|aging|skin/)) {
+  if (lower.match(/facial|rejuvenation|lift|wrinkle|aging|skin|botox|filler|dermal|aesthetic|anti-aging|medspa|emface|opus|plasma|beauty|cosmetic|treatment/)) {
     return 'emface';
   }
   

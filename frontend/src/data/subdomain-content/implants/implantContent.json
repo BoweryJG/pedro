@@ -18,12 +18,12 @@
       }
     ],
     "primaryButton": {
-      "text": "Schedule Free Consultation",
-      "action": "book_consultation"
+      "text": "Chat with Julie about Implants",
+      "action": "chat_consultation"
     },
     "secondaryButton": {
-      "text": "Call (929) 242-4535",
-      "action": "phone_call"
+      "text": "Get Cost Estimate",
+      "action": "cost_calculator"
     }
   },
   "doctor": {
