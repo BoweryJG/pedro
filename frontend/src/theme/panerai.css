@@ -37,23 +37,23 @@
 }
 
 .panerai-card:hover {
-  border: var(--panerai-border-accent);
-  box-shadow: var(--panerai-shadow-outset), var(--panerai-glow);
+  border: 1px solid #00ff00 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 0, 0.3) !important;
 }
 
 .panerai-cta {
-  background: var(--panerai-gradient-dark);
-  border: var(--panerai-border);
-  color: var(--panerai-text-primary);
-  transition: all 0.3s ease;
+  background: radial-gradient(circle at 30% 30%, #1e2128, #0f1117) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  transition: all 0.3s ease !important;
   position: relative;
   overflow: hidden;
 }
 
 .panerai-cta:hover {
-  border-color: var(--panerai-green);
-  box-shadow: var(--panerai-glow);
-  color: var(--panerai-green);
+  border-color: #00ff00 !important;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) !important;
+  color: #00ff00 !important;
 }
 
 .panerai-cta:hover::before {
@@ -63,14 +63,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--panerai-green-soft);
+  background: rgba(0, 255, 0, 0.1);
   pointer-events: none;
 }
 
 .panerai-statistic {
-  color: var(--panerai-green);
-  text-shadow: 0 0 10px var(--panerai-green-glow);
-  font-family: 'Courier New', monospace;
+  color: #00ff00 !important;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.3) !important;
+  font-family: 'Courier New', monospace !important;
 }
 
 .panerai-accent {
