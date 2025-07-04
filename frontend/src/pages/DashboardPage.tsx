@@ -5,7 +5,7 @@ import DentalDashboard from '../components/dashboard/DentalDashboard';
 import DailySchedule from '../components/dashboard/Schedule/DailySchedule';
 import WeeklyOverview from '../components/dashboard/Schedule/WeeklyOverview';
 import StaffScheduler from '../components/dashboard/Schedule/StaffScheduler';
-import WatchSubdialMetrics from '../services/analytics/WatchSubdialMetrics';
+import ProfessionalGaugeCluster from '../components/analytics/ProfessionalGaugeCluster';
 import TMJDashboard from '../components/dashboard/subdomains/TMJDashboard';
 import ImplantsDashboard from '../components/dashboard/subdomains/ImplantsDashboard';
 import RoboticDashboard from '../components/dashboard/subdomains/RoboticDashboard';
@@ -180,7 +180,92 @@ const DashboardPage: React.FC = () => {
         </TabPanel>
 
         <TabPanel value={tabValue} index={4}>
-          {analytics && <WatchSubdialMetrics analytics={analytics} />}
+          <Box sx={{ display: 'flex', gap: 4, justifyContent: 'center', flexWrap: 'wrap', py: 4 }}>
+            {/* Services Gauge */}
+            <ProfessionalGaugeCluster
+              title="SERVICES"
+              mainValue={20}
+              mainLabel="Total Services"
+              mainMax={50}
+              subdials={[
+                {
+                  position: 'left',
+                  label: 'YOMI Procedures',
+                  value: 4,
+                  min: 0,
+                  max: 10,
+                  unit: 'procedures',
+                  type: 'number',
+                  color: '#00bcd4'
+                },
+                {
+                  position: 'right',
+                  label: 'Avg Duration',
+                  value: 45,
+                  min: 0,
+                  max: 120,
+                  unit: 'minutes',
+                  type: 'duration',
+                  color: '#4fc3f7',
+                  secondaryLabel: '+15% Group Trend'
+                },
+                {
+                  position: 'bottom',
+                  label: 'Revenue/Week',
+                  value: 458,
+                  min: 0,
+                  max: 1000,
+                  unit: 'USD',
+                  type: 'currency',
+                  color: '#66bb6a'
+                }
+              ]}
+              bottomDisplay="Dental Bridge"
+            />
+            
+            {/* Patients Gauge */}
+            <ProfessionalGaugeCluster
+              title="PATIENTS"
+              mainValue={21}
+              mainLabel="Total Active Patients"
+              mainMax={50}
+              subdials={[
+                {
+                  position: 'left',
+                  label: 'New This Month',
+                  value: 24,
+                  min: 0,
+                  max: 50,
+                  unit: 'patients',
+                  type: 'number',
+                  color: '#29b6f6'
+                },
+                {
+                  position: 'right',
+                  label: 'Avg Wait Time',
+                  value: 96,
+                  min: 0,
+                  max: 180,
+                  unit: 'minutes',
+                  type: 'duration',
+                  color: '#ffa726',
+                  secondaryLabel: '30m Late'
+                },
+                {
+                  position: 'bottom',
+                  label: 'Growth Rate',
+                  value: 10,
+                  min: -20,
+                  max: 20,
+                  unit: 'percent',
+                  type: 'percentage',
+                  color: '#66bb6a'
+                }
+              ]}
+              personName="Jason Golden"
+              bottomDisplay="10% Up"
+            />
+          </Box>
         </TabPanel>
 
         <TabPanel value={tabValue} index={5}>
