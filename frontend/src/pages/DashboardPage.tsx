@@ -11,6 +11,7 @@ import ImplantsDashboard from '../components/dashboard/subdomains/ImplantsDashbo
 import RoboticDashboard from '../components/dashboard/subdomains/RoboticDashboard';
 import MedSpaDashboard from '../components/dashboard/subdomains/MedSpaDashboard';
 import { VoiceCallsDashboard } from '../components/VoiceCallsDashboard';
+import { VoiceCallDebug } from '../components/VoiceCallDebug';
 import { useSupabase } from '../hooks/useSupabase';
 import { AnalyticsService } from '../services/analytics/analyticsService';
 
@@ -269,6 +270,7 @@ const DashboardPage: React.FC = () => {
         </TabPanel>
 
         <TabPanel value={tabValue} index={5}>
+          <VoiceCallDebug />
           <VoiceCallsDashboard />
         </TabPanel>
 
