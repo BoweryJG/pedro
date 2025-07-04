@@ -1,0 +1,289 @@
+/* Enhanced Visual Depth and Premium Effects */
+
+/* Enhanced Shadow System */
+:root {
+  /* Deeper, more pronounced shadows */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  --shadow-sm: 0 3px 6px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.12);
+  --shadow-md: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 15px 25px rgba(0, 0, 0, 0.15), 0 5px 10px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.2);
+  
+  /* Colored shadows */
+  --shadow-primary: 0 10px 30px rgba(102, 126, 234, 0.3);
+  --shadow-secondary: 0 10px 30px rgba(118, 75, 162, 0.3);
+  
+  /* Glow effects */
+  --glow-primary: 0 0 30px rgba(102, 126, 234, 0.4);
+  --glow-secondary: 0 0 30px rgba(118, 75, 162, 0.4);
+}
+
+/* Enhanced Card Depth */
+.MuiCard-root {
+  box-shadow: var(--shadow-md) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.MuiCard-root:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: var(--shadow-xl) !important;
+  border-color: rgba(102, 126, 234, 0.2);
+}
+
+/* Enhanced Paper Components */
+.MuiPaper-root {
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: visible;
+}
+
+.MuiPaper-root::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, 
+    rgba(102, 126, 234, 0.1) 0%, 
+    transparent 50%, 
+    rgba(118, 75, 162, 0.1) 100%
+  );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.MuiPaper-root:hover::after {
+  opacity: 1;
+}
+
+/* Enhanced Button Depth */
+.MuiButton-contained {
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.MuiButton-contained::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, 
+    rgba(255, 255, 255, 0.15) 0%, 
+    transparent 50%, 
+    rgba(0, 0, 0, 0.1) 100%
+  );
+  pointer-events: none;
+}
+
+.MuiButton-contained:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.MuiButton-contained:active {
+  transform: translateY(0) !important;
+  box-shadow: var(--shadow-xs) !important;
+}
+
+/* Enhanced Input Fields */
+.MuiTextField-root .MuiOutlinedInput-root {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.MuiTextField-root .MuiOutlinedInput-root:hover {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.08),
+              0 0 0 1px rgba(102, 126, 234, 0.2);
+}
+
+.MuiTextField-root .MuiOutlinedInput-root.Mui-focused {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06),
+              0 0 0 2px rgba(102, 126, 234, 0.2),
+              var(--shadow-sm);
+}
+
+/* Glass Morphism Effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Premium Hover States */
+.luxury-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.luxury-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-xl);
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+/* Enhanced Dividers */
+.MuiDivider-root {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 0, 0, 0.08) 20%,
+    rgba(0, 0, 0, 0.12) 50%,
+    rgba(0, 0, 0, 0.08) 80%,
+    transparent 100%
+  );
+  border: none;
+  margin: 2rem 0;
+}
+
+/* Enhanced Chip Components */
+.MuiChip-root {
+  box-shadow: var(--shadow-xs);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.MuiChip-root:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+/* Premium Loading States */
+.MuiSkeleton-root {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Enhanced Modal/Dialog */
+.MuiDialog-paper {
+  box-shadow: var(--shadow-xl) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Floating Action Button Enhancement */
+.MuiFab-root {
+  box-shadow: var(--shadow-lg) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.MuiFab-root:hover {
+  transform: translateY(-3px) scale(1.05) !important;
+  box-shadow: var(--shadow-xl), var(--glow-primary) !important;
+}
+
+/* Premium Section Separators */
+.section-separator {
+  position: relative;
+  height: 100px;
+  margin: 4rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.section-separator::before,
+.section-separator::after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(102, 126, 234, 0.2) 50%, 
+    transparent 100%
+  );
+}
+
+.section-separator::before {
+  top: 40%;
+}
+
+.section-separator::after {
+  bottom: 40%;
+}
+
+/* Enhanced Focus States */
+*:focus-visible {
+  outline: 2px solid rgba(102, 126, 234, 0.5);
+  outline-offset: 2px;
+}
+
+/* Premium Scrollbar */
+*::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, 
+    rgba(102, 126, 234, 0.3) 0%, 
+    rgba(118, 75, 162, 0.3) 100%
+  );
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, 
+    rgba(102, 126, 234, 0.5) 0%, 
+    rgba(118, 75, 162, 0.5) 100%
+  );
+  background-clip: padding-box;
+}

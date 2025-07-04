@@ -6,6 +6,7 @@ import LuxuryGoogleReviews from '../components/LuxuryGoogleReviews';
 import MeetDrPedroSection from '../components/MeetDrPedroSection';
 import { Box } from '@mui/material';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { TexturedSection } from '../components/effects/TextureOverlays';
 
 const HomePage = () => {
   usePageTitle('Home');
@@ -28,24 +29,24 @@ const HomePage = () => {
       </Box>
       
       {/* Meet Dr. Pedro Section */}
-      <Box className="luxury-section">
+      <TexturedSection textures={['diagonal', 'grain']} sx={{ className: 'luxury-section' }}>
         <MeetDrPedroSection />
-      </Box>
+      </TexturedSection>
       
       {/* Services Section with Alternating Background */}
-      <Box className="luxury-section-alt">
+      <TexturedSection textures={['dots', 'radial']} sx={{ className: 'luxury-section-alt' }}>
         <LuxuryServicesShowcase />
-      </Box>
+      </TexturedSection>
       
       {/* Stats Section with Dark Background */}
-      <Box className="luxury-section-dark">
+      <TexturedSection textures={['crosshatch', 'grain']} sx={{ className: 'luxury-section-dark' }}>
         <LuxuryStatsSection />
-      </Box>
+      </TexturedSection>
       
       {/* Trust Indicators with Normal Background */}
-      <Box className="luxury-section">
+      <TexturedSection textures={['grid', 'grain']} sx={{ className: 'luxury-section' }}>
         <LuxuryTrustIndicators />
-      </Box>
+      </TexturedSection>
       
       {/* Reviews Section with Subtle Background */}
       <Box className="luxury-section-alt">

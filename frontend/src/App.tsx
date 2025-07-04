@@ -21,6 +21,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
 import DirectAccessPage from './pages/auth/DirectAccessPage';
 import './theme/panerai.css';
+import './styles/enhanced-depth.css';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
