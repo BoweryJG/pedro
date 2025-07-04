@@ -8,7 +8,7 @@ import {
   CardContent,
   Chip,
   Stack,
-  Grid2 as Grid
+  Grid
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Phone, CalendarToday, LocationOn, Star, Psychology, AttachMoney } from '@mui/icons-material'

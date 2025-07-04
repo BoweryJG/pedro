@@ -566,3 +566,5 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     </>
   );
 };
+
+export default Chatbot;
