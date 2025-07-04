@@ -22,30 +22,27 @@ exports.handler = async (event, context) => {
   try {
     const { messages, systemPrompt } = JSON.parse(event.body);
     
-    // Use OpenRouter API
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Use Anthropic API directly
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'x-api-key': `${process.env.ANTHROPIC_API_KEY}`,
+        'anthropic-version': '2023-06-01',
         'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://gregpedromd.com',
-        'X-Title': 'Dr Pedro Dental Assistant'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-3.5-turbo',
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...messages
-        ],
-        temperature: 0.7,
-        max_tokens: 500
+        model: 'claude-opus-4-20250514',
+        system: systemPrompt,
+        messages: messages,
+        max_tokens: 2000,
+        temperature: 0.8
       })
     });
 
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'OpenRouter API error');
+      throw new Error(data.error?.message || 'Anthropic API error');
     }
 
     return {
@@ -55,7 +52,7 @@ exports.handler = async (event, context) => {
         'Access-Control-Allow-Origin': '*',
       },
       body: JSON.stringify({
-        response: data.choices[0].message.content
+        response: data.content[0].text
       }),
     };
   } catch (error) {
