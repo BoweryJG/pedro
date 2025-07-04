@@ -151,7 +151,7 @@ export const JulieProfessionalLauncher: React.FC = () => {
                         fontWeight={700}
                         sx={{ lineHeight: 1.2 }}
                       >
-                        Julie Chen, DDS
+                        Julie
                       </Typography>
                       <Typography 
                         variant="caption" 
@@ -200,7 +200,7 @@ export const JulieProfessionalLauncher: React.FC = () => {
                       <JulieAvatar />
                       <Box sx={{ flex: 1 }}>
                         <Typography variant="h6" fontWeight={700} sx={{ lineHeight: 1.2 }}>
-                          Julie Chen, DDS
+                          Julie
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
                           Senior Surgical Consultant
