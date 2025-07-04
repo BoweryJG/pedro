@@ -10,7 +10,6 @@ import ContactPage from './pages/ContactPage';
 import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import InstagramDashboard from './components/InstagramDashboard';
 import TestBooking from './pages/TestBooking';
-import { Chatbot } from './chatbot/components/Chatbot';
 import { JulieProfessionalLauncher } from './components/JulieProfessionalLauncher';
 import ScrollToTop from './components/ScrollToTop';
 import { useMediaQuery, useTheme } from '@mui/material';
@@ -21,7 +20,6 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import { AuthProvider } from './contexts/AuthContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
 import DirectAccessPage from './pages/auth/DirectAccessPage';
-import { useChatStore } from './chatbot/store/chatStore';
 import './theme/panerai.css';
 
 // Subdomain Pages
@@ -35,19 +33,6 @@ import SMSQueue from './pages/admin/SMSQueue';
 function App() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const chatStore = useChatStore();
-
-  const handleOpenChat = () => {
-    if (!chatStore.isOpen) {
-      chatStore.toggleChat();
-    }
-  };
-
-  const handleCloseChat = () => {
-    if (chatStore.isOpen) {
-      chatStore.toggleChat();
-    }
-  };
 
   return (
     <AuthProvider>
@@ -95,7 +80,6 @@ function App() {
           }
         />
       </Routes>
-      {chatStore.isOpen && <Chatbot onClose={handleCloseChat} />}
       {/* Julie Professional Medical Launcher */}
       <JulieProfessionalLauncher />
       {/* Luxury noise texture overlay */}
