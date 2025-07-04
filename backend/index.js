@@ -9,6 +9,10 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import VoiceService from './voiceService.js';
 import WebRTCVoiceService from './webrtcVoiceService.js';
+import VoIPService from './src/services/voipService.js';
+import ScheduledJobsService from './src/services/scheduledJobs.js';
+import julieAI from './services/julieAI.js';
+import webhookRoutes from './src/routes/webhooks.js';
 
 // Load environment variables
 dotenv.config();
@@ -79,6 +83,8 @@ const webrtcWss = new WebSocketServer({
 // Initialize voice services
 const voiceService = new VoiceService();
 const webrtcVoiceService = new WebRTCVoiceService();
+const voipService = new VoIPService();
+const scheduledJobs = new ScheduledJobsService();
 
 // CORS configuration for production
 const corsOptions = {
@@ -170,10 +176,16 @@ app.get('/api/status', (req, res) => {
     status: 'operational',
     services: {
       appointments: 'handled by Supabase',
-      sms: 'handled by Supabase Edge Functions + Twilio',
+      sms: 'VoIP.ms + Twilio backup',
+      voip: {
+        sms: 'VoIP.ms API with auto-responses',
+        calls: 'Call recording and transcription',
+        transcription: 'OpenAI Whisper, Google Speech, Hugging Face'
+      },
       database: 'Supabase PostgreSQL',
       chat: 'OpenRouter AI',
-      voice: 'Twilio Media Streams + Whisper STT + TTS'
+      voice: 'Twilio Media Streams + Whisper STT + TTS',
+      scheduledJobs: process.env.NODE_ENV === 'production' ? 'active' : 'disabled'
     }
   });
 });
@@ -507,10 +519,319 @@ app.get('/voice/test', async (req, res) => {
   }
 });
 
+// VoIP.ms SMS webhook endpoint
+app.post('/api/voip/sms/webhook', async (req, res) => {
+  try {
+    const { from, message, id } = req.body;
+    
+    if (!from || !message) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+    
+    // Process incoming SMS
+    await voipService.processIncomingSMS(from, message, id);
+    
+    res.json({ status: 'success' });
+  } catch (error) {
+    console.error('SMS webhook error:', error);
+    res.status(500).json({ error: 'Failed to process SMS' });
+  }
+});
+
+// Send SMS endpoint
+app.post('/api/voip/sms/send', strictLimiter, async (req, res) => {
+  try {
+    const { to, message } = req.body;
+    
+    if (!to || !message) {
+      return res.status(400).json({ error: 'Missing required fields: to, message' });
+    }
+    
+    const result = await voipService.sendSMS(to, message);
+    res.json({ status: 'success', result });
+  } catch (error) {
+    console.error('Send SMS error:', error);
+    res.status(500).json({ error: 'Failed to send SMS' });
+  }
+});
+
+// Get SMS conversations
+app.get('/api/voip/sms/conversations', async (req, res) => {
+  try {
+    const { limit = 50 } = req.query;
+    const messages = await voipService.getSMSMessages(null, null, parseInt(limit));
+    res.json({ messages });
+  } catch (error) {
+    console.error('Get SMS error:', error);
+    res.status(500).json({ error: 'Failed to get SMS messages' });
+  }
+});
+
+// Get call recordings
+app.get('/api/voip/calls/recordings', async (req, res) => {
+  try {
+    const { callId } = req.query;
+    const recordings = await voipService.getCallRecordings(callId);
+    res.json({ recordings });
+  } catch (error) {
+    console.error('Get recordings error:', error);
+    res.status(500).json({ error: 'Failed to get recordings' });
+  }
+});
+
+// Download specific recording
+app.get('/api/voip/calls/recording/:recordingId', async (req, res) => {
+  try {
+    const { recordingId } = req.params;
+    const { callSid } = req.query;
+    
+    if (!callSid) {
+      return res.status(400).json({ error: 'Missing callSid parameter' });
+    }
+    
+    const recordingUrl = await voipService.downloadRecording(recordingId, callSid);
+    res.json({ recordingUrl });
+  } catch (error) {
+    console.error('Download recording error:', error);
+    res.status(500).json({ error: 'Failed to download recording' });
+  }
+});
+
+// Get call history
+app.get('/api/voip/calls/history', async (req, res) => {
+  try {
+    const { dateFrom, dateTo } = req.query;
+    
+    if (!dateFrom || !dateTo) {
+      return res.status(400).json({ error: 'Missing date range parameters' });
+    }
+    
+    const calls = await voipService.getCallRecords(dateFrom, dateTo);
+    res.json({ calls });
+  } catch (error) {
+    console.error('Get call history error:', error);
+    res.status(500).json({ error: 'Failed to get call history' });
+  }
+});
+
+// Sync call history (admin endpoint)
+app.post('/api/voip/sync', strictLimiter, async (req, res) => {
+  try {
+    await voipService.syncCallHistory();
+    res.json({ status: 'success', message: 'Call history sync initiated' });
+  } catch (error) {
+    console.error('Sync error:', error);
+    res.status(500).json({ error: 'Failed to sync call history' });
+  }
+});
+
+// Get VoIP analytics
+app.get('/api/voip/analytics', async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    
+    if (!startDate || !endDate) {
+      return res.status(400).json({ error: 'Missing date range parameters' });
+    }
+    
+    const analytics = await voipService.getAnalytics(startDate, endDate);
+    res.json({ analytics });
+  } catch (error) {
+    console.error('Analytics error:', error);
+    res.status(500).json({ error: 'Failed to get analytics' });
+  }
+});
+
+// Configure VoIP.ms webhook
+app.post('/api/voip/configure-webhook', strictLimiter, async (req, res) => {
+  try {
+    const { webhookUrl } = req.body;
+    
+    if (!webhookUrl) {
+      return res.status(400).json({ error: 'Missing webhookUrl' });
+    }
+    
+    const result = await voipService.setupSMSWebhook(webhookUrl);
+    res.json({ status: 'success', result });
+  } catch (error) {
+    console.error('Configure webhook error:', error);
+    res.status(500).json({ error: 'Failed to configure webhook' });
+  }
+});
+
+// Julie AI Voice Assistant Endpoints
+
+// Twilio voice webhook endpoint for Julie AI
+app.post('/voice/julie/incoming', async (req, res) => {
+  try {
+    const { CallSid, From, To } = req.body;
+    
+    // Start Julie AI session
+    await julieAI.startSession(CallSid, From);
+    
+    // Determine protocol based on environment
+    const protocol = req.headers['x-forwarded-proto'] === 'https' || process.env.NODE_ENV === 'production' ? 'wss' : 'ws';
+    const host = req.headers['x-forwarded-host'] || req.headers.host;
+    
+    const twiml = `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say voice="alice">Thank you for calling Dr. Pedro's office. One moment please.</Say>
+  <Connect>
+    <Stream url="${protocol}://${host}/voice/julie/websocket?callSid=${CallSid}">
+      <Parameter name="callSid" value="${CallSid}" />
+      <Parameter name="phoneNumber" value="${From}" />
+    </Stream>
+  </Connect>
+</Response>`;
+
+    res.type('text/xml');
+    res.send(twiml);
+  } catch (error) {
+    console.error('Julie AI incoming call error:', error);
+    
+    const fallbackTwiml = `<?xml version="1.0" encoding="UTF-8"?>
+<Response>
+  <Say>I apologize, but I'm having technical difficulties. Please call back in a few minutes or press 1 to leave a voicemail.</Say>
+  <Gather numDigits="1" action="/voice/fallback">
+    <Pause length="5"/>
+  </Gather>
+  <Say>Goodbye.</Say>
+</Response>`;
+    
+    res.type('text/xml');
+    res.send(fallbackTwiml);
+  }
+});
+
+// Julie AI WebSocket handler
+const julieWss = new WebSocketServer({ 
+  noServer: true,
+  path: '/voice/julie/websocket'
+});
+
+julieWss.on('connection', async (ws, req) => {
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const callSid = url.searchParams.get('callSid');
+  const phoneNumber = url.searchParams.get('phoneNumber');
+  
+  console.log(`Julie AI WebSocket connected for call ${callSid}`);
+  
+  ws.on('message', async (message) => {
+    try {
+      const data = JSON.parse(message);
+      
+      switch (data.event) {
+        case 'media':
+          // Convert Twilio mulaw to PCM and send to Julie AI
+          const audioChunk = Buffer.from(data.media.payload, 'base64');
+          await julieAI.handleIncomingAudio(callSid, audioChunk);
+          break;
+          
+        case 'stop':
+          console.log(`Julie AI call ended: ${callSid}`);
+          await julieAI.endSession(callSid);
+          break;
+      }
+    } catch (error) {
+      console.error('Julie AI WebSocket message error:', error);
+    }
+  });
+  
+  ws.on('close', () => {
+    console.log(`Julie AI WebSocket closed for call ${callSid}`);
+    julieAI.endSession(callSid);
+  });
+  
+  ws.on('error', (error) => {
+    console.error(`Julie AI WebSocket error for call ${callSid}:`, error);
+  });
+});
+
+// Upgrade Julie AI WebSocket connections
+server.on('upgrade', (request, socket, head) => {
+  const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
+  
+  if (pathname === '/voice/julie/websocket') {
+    julieWss.handleUpgrade(request, socket, head, (ws) => {
+      julieWss.emit('connection', ws, request);
+    });
+  }
+});
+
+// Julie AI status callback
+app.post('/voice/julie/status', async (req, res) => {
+  const { CallSid, CallStatus } = req.body;
+  console.log(`Julie AI call status: ${CallStatus} for call: ${CallSid}`);
+  
+  if (CallStatus === 'completed' || CallStatus === 'failed') {
+    await julieAI.endSession(CallSid);
+  }
+  
+  res.sendStatus(200);
+});
+
+// Get active Julie AI sessions
+app.get('/api/julie/sessions', async (req, res) => {
+  try {
+    const sessions = julieAI.getActiveSessions();
+    res.json({ sessions });
+  } catch (error) {
+    console.error('Get Julie sessions error:', error);
+    res.status(500).json({ error: 'Failed to get active sessions' });
+  }
+});
+
+// Julie AI health check
+app.get('/api/julie/health', async (req, res) => {
+  try {
+    const activeSessions = julieAI.getActiveSessions();
+    
+    res.json({
+      status: 'operational',
+      version: '1.0.0',
+      features: {
+        realTimeVoice: true,
+        appointmentBooking: true,
+        emergencyRouting: true,
+        humanHandoff: true
+      },
+      activeSessions: activeSessions.length,
+      moshiConnection: process.env.MOSHI_API_KEY ? 'configured' : 'not configured',
+      openRouterConnection: process.env.OPENROUTER_API_KEY ? 'configured' : 'not configured'
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
+});
+
+// Mount webhook routes
+app.use('/webhooks', webhookRoutes);
+
 server.listen(PORT, () => {
   console.log(`Backend server with WebSocket support running on port ${PORT}`);
   console.log(`Twilio WebSocket: ws://localhost:${PORT}/voice-websocket`);
   console.log(`WebRTC Voice: ws://localhost:${PORT}/webrtc-voice`);
+  console.log(`Julie AI Voice: ws://localhost:${PORT}/voice/julie/websocket`);
   console.log('Voice webhook endpoint: /voice/incoming');
+  console.log('Julie AI webhook endpoint: /voice/julie/incoming');
   console.log('WebRTC voice ready - no phone numbers needed!');
+  console.log('Julie AI with Moshi integration ready for real-time conversations!');
+  
+  // Start scheduled jobs only in production
+  if (process.env.NODE_ENV === 'production') {
+    scheduledJobs.start();
+    console.log('Scheduled jobs started');
+  }
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM signal received: closing HTTP server');
+  scheduledJobs.stop();
+  server.close(() => {
+    console.log('HTTP server closed');
+  });
 });
