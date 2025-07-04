@@ -11,6 +11,7 @@ import {
   Chip,
   useTheme,
   useMediaQuery,
+  Tooltip,
 } from '@mui/material';
 import {
   Phone as PhoneIcon,
@@ -18,6 +19,9 @@ import {
   Mic as MicIcon,
   MicOff as MicOffIcon,
   VolumeUp as SpeakerIcon,
+  CheckCircle as ConnectedIcon,
+  Error as ErrorIcon,
+  WifiTethering as ConnectingIcon,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -38,6 +42,7 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [transcript, setTranscript] = useState<Array<{role: string, text: string}>>([]);
   const [connectionError, setConnectionError] = useState('');
+  const [connectionStatus, setConnectionStatus] = useState<'disconnected' | 'connecting' | 'connected' | 'error'>('disconnected');
   
   const wsRef = useRef<WebSocket | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
@@ -48,10 +53,13 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
 
   // Initialize audio context
   const initAudioContext = async () => {
+    console.log('[VoiceCall] Initializing audio context...');
     try {
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      console.log('[VoiceCall] Audio context created');
       
       // Get user media
+      console.log('[VoiceCall] Requesting microphone access...');
       mediaStreamRef.current = await navigator.mediaDevices.getUserMedia({ 
         audio: {
           echoCancellation: true,
@@ -59,6 +67,7 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
           autoGainControl: true,
         } 
       });
+      console.log('[VoiceCall] Microphone access granted');
       
       const source = audioContextRef.current.createMediaStreamSource(mediaStreamRef.current);
       processorRef.current = audioContextRef.current.createScriptProcessor(4096, 1, 1);
@@ -92,16 +101,20 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
       
       source.connect(processorRef.current);
       processorRef.current.connect(audioContextRef.current.destination);
+      console.log('[VoiceCall] Audio pipeline established');
       
     } catch (error) {
-      console.error('Audio init error:', error);
+      console.error('[VoiceCall] Audio init error:', error);
       setConnectionError('Microphone access denied');
+      setConnectionStatus('error');
     }
   };
 
   // Start voice call
   const startCall = async () => {
+    console.log('[VoiceCall] Starting call...');
     setIsConnecting(true);
+    setConnectionStatus('connecting');
     setConnectionError('');
     
     try {
@@ -110,59 +123,81 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
       
       // Connect WebSocket
       const wsUrl = apiUrl.replace('http', 'ws') + '/webrtc-voice';
+      console.log('[VoiceCall] Connecting to WebSocket:', wsUrl);
       wsRef.current = new WebSocket(wsUrl);
       
       wsRef.current.onopen = () => {
-        console.log('WebRTC voice connected');
+        console.log('[VoiceCall] WebSocket connected successfully');
         setIsConnecting(false);
         setIsCallActive(true);
+        setConnectionStatus('connected');
         
         // Start call session
+        const sessionId = `web_${Date.now()}`;
+        console.log('[VoiceCall] Starting session:', sessionId);
         wsRef.current!.send(JSON.stringify({
           type: 'start-call',
-          sessionId: `web_${Date.now()}`
+          sessionId: sessionId
         }));
       };
       
       wsRef.current.onmessage = async (event) => {
         const data = JSON.parse(event.data);
+        console.log('[VoiceCall] Received message:', data.type);
         
         switch (data.type) {
+          case 'ready':
+            console.log('[VoiceCall] Server is ready');
+            break;
+            
           case 'transcript':
+            console.log('[VoiceCall] Transcript received:', data.role, data.text);
             setTranscript(prev => [...prev, { role: data.role, text: data.text }]);
             break;
             
           case 'audio-response':
-            // Play audio response
+            console.log('[VoiceCall] Audio response received');
             await playAudioResponse(data.audio, data.sampleRate);
             break;
             
           case 'session-ready':
-            console.log('Voice session ready:', data.sessionId);
+            console.log('[VoiceCall] Session ready:', data.sessionId);
+            // Add a welcome message to the transcript
+            setTranscript(prev => [...prev, { 
+              role: 'assistant', 
+              text: "Hello! I'm Julie from Dr. Pedro's office. How may I assist you today?" 
+            }]);
             break;
             
           case 'call-ended':
+            console.log('[VoiceCall] Call ended by server');
             endCall();
             break;
+            
+          default:
+            console.log('[VoiceCall] Unknown message type:', data.type);
         }
       };
       
       wsRef.current.onerror = (error) => {
-        console.error('WebSocket error:', error);
-        setConnectionError('Connection failed');
+        console.error('[VoiceCall] WebSocket error:', error);
+        setConnectionError('Connection failed - please check your internet connection');
+        setConnectionStatus('error');
         setIsConnecting(false);
       };
       
-      wsRef.current.onclose = () => {
-        console.log('WebSocket closed');
+      wsRef.current.onclose = (event) => {
+        console.log('[VoiceCall] WebSocket closed:', event.code, event.reason);
+        setConnectionStatus('disconnected');
         if (isCallActive) {
           endCall();
         }
       };
       
     } catch (error) {
-      console.error('Call start error:', error);
-      setConnectionError('Failed to start call');
+      console.error('[VoiceCall] Call start error:', error);
+      setConnectionError('Failed to start call - ' + (error as Error).message);
+      setConnectionStatus('error');
       setIsConnecting(false);
     }
   };
@@ -259,25 +294,42 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
               zIndex: 1300,
             }}
           >
-            <Fab
-              color="primary"
-              size="large"
-              onClick={startCall}
-              disabled={isConnecting}
-              sx={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                boxShadow: '0 4px 20px rgba(118, 75, 162, 0.4)',
-                '&:hover': {
-                  transform: 'scale(1.1)',
-                },
-              }}
+            <Tooltip 
+              title={
+                connectionError ? connectionError : 
+                isConnecting ? 'Connecting to Julie...' : 
+                'Start voice call with Julie'
+              }
+              placement="left"
             >
-              {isConnecting ? (
-                <CircularProgress size={24} color="inherit" />
-              ) : (
-                <PhoneIcon />
-              )}
-            </Fab>
+              <Fab
+                color="primary"
+                size="large"
+                onClick={startCall}
+                disabled={isConnecting}
+                data-voice-call-button
+                sx={{
+                  background: connectionError 
+                    ? 'linear-gradient(135deg, #f44336 0%, #d32f2f 100%)'
+                    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: connectionError
+                    ? '0 4px 20px rgba(244, 67, 54, 0.4)'
+                    : '0 4px 20px rgba(118, 75, 162, 0.4)',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                  },
+                  transition: 'all 0.3s ease',
+                }}
+              >
+                {isConnecting ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : connectionError ? (
+                  <ErrorIcon />
+                ) : (
+                  <PhoneIcon />
+                )}
+              </Fab>
+            </Tooltip>
             <Typography
               variant="caption"
               sx={{
@@ -340,6 +392,33 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
             </Box>
             
             <Box display="flex" alignItems="center" gap={1}>
+              {/* Connection Status */}
+              {connectionStatus === 'connecting' && (
+                <Chip
+                  icon={<ConnectingIcon sx={{ animation: 'pulse 1.5s infinite' }} />}
+                  label="Connecting"
+                  size="small"
+                  sx={{ bgcolor: 'rgba(255,255,255,0.2)' }}
+                />
+              )}
+              {connectionStatus === 'connected' && (
+                <Chip
+                  icon={<ConnectedIcon />}
+                  label="Connected"
+                  size="small"
+                  sx={{ bgcolor: 'rgba(76, 175, 80, 0.3)' }}
+                />
+              )}
+              {connectionStatus === 'error' && (
+                <Chip
+                  icon={<ErrorIcon />}
+                  label="Error"
+                  size="small"
+                  sx={{ bgcolor: 'rgba(244, 67, 54, 0.3)' }}
+                />
+              )}
+              
+              {/* Voice Activity */}
               {isListening && (
                 <Chip
                   icon={<MicIcon />}

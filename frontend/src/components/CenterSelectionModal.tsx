@@ -102,6 +102,11 @@ const CenterSelectionModal: React.FC<CenterSelectionModalProps> = ({ open, onClo
     addToJourneyPath(`selected-${centerId}`);
     navigate(`/${centerId}`);
     onClose();
+    
+    // Scroll to top after navigation
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
   };
 
   return (
