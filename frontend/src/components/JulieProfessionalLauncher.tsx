@@ -80,7 +80,7 @@ export const JulieProfessionalLauncher: React.FC = () => {
         border: '2px solid white',
       }}
     >
-      EP3
+      EP³
     </Avatar>
   );
 
@@ -161,7 +161,7 @@ export const JulieProfessionalLauncher: React.FC = () => {
                           display: 'block',
                         }}
                       >
-                        EP3 Certified Medical Assistant
+                        EP³ Certified Medical Assistant
                       </Typography>
                       <Box
                         component={motion.div}
@@ -226,7 +226,7 @@ export const JulieProfessionalLauncher: React.FC = () => {
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1 }}>
                       <Chip 
                         icon={<MedicalIcon sx={{ fontSize: 16 }} />}
-                        label="EP3 Certified"
+                        label="EP³ Certified"
                         size="small"
                         sx={{ 
                           height: 24,
