@@ -8,8 +8,7 @@ import {
   Stack,
   Chip,
 } from '@mui/material';
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
@@ -18,10 +17,29 @@ import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturi
 
 const MeetDrPedroSection = () => {
   const navigate = useNavigate();
-  const [ref, inView] = useInView({ 
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   const highlights = [
     {
@@ -55,10 +73,12 @@ const MeetDrPedroSection = () => {
         <Grid container spacing={6} alignItems="center">
           {/* Image Section */}
           <Grid item xs={12} md={5}>
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.8 }}
+            <div
+              style={{
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'translateX(0)' : 'translateX(-50px)',
+                transition: 'opacity 0.8s ease, transform 0.8s ease'
+              }}
             >
               <Box 
                 sx={{ 
@@ -107,15 +127,17 @@ const MeetDrPedroSection = () => {
                   </Typography>
                 </Box>
               </Box>
-            </motion.div>
+            </div>
           </Grid>
 
           {/* Content Section */}
           <Grid item xs={12} md={7}>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
+            <div
+              style={{
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'translateY(0)' : 'translateY(30px)',
+                transition: 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s'
+              }}
             >
               <Typography
                 variant="h2"
@@ -152,11 +174,13 @@ const MeetDrPedroSection = () => {
               {/* Highlights */}
               <Stack spacing={2} sx={{ mb: 4 }}>
                 {highlights.map((highlight, index) => (
-                  <motion.div
+                  <div
                     key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={inView ? { opacity: 1, x: 0 } : {}}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                    style={{
+                      opacity: inView ? 1 : 0,
+                      transform: inView ? 'translateX(0)' : 'translateX(-20px)',
+                      transition: `opacity 0.5s ease ${0.4 + index * 0.1}s, transform 0.5s ease ${0.4 + index * 0.1}s`
+                    }}
                   >
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Box 
@@ -176,7 +200,7 @@ const MeetDrPedroSection = () => {
                         </Typography>
                       </Box>
                     </Box>
-                  </motion.div>
+                  </div>
                 ))}
               </Stack>
 
@@ -216,7 +240,7 @@ const MeetDrPedroSection = () => {
               >
                 Read Full Biography
               </Button>
-            </motion.div>
+            </div>
           </Grid>
         </Grid>
       </Container>

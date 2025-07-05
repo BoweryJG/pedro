@@ -29,24 +29,24 @@ const HomePage = () => {
       </Box>
       
       {/* Meet Dr. Pedro Section */}
-      <TexturedSection textures={['diagonal', 'grain']} sx={{ className: 'luxury-section' }}>
+      <Box className="luxury-section">
         <MeetDrPedroSection />
-      </TexturedSection>
+      </Box>
       
       {/* Services Section with Alternating Background */}
-      <TexturedSection textures={['dots', 'radial']} sx={{ className: 'luxury-section-alt' }}>
+      <Box className="luxury-section-alt">
         <LuxuryServicesShowcase />
-      </TexturedSection>
+      </Box>
       
       {/* Stats Section with Dark Background */}
-      <TexturedSection textures={['crosshatch', 'grain']} sx={{ className: 'luxury-section-dark' }}>
+      <Box className="luxury-section-dark">
         <LuxuryStatsSection />
-      </TexturedSection>
+      </Box>
       
       {/* Trust Indicators with Normal Background */}
-      <TexturedSection textures={['grid', 'grain']} sx={{ className: 'luxury-section' }}>
+      <Box className="luxury-section">
         <LuxuryTrustIndicators />
-      </TexturedSection>
+      </Box>
       
       {/* Reviews Section with Subtle Background */}
       <Box className="luxury-section-alt">

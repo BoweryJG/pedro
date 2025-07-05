@@ -23,7 +23,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import { GoogleAnalytics } from './components/GoogleAnalytics';
 import DirectAccessPage from './pages/auth/DirectAccessPage';
 import './theme/panerai.css';
-import './styles/enhanced-depth.css';
+import './styles/enhanced-depth-disabled.css';
+import './styles/performance-optimized.css';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
@@ -87,9 +88,7 @@ function App() {
       </Routes>
       {/* Julie Professional Medical Launcher */}
       <JulieProfessionalLauncher />
-      {/* Luxury texture overlays */}
-      <div className="swiss-grid-overlay" />
-      <div className="noise-overlay" />
+      {/* Luxury texture overlays - REMOVED FOR PERFORMANCE */}
     </AuthProvider>
   );
 }

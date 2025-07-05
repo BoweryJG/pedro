@@ -120,7 +120,7 @@ const CenterCarouselHero: React.FC = () => {
         left: nextIndex * cardWidth,
         behavior: 'smooth',
       });
-    }, 5000);
+    }, 8000); // Increased interval to reduce CPU usage
 
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -456,11 +456,11 @@ const CenterCarouselHero: React.FC = () => {
         
         /* Optimize for smooth scrolling */
         .carousel-container {
-          will-change: scroll-position;
+          /* will-change removed for performance */
         }
         
         .carousel-card {
-          will-change: transform, opacity;
+          /* will-change removed for performance */
         }
         
         /* Reduce motion for accessibility */

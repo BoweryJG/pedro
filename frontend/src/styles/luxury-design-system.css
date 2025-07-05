@@ -1,9 +1,7 @@
 /* LUXURY DENTAL DESIGN SYSTEM */
 
 /* Performance Optimizations */
-* {
-  will-change: auto !important;
-}
+/* will-change removed globally for better performance */
 
 html {
   scroll-behavior: smooth;
@@ -21,8 +19,8 @@ body {
 .luxury-section,
 .luxury-section-alt,
 .luxury-section-dark {
-  contain: layout style;
-  transform: translateZ(0);
+  contain: layout;
+  /* transform removed for better performance */
 }
 
 /* Reduce motion for better performance */
@@ -353,17 +351,9 @@ p {
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
 }
 
-/* Enhanced Noise Overlay - Subtle */
+/* Enhanced Noise Overlay - DISABLED FOR PERFORMANCE */
 .noise-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0.02;
-  z-index: 1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5' /%3E%3C/svg%3E");
+  display: none;
 }
 
 /* Custom Scrollbar */

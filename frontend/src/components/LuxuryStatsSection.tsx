@@ -7,8 +7,7 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import CountUp from 'react-countup';
 
 const stats = [
@@ -46,7 +45,28 @@ const LuxuryStatsSection: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [isInView, setIsInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) {
+        observer.unobserve(ref.current);
+      }
+    };
+  }, []);
 
   return (
     <Box
@@ -78,10 +98,12 @@ const LuxuryStatsSection: React.FC = () => {
 
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+        <div
+          style={{
+            opacity: isInView ? 1 : 0,
+            transform: isInView ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'opacity 0.8s ease, transform 0.8s ease'
+          }}
         >
           <Box sx={{ textAlign: 'center', mb: 8 }}>
             <Typography
@@ -109,16 +131,18 @@ const LuxuryStatsSection: React.FC = () => {
               Numbers That Define Excellence
             </Typography>
           </Box>
-        </motion.div>
+        </div>
 
         {/* Stats Grid */}
         <Grid container spacing={4}>
           {stats.map((stat, index) => (
             <Grid item xs={6} md={3} key={index}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
+              <div
+                style={{
+                  opacity: isInView ? 1 : 0,
+                  transform: isInView ? 'translateY(0)' : 'translateY(30px)',
+                  transition: `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`
+                }}
               >
                 <Box
                   sx={{
@@ -205,7 +229,7 @@ const LuxuryStatsSection: React.FC = () => {
                     {stat.description}
                   </Typography>
                 </Box>
-              </motion.div>
+              </div>
             </Grid>
           ))}
         </Grid>

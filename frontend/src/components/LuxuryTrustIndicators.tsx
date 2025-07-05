@@ -8,7 +8,6 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import { motion } from 'framer-motion';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import SchoolIcon from '@mui/icons-material/School';
@@ -69,12 +68,7 @@ const LuxuryTrustIndicators: React.FC = () => {
     >
       <Container maxWidth="lg">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <Box sx={{ textAlign: 'center', mb: 8 }}>
             <Typography
               variant="overline"
@@ -115,19 +109,13 @@ const LuxuryTrustIndicators: React.FC = () => {
               Recognized excellence backed by prestigious certifications and continuous innovation
             </Typography>
           </Box>
-        </motion.div>
+        </div>
 
         {/* Trust Indicators Grid */}
         <Grid container spacing={3}>
           {trustIndicators.map((indicator, index) => (
             <Grid item xs={6} md={4} key={index}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -5 }}
-              >
+              <div>
                 <Paper
                   elevation={0}
                   sx={{
@@ -212,18 +200,13 @@ const LuxuryTrustIndicators: React.FC = () => {
                     {indicator.description}
                   </Typography>
                 </Paper>
-              </motion.div>
+              </div>
             </Grid>
           ))}
         </Grid>
 
         {/* Bottom CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
+        <div>
           <Box
             sx={{
               mt: 8,
@@ -259,7 +242,7 @@ const LuxuryTrustIndicators: React.FC = () => {
               Join our family of patients who trust us with their most precious asset - their smile
             </Typography>
           </Box>
-        </motion.div>
+        </div>
       </Container>
     </Box>
   );

@@ -11,7 +11,6 @@ import {
   useMediaQuery,
   Chip,
 } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { useNavigate } from 'react-router-dom';
 
@@ -71,12 +70,7 @@ const LuxuryServicesShowcase: React.FC = () => {
     >
       <Container maxWidth="lg">
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <Box sx={{ textAlign: 'center', mb: 8 }}>
             <Typography
               variant="overline"
@@ -117,19 +111,15 @@ const LuxuryServicesShowcase: React.FC = () => {
               Each center represents the pinnacle of its specialty, equipped with cutting-edge technology and staffed by world-class experts
             </Typography>
           </Box>
-        </motion.div>
+        </div>
 
         {/* Services Grid */}
         <Grid container spacing={4}>
           {services.map((service, index) => (
             <Grid item xs={12} md={6} key={service.id}>
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                onHoverStart={() => setHoveredService(service.id)}
-                onHoverEnd={() => setHoveredService(null)}
+              <div
+                onMouseEnter={() => setHoveredService(service.id)}
+                onMouseLeave={() => setHoveredService(null)}
               >
                 <Card
                   onClick={() => navigate(service.route)}
@@ -269,7 +259,7 @@ const LuxuryServicesShowcase: React.FC = () => {
                     </Box>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             </Grid>
           ))}
         </Grid>

@@ -11,7 +11,6 @@ import {
   useMediaQuery,
   IconButton,
 } from '@mui/material';
-import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper/modules';
 import 'swiper/css';
@@ -109,12 +108,7 @@ const LuxuryGoogleReviews: React.FC = () => {
 
       <Container maxWidth="lg" sx={{ position: 'relative' }}>
         {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <Box sx={{ textAlign: 'center', mb: 8 }}>
             <Box
               sx={{
@@ -169,7 +163,7 @@ const LuxuryGoogleReviews: React.FC = () => {
               </Typography>
             </Box>
           </Box>
-        </motion.div>
+        </div>
 
         {/* Reviews Carousel */}
         <Box
@@ -243,12 +237,7 @@ const LuxuryGoogleReviews: React.FC = () => {
           >
             {googleReviews.map((review, index) => (
               <SwiperSlide key={review.id}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
+                <div>
                   <Card
                     sx={{
                       height: '100%',
@@ -335,7 +324,7 @@ const LuxuryGoogleReviews: React.FC = () => {
                       </Typography>
                     </CardContent>
                   </Card>
-                </motion.div>
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -350,12 +339,7 @@ const LuxuryGoogleReviews: React.FC = () => {
         </Box>
 
         {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-        >
+        <div>
           <Box sx={{ textAlign: 'center', mt: 6 }}>
             <Typography
               variant="body1"
@@ -397,7 +381,7 @@ const LuxuryGoogleReviews: React.FC = () => {
               Write a Review
             </Box>
           </Box>
-        </motion.div>
+        </div>
       </Container>
     </Box>
   );
