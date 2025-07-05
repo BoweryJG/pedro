@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Tabs, Tab, Typography, Container, Button, Dialog } from '@mui/material';
-import { motion, AnimatePresence } from 'framer-motion';
+// Removed framer-motion for better performance
 import DentalDashboard from '../components/dashboard/DentalDashboard';
 import DailySchedule from '../components/dashboard/Schedule/DailySchedule';
 import WeeklyOverview from '../components/dashboard/Schedule/WeeklyOverview';
@@ -36,17 +36,7 @@ function TabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {children}
-            </motion.div>
-          </AnimatePresence>
+          {children}
         </Box>
       )}
     </div>
@@ -62,18 +52,17 @@ const DashboardPage: React.FC = () => {
   const [practiceId] = useState('tsmtaarwgodklafqlbhm'); // Dr. Pedro's practice ID
 
   useEffect(() => {
-    // Initialize analytics service
-    const analyticsService = new AnalyticsService(practiceId);
-    setAnalytics(analyticsService);
-
-    // Start real-time tracking
-    analyticsService.startRealtimeTracking();
-
-    return () => {
-      // Cleanup subscriptions
-      analyticsService.cleanup();
-    };
-  }, [practiceId]);
+    // Only initialize analytics when Analytics tab is active
+    if (tabValue === 4) { // Analytics tab index
+      const analyticsService = new AnalyticsService(practiceId);
+      setAnalytics(analyticsService);
+      analyticsService.startRealtimeTracking();
+      
+      return () => {
+        analyticsService.cleanup();
+      };
+    }
+  }, [practiceId, tabValue]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -99,11 +88,7 @@ const DashboardPage: React.FC = () => {
       }}
     >
       <Container maxWidth="xl">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+        <div>
           <Typography
             variant="h2"
             component="h1"
@@ -131,7 +116,7 @@ const DashboardPage: React.FC = () => {
           >
             Luxury Analytics • Real-Time Insights • Precision Management
           </Typography>
-        </motion.div>
+        </div>
 
         <Box sx={{ borderBottom: 1, borderColor: 'rgba(255, 255, 255, 0.1)', mb: 3 }}>
           <Tabs
@@ -289,48 +274,43 @@ const DashboardPage: React.FC = () => {
         <TabPanel value={tabValue} index={8}>
           <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 3 }}>
             {['TMJ', 'Implants', 'Robotic', 'MedSpa'].map((subdomain) => (
-              <motion.div
+              <Box
                 key={subdomain}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                onClick={() => openSubdomainDashboard(subdomain)}
+                sx={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  borderRadius: 3,
+                  p: 4,
+                  cursor: 'pointer',
+                  transition: 'transform 0.2s ease',
+                  '&:hover': {
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    borderColor: 'rgba(255, 255, 255, 0.2)',
+                    transform: 'translateY(-2px)',
+                  },
+                }}
               >
-                <Box
-                  onClick={() => openSubdomainDashboard(subdomain)}
+                <Typography
+                  variant="h4"
                   sx={{
-                    background: 'rgba(255, 255, 255, 0.05)',
-                    backdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.1)',
-                    borderRadius: 3,
-                    p: 4,
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      background: 'rgba(255, 255, 255, 0.08)',
-                      borderColor: 'rgba(255, 255, 255, 0.2)',
-                      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.2)',
-                    },
+                    color: 'white',
+                    mb: 2,
+                    fontWeight: 700,
                   }}
                 >
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      color: 'white',
-                      mb: 2,
-                      fontWeight: 700,
-                    }}
-                  >
-                    {subdomain}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: 'rgba(255, 255, 255, 0.7)',
-                    }}
-                  >
-                    View detailed analytics and metrics
-                  </Typography>
-                </Box>
-              </motion.div>
+                  {subdomain}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: 'rgba(255, 255, 255, 0.7)',
+                  }}
+                >
+                  View detailed analytics and metrics
+                </Typography>
+              </Box>
             ))}
           </Box>
         </TabPanel>
