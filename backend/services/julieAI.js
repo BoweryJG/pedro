@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Buffer } from 'buffer';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import calendarService from './calendarService.js';
 
 dotenv.config();
 
@@ -367,11 +368,45 @@ class MoshiVoiceInterface {
       return questions[missingInfo[0]] || "Let me get a few details for your appointment.";
     }
     
+    // Check if we need to reschedule due to unavailable slot
+    if (connection.context.needsReschedule) {
+      const slots = connection.context.alternativeSlots;
+      const slotsMessage = calendarService.formatSlotsForConversation(slots);
+      connection.context.needsReschedule = false;
+      return `I'm sorry, that time isn't available. ${slotsMessage} Would any of these work instead?`;
+    }
+    
     // All info collected, confirm appointment
     if (connection.context.isAppointmentReady()) {
-      const slots = await this.getAvailableSlots();
+      // If we have a specific time preference, try to book it
+      if (connection.context.patientInfo.dayPreference && connection.context.patientInfo.timePreference) {
+        try {
+          const appointment = await this.bookAppointment(connection);
+          const appointmentDate = new Date(appointment.appointment_date);
+          const formattedDate = appointmentDate.toLocaleDateString('en-US', {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: '2-digit',
+            timeZone: 'America/Chicago'
+          });
+          return `Perfect! I've booked your appointment for ${formattedDate}. ` +
+                 `You'll receive a confirmation text shortly at ${connection.context.patientInfo.phone}.`;
+        } catch (error) {
+          if (error.message === 'Slot not available' && connection.context.needsReschedule) {
+            return await this.handleAppointmentBooking(connection);
+          }
+          console.error('Booking error:', error);
+        }
+      }
+      
+      // Otherwise, offer available slots
+      const providerId = process.env.DEFAULT_PROVIDER_ID;
+      const slots = await calendarService.getNextAvailableSlots(providerId, 3);
+      const slotsMessage = calendarService.formatSlotsForConversation(slots);
       return `Perfect! I have you down for ${connection.context.patientInfo.concern}. ` +
-             `I can offer ${slots[0]} or ${slots[1]}. Which works better?`;
+             `${slotsMessage} Which works better?`;
     }
   }
 
@@ -493,25 +528,52 @@ class MoshiVoiceInterface {
     }
   }
 
-  async getAvailableSlots() {
-    // In production, this would query the actual appointment system
-    const slots = [
-      "tomorrow at 2:00 PM",
-      "Thursday at 10:00 AM",
-      "Friday at 3:30 PM"
-    ];
-    
-    return slots;
+  async getAvailableSlots(providerId = process.env.DEFAULT_PROVIDER_ID) {
+    try {
+      // Get next 3 available slots
+      const slots = await calendarService.getNextAvailableSlots(providerId, 3);
+      
+      if (slots.length === 0) {
+        return ["I'm checking our schedule... Let me find some alternatives."];
+      }
+      
+      // Format slots for conversation
+      return calendarService.formatSlotsForConversation(slots);
+    } catch (error) {
+      console.error('Error getting available slots:', error);
+      return ["tomorrow at 2:00 PM", "Thursday at 10:00 AM", "Friday at 3:30 PM"];
+    }
   }
 
   async bookAppointment(connection) {
     try {
+      // Parse appointment time from context
+      const appointmentTime = await this.parseAppointmentTime(
+        connection.context.patientInfo.dayPreference,
+        connection.context.patientInfo.timePreference
+      );
+      
+      // Check if slot is available
+      const providerId = process.env.DEFAULT_PROVIDER_ID;
+      const isAvailable = await calendarService.isSlotAvailable(
+        providerId,
+        appointmentTime
+      );
+      
+      if (!isAvailable) {
+        // Find alternative slots
+        const alternatives = await calendarService.getNextAvailableSlots(providerId, 3);
+        connection.context.needsReschedule = true;
+        connection.context.alternativeSlots = alternatives;
+        throw new Error('Slot not available');
+      }
+      
       const appointment = {
         patient_name: connection.context.patientInfo.name,
         patient_phone: connection.context.patientInfo.phone,
         patient_email: connection.context.patientInfo.email || null,
         service_type: this.mapConcernToService(connection.context.patientInfo.concern),
-        appointment_date: this.calculateAppointmentDate(connection.context.patientInfo),
+        appointment_date: appointmentTime.toISOString(),
         status: 'confirmed',
         notes: connection.context.patientInfo.concern,
         booked_via: 'julie_ai_voice',
@@ -525,6 +587,19 @@ class MoshiVoiceInterface {
         .single();
         
       if (error) throw error;
+      
+      // Book the calendar slot
+      const bookingResult = await calendarService.bookSlot(
+        providerId,
+        appointmentTime,
+        data.id
+      );
+      
+      if (!bookingResult.success) {
+        // Rollback appointment
+        await supabase.from('appointments').delete().eq('id', data.id);
+        throw new Error(bookingResult.error);
+      }
       
       // Send confirmation SMS
       await this.sendAppointmentConfirmation(data);
@@ -556,45 +631,30 @@ class MoshiVoiceInterface {
     return 'consultation';
   }
 
-  calculateAppointmentDate(patientInfo) {
-    const now = new Date();
-    const dayMap = {
-      'tomorrow': 1,
-      'monday': 1,
-      'tuesday': 2,
-      'wednesday': 3,
-      'thursday': 4,
-      'friday': 5
-    };
+  async parseAppointmentTime(dayPreference, timePreference) {
+    // Use calendar service to parse natural language
+    const timeRef = `${dayPreference} ${timePreference || ''}`;
+    const parsed = calendarService.parseTimeReference(timeRef);
     
-    // Simple date calculation - in production would check actual availability
-    if (patientInfo.dayPreference === 'tomorrow') {
-      now.setDate(now.getDate() + 1);
-    } else if (patientInfo.dayPreference === 'today') {
-      // Keep current date
-    } else if (dayMap[patientInfo.dayPreference]) {
-      // Calculate next occurrence of the specified day
-      const targetDay = dayMap[patientInfo.dayPreference];
-      const currentDay = now.getDay();
-      const daysUntilTarget = (targetDay - currentDay + 7) % 7 || 7;
-      now.setDate(now.getDate() + daysUntilTarget);
+    let appointmentDate = parsed.date;
+    
+    // Set time based on preference or parsed time
+    if (parsed.hour !== null) {
+      appointmentDate.setHours(parsed.hour, parsed.minute, 0, 0);
     } else {
-      // Default to next business day
-      now.setDate(now.getDate() + 1);
+      // Default times based on preference
+      if (timePreference === 'morning') {
+        appointmentDate.setHours(10, 0, 0, 0);
+      } else if (timePreference === 'afternoon') {
+        appointmentDate.setHours(14, 0, 0, 0);
+      } else if (timePreference === 'evening') {
+        appointmentDate.setHours(17, 0, 0, 0);
+      } else {
+        appointmentDate.setHours(14, 0, 0, 0); // Default to 2 PM
+      }
     }
     
-    // Set time based on preference
-    if (patientInfo.timePreference === 'morning') {
-      now.setHours(10, 0, 0, 0);
-    } else if (patientInfo.timePreference === 'afternoon') {
-      now.setHours(14, 0, 0, 0);
-    } else if (patientInfo.timePreference === 'evening') {
-      now.setHours(17, 0, 0, 0);
-    } else {
-      now.setHours(14, 0, 0, 0); // Default to 2 PM
-    }
-    
-    return now.toISOString();
+    return appointmentDate;
   }
 
   async sendAppointmentConfirmation(appointment) {
