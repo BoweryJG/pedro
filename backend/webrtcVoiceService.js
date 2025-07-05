@@ -75,11 +75,14 @@ class WebRTCVoiceService extends VoiceService {
     if (this.supabase) {
       try {
         const { data, error } = await this.supabase
-          .from('voice_calls')
+          .from('call_logs')
           .insert({
-            session_id: connection.sessionId,
-            call_type: 'webrtc',
-            transcript: []
+            call_sid: connection.sessionId,
+            from_number: 'WebRTC',
+            to_number: 'WebRTC',
+            direction: 'inbound',
+            status: 'in_progress',
+            created_at: new Date().toISOString()
           })
           .select()
           .single();
@@ -214,10 +217,10 @@ class WebRTCVoiceService extends VoiceService {
     if (this.supabase && connection.dbRecordId) {
       try {
         await this.supabase
-          .from('voice_calls')
+          .from('call_logs')
           .update({
-            transcript: connection.transcript,
-            patient_info: connection.conversationManager.state.patientInfo
+            transcription: JSON.stringify(connection.transcript),
+            ai_summary: `Conversation in progress... ${connection.transcript.length} messages`
           })
           .eq('id', connection.dbRecordId);
       } catch (err) {
@@ -265,15 +268,13 @@ class WebRTCVoiceService extends VoiceService {
           const summary = this.generateCallSummary(connection);
           
           await this.supabase
-            .from('voice_calls')
+            .from('call_logs')
             .update({
               ended_at: new Date().toISOString(),
-              duration_seconds: duration,
-              transcript: connection.transcript,
-              patient_info: connection.conversationManager.state.patientInfo,
-              summary,
-              appointment_booked: connection.conversationManager.state.appointmentDetails?.confirmed || false,
-              appointment_details: connection.conversationManager.state.appointmentDetails
+              duration: duration,
+              status: 'completed',
+              transcription: JSON.stringify(connection.transcript),
+              ai_summary: summary
             })
             .eq('id', connection.dbRecordId);
         } catch (err) {
