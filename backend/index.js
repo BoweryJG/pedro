@@ -9,10 +9,12 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import VoiceService from './voiceService.js';
 import WebRTCVoiceService from './webrtcVoiceService.js';
+import DeepgramVoiceService from './deepgramVoiceService.js';
 import VoIPService from './src/services/voipService.js';
 import ScheduledJobsService from './src/services/scheduledJobs.js';
 import julieAI from './services/julieAI.js';
 import webhookRoutes from './src/routes/webhooks.js';
+import phoneNumberRoutes from './routes/phoneNumbers.js';
 
 // Load environment variables
 dotenv.config();
@@ -81,7 +83,7 @@ const webrtcWss = new WebSocketServer({
 });
 
 // Initialize voice services
-const voiceService = new VoiceService();
+const voiceService = new DeepgramVoiceService(); // Using Deepgram for phone calls
 const webrtcVoiceService = new WebRTCVoiceService();
 const voipService = new VoIPService();
 const scheduledJobs = new ScheduledJobsService();
@@ -435,14 +437,61 @@ app.post('/insurance/zuub', async (req, res) => {
 });
 
 // WebSocket connection handler for Twilio Media Streams
-wss.on('connection', (ws, req) => {
+wss.on('connection', async (ws, req) => {
   console.log('New WebSocket connection for voice');
   
   // Extract call SID from query params or headers
   const url = new URL(req.url, `http://${req.headers.host}`);
   const callSid = url.searchParams.get('callSid') || `call_${Date.now()}`;
   
-  voiceService.handleConnection(ws, callSid);
+  let deepgramConnection = null;
+  
+  // Handle Twilio Media Stream messages
+  ws.on('message', async (message) => {
+    const msg = JSON.parse(message);
+    
+    switch (msg.event) {
+      case 'start':
+        console.log('Twilio Media Stream started', msg.start);
+        // Initialize Deepgram connection
+        deepgramConnection = await voiceService.handleIncomingCall(
+          callSid,
+          msg.start.customParameters.from || 'Unknown',
+          msg.start.customParameters.to || voiceService.twilioPhoneNumber,
+          ws // Pass Twilio WebSocket for sending audio back
+        );
+        // Store streamSid for sending audio back
+        if (deepgramConnection) {
+          deepgramConnection.streamSid = msg.start.streamSid;
+        }
+        voiceService.startKeepAlive(callSid);
+        break;
+        
+      case 'media':
+        // Forward audio to Deepgram
+        if (deepgramConnection && msg.media.payload) {
+          const audioData = Buffer.from(msg.media.payload, 'base64');
+          await voiceService.streamAudio(callSid, audioData);
+        }
+        break;
+        
+      case 'stop':
+        console.log('Twilio Media Stream stopped');
+        voiceService.stopKeepAlive(callSid);
+        await voiceService.endCall(callSid);
+        break;
+    }
+  });
+  
+  ws.on('close', () => {
+    console.log('Twilio WebSocket closed');
+    voiceService.stopKeepAlive(callSid);
+    voiceService.endCall(callSid);
+  });
+  
+  ws.on('error', (error) => {
+    console.error('Twilio WebSocket error:', error);
+  });
 });
 
 // WebRTC Voice connection handler - No phone numbers needed!
@@ -809,6 +858,9 @@ app.get('/api/julie/health', async (req, res) => {
 
 // Mount webhook routes
 app.use('/webhooks', webhookRoutes);
+
+// Mount phone number management routes
+app.use('/api/phone-numbers', phoneNumberRoutes);
 
 server.listen(PORT, () => {
   console.log(`Backend server with WebSocket support running on port ${PORT}`);

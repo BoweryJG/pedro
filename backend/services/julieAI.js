@@ -212,18 +212,18 @@ Remember: You're having a real-time voice conversation. Be natural, brief, and h
 // Moshi Voice Integration
 class MoshiVoiceInterface {
   constructor() {
-    this.moshiUrl = process.env.MOSHI_API_URL || 'wss://moshi.kyutai.org/api/v1/stream';
-    this.moshiApiKey = process.env.MOSHI_API_KEY;
+    this.moshiUrl = process.env.MOSHI_API_URL || 'wss://api.deepgram.com/v1/speak';
+    this.deepgramApiKey = process.env.DEEPGRAM_API_KEY;
     this.connections = new Map();
     this.openRouterKey = process.env.OPENROUTER_API_KEY;
   }
 
   async connect(sessionId) {
     return new Promise((resolve, reject) => {
-      const ws = new WebSocket(this.moshiUrl, {
+      const ws = new WebSocket(`${this.moshiUrl}?model=moshi&encoding=linear16&sample_rate=16000&channels=1`, {
         headers: {
-          'Authorization': `Bearer ${this.moshiApiKey}`,
-          'X-Session-ID': sessionId
+          'Authorization': `Token ${this.deepgramApiKey}`,
+          'Content-Type': 'audio/l16; rate=16000; channels=1'
         }
       });
 

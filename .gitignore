@@ -64,3 +64,11 @@ Thumbs.db
 # Testing and deployment check files
 check-deployment.js
 screenshots/
+
+# Local test scripts with secrets
+check-twilio-status.js
+test-sid.js
+test-twilio-creds.js
+update-twilio-webhooks.js
+run-twilio-mcp.sh
+*-test-*.js
