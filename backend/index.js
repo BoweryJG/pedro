@@ -856,6 +856,94 @@ app.get('/api/julie/health', async (req, res) => {
   }
 });
 
+// Call transcripts API endpoint
+app.get('/api/voice/transcripts', async (req, res) => {
+  try {
+    const { limit = 50, client_id } = req.query;
+    
+    // Create Supabase client
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      return res.status(500).json({ error: 'Supabase not configured' });
+    }
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    // Build query
+    let query = supabase
+      .from('call_logs')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(parseInt(limit));
+    
+    // Filter by client if specified
+    if (client_id) {
+      query = query.eq('client_id', client_id);
+    }
+    
+    const { data, error } = await query;
+    
+    if (error) {
+      console.error('Error fetching transcripts:', error);
+      return res.status(500).json({ error: 'Failed to fetch transcripts' });
+    }
+    
+    // Parse transcription JSON strings back to objects
+    const transcripts = data.map(call => ({
+      ...call,
+      transcription: call.transcription ? JSON.parse(call.transcription) : null
+    }));
+    
+    res.json({ transcripts });
+  } catch (error) {
+    console.error('Transcript API error:', error);
+    res.status(500).json({ error: 'Failed to fetch transcripts' });
+  }
+});
+
+// Single call transcript API endpoint
+app.get('/api/voice/transcripts/:callSid', async (req, res) => {
+  try {
+    const { callSid } = req.params;
+    
+    // Create Supabase client
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+    
+    if (!supabaseUrl || !supabaseKey) {
+      return res.status(500).json({ error: 'Supabase not configured' });
+    }
+    
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    
+    const { data, error } = await supabase
+      .from('call_logs')
+      .select('*')
+      .eq('call_sid', callSid)
+      .single();
+    
+    if (error) {
+      console.error('Error fetching transcript:', error);
+      return res.status(404).json({ error: 'Call not found' });
+    }
+    
+    // Parse transcription JSON string back to object
+    const transcript = {
+      ...data,
+      transcription: data.transcription ? JSON.parse(data.transcription) : null
+    };
+    
+    res.json({ transcript });
+  } catch (error) {
+    console.error('Single transcript API error:', error);
+    res.status(500).json({ error: 'Failed to fetch transcript' });
+  }
+});
+
 // Mount webhook routes
 app.use('/webhooks', webhookRoutes);
 

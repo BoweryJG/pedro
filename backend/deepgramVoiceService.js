@@ -251,15 +251,15 @@ class DeepgramVoiceService extends VoiceService {
       let dbRecordId = null;
       if (this.supabase) {
         const { data, error } = await this.supabase
-          .from('voice_calls')
+          .from('call_logs')
           .insert({
             call_sid: callSid,
             from_number: from,
             to_number: to,
-            call_type: 'phone',
+            direction: 'inbound',
             status: 'in_progress',
-            started_at: new Date().toISOString(),
-            client_id: clientId
+            client_id: clientId,
+            created_at: new Date().toISOString()
           })
           .select()
           .single();
@@ -313,16 +313,13 @@ class DeepgramVoiceService extends VoiceService {
           const summary = this.generateCallSummary(connection);
           
           await this.supabase
-            .from('voice_calls')
+            .from('call_logs')
             .update({
               ended_at: new Date().toISOString(),
-              duration_seconds: duration,
+              duration: duration,
               status: 'completed',
-              transcript: connection.transcript,
-              patient_info: connection.conversationManager.state.patientInfo,
-              summary,
-              appointment_booked: connection.conversationManager.state.appointmentDetails?.confirmed || false,
-              appointment_details: connection.conversationManager.state.appointmentDetails
+              transcription: JSON.stringify(connection.transcript),
+              ai_summary: summary
             })
             .eq('id', connection.dbRecordId);
         } catch (err) {
