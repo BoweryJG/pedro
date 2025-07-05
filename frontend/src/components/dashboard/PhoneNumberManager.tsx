@@ -79,10 +79,16 @@ const PhoneNumberManager: React.FC = () => {
   const fetchManagedNumbers = async () => {
     try {
       const response = await fetch('/api/phone-numbers/managed');
+      if (!response.ok) {
+        console.log('Phone numbers API not available yet');
+        return;
+      }
       const data = await response.json();
-      setPhoneNumbers(data.numbers);
+      setPhoneNumbers(data.numbers || []);
     } catch (error) {
       console.error('Error fetching numbers:', error);
+      // Don't crash, just show empty state
+      setPhoneNumbers([]);
     }
   };
 

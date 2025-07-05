@@ -81,11 +81,15 @@ const VoiceAISettings: React.FC = () => {
         .eq('category', 'voice_ai')
         .single();
 
-      if (data) {
+      if (error && error.code === '42P01') {
+        // Table doesn't exist yet
+        console.log('Settings table not created yet');
+      } else if (data) {
         setSettings(data.settings);
       }
     } catch (error) {
       console.error('Error loading settings:', error);
+      // Don't crash, just use defaults
     } finally {
       setLoading(false);
     }
