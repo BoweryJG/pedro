@@ -25,7 +25,7 @@ import {
   Visibility as VisibilityIcon,
   VisibilityOff as VisibilityOffIcon,
   Save as SaveIcon,
-  TestTube as TestIcon,
+  Science as TestIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';
 import { useSupabase } from '../../hooks/useSupabase';
