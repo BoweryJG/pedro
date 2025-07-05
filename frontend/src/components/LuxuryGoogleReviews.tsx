@@ -369,7 +369,7 @@ const LuxuryGoogleReviews: React.FC = () => {
             </Typography>
             <Box
               component="a"
-              href="https://g.page/r/YOUR_GOOGLE_BUSINESS_ID/review"
+              href="https://g.co/kgs/i2wudJJ"
               target="_blank"
               rel="noopener noreferrer"
               sx={{

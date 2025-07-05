@@ -45,13 +45,34 @@ const Footer = () => {
               Enhanced by Julie EPT⁴ - available 24/7 for your convenience.
             </Typography>
             <Stack direction="row" spacing={1}>
-              <IconButton color="primary" size="small">
+              <IconButton 
+                color="primary" 
+                size="small"
+                href="https://www.facebook.com/drpedrodental"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our Facebook page"
+              >
                 <FacebookIcon />
               </IconButton>
-              <IconButton color="primary" size="small">
+              <IconButton 
+                color="primary" 
+                size="small"
+                href="https://www.instagram.com/drpedrodental"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our Instagram page"
+              >
                 <InstagramIcon />
               </IconButton>
-              <IconButton color="primary" size="small">
+              <IconButton 
+                color="primary" 
+                size="small"
+                href="https://www.linkedin.com/in/drpedro"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit our LinkedIn profile"
+              >
                 <LinkedInIcon />
               </IconButton>
             </Stack>
@@ -62,6 +83,22 @@ const Footer = () => {
               Contact Information
             </Typography>
             <Stack spacing={2}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <PhoneIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
+                <Link 
+                  href={`tel:${CONTACT_INFO.phone.raw}`}
+                  color="inherit"
+                  underline="hover"
+                  sx={{ 
+                    textDecoration: 'none',
+                    '&:hover': { color: 'primary.main' }
+                  }}
+                >
+                  <Typography variant="body2">
+                    {CONTACT_INFO.phone.display}
+                  </Typography>
+                </Link>
+              </Box>
               <Button
                 onClick={toggleChat}
                 sx={{ 
@@ -85,9 +122,19 @@ const Footer = () => {
               </Button>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <EmailIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />
-                <Typography variant="body2">
-                  {CONTACT_INFO.emails.suite.info}
-                </Typography>
+                <Link 
+                  href={`mailto:${CONTACT_INFO.emails.suite.info}`}
+                  color="inherit"
+                  underline="hover"
+                  sx={{ 
+                    textDecoration: 'none',
+                    '&:hover': { color: 'primary.main' }
+                  }}
+                >
+                  <Typography variant="body2">
+                    {CONTACT_INFO.emails.suite.info}
+                  </Typography>
+                </Link>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <LocationOnIcon sx={{ mr: 1, color: 'primary.main', fontSize: 20 }} />

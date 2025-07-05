@@ -10,6 +10,8 @@ import ContactPage from './pages/ContactPage';
 import SmileSimulatorPage from './pages/SmileSimulatorPage';
 import InstagramDashboard from './components/InstagramDashboard';
 import TestBooking from './pages/TestBooking';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
 import { JulieProfessionalLauncher } from './components/JulieProfessionalLauncher';
 import ScrollToTop from './components/ScrollToTop';
 import { useMediaQuery, useTheme } from '@mui/material';
@@ -51,6 +53,8 @@ function App() {
           <Route path="contact" element={<ContactPage />} />
           <Route path="instagram-dashboard" element={<InstagramDashboard />} />
           <Route path="booking" element={<TestBooking />} />
+          <Route path="privacy" element={<PrivacyPage />} />
+          <Route path="terms" element={<TermsPage />} />
           
           {/* Subdomain Routes */}
           <Route path="tmj/*" element={<TMJSubdomainPage />} />

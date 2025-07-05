@@ -104,7 +104,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
   const navItems = [
     { label: 'About', path: '/about' },
     { label: 'Services', path: '/services' },
-    { label: 'Technology', path: '/yomi' },
+    { label: 'Technology', path: '/yomi-robotic-surgery' },
     { label: 'Results', path: '/smile-simulator' },
     { label: 'Contact', path: '/contact' },
   ];
