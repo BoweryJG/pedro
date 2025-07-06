@@ -1,0 +1,157 @@
+/* Bodoni Moda Typography System - Fashion-Forward Design */
+
+/* Import Bodoni Moda with all weights and optical sizes */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,500;1,6..96,600;1,6..96,700;1,6..96,800;1,6..96,900&display=swap');
+
+/* Typography Classes for Hero Sections */
+.hero-h1 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-weight: 900;
+  font-optical-sizing: 96;
+  font-size: clamp(3rem, 8vw, 5rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+.hero-h2 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-weight: 800;
+  font-optical-sizing: 72;
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+.hero-h3 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  font-weight: 700;
+  font-optical-sizing: 48;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: 'liga' 1, 'kern' 1;
+}
+
+/* Subdomain Variations */
+.tmj-typography h1,
+.tmj-typography h2,
+.tmj-typography h3 {
+  letter-spacing: -0.02em !important; /* Tighter for precision */
+}
+
+.medspa-typography h1,
+.medspa-typography h2,
+.medspa-typography h3 {
+  letter-spacing: 0.05em !important; /* Generous for luxury */
+  font-weight: 700 !important;
+}
+
+.robotic-typography h1,
+.robotic-typography h2,
+.robotic-typography h3 {
+  font-stretch: condensed;
+  letter-spacing: -0.03em !important;
+  font-weight: 900 !important;
+}
+
+/* Button Typography System */
+.luxury-button-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.tmj-button-text {
+  letter-spacing: 0.08em;
+}
+
+.medspa-button-text {
+  letter-spacing: 0.12em;
+  font-weight: 500;
+}
+
+.robotic-button-text {
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+/* Editorial Classes for Special Use */
+.fashion-headline {
+  font-family: 'Bodoni Moda', Georgia, serif;
+  font-weight: 900;
+  font-optical-sizing: 96;
+  font-size: clamp(4rem, 12vw, 10rem);
+  letter-spacing: -0.05em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.vogue-subheading {
+  font-family: 'Bodoni Moda', Georgia, serif;
+  font-weight: 400;
+  font-style: italic;
+  font-optical-sizing: 48;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+}
+
+.luxury-body-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  font-size: 1.125rem;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+/* Loading State for Font */
+.font-loading {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.font-loaded {
+  opacity: 1;
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .hero-h1 {
+    font-size: clamp(2.5rem, 10vw, 3.5rem);
+    letter-spacing: -0.01em;
+  }
+  
+  .hero-h2 {
+    font-size: clamp(2rem, 8vw, 2.75rem);
+    letter-spacing: 0;
+  }
+  
+  .hero-h3 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    letter-spacing: 0.01em;
+  }
+  
+  .fashion-headline {
+    font-size: clamp(3rem, 15vw, 6rem);
+    letter-spacing: -0.03em;
+  }
+}
+
+/* Print Typography */
+@media print {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: Georgia, 'Times New Roman', serif;
+    page-break-after: avoid;
+  }
+  
+  button {
+    font-family: Arial, sans-serif;
+  }
+}

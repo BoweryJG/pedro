@@ -16,6 +16,34 @@ body {
   background-color: #FAFAFA;
 }
 
+/* TMJ Subdomain Typography - Precision Focus */
+h1, h2, h3 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
+  letter-spacing: -0.02em; /* Tighter for precision */
+}
+
+h1 {
+  font-weight: 900;
+  font-optical-sizing: 96;
+}
+
+h2 {
+  font-weight: 800;
+  font-optical-sizing: 72;
+}
+
+h3 {
+  font-weight: 700;
+  font-optical-sizing: 48;
+}
+
+button {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;

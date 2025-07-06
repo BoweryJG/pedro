@@ -1,5 +1,8 @@
 /* LUXURY DENTAL DESIGN SYSTEM */
 
+/* Import Typography System */
+@import './typography.css';
+
 /* Performance Optimizations */
 /* will-change removed globally for better performance */
 
@@ -33,16 +36,45 @@ body {
 }
 
 /* Premium Typography - Import luxury fonts */
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;0,6..96,900;1,6..96,400;1,6..96,500;1,6..96,600;1,6..96,700;1,6..96,800;1,6..96,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
-/* CSS Variables for Luxury Design System */
+/* CSS Variables for Luxury Design System - The Spectrum of Excellence */
 :root {
-  /* Typography Scale */
-  --font-primary: 'Playfair Display', Georgia, serif;
-  --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-accent: 'Bebas Neue', Impact, sans-serif;
+  /* Typography Scale - Enhanced with Proper Fallbacks */
+  --font-primary: 'Bodoni Moda', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-secondary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --font-accent: 'Bebas Neue', Impact, 'Arial Black', sans-serif;
+  
+  /* Master Brand Colors - Greg Pedro MD */
+  --spectrum-indigo: #1A237E;
+  --spectrum-violet: #7C4DFF;
+  --spectrum-fuchsia: #F50057;
+  --spectrum-coral: #FF6B6B;
+  --spectrum-amber: #FFB300;
+  
+  /* Subdomain Primary Colors */
+  --tmj-cobalt: #0066FF;
+  --tmj-teal: #00E5FF;
+  --tmj-accent: #FF0080;
+  
+  --implants-silver: #B0BEC5;
+  --implants-crimson: #FF1744;
+  --implants-graphite: #263238;
+  
+  --robotic-purple: #7B1FA2;
+  --robotic-green: #00E676;
+  --robotic-gold: #FFD600;
+  
+  --medspa-pink: #FF4081;
+  --medspa-rose: #F8BBD0;
+  --medspa-pearl: #FAFAFA;
+  
+  --aboutface-coral: #FF5252;
+  --aboutface-golden: #FFB74D;
+  --aboutface-blush: #FF8A80;
   
   /* Enhanced Color Palette */
   --luxury-black: #0A0A0A;
@@ -55,8 +87,19 @@ body {
   --luxury-silver: #C0C0C0;
   --luxury-pearl: #F8F6F0;
   
-  /* Sophisticated Gradients */
-  --gradient-aurora: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #667eea 100%);
+  /* Master Gradients - The Spectrum of Excellence */
+  --gradient-spectrum: linear-gradient(135deg, #1A237E 0%, #7C4DFF 20%, #F50057 40%, #FF6B6B 70%, #FFB300 100%);
+  --gradient-spectrum-animated: linear-gradient(270deg, #1A237E, #7C4DFF, #F50057, #FF6B6B, #FFB300, #7C4DFF, #1A237E);
+  
+  /* Subdomain Gradients */
+  --gradient-tmj: linear-gradient(135deg, #0066FF 0%, #00E5FF 50%, #FF0080 100%);
+  --gradient-implants: linear-gradient(135deg, #B0BEC5 0%, #FF1744 50%, #263238 100%);
+  --gradient-robotic: linear-gradient(135deg, #7B1FA2 0%, #00E676 50%, #FFD600 100%);
+  --gradient-medspa: linear-gradient(135deg, #FF4081 0%, #F8BBD0 50%, #FAFAFA 100%);
+  --gradient-aboutface: linear-gradient(135deg, #FF5252 0%, #FFB74D 50%, #FF8A80 100%);
+  
+  /* Legacy Gradients */
+  --gradient-aurora: var(--gradient-spectrum);
   --gradient-luxury: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
   --gradient-metallic: linear-gradient(135deg, #B8B8B8 0%, #F5F5F5 50%, #B8B8B8 100%);
   --gradient-holographic: linear-gradient(45deg, #00F5FF, #FF00E5, #FFE500, #00F5FF);
@@ -117,36 +160,114 @@ body::before {
   background-size: 40px 40px;
 }
 
-/* Enhanced Typography */
+/* Enhanced Typography - Bodoni Moda System */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
-  font-weight: 700;
-  letter-spacing: -0.03em;
   line-height: 1.15;
   color: #1a1a1a;
+  font-variant-ligatures: common-ligatures;
+  font-feature-settings: 'liga' 1, 'kern' 1;
 }
 
+/* Hero Section Typography - Fashion-Forward Style */
+.hero-section h1,
+.luxury-hero h1,
+[class*="hero"] h1 {
+  font-family: var(--font-primary);
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  font-optical-sizing: 96;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em; /* Default tight spacing */
+}
+
+.hero-section h2,
+.luxury-hero h2,
+[class*="hero"] h2 {
+  font-family: var(--font-primary);
+  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-weight: 800;
+  font-optical-sizing: 72;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.hero-section h3,
+.luxury-hero h3,
+[class*="hero"] h3 {
+  font-family: var(--font-primary);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  font-optical-sizing: 48;
+  margin-bottom: 1rem;
+  letter-spacing: 0;
+}
+
+/* Standard Typography (non-hero) */
 h1 {
   font-size: clamp(3rem, 8vw, 5rem);
   font-weight: 900;
+  font-optical-sizing: 96;
   margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
 }
 
 h2 {
   font-size: clamp(2.25rem, 5vw, 3.5rem);
   font-weight: 800;
+  font-optical-sizing: 72;
   margin-bottom: 1.25rem;
+  letter-spacing: -0.01em;
 }
 
 h3 {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
+  font-optical-sizing: 48;
   margin-bottom: 1rem;
+  letter-spacing: 0;
 }
 
 h4 {
   font-size: clamp(1.5rem, 3vw, 2rem);
   font-weight: 600;
+  font-optical-sizing: 36;
+  letter-spacing: 0.01em;
+}
+
+/* Subdomain-Specific Typography */
+/* TMJ - Precision and Clarity */
+.tmj-hero h1,
+.tmj-hero h2,
+.tmj-hero h3,
+[data-subdomain="tmj"] h1,
+[data-subdomain="tmj"] h2,
+[data-subdomain="tmj"] h3 {
+  letter-spacing: -0.02em; /* Tighter for precision */
+}
+
+/* MedSpa - Luxury and Elegance */
+.medspa-hero h1,
+.medspa-hero h2,
+.medspa-hero h3,
+[data-subdomain="medspa"] h1,
+[data-subdomain="medspa"] h2,
+[data-subdomain="medspa"] h3 {
+  letter-spacing: 0.05em; /* Generous spacing for luxury feel */
+  font-weight: 700; /* Slightly lighter for elegance */
+}
+
+/* Robotic - Technical and Modern */
+.robotic-hero h1,
+.robotic-hero h2,
+.robotic-hero h3,
+[data-subdomain="robotic"] h1,
+[data-subdomain="robotic"] h2,
+[data-subdomain="robotic"] h3 {
+  font-family: 'Bodoni Moda', Georgia, serif;
+  font-stretch: condensed; /* Use condensed variant */
+  letter-spacing: -0.03em;
+  font-weight: 900;
 }
 
 p {
@@ -259,6 +380,22 @@ p {
   100% { background-position: 0% 50%; }
 }
 
+@keyframes spectrum-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@keyframes color-echo {
+  0%, 100% { 
+    transform: translate3d(0, 0, 0) scale(0.8);
+    opacity: 0;
+  }
+  50% { 
+    transform: translate3d(0, -30px, 0) scale(1);
+    opacity: 0.3;
+  }
+}
+
 @keyframes pulse-glow {
   0% {
     box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
@@ -274,6 +411,12 @@ p {
 @keyframes float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-20px); }
+}
+
+@keyframes float-subtle {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  33% { transform: translate3d(-10px, -5px, 0); }
+  66% { transform: translate3d(10px, -5px, 0); }
 }
 
 @keyframes shimmer {
@@ -334,7 +477,7 @@ p {
   font-family: var(--font-secondary);
   font-weight: 600;
   font-size: 1.1rem;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.1em; /* Updated to 0.1em for fashion-forward spacing */
   text-transform: uppercase;
   color: var(--luxury-white);
   background: var(--gradient-luxury);
@@ -349,6 +492,46 @@ p {
 .luxury-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* All Button Typography - Fashion-Forward Style */
+button,
+.btn,
+[class*="button"],
+[class*="Button"] {
+  font-family: var(--font-secondary);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+}
+
+/* Primary Buttons */
+.btn-primary,
+.button-primary,
+[class*="primary"][class*="button"],
+[class*="primary"][class*="Button"] {
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* Subdomain Button Variations */
+[data-subdomain="tmj"] button,
+.tmj-button {
+  letter-spacing: 0.08em; /* Slightly tighter for precision */
+}
+
+[data-subdomain="medspa"] button,
+.medspa-button {
+  letter-spacing: 0.12em; /* More generous for luxury */
+  font-weight: 500;
+}
+
+[data-subdomain="robotic"] button,
+.robotic-button {
+  font-family: var(--font-secondary);
+  font-weight: 700;
+  letter-spacing: 0.05em; /* Tighter for technical feel */
 }
 
 /* Enhanced Noise Overlay - DISABLED FOR PERFORMANCE */
@@ -398,6 +581,124 @@ p {
   100% { transform: rotate(360deg); }
 }
 
+/* Spectrum of Excellence Classes */
+.spectrum-gradient {
+  background: var(--gradient-spectrum);
+  background-size: 200% 200%;
+  animation: spectrum-flow 15s ease infinite;
+}
+
+.spectrum-gradient-animated {
+  background: var(--gradient-spectrum-animated);
+  background-size: 300% 300%;
+  animation: aurora 20s ease infinite;
+}
+
+.spectrum-mesh {
+  position: relative;
+  overflow: hidden;
+}
+
+.spectrum-mesh::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 20% 40%, var(--spectrum-indigo) 0%, transparent 50%),
+    radial-gradient(circle at 80% 60%, var(--spectrum-violet) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, var(--spectrum-fuchsia) 0%, transparent 50%),
+    radial-gradient(circle at 60% 20%, var(--spectrum-coral) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, var(--spectrum-amber) 0%, transparent 50%);
+  opacity: 0.3;
+  animation: float-subtle 30s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Hero Enhancement Classes */
+.hero-spectrum {
+  position: relative;
+  background: var(--gradient-spectrum);
+  background-size: 300% 300%;
+  animation: aurora 20s ease infinite;
+  overflow: hidden;
+}
+
+.hero-particles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--spectrum-violet);
+  border-radius: 50%;
+  opacity: 0.5;
+  animation: color-echo 8s ease-in-out infinite;
+  transform: translate3d(0, 0, 0);
+}
+
+.particle:nth-child(2n) {
+  background: var(--spectrum-fuchsia);
+  animation-delay: 1s;
+}
+
+.particle:nth-child(3n) {
+  background: var(--spectrum-coral);
+  animation-delay: 2s;
+}
+
+.particle:nth-child(4n) {
+  background: var(--spectrum-amber);
+  animation-delay: 3s;
+}
+
+.particle:nth-child(5n) {
+  background: var(--spectrum-indigo);
+  animation-delay: 4s;
+}
+
+/* Subdomain Hero Classes */
+.hero-tmj {
+  background: var(--gradient-tmj);
+  position: relative;
+}
+
+.hero-implants {
+  background: var(--gradient-implants);
+  position: relative;
+}
+
+.hero-robotic {
+  background: var(--gradient-robotic);
+  position: relative;
+}
+
+.hero-medspa {
+  background: var(--gradient-medspa);
+  position: relative;
+}
+
+.hero-aboutface {
+  background: var(--gradient-aboutface);
+  position: relative;
+}
+
+/* GPU Optimization */
+.gpu-accelerated {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
 /* Mobile Optimizations */
 @media (max-width: 768px) {
   :root {
@@ -440,6 +741,58 @@ p {
   .luxury-gradient-animated {
     animation: none;
   }
+}
+
+/* Fashion-Forward Typography Classes */
+.editorial-headline {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-optical-sizing: 96;
+  font-size: clamp(4rem, 10vw, 8rem);
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.luxury-subtitle {
+  font-family: var(--font-primary);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+.fashion-caption {
+  font-family: var(--font-secondary);
+  font-weight: 300;
+  font-size: 0.875rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+.vogue-accent {
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-optical-sizing: 48;
+  letter-spacing: 0.02em;
+}
+
+/* Typography Enhancements */
+.luxury-hero-text {
+  font-family: var(--font-primary);
+  font-weight: 900;
+  font-optical-sizing: 96;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-feature-settings: 'liga' 1, 'kern' 1, 'ss01' 1;
+}
+
+/* Ensure Proper Font Loading */
+.font-loaded h1,
+.font-loaded h2,
+.font-loaded h3 {
+  transition: letter-spacing 0.3s ease, font-weight 0.3s ease;
 }
 
 /* Accessibility */

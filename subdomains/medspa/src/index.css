@@ -11,6 +11,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'liga' 1, 'kern' 1;
 }
 
 a {
@@ -31,8 +32,33 @@ body {
 }
 
 h1 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
   font-size: 3.2em;
   line-height: 1.1;
+  font-weight: 700;
+  font-optical-sizing: 96;
+  letter-spacing: 0.05em; /* Generous spacing for luxury */
+}
+
+h2 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-optical-sizing: 72;
+  letter-spacing: 0.05em;
+}
+
+h3 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
+  font-weight: 700;
+  font-optical-sizing: 48;
+  letter-spacing: 0.05em;
+}
+
+/* MedSpa Luxury Typography */
+.medspa-hero h1,
+.medspa-hero h2,
+.medspa-hero h3 {
+  letter-spacing: 0.05em;
 }
 
 button {
@@ -45,6 +71,8 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  letter-spacing: 0.12em; /* More generous for luxury */
+  text-transform: uppercase;
 }
 button:hover {
   border-color: #646cff;

@@ -8,13 +8,209 @@ import {
   CardContent,
   Chip,
   Stack,
-  Grid
+  Grid,
+  styled,
+  keyframes
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Phone, CalendarToday, LocationOn, Star, Psychology, AttachMoney } from '@mui/icons-material'
 import implantContent from '../../../data/subdomain-content/implants/implantContent.json'
 import { useChatStore } from '../../../chatbot/store/chatStore'
 import { trackChatOpen, trackEvent } from '../../../utils/analytics'
+
+// Color scheme constants
+const colors = {
+  metallicSilver: '#B0BEC5',
+  electricCrimson: '#FF1744',
+  deepGraphite: '#263238',
+  spectrumColors: ['#FF1744', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3']
+}
+
+// Keyframe animations
+const floatUpward = keyframes`
+  0% {
+    transform: translate3d(0, 100%, 0) scale(0);
+    opacity: 0;
+  }
+  15% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, -800%, 0) scale(0.5);
+    opacity: 0;
+  }
+`
+
+const shimmer = keyframes`
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+`
+
+const crystallineRotate = keyframes`
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+`
+
+// Styled components
+const HeroContainer = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  overflow: 'hidden',
+  background: `linear-gradient(135deg, ${colors.deepGraphite} 0%, ${colors.deepGraphite}ee 25%, ${colors.metallicSilver}22 50%, ${colors.electricCrimson}11 75%, ${colors.deepGraphite} 100%)`,
+  '&.hero-implants': {
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: `radial-gradient(circle at 20% 50%, ${colors.electricCrimson}22 0%, transparent 50%),
+                   radial-gradient(circle at 80% 80%, ${colors.metallicSilver}33 0%, transparent 50%),
+                   radial-gradient(circle at 40% 20%, ${colors.electricCrimson}11 0%, transparent 50%)`,
+      pointerEvents: 'none'
+    }
+  }
+}))
+
+const MetallicButton = styled(Button)(({ theme }) => ({
+  position: 'relative',
+  overflow: 'hidden',
+  background: `linear-gradient(45deg, ${colors.metallicSilver} 30%, #CFD8DC 50%, ${colors.metallicSilver} 70%)`,
+  backgroundSize: '200% 100%',
+  animation: `${shimmer} 3s ease-in-out infinite`,
+  color: colors.deepGraphite,
+  fontWeight: 600,
+  textTransform: 'none',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%)',
+    transform: 'translateX(-100%)',
+    transition: 'transform 0.6s',
+  },
+  '&:hover': {
+    transform: 'translateY(-2px)',
+    boxShadow: '0 10px 30px rgba(0,0,0,0.3)',
+    '&::before': {
+      transform: 'translateX(100%)'
+    }
+  }
+}))
+
+const CrimsonButton = styled(Button)(({ theme }) => ({
+  background: `linear-gradient(45deg, ${colors.electricCrimson} 30%, #FF5252 90%)`,
+  color: 'white',
+  fontWeight: 600,
+  textTransform: 'none',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    width: 0,
+    height: 0,
+    borderRadius: '50%',
+    background: 'rgba(255, 255, 255, 0.5)',
+    transform: 'translate(-50%, -50%)',
+    transition: 'width 0.6s, height 0.6s',
+  },
+  '&:hover': {
+    transform: 'translateY(-2px) scale(1.02)',
+    boxShadow: `0 10px 40px ${colors.electricCrimson}44`,
+    '&::after': {
+      width: '300px',
+      height: '300px',
+    }
+  }
+}))
+
+// Crystalline lattice SVG component
+const CrystallineLattice = () => (
+  <svg
+    style={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      opacity: 0.1,
+      pointerEvents: 'none'
+    }}
+  >
+    <defs>
+      <pattern id="crystalline-pattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+        <g stroke={colors.metallicSilver} strokeWidth="0.5" fill="none">
+          <polygon points="50,10 90,30 90,70 50,90 10,70 10,30" />
+          <line x1="50" y1="10" x2="50" y2="90" />
+          <line x1="10" y1="30" x2="90" y2="70" />
+          <line x1="10" y1="70" x2="90" y2="30" />
+        </g>
+      </pattern>
+      <linearGradient id="crystal-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stopColor={colors.metallicSilver} stopOpacity="0.3" />
+        <stop offset="50%" stopColor={colors.electricCrimson} stopOpacity="0.1" />
+        <stop offset="100%" stopColor={colors.deepGraphite} stopOpacity="0.2" />
+      </linearGradient>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#crystalline-pattern)" />
+    <rect width="100%" height="100%" fill="url(#crystal-gradient)" />
+  </svg>
+)
+
+// Color echo particles component
+const ColorEchoParticles = () => (
+  <Box
+    sx={{
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      overflow: 'hidden',
+      pointerEvents: 'none',
+    }}
+  >
+    {colors.spectrumColors.map((color, index) => (
+      <Box
+        key={index}
+        sx={{
+          position: 'absolute',
+          bottom: '-20px',
+          left: `${15 + index * 15}%`,
+          width: '4px',
+          height: '4px',
+          backgroundColor: color,
+          borderRadius: '50%',
+          filter: 'blur(1px)',
+          animation: `${floatUpward} ${15 + index * 2}s ease-in-out ${index * 2}s infinite`,
+          willChange: 'transform',
+          transform: 'translateZ(0)', // GPU acceleration
+        }}
+      />
+    ))}
+  </Box>
+)
 
 const ImplantHero: React.FC = () => {
   const { hero, doctor } = implantContent
@@ -47,27 +243,52 @@ const ImplantHero: React.FC = () => {
   }
 
   return (
-    <Box
+    <HeroContainer
+      className="hero-implants"
       sx={{
-        background: 'linear-gradient(135deg, #1976D2 0%, #1565C0 100%)',
         color: 'white',
         py: { xs: 8, md: 12 },
         position: 'relative',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center'
       }}
     >
-      {/* Background Pattern */}
+      {/* Crystalline Lattice Pattern */}
+      <CrystallineLattice />
+      
+      {/* Color Echo Particles */}
+      <ColorEchoParticles />
+      
+      {/* Animated Faceted Crystals */}
       <Box
         sx={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          opacity: 0.1,
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          top: '20%',
+          right: '10%',
+          width: '100px',
+          height: '100px',
+          opacity: 0.2,
+          animation: `${crystallineRotate} 20s linear infinite`,
+          willChange: 'transform',
+          transform: 'translateZ(0)', // GPU acceleration
         }}
-      />
+      >
+        <svg viewBox="0 0 100 100">
+          <polygon
+            points="50,5 90,25 90,75 50,95 10,75 10,25"
+            fill="none"
+            stroke={colors.metallicSilver}
+            strokeWidth="2"
+          />
+          <polygon
+            points="50,20 75,35 75,65 50,80 25,65 25,35"
+            fill={colors.electricCrimson}
+            fillOpacity="0.3"
+          />
+        </svg>
+      </HeroContainer>
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <Grid container spacing={4} alignItems="center">
@@ -81,10 +302,24 @@ const ImplantHero: React.FC = () => {
                 variant="h1"
                 component="h1"
                 sx={{
-                  fontSize: { xs: '2rem', md: '3rem' },
-                  fontWeight: 700,
+                  fontFamily: "'Bodoni Moda', serif",
+                  fontSize: { xs: '2.5rem', md: '4rem' },
+                  fontWeight: 900,
                   mb: 2,
-                  color: 'white'
+                  color: 'white',
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1.1,
+                  textShadow: `2px 2px 4px rgba(0,0,0,0.3)`,
+                  position: 'relative',
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: '-8px',
+                    left: 0,
+                    width: '80px',
+                    height: '4px',
+                    background: `linear-gradient(90deg, ${colors.electricCrimson} 0%, transparent 100%)`,
+                  }
                 }}
               >
                 {hero.title}
@@ -94,10 +329,13 @@ const ImplantHero: React.FC = () => {
                 variant="h2"
                 component="h2"
                 sx={{
-                  fontSize: { xs: '1.25rem', md: '1.5rem' },
-                  fontWeight: 400,
+                  fontFamily: "'Bodoni Moda', serif",
+                  fontSize: { xs: '1.5rem', md: '2rem' },
+                  fontWeight: 500,
                   mb: 3,
-                  color: 'rgba(255, 255, 255, 0.9)'
+                  color: colors.metallicSilver,
+                  letterSpacing: '0.01em',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
                 }}
               >
                 {hero.subtitle}
@@ -124,14 +362,38 @@ const ImplantHero: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
                     >
-                      <Box textAlign="center">
+                      <Box 
+                        textAlign="center"
+                        sx={{
+                          position: 'relative',
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: '-10px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            width: '40px',
+                            height: '40px',
+                            background: `linear-gradient(135deg, ${colors.electricCrimson}22 0%, transparent 50%)`,
+                            borderRadius: '50%',
+                            filter: 'blur(20px)',
+                          }
+                        }}
+                      >
                         <Typography
                           variant="h3"
                           sx={{
-                            fontSize: '2rem',
-                            fontWeight: 700,
-                            color: 'white',
-                            mb: 0.5
+                            fontFamily: "'Bodoni Moda', serif",
+                            fontSize: '2.5rem',
+                            fontWeight: 800,
+                            color: colors.metallicSilver,
+                            mb: 0.5,
+                            textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                            background: `linear-gradient(45deg, ${colors.metallicSilver} 30%, white 50%, ${colors.metallicSilver} 70%)`,
+                            backgroundSize: '200% 100%',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            animation: `${shimmer} 3s ease-in-out infinite`,
                           }}
                         >
                           {stat.number}
@@ -139,8 +401,11 @@ const ImplantHero: React.FC = () => {
                         <Typography
                           variant="body2"
                           sx={{
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            fontSize: '0.875rem'
+                            color: colors.metallicSilver,
+                            fontSize: '0.875rem',
+                            fontWeight: 500,
+                            letterSpacing: '0.05em',
+                            textTransform: 'uppercase',
                           }}
                         >
                           {stat.label}
@@ -153,48 +418,37 @@ const ImplantHero: React.FC = () => {
 
               {/* Action Buttons */}
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-                <Button
+                <MetallicButton
                   variant="contained"
                   size="large"
                   onClick={handlePrimaryAction}
                   startIcon={<Psychology />}
                   sx={{
-                    bgcolor: 'white',
-                    color: 'primary.main',
                     fontSize: '1.1rem',
                     py: 1.5,
-                    px: 3,
-                    '&:hover': {
-                      bgcolor: 'grey.100',
-                      transform: 'translateY(-2px)',
-                    },
-                    transition: 'all 0.3s ease'
+                    px: 4,
+                    willChange: 'transform',
+                    transform: 'translateZ(0)', // GPU acceleration
                   }}
                 >
                   Chat with Julie about Implants
-                </Button>
+                </MetallicButton>
 
-                <Button
-                  variant="outlined"
+                <CrimsonButton
+                  variant="contained"
                   size="large"
                   onClick={handleSecondaryAction}
                   startIcon={<CalendarToday />}
                   sx={{
-                    borderColor: 'white',
-                    color: 'white',
                     fontSize: '1.1rem',
                     py: 1.5,
                     px: 3,
-                    '&:hover': {
-                      bgcolor: 'rgba(255, 255, 255, 0.1)',
-                      borderColor: 'white',
-                      transform: 'translateY(-2px)',
-                    },
-                    transition: 'all 0.3s ease'
+                    willChange: 'transform',
+                    transform: 'translateZ(0)', // GPU acceleration
                   }}
                 >
                   {hero.secondaryButton.text}
-                </Button>
+                </CrimsonButton>
 
                 <Button
                   variant="outlined"
@@ -202,18 +456,34 @@ const ImplantHero: React.FC = () => {
                   onClick={handleFinancingAction}
                   startIcon={<AttachMoney />}
                   sx={{
-                    borderColor: 'rgba(255, 255, 255, 0.7)',
-                    color: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: colors.metallicSilver,
+                    color: colors.metallicSilver,
                     fontSize: '1rem',
                     py: 1.5,
                     px: 3,
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: `linear-gradient(90deg, transparent, ${colors.metallicSilver}22, transparent)`,
+                      transition: 'left 0.5s',
+                    },
                     '&:hover': {
-                      bgcolor: 'rgba(255, 255, 255, 0.1)',
                       borderColor: 'white',
                       color: 'white',
                       transform: 'translateY(-2px)',
+                      boxShadow: `0 5px 20px ${colors.metallicSilver}44`,
+                      '&::before': {
+                        left: '100%',
+                      }
                     },
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.3s ease',
+                    willChange: 'transform',
                   }}
                 >
                   Check Financing Options
@@ -231,18 +501,35 @@ const ImplantHero: React.FC = () => {
               <Card
                 sx={{
                   bgcolor: 'rgba(255, 255, 255, 0.95)',
-                  backdropFilter: 'blur(10px)',
+                  backdropFilter: 'blur(20px)',
                   borderRadius: 3,
-                  p: 3
+                  p: 3,
+                  border: `1px solid ${colors.metallicSilver}33`,
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: '-50%',
+                    right: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: `radial-gradient(circle, ${colors.electricCrimson}11 0%, transparent 70%)`,
+                    pointerEvents: 'none',
+                  }
                 }}
               >
                 <CardContent>
                   <Typography
                     variant="h4"
                     sx={{
-                      color: 'primary.main',
-                      fontWeight: 600,
-                      mb: 2
+                      fontFamily: "'Bodoni Moda', serif",
+                      color: colors.deepGraphite,
+                      fontWeight: 700,
+                      mb: 2,
+                      fontSize: { xs: '1.75rem', md: '2.125rem' },
+                      letterSpacing: '-0.01em',
                     }}
                   >
                     {doctor.name}
@@ -268,8 +555,11 @@ const ImplantHero: React.FC = () => {
                         sx={{
                           mr: 1,
                           mb: 1,
-                          bgcolor: 'primary.light',
-                          color: 'white'
+                          background: `linear-gradient(45deg, ${colors.electricCrimson} 30%, ${colors.electricCrimson}dd 90%)`,
+                          color: 'white',
+                          fontWeight: 500,
+                          border: 'none',
+                          boxShadow: `0 2px 8px ${colors.electricCrimson}44`,
                         }}
                       />
                     ))}
@@ -315,9 +605,24 @@ const ImplantHero: React.FC = () => {
                     sx={{
                       mt: 3,
                       p: 2,
-                      bgcolor: 'primary.light',
+                      background: `linear-gradient(135deg, ${colors.deepGraphite} 0%, ${colors.deepGraphite}ee 100%)`,
                       borderRadius: 2,
-                      textAlign: 'center'
+                      textAlign: 'center',
+                      position: 'relative',
+                      border: `1px solid ${colors.metallicSilver}44`,
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: `linear-gradient(45deg, transparent 30%, ${colors.metallicSilver}11 50%, transparent 70%)`,
+                        backgroundSize: '200% 100%',
+                        animation: `${shimmer} 4s ease-in-out infinite`,
+                        borderRadius: 2,
+                        pointerEvents: 'none',
+                      }
                     }}
                   >
                     <Psychology sx={{ color: 'white', fontSize: '2rem', mb: 1 }} />

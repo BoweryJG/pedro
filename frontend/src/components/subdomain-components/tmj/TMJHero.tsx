@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import {
   Box,
   Container,
@@ -13,6 +13,7 @@ import { motion } from 'framer-motion'
 import { Chat, CalendarToday, LocationOn, Star } from '@mui/icons-material'
 import { useChatStore } from '../../../chatbot/store/chatStore'
 import { trackChatOpen, trackEvent } from '../../../utils/analytics'
+import './TMJHero.css'
 
 interface TMJHeroProps {
   content: {
@@ -45,6 +46,7 @@ interface TMJHeroProps {
 
 const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
   const { toggleChat, sendMessage } = useChatStore()
+  const particlesRef = useRef<HTMLDivElement>(null)
 
   const handlePrimaryAction = async () => {
     if (content.primaryButton.action === 'schedule') {
@@ -75,26 +77,43 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
 
   return (
     <Box
+      className="hero-tmj"
       sx={{
-        background: 'linear-gradient(135deg, #2C5530 0%, #4A7C59 100%)',
         color: 'white',
         py: { xs: 8, md: 12 },
         position: 'relative',
         overflow: 'hidden'
       }}
     >
-      {/* Background Pattern */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          opacity: 0.1,
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.1"%3E%3Ccircle cx="30" cy="30" r="4"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-        }}
-      />
+      {/* Animated Wave Pattern */}
+      <Box className="wave-pattern">
+        <svg className="wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+          <path 
+            fill="rgba(0, 229, 255, 0.1)" 
+            d="M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,117.3C960,107,1056,149,1152,165.3C1248,181,1344,171,1392,165.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+          <path 
+            fill="rgba(0, 102, 255, 0.05)" 
+            d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,202.7C1248,181,1344,171,1392,165.3L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          />
+        </svg>
+      </Box>
+
+      {/* Neural Pathways */}
+      <Box className="neural-path">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <path className="neural-line" d="M0,100 Q200,50 400,100 T800,100" />
+          <path className="neural-line" d="M100,200 Q300,150 500,200 T900,200" style={{ animationDelay: '1s' }} />
+          <path className="neural-line" d="M50,300 Q250,250 450,300 T850,300" style={{ animationDelay: '2s' }} />
+        </svg>
+      </Box>
+
+      {/* Color Echo Particles */}
+      <Box className="particles-container" ref={particlesRef}>
+        {[...Array(10)].map((_, i) => (
+          <Box key={i} className="particle" />
+        ))}
+      </Box>
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <Box 
@@ -114,11 +133,13 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
               <Typography
                 variant="h1"
                 component="h1"
+                className="tmj-headline"
                 sx={{
-                  fontSize: { xs: '2rem', md: '3rem' },
+                  fontSize: { xs: '2.5rem', md: '3.5rem' },
                   fontWeight: 700,
                   mb: 2,
-                  color: 'white'
+                  color: 'white',
+                  textShadow: '0 2px 10px rgba(0,0,0,0.2)'
                 }}
               >
                 {content.title}
@@ -127,11 +148,13 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
               <Typography
                 variant="h2"
                 component="h2"
+                className="tmj-subheadline"
                 sx={{
-                  fontSize: { xs: '1.25rem', md: '1.5rem' },
-                  fontWeight: 400,
+                  fontSize: { xs: '1.5rem', md: '1.75rem' },
+                  fontWeight: 500,
                   mb: 3,
-                  color: 'rgba(255, 255, 255, 0.9)'
+                  color: 'rgba(255, 255, 255, 0.95)',
+                  textShadow: '0 1px 5px rgba(0,0,0,0.1)'
                 }}
               >
                 {content.subtitle}
@@ -168,11 +191,12 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                     <Box textAlign="center">
                       <Typography
                         variant="h3"
+                        className="stat-number"
                         sx={{
-                          fontSize: '2rem',
-                          fontWeight: 700,
-                          color: 'white',
-                          mb: 0.5
+                          fontSize: '2.5rem',
+                          fontWeight: 800,
+                          mb: 0.5,
+                          transform: 'translateZ(0)', // GPU acceleration
                         }}
                       >
                         {stat.number}
@@ -180,8 +204,9 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                       <Typography
                         variant="body2"
                         sx={{
-                          color: 'rgba(255, 255, 255, 0.8)',
-                          fontSize: '0.875rem'
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          fontSize: '0.875rem',
+                          fontWeight: 500
                         }}
                       >
                         {stat.label}
@@ -198,17 +223,14 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                   size="large"
                   onClick={handlePrimaryAction}
                   startIcon={<Chat />}
+                  className="tmj-primary-button"
                   sx={{
-                    bgcolor: 'white',
-                    color: 'primary.main',
                     fontSize: '1.1rem',
                     py: 1.5,
-                    px: 3,
-                    '&:hover': {
-                      bgcolor: 'grey.100',
-                      transform: 'translateY(-2px)',
-                    },
-                    transition: 'all 0.3s ease'
+                    px: 4,
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    textTransform: 'none'
                   }}
                 >
                   Chat with Julie about TMJ
@@ -219,18 +241,14 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                   size="large"
                   onClick={handleSecondaryAction}
                   startIcon={<CalendarToday />}
+                  className="tmj-secondary-button"
                   sx={{
-                    borderColor: 'white',
-                    color: 'white',
                     fontSize: '1.1rem',
                     py: 1.5,
-                    px: 3,
-                    '&:hover': {
-                      bgcolor: 'rgba(255, 255, 255, 0.1)',
-                      borderColor: 'white',
-                      transform: 'translateY(-2px)',
-                    },
-                    transition: 'all 0.3s ease'
+                    px: 4,
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    textTransform: 'none'
                   }}
                 >
                   {content.secondaryButton.text}
@@ -246,20 +264,22 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
               transition={{ duration: 0.8, delay: 0.2 }}
             >
               <Card
+                className="tmj-doctor-card"
                 sx={{
-                  bgcolor: 'rgba(255, 255, 255, 0.95)',
-                  backdropFilter: 'blur(10px)',
                   borderRadius: 3,
-                  p: 3
+                  p: 3,
+                  transform: 'translateZ(0)', // GPU acceleration
                 }}
               >
                 <CardContent>
                   <Typography
                     variant="h4"
+                    className="tmj-headline"
                     sx={{
-                      color: 'primary.main',
+                      color: '#0066FF',
                       fontWeight: 600,
-                      mb: 2
+                      mb: 2,
+                      fontSize: '1.75rem'
                     }}
                   >
                     {doctor.name}
@@ -274,8 +294,9 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                         sx={{
                           mr: 1,
                           mb: 1,
-                          bgcolor: 'primary.light',
-                          color: 'white'
+                          background: 'linear-gradient(45deg, #0066FF, #00E5FF)',
+                          color: 'white',
+                          fontWeight: 500
                         }}
                       />
                     ))}
@@ -310,7 +331,7 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                   </Box>
 
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <LocationOn sx={{ color: 'primary.main', mr: 1 }} />
+                    <LocationOn sx={{ color: '#0066FF', mr: 1 }} />
                     <Typography variant="body2" color="text.secondary">
                       Staten Island, NY • Manhattan, NY
                     </Typography>

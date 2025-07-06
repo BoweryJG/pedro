@@ -16,6 +16,33 @@ body {
   background-color: #FAFAFA;
 }
 
+/* Robotic Subdomain Typography - Technical Precision */
+h1, h2, h3 {
+  font-family: 'Bodoni Moda', 'Playfair Display', Georgia, serif;
+  font-stretch: condensed;
+  letter-spacing: -0.03em;
+  font-weight: 900;
+}
+
+h1 {
+  font-optical-sizing: 96;
+}
+
+h2 {
+  font-optical-sizing: 72;
+}
+
+h3 {
+  font-optical-sizing: 48;
+}
+
+button {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;

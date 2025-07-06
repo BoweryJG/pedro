@@ -13,6 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
+import '../styles/luxury-design-system.css';
 
 // Lightweight center data
 const centers = [
@@ -159,42 +160,69 @@ const CenterCarouselHero: React.FC = () => {
 
   return (
     <Box
+      className="hero-spectrum spectrum-mesh"
       sx={{
         position: 'relative',
         minHeight: { xs: '100vh', md: '90vh' },
         display: 'flex',
         flexDirection: 'column',
-        background: 'linear-gradient(180deg, #0f172a 0%, #1e293b 100%)',
         overflow: 'hidden',
       }}
     >
-      {/* Background accent */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '120%',
-          height: '120%',
-          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 60%)',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Hero Particles */}
+      <Box className="hero-particles">
+        {[...Array(20)].map((_, i) => (
+          <Box
+            key={i}
+            className="particle"
+            sx={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+              animationDuration: `${8 + Math.random() * 4}s`,
+            }}
+          />
+        ))}
+      </Box>
+      
+      {/* Floating Service Orbs */}
+      {centers.map((center, index) => (
+        <Box
+          key={`orb-${center.id}`}
+          sx={{
+            position: 'absolute',
+            width: { xs: 60, md: 80 },
+            height: { xs: 60, md: 80 },
+            borderRadius: '50%',
+            background: center.gradient,
+            opacity: 0.3,
+            filter: 'blur(40px)',
+            left: `${20 + (index * 15)}%`,
+            top: `${20 + (index % 2 ? 30 : 10)}%`,
+            animation: `float-subtle ${20 + index * 2}s ease-in-out infinite`,
+            animationDelay: `${index * 0.5}s`,
+            transform: 'translate3d(0, 0, 0)',
+            pointerEvents: 'none',
+          }}
+        />
+      ))}
 
       {/* Header Section */}
       <Container maxWidth="lg" sx={{ pt: { xs: 4, md: 6 }, pb: 3, position: 'relative', zIndex: 1 }}>
         <Box sx={{ textAlign: 'center' }}>
           <Chip
             label="Staten Island's Premier Dental Excellence"
+            className="glassmorphism"
             sx={{
               mb: 2,
               px: 2,
               py: 0.5,
-              background: 'rgba(59, 130, 246, 0.1)',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
-              color: '#60a5fa',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.18)',
+              color: '#ffffff',
               fontSize: { xs: '0.75rem', sm: '0.875rem' },
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
             }}
           />
           
@@ -281,18 +309,26 @@ const CenterCarouselHero: React.FC = () => {
               }}
             >
               <Box
+                className="glassmorphism"
                 sx={{
                   height: '100%',
                   borderRadius: 3,
                   overflow: 'hidden',
                   position: 'relative',
-                  background: theme.palette.background.paper,
+                  background: activeIndex === index 
+                    ? 'rgba(255, 255, 255, 0.15)'
+                    : 'rgba(255, 255, 255, 0.1)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
                   border: '1px solid',
                   borderColor: activeIndex === index 
-                    ? alpha(theme.palette.primary.main, 0.3)
-                    : alpha(theme.palette.divider, 0.1),
-                  boxShadow: activeIndex === index ? theme.shadows[10] : theme.shadows[2],
-                  transition: 'all 0.3s ease',
+                    ? 'rgba(255, 255, 255, 0.3)'
+                    : 'rgba(255, 255, 255, 0.18)',
+                  boxShadow: activeIndex === index 
+                    ? '0 20px 40px rgba(0, 0, 0, 0.2)'
+                    : '0 10px 30px rgba(0, 0, 0, 0.1)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transform: 'translate3d(0, 0, 0)',
                   '&:active': {
                     transform: 'scale(0.98)',
                   },
@@ -315,7 +351,8 @@ const CenterCarouselHero: React.FC = () => {
                         width: 80,
                         height: 80,
                         borderRadius: '50%',
-                        background: 'rgba(102, 126, 234, 0.1)',
+                        background: center.gradient,
+                        opacity: 0.2,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -323,17 +360,28 @@ const CenterCarouselHero: React.FC = () => {
                         mb: 2,
                         fontSize: 40,
                         transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)',
-                        transition: 'transform 0.3s ease',
+                        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        position: 'relative',
+                        '&::after': {
+                          content: '""',
+                          position: 'absolute',
+                          inset: -2,
+                          borderRadius: '50%',
+                          background: center.gradient,
+                          opacity: 0.3,
+                          filter: 'blur(10px)',
+                          transform: 'translate3d(0, 0, 0)',
+                        },
                       }}
                     >
-                      {center.icon}
+                      <Box sx={{ position: 'relative', zIndex: 1 }}>{center.icon}</Box>
                     </Box>
                     
-                    <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5 }}>
+                    <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5, color: 'white' }}>
                       {center.title}
                     </Typography>
                     
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
                       {center.subtitle}
                     </Typography>
                   </Box>
@@ -344,14 +392,17 @@ const CenterCarouselHero: React.FC = () => {
                       textAlign: 'center',
                       p: 2,
                       borderRadius: 2,
-                      background: alpha(theme.palette.primary.main, 0.05),
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(5px)',
+                      WebkitBackdropFilter: 'blur(5px)',
+                      border: '1px solid rgba(255, 255, 255, 0.1)',
                       mb: 3,
                     }}
                   >
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
                       {center.stats.label}
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: theme.palette.primary.main }}>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'white' }}>
                       {center.stats.value}
                     </Typography>
                   </Box>
@@ -373,7 +424,7 @@ const CenterCarouselHero: React.FC = () => {
                           display: 'flex',
                           alignItems: 'center',
                           mb: 0.5,
-                          color: theme.palette.text.secondary,
+                          color: 'rgba(255, 255, 255, 0.8)',
                         }}
                       >
                         • {feature}
@@ -387,13 +438,35 @@ const CenterCarouselHero: React.FC = () => {
                     variant="contained"
                     endIcon={<ArrowForwardIcon />}
                     sx={{
-                      background: center.gradient,
+                      background: 'rgba(255, 255, 255, 0.15)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      color: 'white',
                       py: 1.5,
                       fontSize: '1rem',
                       fontWeight: 600,
-                      '&:hover': {
+                      position: 'relative',
+                      overflow: 'hidden',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                      transform: 'translate3d(0, 0, 0)',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
                         background: center.gradient,
-                        filter: 'brightness(1.1)',
+                        opacity: 0,
+                        transition: 'opacity 0.3s ease',
+                      },
+                      '&:hover': {
+                        transform: 'translateY(-2px) translate3d(0, 0, 0)',
+                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+                        '&::before': {
+                          opacity: 0.3,
+                        },
                       },
                     }}
                   >
@@ -412,9 +485,11 @@ const CenterCarouselHero: React.FC = () => {
             justifyContent: 'center',
             gap: 1,
             pb: 3,
+            position: 'relative',
+            zIndex: 2,
           }}
         >
-          {centers.map((_, index) => (
+          {centers.map((center, index) => (
             <Box
               key={index}
               sx={{
@@ -422,10 +497,21 @@ const CenterCarouselHero: React.FC = () => {
                 height: 8,
                 borderRadius: 4,
                 background: activeIndex === index 
-                  ? 'white'
+                  ? center.gradient
                   : 'rgba(255, 255, 255, 0.3)',
-                transition: 'all 0.3s ease',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                 cursor: 'pointer',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::after': activeIndex === index ? {
+                  content: '""',
+                  position: 'absolute',
+                  inset: 0,
+                  background: center.gradient,
+                  filter: 'blur(8px)',
+                  opacity: 0.5,
+                  transform: 'translate3d(0, 0, 0)',
+                } : {},
               }}
               onClick={() => {
                 if (carouselRef.current) {
@@ -446,21 +532,41 @@ const CenterCarouselHero: React.FC = () => {
         @keyframes fadeInUp {
           from {
             opacity: 0;
-            transform: translateY(20px);
+            transform: translate3d(0, 20px, 0);
           }
           to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
           }
         }
         
-        /* Optimize for smooth scrolling */
+        /* GPU Optimization */
+        .hero-spectrum {
+          transform: translate3d(0, 0, 0);
+          backface-visibility: hidden;
+          perspective: 1000px;
+        }
+        
         .carousel-container {
-          /* will-change removed for performance */
+          transform: translate3d(0, 0, 0);
+          -webkit-transform: translate3d(0, 0, 0);
         }
         
         .carousel-card {
-          /* will-change removed for performance */
+          transform: translate3d(0, 0, 0);
+          -webkit-transform: translate3d(0, 0, 0);
+        }
+        
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+          .hero-particles {
+            display: none;
+          }
+          
+          .glassmorphism {
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+          }
         }
         
         /* Reduce motion for accessibility */
