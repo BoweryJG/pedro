@@ -23,12 +23,20 @@ lerna-debug.log*
 
 # Environment variables
 .env
+.env.*
 .env.local
+.env.development
+.env.production
+.env.staging
 .env.development.local
 .env.test.local
 .env.production.local
 frontend/.env
+frontend/.env.*
+!frontend/.env.*.example
+!frontend/.env.example
 backend/.env
+backend/.env.*
 
 # Editor directories and files
 .vscode/*
