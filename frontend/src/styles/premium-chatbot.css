@@ -1,0 +1,187 @@
+/* Premium Chatbot Styles */
+
+/* Smooth glass morphism effects */
+.premium-glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Gradient animations */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Pulse animation for online indicator */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Float animation for launcher */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Sparkle effect */
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) rotate(360deg);
+  }
+}
+
+/* Premium button hover effects */
+.premium-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.premium-button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.5s, height 0.5s;
+}
+
+.premium-button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Typing indicator dots */
+.typing-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  margin: 0 2px;
+  animation: typing-bounce 1.5s infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* Premium scrollbar */
+.premium-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(102, 126, 234, 0.3) rgba(0, 0, 0, 0.05);
+}
+
+.premium-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 3px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(102, 126, 234, 0.3);
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(102, 126, 234, 0.5);
+}
+
+/* Message bubble animations */
+@keyframes message-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message-bubble {
+  animation: message-slide-in 0.3s ease-out;
+}
+
+/* Glow effects */
+.glow-purple {
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.4),
+              0 0 40px rgba(102, 126, 234, 0.2),
+              0 0 60px rgba(102, 126, 234, 0.1);
+}
+
+/* Mobile-specific styles */
+@media (max-width: 600px) {
+  .premium-glass {
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.hardware-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

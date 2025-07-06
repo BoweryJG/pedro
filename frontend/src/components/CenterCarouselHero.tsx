@@ -13,7 +13,17 @@ import { useNavigate } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
+import { TMJIcon, ImplantsIcon, RoboticIcon, MedSpaIcon, AboutFaceIcon } from './icons/SpectrumIcons';
 import '../styles/luxury-design-system.css';
+
+// Icon mapping for centers
+const centerIcons = {
+  tmj: TMJIcon,
+  implants: ImplantsIcon,
+  robotic: RoboticIcon,
+  medspa: MedSpaIcon,
+  aboutface: AboutFaceIcon,
+};
 
 // Lightweight center data
 const centers = [
@@ -21,7 +31,6 @@ const centers = [
     id: 'tmj',
     title: 'TMJ & Orofacial Pain',
     subtitle: 'Expert jaw disorder care',
-    icon: '🦷',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     stats: { label: 'Patients Treated', value: '2,500+' },
     features: ['Custom Oral Appliances', 'Physical Therapy', 'Pain Management'],
@@ -30,7 +39,6 @@ const centers = [
     id: 'implants',
     title: 'Dental Implants',
     subtitle: 'Permanent tooth replacement',
-    icon: '⚙️',
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     stats: { label: 'Success Rate', value: '99.2%' },
     features: ['Single & Full Arch', 'Bone Grafting', 'Lifetime Warranty'],
@@ -39,7 +47,6 @@ const centers = [
     id: 'robotic',
     title: 'Robotic Surgery',
     subtitle: 'Precision implant placement',
-    icon: '🤖',
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     stats: { label: 'Healing Time', value: '50% Faster' },
     features: ['Computer Precision', 'Minimally Invasive', 'Yomi Technology'],
@@ -48,7 +55,6 @@ const centers = [
     id: 'medspa',
     title: 'MedSpa & Aesthetics',
     subtitle: 'Facial rejuvenation',
-    icon: '✨',
     gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     stats: { label: 'Treatments', value: '10,000+' },
     features: ['EMFACE Technology', 'Facial Contouring', 'Anti-Aging'],
@@ -57,7 +63,6 @@ const centers = [
     id: 'aboutface',
     title: 'AboutFace Aesthetics',
     subtitle: 'Complete smile makeovers',
-    icon: '😊',
     gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     stats: { label: 'Google Rating', value: '5.0★' },
     features: ['Veneers', 'Teeth Whitening', 'Smile Design'],
@@ -309,79 +314,160 @@ const CenterCarouselHero: React.FC = () => {
               }}
             >
               <Box
-                className="glassmorphism"
+                className="glassmorphism luxury-carousel-card"
                 sx={{
                   height: '100%',
-                  borderRadius: 3,
+                  borderRadius: '24px',
                   overflow: 'hidden',
                   position: 'relative',
-                  background: activeIndex === index 
-                    ? 'rgba(255, 255, 255, 0.15)'
-                    : 'rgba(255, 255, 255, 0.1)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  border: '1px solid',
-                  borderColor: activeIndex === index 
-                    ? 'rgba(255, 255, 255, 0.3)'
-                    : 'rgba(255, 255, 255, 0.18)',
+                  background: 'rgba(10, 10, 10, 0.8)',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '2px solid transparent',
                   boxShadow: activeIndex === index 
-                    ? '0 20px 40px rgba(0, 0, 0, 0.2)'
-                    : '0 10px 30px rgba(0, 0, 0, 0.1)',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    ? '0 30px 60px rgba(0, 0, 0, 0.4), 0 0 80px rgba(124, 77, 255, 0.2)'
+                    : '0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(124, 77, 255, 0.1)',
+                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                   transform: 'translate3d(0, 0, 0)',
+                  padding: '3px',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    inset: 0,
+                    borderRadius: '24px',
+                    padding: '2px',
+                    background: 'linear-gradient(90deg, #FF0080, #FF8C00, #FFD700, #00FF00, #00CED1, #0080FF, #8A2BE2, #FF0080)',
+                    backgroundSize: '300% 100%',
+                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                    WebkitMaskComposite: 'xor',
+                    maskComposite: 'exclude',
+                    animation: 'borderPulse 12s linear infinite',
+                    opacity: activeIndex === index ? 1 : 0.7,
+                    transition: 'opacity 0.5s ease',
+                  },
+                  '&:hover': {
+                    transform: 'translateY(-4px) scale(1.02) translate3d(0, 0, 0)',
+                    boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5), 0 0 120px rgba(124, 77, 255, 0.3)',
+                    '&::before': {
+                      animationDuration: '3s',
+                      opacity: 1,
+                    },
+                  },
                   '&:active': {
                     transform: 'scale(0.98)',
                   },
                 }}
               >
-                {/* Gradient Header */}
-                <Box
-                  sx={{
-                    height: 6,
-                    background: center.gradient,
-                  }}
-                />
+                {/* Removed gradient header - using pulsating border instead */}
 
                 {/* Card Content */}
-                <Box sx={{ p: { xs: 3, sm: 4 } }}>
+                <Box sx={{ p: { xs: 4, sm: 5 } }}>
                   {/* Icon and Title */}
                   <Box sx={{ textAlign: 'center', mb: 3 }}>
                     <Box
                       sx={{
-                        width: 80,
-                        height: 80,
+                        width: 120,
+                        height: 120,
                         borderRadius: '50%',
-                        background: center.gradient,
-                        opacity: 0.2,
+                        background: `${center.gradient}, rgba(255, 255, 255, 0.1)`,
+                        backgroundBlendMode: 'overlay',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         mx: 'auto',
-                        mb: 2,
-                        fontSize: 40,
-                        transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)',
-                        transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                        mb: 3,
+                        transform: activeIndex === index ? 'scale(1.15)' : 'scale(1)',
+                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         position: 'relative',
+                        boxShadow: activeIndex === index 
+                          ? `0 0 40px rgba(255, 255, 255, 0.4), 0 0 80px rgba(255, 255, 255, 0.2), 0 20px 40px rgba(0, 0, 0, 0.3)`
+                          : '0 0 20px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.3)',
+                        '&::before': {
+                          content: '""',
+                          position: 'absolute',
+                          inset: -20,
+                          borderRadius: '50%',
+                          background: center.gradient,
+                          opacity: activeIndex === index ? 0.5 : 0.3,
+                          filter: 'blur(30px)',
+                          transform: 'translate3d(0, 0, 0)',
+                          transition: 'opacity 0.3s ease',
+                        },
                         '&::after': {
                           content: '""',
                           position: 'absolute',
-                          inset: -2,
+                          inset: -10,
                           borderRadius: '50%',
                           background: center.gradient,
-                          opacity: 0.3,
-                          filter: 'blur(10px)',
+                          opacity: 0.2,
+                          filter: 'blur(20px)',
                           transform: 'translate3d(0, 0, 0)',
+                        },
+                        '&:hover': {
+                          transform: 'scale(1.2)',
+                          boxShadow: `0 0 50px rgba(255, 255, 255, 0.5), 0 0 100px rgba(255, 255, 255, 0.3), 0 25px 50px rgba(0, 0, 0, 0.4)`,
+                          '&::before': {
+                            opacity: 0.6,
+                          },
                         },
                       }}
                     >
-                      <Box sx={{ position: 'relative', zIndex: 1 }}>{center.icon}</Box>
+                      <Box 
+                        sx={{ 
+                          position: 'relative', 
+                          zIndex: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          filter: `drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))`,
+                          '& svg': {
+                            width: 64,
+                            height: 64,
+                            color: 'white',
+                            '& g': {
+                              stroke: `url(#gradient-${center.id})`,
+                              '& circle': {
+                                fill: `url(#gradient-${center.id})`,
+                              },
+                            },
+                            filter: activeIndex === index 
+                              ? 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5))'
+                              : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          },
+                        }}
+                      >
+                        {React.createElement(centerIcons[center.id as keyof typeof centerIcons], { 
+                          size: 64,
+                          className: `center-icon ${activeIndex === index ? 'active-icon' : ''}`
+                        })}
+                      </Box>
                     </Box>
                     
-                    <Typography variant="h5" sx={{ fontWeight: 700, mb: 0.5, color: 'white' }}>
+                    <Typography 
+                      variant="h4" 
+                      sx={{ 
+                        fontFamily: '"Montserrat", sans-serif',
+                        fontWeight: 800, 
+                        mb: 1, 
+                        color: 'white',
+                        fontSize: { xs: '1.75rem', sm: '2.25rem' },
+                        textShadow: '0 2px 8px rgba(0, 0, 0, 0.4)',
+                        letterSpacing: '-0.02em',
+                      }}
+                    >
                       {center.title}
                     </Typography>
                     
-                    <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+                    <Typography 
+                      variant="body1" 
+                      sx={{ 
+                        color: 'rgba(255, 255, 255, 0.9)',
+                        fontSize: { xs: '1rem', sm: '1.125rem' },
+                        textShadow: '0 1px 4px rgba(0, 0, 0, 0.3)',
+                        fontWeight: 400,
+                      }}
+                    >
                       {center.subtitle}
                     </Typography>
                   </Box>
@@ -390,19 +476,39 @@ const CenterCarouselHero: React.FC = () => {
                   <Box
                     sx={{
                       textAlign: 'center',
-                      p: 2,
-                      borderRadius: 2,
-                      background: 'rgba(255, 255, 255, 0.1)',
-                      backdropFilter: 'blur(5px)',
-                      WebkitBackdropFilter: 'blur(5px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
+                      p: 2.5,
+                      borderRadius: '16px',
+                      background: 'rgba(255, 255, 255, 0.08)',
+                      backdropFilter: 'blur(10px)',
+                      WebkitBackdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.15)',
                       mb: 3,
+                      boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
                     }}
                   >
-                    <Typography variant="caption" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: 'rgba(255, 255, 255, 0.8)',
+                        fontSize: '0.875rem',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.1em',
+                        fontWeight: 500,
+                        mb: 0.5,
+                      }}
+                    >
                       {center.stats.label}
                     </Typography>
-                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'white' }}>
+                    <Typography 
+                      variant="h5" 
+                      sx={{ 
+                        fontFamily: '"Montserrat", sans-serif',
+                        fontWeight: 800, 
+                        color: 'white',
+                        fontSize: { xs: '1.5rem', sm: '1.75rem' },
+                        textShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
+                      }}
+                    >
                       {center.stats.value}
                     </Typography>
                   </Box>
@@ -423,11 +529,14 @@ const CenterCarouselHero: React.FC = () => {
                         sx={{
                           display: 'flex',
                           alignItems: 'center',
-                          mb: 0.5,
-                          color: 'rgba(255, 255, 255, 0.8)',
+                          mb: 1,
+                          color: 'rgba(255, 255, 255, 0.9)',
+                          fontSize: '1rem',
+                          fontWeight: 500,
+                          textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
                         }}
                       >
-                        • {feature}
+                        <Box component="span" sx={{ color: center.gradient, background: center.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', mr: 1, fontWeight: 800 }}>•</Box> {feature}
                       </Typography>
                     ))}
                   </Box>
@@ -438,18 +547,24 @@ const CenterCarouselHero: React.FC = () => {
                     variant="contained"
                     endIcon={<ArrowForwardIcon />}
                     sx={{
-                      background: 'rgba(255, 255, 255, 0.15)',
+                      background: 'rgba(255, 255, 255, 0.12)',
                       backdropFilter: 'blur(10px)',
                       WebkitBackdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
                       color: 'white',
-                      py: 1.5,
-                      fontSize: '1rem',
-                      fontWeight: 600,
+                      py: 2,
+                      px: 3,
+                      fontSize: '1.125rem',
+                      fontFamily: '"Montserrat", sans-serif',
+                      fontWeight: 700,
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase',
+                      borderRadius: '12px',
                       position: 'relative',
                       overflow: 'hidden',
                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       transform: 'translate3d(0, 0, 0)',
+                      textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
                       '&::before': {
                         content: '""',
                         position: 'absolute',
@@ -462,10 +577,12 @@ const CenterCarouselHero: React.FC = () => {
                         transition: 'opacity 0.3s ease',
                       },
                       '&:hover': {
-                        transform: 'translateY(-2px) translate3d(0, 0, 0)',
-                        boxShadow: '0 8px 20px rgba(0, 0, 0, 0.2)',
+                        transform: 'translateY(-3px) translate3d(0, 0, 0)',
+                        boxShadow: '0 12px 30px rgba(0, 0, 0, 0.3)',
+                        background: 'rgba(255, 255, 255, 0.18)',
+                        border: '1px solid rgba(255, 255, 255, 0.3)',
                         '&::before': {
-                          opacity: 0.3,
+                          opacity: 0.2,
                         },
                       },
                     }}
@@ -540,6 +657,15 @@ const CenterCarouselHero: React.FC = () => {
           }
         }
         
+        @keyframes borderPulse {
+          0% {
+            background-position: 0% 50%;
+          }
+          100% {
+            background-position: 300% 50%;
+          }
+        }
+        
         /* GPU Optimization */
         .hero-spectrum {
           transform: translate3d(0, 0, 0);
@@ -569,6 +695,31 @@ const CenterCarouselHero: React.FC = () => {
           }
         }
         
+        /* Icon specific styles */
+        .center-icon {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .center-icon:hover {
+          transform: rotate(5deg) scale(1.05);
+        }
+        
+        /* Pulsing animation for active icon */
+        @keyframes iconPulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.05);
+            opacity: 0.9;
+          }
+        }
+        
+        .active-icon {
+          animation: iconPulse 2s ease-in-out infinite;
+        }
+        
         /* Reduce motion for accessibility */
         @media (prefers-reduced-motion: reduce) {
           * {
@@ -578,6 +729,22 @@ const CenterCarouselHero: React.FC = () => {
           }
         }
       `}</style>
+
+      {/* SVG Gradient Definitions for Icons */}
+      <svg width="0" height="0" style={{ position: 'absolute' }}>
+        <defs>
+          {centers.map((center) => {
+            const gradientId = `gradient-${center.id}`;
+            const colors = center.gradient.match(/#[0-9a-fA-F]{6}/g) || ['#000', '#fff'];
+            return (
+              <linearGradient key={gradientId} id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style={{ stopColor: colors[0], stopOpacity: 1 }} />
+                <stop offset="100%" style={{ stopColor: colors[1], stopOpacity: 1 }} />
+              </linearGradient>
+            );
+          })}
+        </defs>
+      </svg>
     </Box>
   );
 };

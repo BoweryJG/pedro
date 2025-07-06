@@ -12,8 +12,8 @@ import InstagramDashboard from './components/InstagramDashboard';
 import TestBooking from './pages/TestBooking';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
-import { JulieProfessionalLauncher } from './components/JulieProfessionalLauncher';
-import { Chatbot } from './chatbot/components/Chatbot';
+import { JuliePremiumLauncher } from './components/JuliePremiumLauncher';
+import { PremiumChatbot } from './chatbot/components/PremiumChatbot';
 import ScrollToTop from './components/ScrollToTop';
 import { useMediaQuery, useTheme } from '@mui/material';
 import DashboardPage from './pages/DashboardPage';
@@ -26,6 +26,7 @@ import DirectAccessPage from './pages/auth/DirectAccessPage';
 import './theme/panerai.css';
 import './styles/enhanced-depth-disabled.css';
 import './styles/performance-optimized.css';
+import './styles/premium-chatbot.css';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';
@@ -87,10 +88,10 @@ function App() {
           }
         />
       </Routes>
-      {/* Julie Professional Medical Launcher */}
-      <JulieProfessionalLauncher />
-      {/* Global Chatbot Component */}
-      <Chatbot />
+      {/* Premium Julie Launcher */}
+      <JuliePremiumLauncher />
+      {/* Premium Chatbot Component */}
+      <PremiumChatbot />
       {/* Luxury texture overlays - REMOVED FOR PERFORMANCE */}
     </AuthProvider>
   );
