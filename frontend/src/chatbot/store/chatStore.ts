@@ -27,6 +27,8 @@ interface ChatStore {
   
   // Actions
   toggleChat: () => void;
+  openChat: () => void;
+  closeChat: () => void;
   sendMessage: (content: string) => Promise<void>;
   setLoading: (loading: boolean) => void;
   updateStage: (stage: ConversationStage) => void;
@@ -89,6 +91,10 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   ...initialState,
   
   toggleChat: () => set((state) => ({ isOpen: !state.isOpen })),
+  
+  openChat: () => set({ isOpen: true }),
+  
+  closeChat: () => set({ isOpen: false }),
   
   setLoading: (loading) => set({ isLoading: loading }),
   

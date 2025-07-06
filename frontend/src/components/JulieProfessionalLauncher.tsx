@@ -19,7 +19,6 @@ import {
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VoiceCallButton } from './VoiceCallButton';
-import { Chatbot } from '../chatbot/components/Chatbot';
 import { useChatStore } from '../chatbot/store/chatStore';
 
 export const JulieProfessionalLauncher: React.FC = () => {
@@ -377,7 +376,7 @@ export const JulieProfessionalLauncher: React.FC = () => {
         </>
       )}
 
-      {/* Message Mode - Chatbot handles visibility */}
+      {/* Message Mode - Chatbot is handled globally in App.tsx */}
     </>
   );
 };

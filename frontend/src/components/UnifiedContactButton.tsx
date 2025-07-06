@@ -18,7 +18,6 @@ import {
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { VoiceCallButton } from './VoiceCallButton';
-import { Chatbot } from '../chatbot/components/Chatbot';
 import { useChatStore } from '../chatbot/store/chatStore';
 
 export const UnifiedContactButton: React.FC = () => {
@@ -201,10 +200,7 @@ export const UnifiedContactButton: React.FC = () => {
         </>
       )}
 
-      {/* Chat Mode - Already handled by Chatbot component */}
-      {activeMode === 'chat' && !chatStore.isOpen && (
-        <Chatbot />
-      )}
+      {/* Chat Mode - Handled globally in App.tsx */}
     </>
   );
 };

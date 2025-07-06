@@ -13,6 +13,7 @@ import TestBooking from './pages/TestBooking';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import { JulieProfessionalLauncher } from './components/JulieProfessionalLauncher';
+import { Chatbot } from './chatbot/components/Chatbot';
 import ScrollToTop from './components/ScrollToTop';
 import { useMediaQuery, useTheme } from '@mui/material';
 import DashboardPage from './pages/DashboardPage';
@@ -88,6 +89,8 @@ function App() {
       </Routes>
       {/* Julie Professional Medical Launcher */}
       <JulieProfessionalLauncher />
+      {/* Global Chatbot Component */}
+      <Chatbot />
       {/* Luxury texture overlays - REMOVED FOR PERFORMANCE */}
     </AuthProvider>
   );
