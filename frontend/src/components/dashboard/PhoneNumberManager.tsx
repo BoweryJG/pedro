@@ -93,58 +93,13 @@ const PhoneNumberManager: React.FC = () => {
   };
 
   const searchNumbers = async () => {
-    if (!searchAreaCode) {
-      alert('Please enter an area code');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        areaCode: searchAreaCode,
-        ...(searchContains && { contains: searchContains }),
-      });
-
-      const response = await fetch(`/api/phone-numbers/search?${params}`);
-      const data = await response.json();
-      setAvailableNumbers(data.numbers);
-    } catch (error) {
-      console.error('Error searching numbers:', error);
-    } finally {
-      setLoading(false);
-    }
+    // Phone number searching has been disabled
+    alert('Phone number searching is disabled. Pedro uses only the designated 929 number.');
   };
 
   const purchaseNumber = async () => {
-    if (!selectedNumber || !clientName) {
-      alert('Please select a number and enter client name');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch('/api/phone-numbers/purchase', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          phoneNumber: selectedNumber.phoneNumber,
-          clientId: `client_${Date.now()}`, // Generate client ID
-          clientName,
-        }),
-      });
-
-      if (response.ok) {
-        setShowPurchaseDialog(false);
-        fetchManagedNumbers();
-        setAvailableNumbers([]);
-        alert(`Successfully purchased ${selectedNumber.phoneNumber} for ${clientName}`);
-      }
-    } catch (error) {
-      console.error('Error purchasing number:', error);
-      alert('Failed to purchase number');
-    } finally {
-      setLoading(false);
-    }
+    // Phone number purchasing has been disabled
+    alert('Phone number purchasing is disabled. Pedro uses only the designated 929 number.');
   };
 
   const releaseNumber = async (phoneNumber: string) => {
@@ -260,73 +215,12 @@ const PhoneNumberManager: React.FC = () => {
         </Grid>
       </Grid>
 
-      {/* Search for New Numbers */}
-      <Card sx={{ mb: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Search Available Numbers
-          </Typography>
-          <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-            <TextField
-              label="Area Code"
-              value={searchAreaCode}
-              onChange={(e) => setSearchAreaCode(e.target.value)}
-              placeholder="212"
-              sx={{ width: 150 }}
-            />
-            <TextField
-              label="Contains (optional)"
-              value={searchContains}
-              onChange={(e) => setSearchContains(e.target.value)}
-              placeholder="DENTAL"
-              fullWidth
-            />
-            <Button
-              variant="contained"
-              onClick={searchNumbers}
-              disabled={loading}
-              startIcon={loading ? <CircularProgress size={20} /> : <SearchIcon />}
-            >
-              Search
-            </Button>
-          </Box>
-
-          {availableNumbers.length > 0 && (
-            <TableContainer component={Paper}>
-              <Table size="small">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Phone Number</TableCell>
-                    <TableCell>Location</TableCell>
-                    <TableCell>Monthly Fee</TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {availableNumbers.map((number) => (
-                    <TableRow key={number.phoneNumber}>
-                      <TableCell>{number.friendlyName}</TableCell>
-                      <TableCell>{number.locality}, {number.region}</TableCell>
-                      <TableCell>{number.monthlyFee}</TableCell>
-                      <TableCell>
-                        <Button
-                          size="small"
-                          onClick={() => {
-                            setSelectedNumber(number);
-                            setShowPurchaseDialog(true);
-                          }}
-                        >
-                          Purchase
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          )}
-        </CardContent>
-      </Card>
+      {/* Search for New Numbers - DISABLED */}
+      <Alert severity="info" sx={{ mb: 3 }}>
+        <Typography variant="body2">
+          Phone number purchasing has been disabled. Pedro uses only the designated 929 number.
+        </Typography>
+      </Alert>
 
       {/* Managed Numbers */}
       <Card>
@@ -402,36 +296,7 @@ const PhoneNumberManager: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Purchase Dialog */}
-      <Dialog open={showPurchaseDialog} onClose={() => setShowPurchaseDialog(false)}>
-        <DialogTitle>Purchase Phone Number</DialogTitle>
-        <DialogContent>
-          <Box sx={{ pt: 2 }}>
-            <Typography variant="body2" gutterBottom>
-              Number: {selectedNumber?.friendlyName}
-            </Typography>
-            <Typography variant="body2" gutterBottom>
-              Location: {selectedNumber?.locality}, {selectedNumber?.region}
-            </Typography>
-            <Typography variant="body2" gutterBottom>
-              Monthly Fee: {selectedNumber?.monthlyFee}
-            </Typography>
-            <TextField
-              fullWidth
-              label="Client/Practice Name"
-              value={clientName}
-              onChange={(e) => setClientName(e.target.value)}
-              sx={{ mt: 2 }}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setShowPurchaseDialog(false)}>Cancel</Button>
-          <Button onClick={purchaseNumber} variant="contained" disabled={loading}>
-            {loading ? 'Purchasing...' : 'Purchase'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+      {/* Purchase Dialog - DISABLED */}
 
       {/* Settings Dialog */}
       <Dialog open={showSettingsDialog} onClose={() => setShowSettingsDialog(false)} maxWidth="sm" fullWidth>

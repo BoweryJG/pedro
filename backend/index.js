@@ -948,6 +948,10 @@ app.use('/webhooks', webhookRoutes);
 // Mount phone number management routes
 app.use('/api/phone-numbers', phoneNumberRoutes);
 
+// Mount AI voice agent routes
+import { voiceAgentApp } from './voice-agent/index.js';
+app.use('/api/voice-agent', voiceAgentApp);
+
 server.listen(PORT, () => {
   console.log(`Backend server with WebSocket support running on port ${PORT}`);
   console.log(`Twilio WebSocket: ws://localhost:${PORT}/voice-websocket`);

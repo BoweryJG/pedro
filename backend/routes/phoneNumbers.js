@@ -4,38 +4,20 @@ import PhoneNumberManager from '../services/phoneNumberManager.js';
 const router = express.Router();
 const phoneManager = new PhoneNumberManager();
 
-// Search available phone numbers
+// Search available phone numbers - DISABLED
+// This functionality has been disabled as per requirements
 router.get('/search', async (req, res) => {
-  try {
-    const { areaCode, contains } = req.query;
-    
-    if (!areaCode) {
-      return res.status(400).json({ error: 'Area code is required' });
-    }
-    
-    const numbers = await phoneManager.searchAvailableNumbers(areaCode, contains);
-    res.json({ numbers });
-  } catch (error) {
-    console.error('Search error:', error);
-    res.status(500).json({ error: 'Failed to search numbers' });
-  }
+  res.status(403).json({ 
+    error: 'Phone number searching is disabled. Pedro uses only the designated 929 number.' 
+  });
 });
 
-// Purchase a phone number
+// Purchase a phone number - DISABLED
+// This functionality has been disabled as per requirements
 router.post('/purchase', async (req, res) => {
-  try {
-    const { phoneNumber, clientId, clientName } = req.body;
-    
-    if (!phoneNumber || !clientId || !clientName) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
-    
-    const result = await phoneManager.purchaseNumber(phoneNumber, clientId, clientName);
-    res.json(result);
-  } catch (error) {
-    console.error('Purchase error:', error);
-    res.status(500).json({ error: 'Failed to purchase number' });
-  }
+  res.status(403).json({ 
+    error: 'Phone number purchasing is disabled. Pedro uses only the designated 929 number.' 
+  });
 });
 
 // Get all managed numbers
