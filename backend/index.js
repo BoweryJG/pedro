@@ -520,7 +520,7 @@ app.post('/voice/incoming', (req, res) => {
   
   const twiml = `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say>Please wait while I connect you to our AI assistant.</Say>
+  <Say>Thank you for calling Dr. Pedro's office. Let me connect you with Julie, who can help schedule appointments, answer questions about our services, and provide information about financing options.</Say>
   <Connect>
     <Stream url="${protocol}://${host}/voice-websocket?callSid=${req.body.CallSid}">
       <Parameter name="callSid" value="${req.body.CallSid}" />
