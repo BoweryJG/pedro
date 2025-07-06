@@ -115,8 +115,9 @@ BOOKING PROCESS:
         });
       }
       
-      // Generate response using Netlify function
-      const response = await fetch('/.netlify/functions/chat', {
+      // Generate response using backend API
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,7 +130,7 @@ BOOKING PROCESS:
       
       if (!response.ok) {
         const errorData = await response.text();
-        throw new Error(`Netlify function failed: ${response.status} - ${errorData}`);
+        throw new Error(`Backend API failed: ${response.status} - ${errorData}`);
       }
       
       const data = await response.json();

@@ -203,23 +203,21 @@ app.post('/chat', async (req, res) => {
       });
     }
     
-    if (!process.env.OPENROUTER_API_KEY) {
+    if (!process.env.OPENAI_API_KEY) {
       return res.status(500).json({ 
-        error: 'OpenRouter API key not configured' 
+        error: 'OpenAI API key not configured' 
       });
     }
     
-    // Use OpenRouter API
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Use OpenAI API directly
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://gregpedromd.com',
-        'X-Title': 'Dr Pedro Dental Assistant'
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-3.5-turbo',
+        model: 'gpt-4',
         messages: [
           { role: 'system', content: systemPrompt },
           ...messages
@@ -232,7 +230,7 @@ app.post('/chat', async (req, res) => {
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'OpenRouter API error');
+      throw new Error(data.error?.message || 'OpenAI API error');
     }
 
     res.json({
