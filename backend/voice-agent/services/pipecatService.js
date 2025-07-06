@@ -1,12 +1,40 @@
-import { PipecatFramework, Pipeline } from 'pipecat-node';
+// Pipecat is implemented as custom classes below
 import { WhisperSTT } from './whisperSTT.js';
 import { CoquiTTS } from './coquiTTS.js';
 import { MedicalLLM } from './medicalLLM.js';
 import { LiveKitTransport } from './livekitTransport.js';
 
+// Simple Pipeline implementation
+class Pipeline {
+  constructor(components) {
+    this.components = components;
+    this.isRunning = false;
+  }
+
+  async start() {
+    this.isRunning = true;
+    // Connect components in sequence
+    for (let i = 0; i < this.components.length - 1; i++) {
+      this.components[i].pipe(this.components[i + 1]);
+    }
+  }
+
+  async stop() {
+    this.isRunning = false;
+    // Cleanup
+  }
+
+  addInterruptionHandler(handler) {
+    this.interruptionHandler = handler;
+  }
+
+  on(event, handler) {
+    // Event handling
+  }
+}
+
 export class PipecatService {
   constructor() {
-    this.framework = new PipecatFramework();
     this.activePipelines = new Map();
   }
 

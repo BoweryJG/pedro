@@ -3,7 +3,6 @@ import { exec } from 'child_process';
 import { promisify } from 'util';
 import fs from 'fs/promises';
 import path from 'path';
-import { v4 as uuidv4 } from 'uuid';
 
 const execAsync = promisify(exec);
 
@@ -78,7 +77,7 @@ export class CoquiTTS extends Transform {
     const cleanedText = this.cleanTextForTTS(text);
     
     // Generate unique filename
-    const filename = `${uuidv4()}.wav`;
+    const filename = `${Date.now()}_${Math.random().toString(36).substring(7)}.wav`;
     const filepath = path.join(this.tempDir, filename);
     
     // In a real implementation, you would use the Coqui TTS Python API

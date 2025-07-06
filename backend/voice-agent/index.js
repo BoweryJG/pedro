@@ -164,11 +164,3 @@ wss.on('connection', (ws) => {
 
 // Mount this as a sub-app in the main backend
 export const voiceAgentApp = app;
-
-// If running standalone
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const PORT = process.env.VOICE_AGENT_PORT || 3002;
-  server.listen(PORT, () => {
-    logger.info(`Voice Agent server running on port ${PORT}`);
-  });
-}
