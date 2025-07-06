@@ -288,7 +288,7 @@ const ImplantHero: React.FC = () => {
             fillOpacity="0.3"
           />
         </svg>
-      </HeroContainer>
+      </Box>
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <Grid container spacing={4} alignItems="center">
@@ -652,7 +652,7 @@ const ImplantHero: React.FC = () => {
           </Grid>
         </Grid>
       </Container>
-    </Box>
+    </HeroContainer>
   )
 }
 
