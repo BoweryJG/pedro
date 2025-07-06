@@ -125,15 +125,31 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           right: 0,
           bottom: 0,
           background: scrolled
-            ? 'rgba(255, 255, 255, 0.98)'
-            : 'rgba(255, 255, 255, 0.85)',
-          backdropFilter: 'blur(20px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+            ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)'
+            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
+          backdropFilter: 'blur(24px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
           borderBottom: scrolled 
-            ? '1px solid rgba(0, 0, 0, 0.08)' 
-            : '1px solid rgba(255, 255, 255, 0.2)',
+            ? '1px solid rgba(102, 126, 234, 0.1)' 
+            : '1px solid rgba(255, 255, 255, 0.3)',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: -1,
+          boxShadow: scrolled 
+            ? '0 8px 32px rgba(102, 126, 234, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)'
+            : '0 4px 16px rgba(0, 0, 0, 0.02)',
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '1px',
+          background: scrolled
+            ? 'linear-gradient(90deg, transparent 0%, rgba(102, 126, 234, 0.3) 50%, transparent 100%)'
+            : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%)',
+          transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+          zIndex: 1,
         },
       }}
     >
@@ -188,11 +204,32 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                  transition: 'all 0.3s ease',
+                  boxShadow: currentCenter
+                    ? `0 8px 25px ${centerConfig[currentCenter].color}40, 0 2px 8px rgba(0,0,0,0.1)`
+                    : '0 8px 25px rgba(102, 126, 234, 0.25), 0 2px 8px rgba(0,0,0,0.1)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  position: 'relative',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    inset: -2,
+                    borderRadius: '14px',
+                    background: currentCenter 
+                      ? centerConfig[currentCenter].gradient
+                      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                    zIndex: -1,
+                    filter: 'blur(8px)',
+                  },
                   '&:hover': {
-                    transform: 'rotate(-5deg)',
-                    boxShadow: '0 6px 30px rgba(0,0,0,0.15)',
+                    transform: 'rotate(-5deg) scale(1.05)',
+                    boxShadow: currentCenter
+                      ? `0 12px 40px ${centerConfig[currentCenter].color}50, 0 4px 16px rgba(0,0,0,0.15)`
+                      : '0 12px 40px rgba(102, 126, 234, 0.35), 0 4px 16px rgba(0,0,0,0.15)',
+                    '&::before': {
+                      opacity: 0.6,
+                    },
                   },
                 }}
               >
@@ -204,7 +241,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                 <Typography
                   variant="h6"
                   sx={{
-                    fontFamily: '"Playfair Display", Georgia, serif',
+                    fontFamily: 'var(--font-primary)',
                     fontWeight: 800,
                     fontSize: { xs: '1.3rem', md: '1.5rem' },
                     letterSpacing: '-0.02em',
@@ -257,14 +294,15 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                   sx={{
                     color: scrolled ? '#2d2d2d' : '#424242',
                     fontWeight: 500,
-                    fontSize: '0.95rem',
+                    fontSize: { xs: '0.85rem', md: '0.9rem' },
                     letterSpacing: '0.02em',
-                    px: 2,
+                    px: { xs: 1.5, md: 2 },
                     py: 1,
                     borderRadius: '8px',
                     position: 'relative',
                     overflow: 'hidden',
                     transition: 'all 0.3s ease',
+                    whiteSpace: 'nowrap',
                     '&:hover': {
                       color: scrolled ? '#000' : '#1a1a1a',
                       backgroundColor: 'rgba(0,0,0,0.04)',
@@ -319,11 +357,12 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     borderColor: scrolled ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.3)',
                     color: scrolled ? '#2d2d2d' : '#424242',
                     fontWeight: 600,
-                    fontSize: '0.9rem',
-                    px: 3,
+                    fontSize: '0.85rem',
+                    px: 2.5,
                     py: 1,
                     borderRadius: '25px',
                     transition: 'all 0.3s ease',
+                    whiteSpace: 'nowrap',
                     '&:hover': {
                       borderColor: currentCenter 
                         ? centerConfig[currentCenter].color
@@ -335,7 +374,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     },
                   }}
                 >
-                  Explore Centers
+                  Centers
                 </Button>
               </motion.div>
 
@@ -346,26 +385,31 @@ const EnhancedLuxuryNavbar: React.FC = () => {
               >
                 <Button
                   variant="contained"
-                  onClick={() => navigate('/contact')}
+                  onClick={() => {
+                    // Trigger EP³ Care interface instead of navigation
+                    const event = new CustomEvent('open-julie-chat'); // Keep existing event for backend compatibility
+                    window.dispatchEvent(event);
+                  }}
                   sx={{
                     background: currentCenter 
                       ? centerConfig[currentCenter].gradient
                       : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                     color: '#fff',
                     fontWeight: 600,
-                    fontSize: '0.9rem',
-                    px: 3,
+                    fontSize: '0.85rem',
+                    px: 2.5,
                     py: 1,
                     borderRadius: '25px',
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     transition: 'all 0.3s ease',
+                    whiteSpace: 'nowrap',
                     '&:hover': {
                       transform: 'translateY(-2px)',
                       boxShadow: '0 6px 30px rgba(0,0,0,0.2)',
                     },
                   }}
                 >
-                  Book Consultation
+                  Connect with EP<sup style={{ fontSize: '0.6em', verticalAlign: 'super' }}>3</sup> Care
                 </Button>
               </motion.div>
             </>
@@ -429,7 +473,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                   fullWidth
                   variant="contained"
                   onClick={() => {
-                    navigate('/contact');
+                    const event = new CustomEvent('open-julie-chat'); // Keep existing event for backend compatibility
+                    window.dispatchEvent(event);
                     setMobileMenuOpen(false);
                   }}
                   sx={{
@@ -438,7 +483,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     py: 1.5,
                   }}
                 >
-                  Book Consultation
+                  Connect with EP<sup style={{ fontSize: '0.6em', verticalAlign: 'super' }}>3</sup> Care
                 </Button>
               </Box>
             </Box>

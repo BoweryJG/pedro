@@ -1,0 +1,545 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  IconButton,
+  Card,
+  useTheme,
+  useMediaQuery,
+  alpha,
+  Fade,
+  Zoom,
+} from '@mui/material';
+import { motion, AnimatePresence } from 'framer-motion';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PhoneIcon from '@mui/icons-material/Phone';
+import ChatIcon from '@mui/icons-material/Chat';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import PsychologyIcon from '@mui/icons-material/Psychology';
+import '../styles/luxury-design-system.css';
+
+// Excellence Center Images and Data
+const excellenceCenters = [
+  {
+    id: 'tmj',
+    title: 'TMJ Excellence Center',
+    subtitle: 'Advanced Neuromuscular Therapy',
+    description: 'Revolutionary pain relief through precision diagnostics and personalized treatment protocols.',
+    image: '/images/excellence-centers/tmj-center.jpg',
+    stats: { patients: '2,500+', successRate: '94%' },
+    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    route: '/tmj',
+    features: ['Pain Mapping', 'Biofeedback Therapy', 'Custom Orthotics'],
+  },
+  {
+    id: 'implants',
+    title: 'Implant Excellence Center',
+    subtitle: 'Precision Tooth Replacement',
+    description: 'Permanent solutions with artistic precision, backed by lifetime warranties and 3D planning.',
+    image: '/images/excellence-centers/implant-center.jpg',
+    stats: { successRate: '99.2%', procedures: '5,000+' },
+    gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    route: '/implants',
+    features: ['Same-Day Teeth', '3D Planning', 'Lifetime Warranty'],
+  },
+  {
+    id: 'robotic',
+    title: 'Robotic Surgery Center',
+    subtitle: 'AI-Guided Precision',
+    description: 'YOMI robotic technology delivering 0.1mm accuracy for unprecedented surgical precision.',
+    image: '/images/excellence-centers/robotic-center.jpg',
+    stats: { accuracy: '0.1mm', healingTime: '50% Faster' },
+    gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    route: '/robotic',
+    features: ['YOMI Technology', 'Computer Precision', 'Minimally Invasive'],
+  },
+  {
+    id: 'medspa',
+    title: 'MedSpa Excellence Center',
+    subtitle: 'Non-Invasive Rejuvenation',
+    description: 'EMFACE technology and advanced aesthetics for natural-looking, transformative results.',
+    image: '/images/excellence-centers/medspa-center.jpg',
+    stats: { treatments: '10,000+', satisfaction: '98%' },
+    gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+    route: '/medspa',
+    features: ['EMFACE Technology', 'No Downtime', 'Instant Results'],
+  },
+];
+
+const ImageFocusedHero: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [expandedCenter, setExpandedCenter] = useState<string | null>(null);
+  const [autoPlay, setAutoPlay] = useState(true);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Auto-advance functionality
+  useEffect(() => {
+    if (autoPlay && !expandedCenter) {
+      intervalRef.current = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % excellenceCenters.length);
+      }, 6000);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [autoPlay, expandedCenter]);
+
+  const handleExpandCenter = (centerId: string) => {
+    setAutoPlay(false);
+    setExpandedCenter(expandedCenter === centerId ? null : centerId);
+  };
+
+  const handleEP3Voice = () => {
+    const event = new CustomEvent('open-julie-voice'); // Keep existing event for backend compatibility
+    window.dispatchEvent(event);
+  };
+
+  const handleEP3Chat = () => {
+    const event = new CustomEvent('open-julie-chat'); // Keep existing event for backend compatibility
+    window.dispatchEvent(event);
+  };
+
+  const nextSlide = () => {
+    setActiveIndex((prev) => (prev + 1) % excellenceCenters.length);
+  };
+
+  const prevSlide = () => {
+    setActiveIndex((prev) => (prev - 1 + excellenceCenters.length) % excellenceCenters.length);
+  };
+
+  const activeCenter = excellenceCenters[activeIndex];
+
+  return (
+    <Box
+      className="hero-spectrum spectrum-mesh"
+      sx={{
+        position: 'relative',
+        minHeight: { xs: '100vh', md: '95vh' },
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      {/* Hero Particles for Visual Appeal */}
+      <Box className="hero-particles">
+        {[...Array(15)].map((_, i) => (
+          <Box
+            key={i}
+            className="particle"
+            sx={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 8}s`,
+            }}
+          />
+        ))}
+      </Box>
+
+      {/* Main Content Area */}
+      <Container maxWidth="xl" sx={{ flex: 1, py: { xs: 4, md: 6 }, position: 'relative', zIndex: 2 }}>
+        {/* Header Section with EP³ Care System Introduction */
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <Box sx={{ textAlign: 'center', mb: { xs: 4, md: 6 } }}>
+            <Typography
+              variant="overline"
+              sx={{
+                fontFamily: 'var(--font-secondary)',
+                fontWeight: 600,
+                letterSpacing: '0.15em',
+                color: 'rgba(255, 255, 255, 0.8)',
+                mb: 2,
+                textTransform: 'uppercase',
+              }}
+            >
+              Excellence Protocol³ • Advanced Care Coordination
+            </Typography>
+            
+            <Typography
+              variant="h1"
+              className="luxury-display"
+              sx={{
+                fontSize: { xs: '3rem', sm: '4rem', md: '5.5rem' },
+                fontWeight: 900,
+                mb: 3,
+                color: 'white',
+                textShadow: '0 4px 20px rgba(0,0,0,0.3)',
+                lineHeight: 0.9,
+              }}
+            >
+              Excellence Starts Here
+            </Typography>
+            
+            <Typography
+              variant="h5"
+              className="sophisticated-body"
+              sx={{
+                color: 'rgba(255, 255, 255, 0.9)',
+                fontWeight: 400,
+                mb: 4,
+                maxWidth: 800,
+                mx: 'auto',
+                lineHeight: 1.6,
+              }}
+            >
+              Our Excellence Protocol³ represents Dr. Pedro's refined medical methodology developed over 30+ years of clinical practice. 
+              Our EP³ Care Team provides expert guidance and coordinates your path to optimal treatment outcomes.
+            </Typography>
+
+            {/* EP³ Care Team Action Buttons */}
+            <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Button
+                variant="contained"
+                size="large"
+                startIcon={<PhoneIcon />}
+                onClick={handleEP3Voice}
+                sx={{
+                  px: 4,
+                  py: 2,
+                  fontSize: '1.1rem',
+                  fontFamily: 'var(--font-secondary)',
+                  fontWeight: 600,
+                  borderRadius: '50px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  boxShadow: '0 8px 32px rgba(102, 126, 234, 0.4)',
+                  textTransform: 'none',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: '0 12px 40px rgba(102, 126, 234, 0.5)',
+                  },
+                }}
+              >
+                Connect with EP<sup style={{ fontSize: '0.7em' }}>3</sup> Care Team
+              </Button>
+              
+              <Button
+                variant="outlined"
+                size="large"
+                startIcon={<ChatIcon />}
+                onClick={handleEP3Chat}
+                sx={{
+                  px: 4,
+                  py: 2,
+                  fontSize: '1.1rem',
+                  fontFamily: 'var(--font-secondary)',
+                  fontWeight: 600,
+                  borderRadius: '50px',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  color: 'white',
+                  textTransform: 'none',
+                  backdropFilter: 'blur(10px)',
+                  '&:hover': {
+                    borderColor: 'rgba(255, 255, 255, 0.6)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    transform: 'translateY(-2px)',
+                  },
+                }}
+              >
+                Consult EP<sup style={{ fontSize: '0.7em' }}>3</sup> Specialists
+              </Button>
+            </Box>
+          </Box>
+        </motion.div>
+
+        {/* Excellence Centers Showcase */}
+        <Box sx={{ position: 'relative' }}>
+          {/* Navigation Controls */}
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <IconButton
+              onClick={prevSlide}
+              sx={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                color: 'white',
+                '&:hover': { background: 'rgba(255, 255, 255, 0.2)' },
+              }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            
+            <Typography
+              variant="h4"
+              className="luxury-subtitle"
+              sx={{
+                color: 'white',
+                textAlign: 'center',
+                textShadow: '0 2px 10px rgba(0,0,0,0.3)',
+              }}
+            >
+              Explore Our Excellence Centers
+            </Typography>
+            
+            <IconButton
+              onClick={nextSlide}
+              sx={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                color: 'white',
+                '&:hover': { background: 'rgba(255, 255, 255, 0.2)' },
+              }}
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          </Box>
+
+          {/* Main Image Display */}
+          <motion.div
+            key={activeIndex}
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <Card
+              sx={{
+                position: 'relative',
+                borderRadius: 4,
+                overflow: 'hidden',
+                height: { xs: 400, md: 500 },
+                background: activeCenter.gradient,
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  boxShadow: `0 20px 60px ${activeCenter.gradient}60`,
+                },
+              }}
+              onClick={() => handleExpandCenter(activeCenter.id)}
+            >
+              {/* Center Image */}
+              <Box
+                component="img"
+                src={activeCenter.image}
+                alt={activeCenter.title}
+                sx={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  transition: 'transform 0.6s ease',
+                }}
+              />
+              
+              {/* Gradient Overlay */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: `linear-gradient(45deg, ${activeCenter.gradient}90, transparent 60%)`,
+                }}
+              />
+              
+              {/* Content Overlay */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  p: { xs: 3, md: 4 },
+                  background: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
+                  color: 'white',
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  className="luxury-subtitle"
+                  sx={{
+                    fontWeight: 700,
+                    mb: 1,
+                    textShadow: '0 2px 10px rgba(0,0,0,0.5)',
+                  }}
+                >
+                  {activeCenter.title}
+                </Typography>
+                
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: 'var(--font-secondary)',
+                    mb: 2,
+                    opacity: 0.9,
+                  }}
+                >
+                  {activeCenter.subtitle}
+                </Typography>
+                
+                <Typography
+                  variant="body1"
+                  className="sophisticated-body"
+                  sx={{
+                    opacity: 0.8,
+                    mb: 2,
+                    maxWidth: '70%',
+                  }}
+                >
+                  {activeCenter.description}
+                </Typography>
+
+                {/* Stats Display */}
+                <Box sx={{ display: 'flex', gap: 4, mb: 2 }}>
+                  {Object.entries(activeCenter.stats).map(([key, value]) => (
+                    <Box key={key}>
+                      <Typography variant="h5" sx={{ fontWeight: 700, fontFamily: 'var(--font-accent)' }}>
+                        {value}
+                      </Typography>
+                      <Typography variant="caption" sx={{ textTransform: 'capitalize', opacity: 0.7 }}>
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+              
+              {/* Expand Indicator */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 20,
+                  right: 20,
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  backdropFilter: 'blur(10px)',
+                  borderRadius: '50%',
+                  p: 1,
+                  color: 'white',
+                }}
+              >
+                <AutoAwesomeIcon />
+              </Box>
+            </Card>
+          </motion.div>
+
+          {/* Center Thumbnails */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 3 }}>
+            {excellenceCenters.map((center, index) => (
+              <Box
+                key={center.id}
+                onClick={() => setActiveIndex(index)}
+                sx={{
+                  width: 80,
+                  height: 60,
+                  borderRadius: 2,
+                  overflow: 'hidden',
+                  cursor: 'pointer',
+                  opacity: activeIndex === index ? 1 : 0.6,
+                  transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)',
+                  transition: 'all 0.3s ease',
+                  border: activeIndex === index ? '3px solid white' : '2px solid transparent',
+                  boxShadow: activeIndex === index ? '0 8px 25px rgba(0,0,0,0.3)' : 'none',
+                }}
+              >
+                <Box
+                  component="img"
+                  src={center.image}
+                  alt={center.title}
+                  sx={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
+        {/* EP³ Excellence Highlights */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <Box sx={{ mt: 6, textAlign: 'center' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: 6, flexWrap: 'wrap' }}>
+              <Box sx={{ textAlign: 'center', maxWidth: 250 }}>
+                <PsychologyIcon sx={{ fontSize: 48, color: 'white', mb: 2 }} />
+                <Typography variant="h6" sx={{ color: 'white', fontWeight: 600, mb: 1 }}>
+                  Expert Care Coordination
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                  Our EP³ Care Team analyzes your needs and connects you with the ideal specialist
+                </Typography>
+              </Box>
+              
+              <Box sx={{ textAlign: 'center', maxWidth: 250 }}>
+                <AutoAwesomeIcon sx={{ fontSize: 48, color: 'white', mb: 2 }} />
+                <Typography variant="h6" sx={{ color: 'white', fontWeight: 600, mb: 1 }}>
+                  Excellence Protocol³
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                  Advanced methodology refined through 30+ years of clinical excellence
+                </Typography>
+              </Box>
+              
+              <Box sx={{ textAlign: 'center', maxWidth: 250 }}>
+                <ChatIcon sx={{ fontSize: 48, color: 'white', mb: 2 }} />
+                <Typography variant="h6" sx={{ color: 'white', fontWeight: 600, mb: 1 }}>
+                  Personalized Care Navigation
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.7)' }}>
+                  EP³ Care Coordinators available 24/7 for consultations and scheduling
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </motion.div>
+      </Container>
+
+      {/* Expanded Center Details */}
+      <AnimatePresence>
+        {expandedCenter && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              background: 'rgba(0,0,0,0.9)',
+              zIndex: 1000,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onClick={() => setExpandedCenter(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                background: 'white',
+                borderRadius: '20px',
+                overflow: 'hidden',
+              }}
+            >
+              {/* Expanded center content would go here */}
+              <Box sx={{ p: 4, textAlign: 'center' }}>
+                <Typography variant="h4" sx={{ mb: 2 }}>
+                  {excellenceCenters.find(c => c.id === expandedCenter)?.title}
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 3 }}>
+                  Detailed information about this excellence center...
+                </Typography>
+                <Button variant="contained" onClick={() => setExpandedCenter(null)}>
+                  Close
+                </Button>
+              </Box>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </Box>
+  );
+};
+
+export default ImageFocusedHero;
