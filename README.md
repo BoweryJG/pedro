@@ -22,6 +22,15 @@
 - **Build Status**: TypeScript compilation successful
 - **Security**: CORS, rate limiting, and headers properly configured
 - **No Dead Links**: All internal and external links verified
+- **API Security**: All sensitive API keys moved to backend
+- **Google Maps API**: Restricted to authorized domains only
+
+### 🔐 Recent Security Improvements (January 2025)
+- ✅ **OpenAI/Anthropic API keys** removed from frontend, now handled securely by backend
+- ✅ **Google Maps API key** rotated and restricted to specific domains and APIs
+- ✅ **Git history** cleaned of all exposed API keys
+- ✅ **Environment files** properly gitignored to prevent future exposures
+- ✅ **Netlify functions** removed in favor of secure backend API endpoints
 
 ⚠️ **Action Required**: See [PRODUCTION_DEPLOYMENT.md](PRODUCTION_DEPLOYMENT.md) for credential rotation instructions.
 
@@ -458,7 +467,7 @@ pedro-dental-monorepo/
 │
 ├── 🏠 Frontend (Main Website)
 │   ├── src/
-│   │   ├── chatbot/              # Sophie AI assistant
+│   │   ├── chatbot/              # Julie AI assistant (backend-powered)
 │   │   ├── components/           
 │   │   │   ├── dashboard/
 │   │   │   │   ├── VoiceAISettings.tsx        # Voice AI configuration
@@ -472,7 +481,7 @@ pedro-dental-monorepo/
 │   │   └── styles/               
 │   │       └── luxury-design-system.css        # Lightweight design system
 │   ├── public/                   # Static assets
-│   └── netlify/functions/        # Serverless endpoints
+│   └── .env.example              # Environment template (no secrets)
 │
 ├── ⚙️ Backend (API + Instagram + Voice)
 │   ├── src/
@@ -530,6 +539,14 @@ GET    /appointments             // List user appointments
 POST   /appointments             // Create new appointment
 PUT    /appointments/:id         // Update appointment
 DELETE /appointments/:id         // Cancel appointment
+```
+
+### **AI Chat Integration**
+```typescript
+POST   /chat                     // Julie AI assistant chat endpoint
+       // Request: { messages: Message[], systemPrompt: string }
+       // Response: { response: string }
+       // Securely handles OpenAI API calls server-side
 ```
 
 ### **Voice Communication**
