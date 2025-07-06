@@ -17,7 +17,7 @@ import { useChatStore } from '../chatbot/store/chatStore';
 interface JulieButtonProps extends Omit<ButtonProps, 'onClick'> {
   mode: 'voice' | 'chat';
   showIcon?: boolean;
-  showAIBadge?: boolean;
+  showCertificationBadge?: boolean;
 }
 
 export const JulieButton: React.FC<JulieButtonProps> = ({
@@ -25,7 +25,7 @@ export const JulieButton: React.FC<JulieButtonProps> = ({
   variant = 'contained',
   size = 'large',
   showIcon = true,
-  showAIBadge = false,
+  showCertificationBadge = false,
   children = mode === 'voice' ? 'Talk to Julie' : 'Chat with Julie',
   sx = {},
   ...props
@@ -137,7 +137,7 @@ export const JulieButton: React.FC<JulieButtonProps> = ({
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {children}
-          {showAIBadge && (
+          {showCertificationBadge && (
             <Box
               sx={{
                 display: 'inline-flex',
@@ -153,7 +153,7 @@ export const JulieButton: React.FC<JulieButtonProps> = ({
               }}
             >
               <AIIcon sx={{ fontSize: '0.875rem' }} />
-              AI
+              EP3
             </Box>
           )}
         </Box>

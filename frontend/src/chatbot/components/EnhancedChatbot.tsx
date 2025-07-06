@@ -106,7 +106,7 @@ export const EnhancedChatbot: React.FC = () => {
                     />
                   </motion.div>
                   
-                  <Tooltip title="Chat with Julie EPT⁴ - Enhanced Physician Technology" placement="left">
+                  <Tooltip title="Chat with Julie - EP3 Certified Care Coordinator" placement="left">
                     <Badge
                       color="error"
                       variant="dot"
@@ -287,7 +287,7 @@ export const EnhancedChatbot: React.FC = () => {
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <ChatIcon sx={{ color: 'primary.main' }} />
                       <Typography variant="h6" fontWeight={600}>
-                        AI Dental Assistant
+                        Care Coordinator
                       </Typography>
                     </Box>
                     <Tooltip title="Close chat">

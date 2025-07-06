@@ -320,13 +320,17 @@ const CenterCarouselHero: React.FC = () => {
                   borderRadius: '24px',
                   overflow: 'hidden',
                   position: 'relative',
-                  background: 'rgba(10, 10, 10, 0.8)',
+                  background: activeIndex === index 
+                    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)'
+                    : 'rgba(255, 255, 255, 0.9)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
-                  border: '2px solid transparent',
+                  border: activeIndex === index 
+                    ? `3px solid transparent`
+                    : '2px solid rgba(255, 255, 255, 0.4)',
                   boxShadow: activeIndex === index 
-                    ? '0 30px 60px rgba(0, 0, 0, 0.4), 0 0 80px rgba(124, 77, 255, 0.2)'
-                    : '0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(124, 77, 255, 0.1)',
+                    ? `0 30px 80px rgba(0, 0, 0, 0.2), 0 0 120px ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}40, inset 0 1px 0 rgba(255, 255, 255, 0.8)`
+                    : '0 20px 50px rgba(0, 0, 0, 0.1), 0 0 40px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
                   transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                   transform: 'translate3d(0, 0, 0)',
                   padding: '3px',
@@ -335,22 +339,25 @@ const CenterCarouselHero: React.FC = () => {
                     position: 'absolute',
                     inset: 0,
                     borderRadius: '24px',
-                    padding: '2px',
-                    background: 'linear-gradient(90deg, #FF0080, #FF8C00, #FFD700, #00FF00, #00CED1, #0080FF, #8A2BE2, #FF0080)',
-                    backgroundSize: '300% 100%',
+                    padding: '3px',
+                    background: activeIndex === index 
+                      ? center.gradient
+                      : `linear-gradient(135deg, ${center.gradient}, rgba(255, 255, 255, 0.3))`,
                     WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
                     WebkitMaskComposite: 'xor',
                     maskComposite: 'exclude',
-                    animation: 'borderPulse 12s linear infinite',
-                    opacity: activeIndex === index ? 1 : 0.7,
+                    opacity: activeIndex === index ? 1 : 0.6,
                     transition: 'opacity 0.5s ease',
+                    filter: 'blur(0.5px)',
                   },
                   '&:hover': {
-                    transform: 'translateY(-4px) scale(1.02) translate3d(0, 0, 0)',
-                    boxShadow: '0 40px 80px rgba(0, 0, 0, 0.5), 0 0 120px rgba(124, 77, 255, 0.3)',
+                    transform: 'translateY(-8px) scale(1.03) translate3d(0, 0, 0)',
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 0.98) 100%)',
+                    border: `3px solid transparent`,
+                    boxShadow: `0 50px 120px rgba(0, 0, 0, 0.25), 0 0 180px ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}50, inset 0 1px 0 rgba(255, 255, 255, 1)`,
                     '&::before': {
-                      animationDuration: '3s',
                       opacity: 1,
+                      background: center.gradient,
                     },
                   },
                   '&:active': {
@@ -450,10 +457,14 @@ const CenterCarouselHero: React.FC = () => {
                         fontFamily: '"Montserrat", sans-serif',
                         fontWeight: 800, 
                         mb: 1, 
-                        color: 'white',
+                        background: center.gradient,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
                         fontSize: { xs: '1.75rem', sm: '2.25rem' },
-                        textShadow: '0 2px 8px rgba(0, 0, 0, 0.4)',
+                        textShadow: 'none',
                         letterSpacing: '-0.02em',
+                        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
                       }}
                     >
                       {center.title}
@@ -462,10 +473,10 @@ const CenterCarouselHero: React.FC = () => {
                     <Typography 
                       variant="body1" 
                       sx={{ 
-                        color: 'rgba(255, 255, 255, 0.9)',
+                        color: 'rgba(30, 41, 59, 0.8)',
                         fontSize: { xs: '1rem', sm: '1.125rem' },
-                        textShadow: '0 1px 4px rgba(0, 0, 0, 0.3)',
-                        fontWeight: 400,
+                        textShadow: 'none',
+                        fontWeight: 500,
                       }}
                     >
                       {center.subtitle}
@@ -478,22 +489,22 @@ const CenterCarouselHero: React.FC = () => {
                       textAlign: 'center',
                       p: 2.5,
                       borderRadius: '16px',
-                      background: 'rgba(255, 255, 255, 0.08)',
+                      background: `linear-gradient(135deg, ${center.gradient}15, rgba(255, 255, 255, 0.4))`,
                       backdropFilter: 'blur(10px)',
                       WebkitBackdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      border: `2px solid ${center.gradient}30`,
                       mb: 3,
-                      boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
+                      boxShadow: `inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 4px 12px ${center.gradient}20`,
                     }}
                   >
                     <Typography 
                       variant="body2" 
                       sx={{ 
-                        color: 'rgba(255, 255, 255, 0.8)',
+                        color: 'rgba(30, 41, 59, 0.7)',
                         fontSize: '0.875rem',
                         textTransform: 'uppercase',
                         letterSpacing: '0.1em',
-                        fontWeight: 500,
+                        fontWeight: 600,
                         mb: 0.5,
                       }}
                     >
@@ -504,9 +515,12 @@ const CenterCarouselHero: React.FC = () => {
                       sx={{ 
                         fontFamily: '"Montserrat", sans-serif',
                         fontWeight: 800, 
-                        color: 'white',
+                        background: center.gradient,
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
                         fontSize: { xs: '1.5rem', sm: '1.75rem' },
-                        textShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
+                        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1))',
                       }}
                     >
                       {center.stats.value}
@@ -530,13 +544,13 @@ const CenterCarouselHero: React.FC = () => {
                           display: 'flex',
                           alignItems: 'center',
                           mb: 1,
-                          color: 'rgba(255, 255, 255, 0.9)',
+                          color: 'rgba(30, 41, 59, 0.8)',
                           fontSize: '1rem',
                           fontWeight: 500,
-                          textShadow: '0 1px 3px rgba(0, 0, 0, 0.2)',
+                          textShadow: 'none',
                         }}
                       >
-                        <Box component="span" sx={{ color: center.gradient, background: center.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', mr: 1, fontWeight: 800 }}>•</Box> {feature}
+                        <Box component="span" sx={{ background: center.gradient, WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', mr: 1, fontWeight: 800 }}>•</Box> {feature}
                       </Typography>
                     ))}
                   </Box>
@@ -547,10 +561,10 @@ const CenterCarouselHero: React.FC = () => {
                     variant="contained"
                     endIcon={<ArrowForwardIcon />}
                     sx={{
-                      background: 'rgba(255, 255, 255, 0.12)',
+                      background: center.gradient,
                       backdropFilter: 'blur(10px)',
                       WebkitBackdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      border: 'none',
                       color: 'white',
                       py: 2,
                       px: 3,
@@ -565,6 +579,7 @@ const CenterCarouselHero: React.FC = () => {
                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       transform: 'translate3d(0, 0, 0)',
                       textShadow: '0 1px 3px rgba(0, 0, 0, 0.3)',
+                      boxShadow: `0 8px 24px ${center.gradient}40, inset 0 1px 0 rgba(255, 255, 255, 0.3)`,
                       '&::before': {
                         content: '""',
                         position: 'absolute',
@@ -572,17 +587,16 @@ const CenterCarouselHero: React.FC = () => {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        background: center.gradient,
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent)',
                         opacity: 0,
                         transition: 'opacity 0.3s ease',
                       },
                       '&:hover': {
                         transform: 'translateY(-3px) translate3d(0, 0, 0)',
-                        boxShadow: '0 12px 30px rgba(0, 0, 0, 0.3)',
-                        background: 'rgba(255, 255, 255, 0.18)',
-                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                        boxShadow: `0 16px 40px ${center.gradient}60, inset 0 1px 0 rgba(255, 255, 255, 0.5)`,
+                        filter: 'brightness(1.1)',
                         '&::before': {
-                          opacity: 0.2,
+                          opacity: 1,
                         },
                       },
                     }}

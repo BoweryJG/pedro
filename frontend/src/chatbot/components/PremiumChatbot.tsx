@@ -329,7 +329,7 @@ export const PremiumChatbot: React.FC<PremiumChatbotProps> = React.memo(({ onClo
                             fontFamily: 'Inter, sans-serif',
                           }}
                         >
-                          Your Premium AI Dental Assistant
+                          Premium Care Coordinator
                         </Typography>
                         <OnlineStatus />
                       </Box>

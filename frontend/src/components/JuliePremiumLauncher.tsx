@@ -219,7 +219,7 @@ export const JuliePremiumLauncher: React.FC = React.memo(() => {
                     }}
                   >
                     <SparkleIcon sx={{ fontSize: 12 }} />
-                    Your AI Dental Assistant
+                    EP3 Certified Care Coordinator
                   </Typography>
                 </Box>
               </Box>
