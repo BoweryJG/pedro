@@ -12,8 +12,7 @@ import InstagramDashboard from './components/InstagramDashboard';
 import TestBooking from './pages/TestBooking';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
-import { JuliePremiumLauncher } from './components/JuliePremiumLauncher';
-import { PremiumChatbot } from './chatbot/components/PremiumChatbot';
+import { JulieUnifiedInterface } from './components/JulieUnifiedInterface';
 import ScrollToTop from './components/ScrollToTop';
 import { useMediaQuery, useTheme } from '@mui/material';
 import DashboardPage from './pages/DashboardPage';
@@ -88,10 +87,8 @@ function App() {
           }
         />
       </Routes>
-      {/* Premium Julie Launcher */}
-      <JuliePremiumLauncher />
-      {/* Premium Chatbot Component */}
-      <PremiumChatbot />
+      {/* Julie Unified Interface - Chat & Voice */}
+      <JulieUnifiedInterface />
       {/* Luxury texture overlays - REMOVED FOR PERFORMANCE */}
     </AuthProvider>
   );

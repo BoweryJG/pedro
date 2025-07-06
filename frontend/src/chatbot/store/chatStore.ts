@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import type { Message, ConversationState, ConversationStage, Analytics } from '../types';
 import { OpenAIService } from '../core/openaiService';
+import { supabase } from '../../lib/supabase';
 
 interface ChatStore {
   // State
@@ -9,6 +10,8 @@ interface ChatStore {
   messages: Message[];
   currentStage: ConversationStage;
   bookingIntent: number;
+  conversationId: string | null;
+  sessionId: string;
   userProfile: {
     concerns: string[];
     objections: string[];
@@ -36,6 +39,7 @@ interface ChatStore {
   trackAnalytics: (event: string, data?: any) => void;
   reset: () => void;
   setShowFinancingWidget: (show: boolean, procedure?: 'yomi' | 'tmj' | 'emface') => void;
+  saveConversationToSupabase: () => Promise<void>;
 }
 
 // Initialize chatbot configuration (no API key needed - using serverless function)
@@ -53,14 +57,18 @@ const chatbotConfig = {
   }
 };
 
+const generateSessionId = () => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
 const initialState = {
   isOpen: false,
   isLoading: false,
+  conversationId: null,
+  sessionId: generateSessionId(),
   messages: [
     {
       id: '1',
       role: 'assistant' as const,
-      content: "Hi! I'm Julie, and I'm here to help you smile brighter! 😊 I understand that dental care can sometimes feel overwhelming, but I'm here to make everything easier for you. Whether you need to book an appointment, have questions about our procedures, want to check insurance coverage, or explore financing options - I'm here to help. What can I assist you with today?",
+      content: "Hi! I'm Julie, your EP3 Certified Care Coordinator! 😊 I understand that dental care can sometimes feel overwhelming, but I'm here to make everything easier for you. Whether you need to book an appointment, have questions about our procedures, want to check insurance coverage, or explore financing options - I'm here to help. What can I assist you with today?",
       timestamp: new Date()
     }
   ],
@@ -180,6 +188,9 @@ export const useChatStore = create<ChatStore>((set, get) => ({
         procedure: detectedProcedure,
         bookingIntent: get().bookingIntent
       });
+
+      // Save to Supabase
+      await get().saveConversationToSupabase();
       
     } catch (error) {
       console.error('Error sending message:', error);
@@ -225,12 +236,70 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }
   },
   
-  reset: () => set(initialState),
+  reset: () => set({ ...initialState, sessionId: generateSessionId() }),
   
   setShowFinancingWidget: (show, procedure) => set({ 
     showFinancingWidget: show,
     financingProcedure: procedure 
-  })
+  }),
+
+  saveConversationToSupabase: async () => {
+    const state = get();
+    if (!state.conversationId) {
+      // Create new conversation
+      const { data: conversation, error: convError } = await supabase
+        .from('julie_conversations')
+        .insert({
+          session_id: state.sessionId,
+          conversation_type: 'chat',
+          booking_intent: state.bookingIntent,
+          procedure_interest: state.procedureInterest,
+          user_profile: state.userProfile,
+          status: 'active'
+        })
+        .select()
+        .single();
+
+      if (convError) {
+        console.error('Error creating conversation:', convError);
+        return;
+      }
+
+      set({ conversationId: conversation.id });
+      
+      // Save all messages
+      const messagesToSave = state.messages.map(msg => ({
+        conversation_id: conversation.id,
+        role: msg.role,
+        content: msg.content,
+        message_type: 'text',
+        metadata: { timestamp: msg.timestamp }
+      }));
+
+      const { error: msgError } = await supabase
+        .from('julie_messages')
+        .insert(messagesToSave);
+
+      if (msgError) {
+        console.error('Error saving messages:', msgError);
+      }
+    } else {
+      // Update existing conversation
+      const { error: updateError } = await supabase
+        .from('julie_conversations')
+        .update({
+          booking_intent: state.bookingIntent,
+          procedure_interest: state.procedureInterest,
+          user_profile: state.userProfile,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', state.conversationId);
+
+      if (updateError) {
+        console.error('Error updating conversation:', updateError);
+      }
+    }
+  }
 }));
 
 // Helper functions
