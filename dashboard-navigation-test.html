@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Navigation Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .nav-link {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background-color: #22c55e;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .nav-link:hover {
+            background-color: #16a34a;
+        }
+        .secondary {
+            background-color: #667eea;
+        }
+        .secondary:hover {
+            background-color: #5563d1;
+        }
+        .info {
+            background-color: #f3f4f6;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+        code {
+            background-color: #e5e7eb;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard Navigation Test</h1>
+        
+        <h2>Dashboard Routes:</h2>
+        <div>
+            <a href="/dr-pedro/dashboard" class="nav-link">Main Dashboard</a>
+            <a href="/dr-pedro/login" class="nav-link secondary">Login Page</a>
+            <a href="/dr-pedro/direct-access" class="nav-link secondary">Direct Access</a>
+            <a href="/dr-pedro/sms" class="nav-link">SMS Queue</a>
+        </div>
+        
+        <div class="info">
+            <h3>Navigation Structure:</h3>
+            <ul>
+                <li><strong>Protected Routes:</strong>
+                    <ul>
+                        <li><code>/dr-pedro/dashboard</code> - Main dashboard (requires authentication)</li>
+                        <li><code>/dr-pedro/sms</code> - SMS Queue (requires authentication)</li>
+                    </ul>
+                </li>
+                <li><strong>Public Routes:</strong>
+                    <ul>
+                        <li><code>/dr-pedro/login</code> - Login page</li>
+                        <li><code>/dr-pedro/direct-access</code> - Direct access bypass</li>
+                        <li><code>/dr-pedro/unauthorized</code> - Unauthorized access page</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="info">
+            <h3>Dashboard Features:</h3>
+            <ul>
+                <li>Watch Dashboard - Analytics gauges</li>
+                <li>Daily Schedule</li>
+                <li>Week Overview</li>
+                <li>Staff Schedule</li>
+                <li>Analytics</li>
+                <li>Voice Calls</li>
+                <li>Voice AI Settings</li>
+                <li>Phone Numbers</li>
+                <li>Subdomains (TMJ, Implants, Robotic, MedSpa)</li>
+            </ul>
+        </div>
+        
+        <div class="info">
+            <h3>Navigation Implementation:</h3>
+            <p>The dashboard uses React Router for navigation. All dashboard routes are protected by authentication.</p>
+            <p>Navigation is handled through:</p>
+            <ul>
+                <li>React Router's <code>useNavigate</code> hook</li>
+                <li>onClick handlers that call <code>navigate()</code></li>
+                <li>Protected routes that check authentication status</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

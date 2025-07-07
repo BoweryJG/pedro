@@ -130,17 +130,19 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           bottom: 0,
           background: scrolled
             ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)'
-            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
+            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.85) 100%)',
           backdropFilter: 'blur(24px) saturate(180%)',
           WebkitBackdropFilter: 'blur(24px) saturate(180%)',
           borderBottom: scrolled 
-            ? '1px solid rgba(102, 126, 234, 0.1)' 
-            : '1px solid rgba(255, 255, 255, 0.3)',
+            ? '2px solid rgba(102, 126, 234, 0.2)' 
+            : '2px solid rgba(255, 255, 255, 0.5)',
+          borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
+          borderRight: '1px solid rgba(255, 255, 255, 0.2)',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: -1,
           boxShadow: scrolled 
-            ? '0 8px 32px rgba(102, 126, 234, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)'
-            : '0 4px 16px rgba(0, 0, 0, 0.02)',
+            ? '0 8px 32px rgba(102, 126, 234, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(102, 126, 234, 0.1)'
+            : '0 4px 16px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.2)',
           // Add side shadows for visual separation
           '&::after': {
             content: '""',
@@ -155,15 +157,16 @@ const EnhancedLuxuryNavbar: React.FC = () => {
         '&::after': {
           content: '""',
           position: 'absolute',
-          top: 0,
+          bottom: -1,
           left: 0,
           right: 0,
-          height: '1px',
+          height: '3px',
           background: scrolled
-            ? 'linear-gradient(90deg, transparent 0%, rgba(102, 126, 234, 0.3) 50%, transparent 100%)'
-            : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%)',
+            ? 'linear-gradient(90deg, transparent 0%, rgba(102, 126, 234, 0.4) 50%, transparent 100%)'
+            : 'linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%)',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: 1,
+          filter: 'blur(1px)',
         },
       }}
     >
