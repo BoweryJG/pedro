@@ -116,7 +116,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       position="fixed"
       ref={navRef}
       sx={{
-        zIndex: theme.zIndex.appBar,
+        zIndex: 9999, // Force navbar to be on top
         background: 'transparent',
         boxShadow: 'none',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
@@ -183,8 +183,9 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           right: 0,
           bottom: 0,
           pointerEvents: 'none',
+          zIndex: -1, // Keep screws behind interactive elements
           '& > *': {
-            pointerEvents: 'auto',
+            pointerEvents: 'none', // Screws shouldn't intercept clicks
           },
         }}
       >
@@ -203,7 +204,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
         px: { xs: 4, sm: 6, md: 8, lg: 12 }, // Increased padding significantly
         position: 'relative',
         maxWidth: '100%',
-        mx: 'auto'
+        mx: 'auto',
+        zIndex: 1, // Ensure toolbar content is above background
       }}>
         {/* Logo Section */}
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 0 }}>
@@ -337,7 +339,10 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                 }}
               >
                 <Button
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    console.log(`NAVBAR CLICK: Navigating to ${item.path}`);
+                    navigate(item.path);
+                  }}
                   sx={{
                     color: scrolled ? '#2d2d2d' : '#424242',
                     fontWeight: 500,
@@ -347,6 +352,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     py: 1,
                     borderRadius: '8px',
                     position: 'relative',
+                    zIndex: 10, // Force buttons to be clickable
                     overflow: 'hidden',
                     transition: 'all 0.3s ease',
                     whiteSpace: 'nowrap',
@@ -408,6 +414,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     px: 2.5,
                     py: 1,
                     borderRadius: '25px',
+                    position: 'relative',
+                    zIndex: 10,
                     transition: 'all 0.3s ease',
                     whiteSpace: 'nowrap',
                     '&:hover': {
@@ -453,6 +461,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     px: 2.5,
                     py: 1,
                     borderRadius: '25px',
+                    position: 'relative',
+                    zIndex: 10,
                     boxShadow: '0 4px 20px rgba(0,0,0,0.15)',
                     transition: 'all 0.3s ease',
                     whiteSpace: 'nowrap',

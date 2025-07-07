@@ -360,24 +360,27 @@ const CenterCarouselHero: React.FC = () => {
                     : 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%)',
                   backdropFilter: 'blur(30px) saturate(150%)',
                   WebkitBackdropFilter: 'blur(30px) saturate(150%)',
-                  border: '2px solid transparent',
+                  border: '3px solid transparent',
                   '&::before': {
                     content: '""',
                     position: 'absolute',
-                    top: -2,
-                    left: -2,
-                    right: -2,
-                    bottom: -2,
-                    borderRadius: '26px',
+                    top: -4,
+                    left: -4,
+                    right: -4,
+                    bottom: -4,
+                    borderRadius: '28px',
                     background: activeIndex === index
                       ? center.gradient
                       : 'linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1))',
                     opacity: activeIndex === index ? 1 : 0.5,
                     zIndex: -1,
-                    animation: activeIndex === index ? `borderPulse-${index} 3s ease-in-out infinite` : 'none',
+                    animation: activeIndex === index ? `borderPulse-${index} 2s ease-in-out infinite` : 'none',
                     transition: 'all 0.4s ease',
                     willChange: 'filter, opacity, transform', // Optimize for all animated properties
                     transformOrigin: 'center',
+                    boxShadow: activeIndex === index 
+                      ? `0 0 40px ${center.gradient.match(/#[0-9a-fA-F]{6}/)?.[0] || '#667eea'}` 
+                      : 'none',
                   },
                   boxShadow: activeIndex === index 
                     ? `
@@ -731,28 +734,28 @@ const CenterCarouselHero: React.FC = () => {
       <style>{`
         ${cartierScrewStyles}
         
-        /* Enhanced pulsating border animations - More visible */
+        /* ULTRA VISIBLE pulsating border animations */
         ${centers.map((center, idx) => `
           @keyframes borderPulse-${idx} {
             0%, 100% { 
-              filter: hue-rotate(0deg) saturate(1.3) brightness(1.1);
+              filter: hue-rotate(0deg) saturate(1.5) brightness(1.2) drop-shadow(0 0 20px ${center.gradient.match(/#[0-9a-fA-F]{6}/)?.[0] || '#667eea'});
               opacity: 1;
               transform: scale(1);
             }
             25% { 
-              filter: hue-rotate(15deg) saturate(1.6) brightness(1.25);
+              filter: hue-rotate(20deg) saturate(2) brightness(1.5) drop-shadow(0 0 40px ${center.gradient.match(/#[0-9a-fA-F]{6}/)?.[0] || '#667eea'});
               opacity: 1;
-              transform: scale(1.02);
+              transform: scale(1.05);
             }
             50% { 
-              filter: hue-rotate(-15deg) saturate(1.4) brightness(1.15);
-              opacity: 0.9;
-              transform: scale(1.01);
+              filter: hue-rotate(-20deg) saturate(1.8) brightness(1.3) drop-shadow(0 0 30px ${center.gradient.match(/#[0-9a-fA-F]{6}/)?.[0] || '#667eea'});
+              opacity: 0.85;
+              transform: scale(1.02);
             }
             75% { 
-              filter: hue-rotate(10deg) saturate(1.7) brightness(1.3);
+              filter: hue-rotate(15deg) saturate(2.2) brightness(1.6) drop-shadow(0 0 50px ${center.gradient.match(/#[0-9a-fA-F]{6}/)?.[0] || '#667eea'});
               opacity: 1;
-              transform: scale(1.015);
+              transform: scale(1.03);
             }
           }
         `).join('')}
