@@ -240,7 +240,7 @@ const CenterCarouselHero: React.FC = () => {
               color: 'white',
             }}
           >
-            Choose Your Care Journey
+            Discover Your Path to Excellence
           </Typography>
           
           <Typography
@@ -252,7 +252,7 @@ const CenterCarouselHero: React.FC = () => {
               mb: 2,
             }}
           >
-            Swipe to explore our specialized centers
+            Explore our world-class specialties and revolutionary treatments
           </Typography>
 
           {isMobile && (
@@ -454,7 +454,7 @@ const CenterCarouselHero: React.FC = () => {
                     <Typography 
                       variant="h4" 
                       sx={{ 
-                        fontFamily: '"Montserrat", sans-serif',
+                        fontFamily: 'var(--font-secondary)',
                         fontWeight: 800, 
                         mb: 1, 
                         background: center.gradient,
@@ -513,7 +513,7 @@ const CenterCarouselHero: React.FC = () => {
                     <Typography 
                       variant="h5" 
                       sx={{ 
-                        fontFamily: '"Montserrat", sans-serif',
+                        fontFamily: 'var(--font-secondary)',
                         fontWeight: 800, 
                         background: center.gradient,
                         WebkitBackgroundClip: 'text',
@@ -569,7 +569,7 @@ const CenterCarouselHero: React.FC = () => {
                       py: 2,
                       px: 3,
                       fontSize: '1.125rem',
-                      fontFamily: '"Montserrat", sans-serif',
+                      fontFamily: 'var(--font-secondary)',
                       fontWeight: 700,
                       letterSpacing: '0.05em',
                       textTransform: 'uppercase',

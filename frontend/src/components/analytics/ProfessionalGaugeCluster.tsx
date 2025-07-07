@@ -55,15 +55,15 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
     }
   };
 
-  // Position subdials
+  // Position subdials with proper spacing to prevent overlap
   const getSubdialPosition = (position: SubdialConfig['position']) => {
     switch (position) {
       case 'left':
-        return { left: '15%', top: '50%', transform: 'translate(-50%, -50%)' };
+        return { left: '20%', top: '50%', transform: 'translate(-50%, -50%)', zIndex: 5 };
       case 'right':
-        return { right: '15%', top: '50%', transform: 'translate(50%, -50%)' };
+        return { right: '20%', top: '50%', transform: 'translate(50%, -50%)', zIndex: 5 };
       case 'bottom':
-        return { left: '50%', bottom: '15%', transform: 'translate(-50%, 50%)' };
+        return { left: '50%', bottom: '20%', transform: 'translate(-50%, 50%)', zIndex: 5 };
     }
   };
 
@@ -96,14 +96,15 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
             '&::after': {
               content: '""',
               position: 'absolute',
-              top: '10%',
-              left: '10%',
-              width: '30%',
-              height: '30%',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+              top: '5%',
+              left: '5%',
+              width: '15%',
+              height: '15%',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.08) 50%, transparent 100%)',
               borderRadius: '50%',
               pointerEvents: 'none',
               zIndex: 10,
+              opacity: 0.9,
             }
           }}
         >
@@ -155,17 +156,18 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              zIndex: 3,
             }}
           >
             <Box
               sx={{
                 position: 'absolute',
-                width: 3,
-                height: '40%',
-                background: `linear-gradient(to top, ${subdial.color || '#00ff00'}, transparent)`,
+                width: 2,
+                height: '42%',
+                background: `linear-gradient(to top, ${subdial.color || '#00ff00'}, ${subdial.color || '#00ff00'}80)`,
                 transformOrigin: 'bottom',
                 bottom: '50%',
-                boxShadow: `0 0 10px ${subdial.color || '#00ff00'}`,
+                boxShadow: `0 0 6px ${subdial.color || '#00ff00'}, 0 0 12px ${subdial.color || '#00ff00'}50`,
               }}
             />
           </motion.div>
@@ -189,21 +191,24 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
           <Box
             sx={{
               position: 'absolute',
-              bottom: 25,
+              bottom: 20,
               left: '50%',
               transform: 'translateX(-50%)',
               textAlign: 'center',
-              background: 'rgba(0, 0, 0, 0.7)',
+              background: 'rgba(0, 0, 0, 0.85)',
+              backdropFilter: 'blur(4px)',
               borderRadius: 1,
-              px: 1.5,
-              py: 0.5,
-              border: `1px solid ${subdial.color || '#00ff00'}40`,
+              px: 2,
+              py: 0.75,
+              border: `1px solid ${subdial.color || '#00ff00'}60`,
+              minWidth: 60,
+              boxShadow: '0 2px 8px rgba(0,0,0,0.4)',
             }}
           >
             <Typography sx={{ color: subdial.color || '#00ff00', fontSize: 16, fontWeight: 'bold', lineHeight: 1.2 }}>
               {formattedValue}
             </Typography>
-            <Typography sx={{ color: '#888', fontSize: 9, lineHeight: 1 }}>
+            <Typography sx={{ color: '#aaa', fontSize: 9, lineHeight: 1, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               {subdial.unit}
             </Typography>
           </Box>
@@ -274,18 +279,19 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        overflow: 'hidden',
+        overflow: 'visible',
         '&::after': {
           content: '""',
           position: 'absolute',
-          top: '8%',
-          left: '8%',
-          width: '25%',
-          height: '25%',
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+          top: '5%',
+          left: '5%',
+          width: '10%',
+          height: '10%',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
           borderRadius: '50%',
           pointerEvents: 'none',
           zIndex: 10,
+          opacity: 0.8,
         }
       }}
     >
@@ -311,31 +317,34 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
       <Box
         sx={{
           position: 'absolute',
-          top: 40,
-          right: 40,
+          top: 20,
+          right: 20,
           display: 'flex',
-          gap: 1,
+          gap: 0.5,
+          zIndex: 20,
         }}
       >
         <Box
           sx={{
-            width: 12,
-            height: 12,
+            width: 10,
+            height: 10,
             borderRadius: '50%',
             background: '#00ff00',
-            boxShadow: '0 0 10px #00ff00, 0 0 20px #00ff00',
+            boxShadow: '0 0 8px #00ff00, 0 0 16px #00ff00, inset 0 0 4px rgba(0,0,0,0.3)',
             animation: 'ledGlow 2s ease-in-out infinite alternate',
+            border: '1px solid rgba(0, 255, 0, 0.3)',
           }}
         />
         <Box
           sx={{
-            width: 12,
-            height: 12,
+            width: 10,
+            height: 10,
             borderRadius: '50%',
             background: '#00ff00',
-            boxShadow: '0 0 10px #00ff00, 0 0 20px #00ff00',
+            boxShadow: '0 0 8px #00ff00, 0 0 16px #00ff00, inset 0 0 4px rgba(0,0,0,0.3)',
             animation: 'ledGlow 2s ease-in-out infinite alternate',
             animationDelay: '0.5s',
+            border: '1px solid rgba(0, 255, 0, 0.3)',
           }}
         />
       </Box>
@@ -344,32 +353,35 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
       <Box
         sx={{
           position: 'absolute',
-          top: 40,
-          left: 40,
+          top: 20,
+          left: 20,
           display: 'flex',
-          gap: 1,
+          gap: 0.5,
+          zIndex: 20,
         }}
       >
         <Box
           sx={{
-            width: 12,
-            height: 12,
+            width: 10,
+            height: 10,
             borderRadius: '50%',
             background: '#00ff00',
-            boxShadow: '0 0 10px #00ff00, 0 0 20px #00ff00',
+            boxShadow: '0 0 8px #00ff00, 0 0 16px #00ff00, inset 0 0 4px rgba(0,0,0,0.3)',
             animation: 'ledGlow 2s ease-in-out infinite alternate',
             animationDelay: '1s',
+            border: '1px solid rgba(0, 255, 0, 0.3)',
           }}
         />
         <Box
           sx={{
-            width: 12,
-            height: 12,
+            width: 10,
+            height: 10,
             borderRadius: '50%',
             background: '#00ff00',
-            boxShadow: '0 0 10px #00ff00, 0 0 20px #00ff00',
+            boxShadow: '0 0 8px #00ff00, 0 0 16px #00ff00, inset 0 0 4px rgba(0,0,0,0.3)',
             animation: 'ledGlow 2s ease-in-out infinite alternate',
             animationDelay: '1.5s',
+            border: '1px solid rgba(0, 255, 0, 0.3)',
           }}
         />
       </Box>
@@ -391,7 +403,7 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
       </Typography>
 
       {/* Main gauge */}
-      <Box sx={{ position: 'relative', width: 300, height: 300 }}>
+      <Box sx={{ position: 'relative', width: 300, height: 300, zIndex: 1 }}>
         {/* Main gauge background */}
         <Box
           sx={{
@@ -406,14 +418,15 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
             '&::after': {
               content: '""',
               position: 'absolute',
-              top: '10%',
-              left: '10%',
-              width: '30%',
-              height: '30%',
-              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
+              top: '8%',
+              left: '8%',
+              width: '12%',
+              height: '12%',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 50%, transparent 100%)',
               borderRadius: '50%',
               pointerEvents: 'none',
               zIndex: 10,
+              opacity: 0.85,
             }
           }}
         />
@@ -430,17 +443,18 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            zIndex: 3,
           }}
         >
           <Box
             sx={{
               position: 'absolute',
-              width: 4,
-              height: '45%',
-              background: 'linear-gradient(to top, #fff, #888)',
+              width: 3,
+              height: '46%',
+              background: 'linear-gradient(to top, #fff, #ccc)',
               transformOrigin: 'bottom',
               bottom: '50%',
-              boxShadow: '0 0 20px rgba(255,255,255,0.5)',
+              boxShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.3)',
             }}
           />
         </motion.div>
@@ -453,12 +467,13 @@ const ProfessionalGaugeCluster: React.FC<GaugeClusterProps> = ({
             left: '50%',
             transform: 'translate(-50%, -50%)',
             textAlign: 'center',
+            zIndex: 2,
           }}
         >
-          <Typography sx={{ color: '#fff', fontSize: 48, fontWeight: 'bold' }}>
+          <Typography sx={{ color: '#fff', fontSize: 54, fontWeight: 'bold', lineHeight: 1 }}>
             {mainValue}
           </Typography>
-          <Typography sx={{ color: '#888', fontSize: 14 }}>
+          <Typography sx={{ color: '#aaa', fontSize: 14, textTransform: 'uppercase', letterSpacing: '1px', mt: 0.5 }}>
             {mainLabel}
           </Typography>
         </Box>

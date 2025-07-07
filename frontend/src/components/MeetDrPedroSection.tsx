@@ -148,6 +148,7 @@ const MeetDrPedroSection = () => {
                   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
+                  textAlign: { xs: 'center', md: 'left' },
                 }}
               >
                 Meet Your Doctor
@@ -155,7 +156,12 @@ const MeetDrPedroSection = () => {
 
               <Typography
                 variant="h5"
-                sx={{ mb: 3, fontWeight: 500, lineHeight: 1.6 }}
+                sx={{ 
+                  mb: 3, 
+                  fontWeight: 500, 
+                  lineHeight: 1.6,
+                  textAlign: { xs: 'center', md: 'left' },
+                }}
               >
                 From Staten Island Sports Hall of Fame champion to pioneering prosthodontist, 
                 Dr. Pedro brings 30+ years of excellence and cutting-edge technology to transform your smile.
@@ -163,7 +169,12 @@ const MeetDrPedroSection = () => {
 
               <Typography
                 variant="body1"
-                sx={{ mb: 4, color: 'text.secondary', lineHeight: 1.8 }}
+                sx={{ 
+                  mb: 4, 
+                  color: 'text.secondary', 
+                  lineHeight: 1.8,
+                  textAlign: { xs: 'center', md: 'left' },
+                }}
               >
                 After earning full athletic scholarships and graduating from Temple University School of Dentistry, 
                 Dr. Pedro became a board-certified prosthodontist specializing in complex dental reconstructions. 

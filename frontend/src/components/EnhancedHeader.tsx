@@ -144,19 +144,23 @@ const EnhancedHeader = () => {
                 <Button
                   size="small"
                   variant="contained"
-                  onClick={() => navigate('/contact')}
+                  onClick={() => {
+                    const event = new CustomEvent('open-julie-chat');
+                    window.dispatchEvent(event);
+                  }}
                   sx={{
                     bgcolor: 'white',
                     color: 'primary.main',
                     fontSize: '0.75rem',
                     py: 0.5,
+                    whiteSpace: 'nowrap',
                     '&:hover': {
                       bgcolor: 'grey.100',
                     },
                   }}
                   startIcon={<SparkleIcon fontSize="small" />}
                 >
-                  Book Consultation
+                  Talk to Julie EP<sup style={{ fontSize: '0.6em', verticalAlign: 'super' }}>3</sup>
                 </Button>
               </Stack>
             </Container>
@@ -299,12 +303,16 @@ const EnhancedHeader = () => {
                 >
                   <Button
                     variant="contained"
-                    onClick={() => navigate('/contact')}
+                    onClick={() => {
+                      const event = new CustomEvent('open-julie-chat');
+                      window.dispatchEvent(event);
+                    }}
                     startIcon={<SparkleIcon />}
                     sx={{
                       ml: 2,
                       background: 'linear-gradient(135deg, #1e40af 0%, #7c3aed 100%)',
                       boxShadow: '0 4px 12px rgba(30, 64, 175, 0.3)',
+                      whiteSpace: 'nowrap',
                       '&:hover': {
                         background: 'linear-gradient(135deg, #1e3a8a 0%, #6d28d9 100%)',
                         transform: 'translateY(-2px)',
@@ -312,7 +320,7 @@ const EnhancedHeader = () => {
                       },
                     }}
                   >
-                    Book Now
+                    Talk to Julie EP<sup style={{ fontSize: '0.6em', verticalAlign: 'super' }}>3</sup>
                   </Button>
                 </motion.div>
               </Stack>
@@ -464,7 +472,11 @@ const EnhancedHeader = () => {
               fullWidth
               variant="contained"
               size="large"
-              onClick={() => handleNavigation('/contact')}
+              onClick={() => {
+                const event = new CustomEvent('open-julie-chat');
+                window.dispatchEvent(event);
+                setMobileMenuOpen(false);
+              }}
               startIcon={<SparkleIcon />}
               sx={{
                 py: 1.5,
@@ -476,7 +488,7 @@ const EnhancedHeader = () => {
                 },
               }}
             >
-              Book Consultation
+              Talk to Julie EP<sup style={{ fontSize: '0.6em', verticalAlign: 'super' }}>3</sup>
             </Button>
           </motion.div>
 

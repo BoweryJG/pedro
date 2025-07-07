@@ -248,9 +248,10 @@ const ImageFocusedHero: React.FC = () => {
             </Box>
           </Box>
         </motion.div>
+      </Box>
 
-        {/* Excellence Centers Showcase */}
-        <Box sx={{ position: 'relative' }}>
+      {/* Excellence Centers Showcase */}
+      <Box sx={{ position: 'relative' }}>
           {/* Navigation Controls */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <IconButton

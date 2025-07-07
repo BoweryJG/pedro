@@ -128,7 +128,7 @@ const LuxuryStatsSection: React.FC = () => {
                 color: 'white',
               }}
             >
-              Numbers That Define Excellence
+              Proven Results That Transform Lives
             </Typography>
           </Box>
         </div>

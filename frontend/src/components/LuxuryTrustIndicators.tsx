@@ -69,7 +69,7 @@ const LuxuryTrustIndicators: React.FC = () => {
       <Container maxWidth="lg">
         {/* Section Header */}
         <div>
-          <Box sx={{ textAlign: 'center', mb: 8 }}>
+          <Box sx={{ textAlign: { xs: 'center', md: 'center' }, mb: 8 }}>
             <Typography
               variant="overline"
               sx={{
@@ -92,6 +92,7 @@ const LuxuryTrustIndicators: React.FC = () => {
                 background: 'linear-gradient(135deg, #1A1A1A 0%, #4A4A4A 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
+                textAlign: { xs: 'center', md: 'center' },
               }}
             >
               Why Choose Our Practice
@@ -104,6 +105,7 @@ const LuxuryTrustIndicators: React.FC = () => {
                 color: 'text.secondary',
                 maxWidth: 600,
                 mx: 'auto',
+                textAlign: { xs: 'center', md: 'center' },
               }}
             >
               Recognized excellence backed by prestigious certifications and continuous innovation
@@ -112,9 +114,9 @@ const LuxuryTrustIndicators: React.FC = () => {
         </div>
 
         {/* Trust Indicators Grid */}
-        <Grid container spacing={3}>
+        <Grid container spacing={3} justifyContent={{ xs: 'center', md: 'flex-start' }}>
           {trustIndicators.map((indicator, index) => (
-            <Grid item xs={6} md={4} key={index}>
+            <Grid item xs={6} md={4} key={index} sx={{ display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' } }}>
               <div>
                 <Paper
                   elevation={0}
