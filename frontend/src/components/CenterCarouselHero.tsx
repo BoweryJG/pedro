@@ -14,55 +14,55 @@ import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import { CornerScrews, cartierScrewStyles } from './effects/CartierScrews';
-import { luxuryMedicalIcons, LuxuryIconType } from './icons/LuxuryMedicalIcons';
+import { exactLuxuryIcons, ExactIconType } from './icons/ExactLuxuryIcons';
 import '../styles/luxury-design-system.css';
 
-// Lightweight center data with luxury medical icons
+// Lightweight center data with exact luxury icons from ChatGPT image
 const centers = [
   {
-    id: 'tmj' as LuxuryIconType,
+    id: 'tmj' as ExactIconType,
     title: 'TMJ & Orofacial Pain',
     subtitle: 'Expert jaw disorder care',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     stats: { label: 'Patients Treated', value: '2,500+' },
     features: ['Custom Oral Appliances', 'Physical Therapy', 'Pain Management'],
-    icon: 'tmj' as LuxuryIconType,
+    icon: 'tmj' as ExactIconType,
   },
   {
-    id: 'implants' as LuxuryIconType,
+    id: 'implants' as ExactIconType,
     title: 'Dental Implants',
     subtitle: 'Permanent tooth replacement',
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     stats: { label: 'Success Rate', value: '99.2%' },
     features: ['Single & Full Arch', 'Bone Grafting', 'Lifetime Warranty'],
-    icon: 'implants' as LuxuryIconType,
+    icon: 'implants' as ExactIconType,
   },
   {
-    id: 'robotic' as LuxuryIconType,
+    id: 'robotic' as ExactIconType,
     title: 'Robotic Surgery',
     subtitle: 'Precision implant placement',
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     stats: { label: 'Healing Time', value: '50% Faster' },
     features: ['Computer Precision', 'Minimally Invasive', 'Yomi Technology'],
-    icon: 'robotic' as LuxuryIconType,
+    icon: 'robotic' as ExactIconType,
   },
   {
-    id: 'medspa' as LuxuryIconType,
+    id: 'medspa' as ExactIconType,
     title: 'MedSpa & Aesthetics',
     subtitle: 'Facial rejuvenation',
     gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     stats: { label: 'Treatments', value: '10,000+' },
     features: ['EMFACE Technology', 'Facial Contouring', 'Anti-Aging'],
-    icon: 'medspa' as LuxuryIconType,
+    icon: 'medspa' as ExactIconType,
   },
   {
-    id: 'aboutface' as LuxuryIconType,
+    id: 'aboutface' as ExactIconType,
     title: 'AboutFace Aesthetics',
     subtitle: 'Complete smile makeovers',
     gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     stats: { label: 'Google Rating', value: '5.0★' },
     features: ['Veneers', 'Teeth Whitening', 'Smile Design'],
-    icon: 'aboutface' as LuxuryIconType,
+    icon: 'aboutface' as ExactIconType,
   },
 ];
 
@@ -441,7 +441,7 @@ const CenterCarouselHero: React.FC = () => {
                           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
                       >
-                        {React.createElement(luxuryMedicalIcons[center.icon], {
+                        {React.createElement(exactLuxuryIcons[center.icon], {
                           size: 120,
                           className: `luxury-medical-icon ${activeIndex === index ? 'active' : ''}`
                         })}
