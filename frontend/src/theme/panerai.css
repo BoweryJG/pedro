@@ -42,18 +42,18 @@
 }
 
 .panerai-cta {
-  background: radial-gradient(circle at 30% 30%, #1e2128, #0f1117) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #ffffff !important;
-  transition: all 0.3s ease !important;
+  background: radial-gradient(circle at 30% 30%, #1e2128, #0f1117);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
 .panerai-cta:hover {
-  border-color: #00ff00 !important;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3) !important;
-  color: #00ff00 !important;
+  border-color: #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  color: #00ff00;
 }
 
 .panerai-cta:hover::before {

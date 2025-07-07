@@ -208,12 +208,14 @@ const ImageFocusedHero: React.FC = () => {
                   fontFamily: 'var(--font-secondary)',
                   fontWeight: 600,
                   borderRadius: '50px',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important',
+                  color: 'white !important',
                   boxShadow: '0 8px 32px rgba(102, 126, 234, 0.4)',
                   textTransform: 'none',
                   '&:hover': {
                     transform: 'translateY(-2px)',
                     boxShadow: '0 12px 40px rgba(102, 126, 234, 0.5)',
+                    background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%) !important',
                   },
                 }}
               >
@@ -232,13 +234,14 @@ const ImageFocusedHero: React.FC = () => {
                   fontFamily: 'var(--font-secondary)',
                   fontWeight: 600,
                   borderRadius: '50px',
-                  borderColor: 'rgba(255, 255, 255, 0.3)',
-                  color: 'white',
+                  borderColor: 'rgba(255, 255, 255, 0.3) !important',
+                  color: 'white !important',
                   textTransform: 'none',
                   backdropFilter: 'blur(10px)',
+                  background: 'transparent !important',
                   '&:hover': {
-                    borderColor: 'rgba(255, 255, 255, 0.6)',
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                    borderColor: 'rgba(255, 255, 255, 0.6) !important',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1) !important',
                     transform: 'translateY(-2px)',
                   },
                 }}
