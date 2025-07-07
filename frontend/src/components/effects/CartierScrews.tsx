@@ -216,11 +216,14 @@ export const CornerScrews: React.FC<CornerScrewsProps> = ({
   interactive = true,
   offset = 12
 }) => {
+  // Account for screw radius to prevent cutoff
+  const adjustedOffset = offset + screwSize;
+  
   const corners = [
-    { x: offset, y: offset }, // Top-left
-    { x: containerWidth - offset, y: offset }, // Top-right
-    { x: offset, y: containerHeight - offset }, // Bottom-left
-    { x: containerWidth - offset, y: containerHeight - offset }, // Bottom-right
+    { x: adjustedOffset, y: adjustedOffset }, // Top-left
+    { x: containerWidth - adjustedOffset, y: adjustedOffset }, // Top-right
+    { x: adjustedOffset, y: containerHeight - adjustedOffset }, // Bottom-left
+    { x: containerWidth - adjustedOffset, y: containerHeight - adjustedOffset }, // Bottom-right
   ];
 
   return (
@@ -233,7 +236,8 @@ export const CornerScrews: React.FC<CornerScrewsProps> = ({
         width: containerWidth,
         height: containerHeight,
         pointerEvents: interactive ? 'auto' : 'none',
-        zIndex: 10
+        zIndex: 10,
+        overflow: 'visible' // Ensure screws are not clipped
       }}
     >
       {corners.map((corner, index) => (

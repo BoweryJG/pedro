@@ -118,6 +118,9 @@ const EnhancedLuxuryNavbar: React.FC = () => {
         background: 'transparent',
         boxShadow: 'none',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        width: '100%',
+        left: 0,
+        right: 0,
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -138,6 +141,16 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           boxShadow: scrolled 
             ? '0 8px 32px rgba(102, 126, 234, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04)'
             : '0 4px 16px rgba(0, 0, 0, 0.02)',
+          // Add side shadows for visual separation
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            boxShadow: 'inset 20px 0 40px -20px rgba(0,0,0,0.1), inset -20px 0 40px -20px rgba(0,0,0,0.1)',
+          },
         },
         '&::after': {
           content: '""',
@@ -155,19 +168,32 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       }}
     >
       {/* Cartier Corner Screws for Navbar */}
-      <CornerScrews
-        containerWidth={window.innerWidth}
-        containerHeight={80}
-        screwSize={2.5}
-        metalType="steel"
-        interactive={true}
-        offset={16}
-      />
+      <Box 
+        sx={{ 
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          overflow: 'hidden',
+        }}
+      >
+        <CornerScrews
+          containerWidth={typeof window !== 'undefined' ? window.innerWidth : 1920}
+          containerHeight={80}
+          screwSize={2.5}
+          metalType="steel"
+          interactive={true}
+          offset={12}
+        />
+      </Box>
       
       <Toolbar sx={{ 
         minHeight: { xs: 64, md: 80 }, 
-        px: { xs: 3, md: 5 },
-        position: 'relative' 
+        px: { xs: 6, sm: 8, md: 10, lg: 12 },
+        position: 'relative',
+        maxWidth: '100%',
+        mx: 'auto'
       }}>
         {/* Logo Section */}
         <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 0 }}>

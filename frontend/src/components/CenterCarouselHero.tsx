@@ -219,12 +219,14 @@ const CenterCarouselHero: React.FC = () => {
               mb: 2,
               px: 2,
               py: 0.5,
-              background: 'rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.18)',
+              background: 'rgba(0, 0, 0, 0.7)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               color: '#ffffff',
               fontSize: { xs: '0.75rem', sm: '0.875rem' },
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
+              fontWeight: 600,
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
             }}
           />
           
@@ -305,6 +307,7 @@ const CenterCarouselHero: React.FC = () => {
                 transform: `scale(${activeIndex === index ? 1 : 0.9})`,
                 opacity: activeIndex === index ? 1 : 0.7,
                 transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                position: 'relative',
                 '&.visible': {
                   animation: 'fadeInUp 0.6s ease-out',
                 },
@@ -313,7 +316,7 @@ const CenterCarouselHero: React.FC = () => {
               <Box
                 className="glassmorphism luxury-carousel-card"
                 sx={{
-                  height: '100%',
+                  height: showFeatures === index ? 600 : 500,
                   borderRadius: '24px',
                   overflow: 'hidden',
                   position: 'relative',
@@ -363,10 +366,14 @@ const CenterCarouselHero: React.FC = () => {
                 }}
               >
                 {/* Cartier Corner Screws - positioned relative to card */}
+                {/* Screw container that matches card size */}
                 <Box
                   sx={{
                     position: 'absolute',
-                    inset: 0,
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                     pointerEvents: 'none',
                     '& > *': {
                       pointerEvents: 'auto',
@@ -374,12 +381,12 @@ const CenterCarouselHero: React.FC = () => {
                   }}
                 >
                   <CornerScrews
-                    containerWidth={showFeatures === index ? 450 : 400}
-                    containerHeight={showFeatures === index ? 600 : 500}
+                    containerWidth={400} // Match actual card width
+                    containerHeight={showFeatures === index ? 600 : 500} // Dynamic height
                     screwSize={activeIndex === index ? 4 : 3}
                     metalType={activeIndex === index ? 'gold' : 'steel'}
                     interactive={true}
-                    offset={showFeatures === index ? 20 : 16}
+                    offset={12} // Consistent offset for all states
                   />
                 </Box>
 
