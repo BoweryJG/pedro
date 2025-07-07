@@ -325,15 +325,21 @@ const CenterCarouselHero: React.FC = () => {
                     : 'rgba(255, 255, 255, 0.9)',
                   backdropFilter: 'blur(20px)',
                   WebkitBackdropFilter: 'blur(20px)',
-                  border: activeIndex === index 
-                    ? `3px solid transparent`
-                    : '2px solid rgba(255, 255, 255, 0.4)',
+                  border: '1px solid transparent',
+                  borderImage: activeIndex === index
+                    ? `linear-gradient(45deg, 
+                        ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}, 
+                        ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[1] || '#764ba2'}, 
+                        ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}
+                      ) 1`
+                    : 'none',
+                  borderColor: activeIndex !== index ? 'rgba(255, 255, 255, 0.4)' : undefined,
                   boxShadow: activeIndex === index 
                     ? `0 30px 80px rgba(0, 0, 0, 0.2), 0 0 120px ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}40, inset 0 1px 0 rgba(255, 255, 255, 0.8)`
                     : '0 20px 50px rgba(0, 0, 0, 0.1), 0 0 40px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
                   transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                   transform: 'translate3d(0, 0, 0)',
-                  padding: '3px',
+                  animation: activeIndex === index ? `borderPulse-${index} 4s ease-in-out infinite` : 'none',
                   '&::before': {
                     content: '""',
                     position: 'absolute',
@@ -386,7 +392,7 @@ const CenterCarouselHero: React.FC = () => {
                     screwSize={activeIndex === index ? 4 : 3}
                     metalType={activeIndex === index ? 'gold' : 'steel'}
                     interactive={true}
-                    offset={12} // Consistent offset for all states
+                    offset={8} // Reduced offset to align with border
                   />
                 </Box>
 
@@ -396,11 +402,6 @@ const CenterCarouselHero: React.FC = () => {
                   <Box sx={{ textAlign: 'center', mb: 3 }}>
                     <Box
                       sx={{
-                        width: 120,
-                        height: 120,
-                        borderRadius: '50%',
-                        background: `${center.gradient}, rgba(255, 255, 255, 0.1)`,
-                        backgroundBlendMode: 'overlay',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -409,61 +410,33 @@ const CenterCarouselHero: React.FC = () => {
                         transform: activeIndex === index ? 'scale(1.15)' : 'scale(1)',
                         transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         position: 'relative',
-                        boxShadow: activeIndex === index 
-                          ? `0 0 40px rgba(255, 255, 255, 0.4), 0 0 80px rgba(255, 255, 255, 0.2), 0 20px 40px rgba(0, 0, 0, 0.3)`
-                          : '0 0 20px rgba(255, 255, 255, 0.2), 0 10px 30px rgba(0, 0, 0, 0.3)',
                         '&::before': {
                           content: '""',
                           position: 'absolute',
-                          inset: -20,
+                          width: '140px',
+                          height: '140px',
                           borderRadius: '50%',
                           background: center.gradient,
-                          opacity: activeIndex === index ? 0.5 : 0.3,
-                          filter: 'blur(30px)',
-                          transform: 'translate3d(0, 0, 0)',
+                          opacity: activeIndex === index ? 0.3 : 0.2,
+                          filter: 'blur(40px)',
+                          transform: 'translate(-50%, -50%)',
+                          top: '50%',
+                          left: '50%',
                           transition: 'opacity 0.3s ease',
-                        },
-                        '&::after': {
-                          content: '""',
-                          position: 'absolute',
-                          inset: -10,
-                          borderRadius: '50%',
-                          background: center.gradient,
-                          opacity: 0.2,
-                          filter: 'blur(20px)',
-                          transform: 'translate3d(0, 0, 0)',
+                          zIndex: -1,
                         },
                         '&:hover': {
                           transform: 'scale(1.2)',
-                          boxShadow: `0 0 50px rgba(255, 255, 255, 0.5), 0 0 100px rgba(255, 255, 255, 0.3), 0 25px 50px rgba(0, 0, 0, 0.4)`,
                           '&::before': {
-                            opacity: 0.6,
+                            opacity: 0.4,
                           },
                         },
                       }}
                     >
-                      <Box 
-                        sx={{ 
-                          position: 'relative', 
-                          zIndex: 1,
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          width: '100%',
-                          height: '100%',
-                          borderRadius: '50%',
-                          overflow: 'hidden',
-                          filter: activeIndex === index 
-                            ? 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5))'
-                            : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
-                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                        }}
-                      >
-                        {React.createElement(professionalIcons[center.icon], {
-                          size: 80,
-                          className: `professional-icon ${activeIndex === index ? 'active' : ''} ${activeIndex === index ? 'text-white' : 'text-gray-800'}`
-                        })}
-                      </Box>
+                      {React.createElement(professionalIcons[center.icon], {
+                        size: 120,
+                        className: `professional-icon ${activeIndex === index ? 'active' : ''}`
+                      })}
                     </Box>
                     
                     <Typography 
@@ -676,6 +649,28 @@ const CenterCarouselHero: React.FC = () => {
       {/* Cartier Screw Styles */}
       <style>{`
         ${cartierScrewStyles}
+        
+        /* Lightweight pulsating border animations */
+        ${centers.map((center, idx) => `
+          @keyframes borderPulse-${idx} {
+            0%, 100% { 
+              filter: hue-rotate(0deg) saturate(1.2) brightness(1);
+              opacity: 0.9;
+            }
+            25% { 
+              filter: hue-rotate(10deg) saturate(1.4) brightness(1.1);
+              opacity: 1;
+            }
+            50% { 
+              filter: hue-rotate(-10deg) saturate(1.3) brightness(1.05);
+              opacity: 0.95;
+            }
+            75% { 
+              filter: hue-rotate(5deg) saturate(1.5) brightness(1.15);
+              opacity: 1;
+            }
+          }
+        `).join('')}
         
         /* Professional Icon Animations */
         .professional-icon {
