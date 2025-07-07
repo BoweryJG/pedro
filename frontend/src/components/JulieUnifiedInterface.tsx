@@ -191,11 +191,15 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
   // Listen for external events to open Julie
   useEffect(() => {
     const handleOpenJulieChat = () => {
-      handleModeSwitch('chat');
+      console.log('Opening Julie chat from event');
+      setMode('chat');
+      chatStore.openChat();
     };
 
     const handleOpenJulieVoice = () => {
-      handleModeSwitch('voice');
+      console.log('Opening Julie voice from event');
+      setMode('voice');
+      chatStore.closeChat();
     };
 
     window.addEventListener('open-julie-chat', handleOpenJulieChat);
@@ -205,7 +209,7 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
       window.removeEventListener('open-julie-chat', handleOpenJulieChat);
       window.removeEventListener('open-julie-voice', handleOpenJulieVoice);
     };
-  }, []);
+  }, [chatStore]);
 
   if (mode === 'closed') {
     return (
