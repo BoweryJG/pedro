@@ -33,8 +33,15 @@ interface AdaptiveNavigationProviderProps {
 export const AdaptiveNavigationProvider: React.FC<AdaptiveNavigationProviderProps> = ({ children }) => {
   const [mode, setMode] = useState<NavigationMode>('minimal');
   const [currentCenter, setCurrentCenter] = useState<CenterType>(null);
-  const [showCenterSelector, setShowCenterSelector] = useState(false);
+  const [showCenterSelector, setShowCenterSelectorState] = useState(false);
   const [userJourneyPath, setUserJourneyPath] = useState<string[]>([]);
+
+  // Enhanced setter with debugging
+  const setShowCenterSelector = useCallback((value: boolean) => {
+    console.log('🚨 setShowCenterSelector called with:', value);
+    console.log('🚨 Current value:', showCenterSelector);
+    setShowCenterSelectorState(value);
+  }, [showCenterSelector]);
 
   const addToJourneyPath = useCallback((path: string) => {
     setUserJourneyPath(prev => [...prev, path]);

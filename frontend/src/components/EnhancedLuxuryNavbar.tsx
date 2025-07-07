@@ -90,7 +90,9 @@ const EnhancedLuxuryNavbar: React.FC = () => {
   }, [location, setMode, setCurrentCenter]);
 
   const handleChooseCare = () => {
-    console.log('Centers button clicked - opening center selector');
+    console.log('🚨 Centers button clicked');
+    console.log('🚨 Current showCenterSelector value:', showCenterSelector);
+    console.log('🚨 Setting showCenterSelector to true');
     setShowCenterSelector(true);
   };
 
@@ -118,8 +120,12 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       ref={navRef}
       sx={{
         zIndex: 9999, // Force navbar to be on top
-        background: 'transparent',
-        boxShadow: 'none',
+        background: scrolled
+          ? 'rgba(255, 255, 255, 0.98)'
+          : 'rgba(255, 255, 255, 0.95)',
+        boxShadow: scrolled
+          ? '0 4px 20px rgba(0, 0, 0, 0.08)'
+          : '0 2px 10px rgba(0, 0, 0, 0.05)',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         width: '100%',
         left: 0,
@@ -134,23 +140,27 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           right: 0,
           bottom: 0,
           background: scrolled
-            ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)'
-            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.88) 100%)',
-          backdropFilter: 'blur(24px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(24px) saturate(180%)',
+            ? 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%)'
+            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)',
+          backdropFilter: 'blur(16px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(16px) saturate(150%)',
           borderBottom: scrolled 
             ? '4px solid rgba(102, 126, 234, 0.6)' 
             : '4px solid rgba(102, 126, 234, 0.5)',
-          borderLeft: '3px solid rgba(102, 126, 234, 0.4)',
-          borderRight: '3px solid rgba(102, 126, 234, 0.4)',
+          borderLeft: scrolled
+            ? '4px solid rgba(102, 126, 234, 0.6)'
+            : '4px solid rgba(102, 126, 234, 0.5)',
+          borderRight: scrolled
+            ? '4px solid rgba(102, 126, 234, 0.6)'
+            : '4px solid rgba(102, 126, 234, 0.5)',
           borderTop: '2px solid rgba(102, 126, 234, 0.3)',
           borderRadius: '0 0 16px 16px',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: -1,
           boxShadow: scrolled 
-            ? '0 8px 32px rgba(102, 126, 234, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(102, 126, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
-            : '0 4px 16px rgba(102, 126, 234, 0.15), 0 0 0 1px rgba(102, 126, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-          // Add side shadows for visual separation
+            ? '0 8px 32px rgba(102, 126, 234, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(102, 126, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.5), -4px 0 16px rgba(102, 126, 234, 0.15), 4px 0 16px rgba(102, 126, 234, 0.15)'
+            : '0 4px 16px rgba(102, 126, 234, 0.15), 0 0 0 1px rgba(102, 126, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3), -3px 0 12px rgba(102, 126, 234, 0.1), 3px 0 12px rgba(102, 126, 234, 0.1)',
+          // Add enhanced side shadows for visual separation
           '&::after': {
             content: '""',
             position: 'absolute',
@@ -158,7 +168,9 @@ const EnhancedLuxuryNavbar: React.FC = () => {
             bottom: 0,
             left: 0,
             right: 0,
-            boxShadow: 'inset 20px 0 40px -20px rgba(0,0,0,0.1), inset -20px 0 40px -20px rgba(0,0,0,0.1)',
+            boxShadow: scrolled
+              ? 'inset 20px 0 40px -20px rgba(102, 126, 234, 0.15), inset -20px 0 40px -20px rgba(102, 126, 234, 0.15), inset 2px 0 0 rgba(102, 126, 234, 0.2), inset -2px 0 0 rgba(102, 126, 234, 0.2)'
+              : 'inset 20px 0 40px -20px rgba(102, 126, 234, 0.1), inset -20px 0 40px -20px rgba(102, 126, 234, 0.1), inset 1px 0 0 rgba(102, 126, 234, 0.15), inset -1px 0 0 rgba(102, 126, 234, 0.15)',
           },
         },
         '&::after': {
@@ -409,6 +421,12 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                 <Button
                   variant="outlined"
                   onClick={handleChooseCare}
+                  onMouseDown={(e) => {
+                    console.log('🚨 Centers button mouse down event', e);
+                  }}
+                  onPointerDown={(e) => {
+                    console.log('🚨 Centers button pointer down event', e);
+                  }}
                   sx={{
                     borderColor: scrolled ? 'rgba(0,0,0,0.2)' : 'rgba(255,255,255,0.3)',
                     color: scrolled ? '#2d2d2d' : '#424242',
@@ -430,6 +448,10 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                         : '#667eea',
                       backgroundColor: 'rgba(102,126,234,0.05)',
                     },
+                    '&:active': {
+                      backgroundColor: 'rgba(102,126,234,0.15)',
+                      transform: 'scale(0.98)',
+                    },
                   }}
                 >
                   Centers
@@ -446,24 +468,44 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                   onClick={() => {
                     // Trigger EP³ Care interface with enhanced debugging
                     console.log('🚨 EP³ Care button clicked - dispatching open-julie-chat event');
-                    const event = new CustomEvent('open-julie-chat');
+                    const event = new CustomEvent('open-julie-chat', { bubbles: true });
                     window.dispatchEvent(event);
                     
-                    // Fallback: directly manipulate Julie component if available
-                    const julieButtons = document.querySelectorAll('[aria-label*="Julie"]');
-                    if (julieButtons.length > 0) {
-                      console.log('🚨 Found Julie button, clicking it directly');
-                      (julieButtons[0] as HTMLElement).click();
-                    }
-                    
-                    // Another fallback: look for the FAB button
+                    // Enhanced fallback: Use direct window method if available
                     setTimeout(() => {
-                      const fab = document.querySelector('.MuiFab-root');
-                      if (fab && !document.querySelector('.MuiDialog-root[aria-hidden="false"]')) {
-                        console.log('🚨 Clicking FAB button as fallback');
-                        (fab as HTMLElement).click();
+                      // First try: Use the direct window method if available
+                      if ((window as any).openJulieChat) {
+                        console.log('🚨 Using direct window.openJulieChat method');
+                        (window as any).openJulieChat();
+                        return;
                       }
-                    }, 200);
+                      
+                      // Second try: Look for the main Julie FAB button by checking tooltip content
+                      const fabButtons = document.querySelectorAll('.MuiFab-root');
+                      for (const button of fabButtons) {
+                        const tooltip = button.getAttribute('title') || button.getAttribute('aria-label');
+                        if (tooltip && tooltip.toLowerCase().includes('julie')) {
+                          console.log('🚨 Found Julie FAB button via tooltip, clicking it');
+                          (button as HTMLElement).click();
+                          return;
+                        }
+                      }
+                      
+                      // Third try: Look for the button with medical services icon
+                      const medicalButton = document.querySelector('[data-testid*="MedicalServices"]')?.closest('button');
+                      if (medicalButton) {
+                        console.log('🚨 Found Julie button via medical icon, clicking it');
+                        (medicalButton as HTMLElement).click();
+                        return;
+                      }
+                      
+                      // Fourth try: Look for any large FAB button in the bottom right
+                      const bottomRightFab = document.querySelector('.MuiFab-sizeLarge');
+                      if (bottomRightFab) {
+                        console.log('🚨 Found large FAB button, clicking it');
+                        (bottomRightFab as HTMLElement).click();
+                      }
+                    }, 300);
                   }}
                   sx={{
                     background: currentCenter 
@@ -555,9 +597,31 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                   variant="contained"
                   onClick={() => {
                     console.log('Mobile EP³ Care button clicked');
-                    const event = new CustomEvent('open-julie-chat');
+                    const event = new CustomEvent('open-julie-chat', { bubbles: true });
                     window.dispatchEvent(event);
                     setMobileMenuOpen(false);
+                    
+                    // Same fallback logic for mobile
+                    setTimeout(() => {
+                      if ((window as any).openJulieChat) {
+                        (window as any).openJulieChat();
+                        return;
+                      }
+                      
+                      const fabButtons = document.querySelectorAll('.MuiFab-root');
+                      for (const button of fabButtons) {
+                        const tooltip = button.getAttribute('title') || button.getAttribute('aria-label');
+                        if (tooltip && tooltip.toLowerCase().includes('julie')) {
+                          (button as HTMLElement).click();
+                          return;
+                        }
+                      }
+                      
+                      const bottomRightFab = document.querySelector('.MuiFab-sizeLarge');
+                      if (bottomRightFab) {
+                        (bottomRightFab as HTMLElement).click();
+                      }
+                    }, 300);
                   }}
                   sx={{
                     background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',

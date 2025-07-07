@@ -1,3 +1,4 @@
+import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
 import EnhancedLuxuryNavbar from './EnhancedLuxuryNavbar';
@@ -9,6 +10,13 @@ import { TexturedSection } from './effects/TextureOverlays';
 
 const Layout = () => {
   const { showCenterSelector, setShowCenterSelector } = useAdaptiveNavigation();
+
+  console.log('🚨 Layout render - showCenterSelector:', showCenterSelector);
+  
+  // Add debugging for when showCenterSelector changes
+  React.useEffect(() => {
+    console.log('🚨 Layout useEffect - showCenterSelector changed to:', showCenterSelector);
+  }, [showCenterSelector]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
@@ -28,6 +36,26 @@ const Layout = () => {
       
       {/* AI Questionnaire */}
       <AIQuestionnaire />
+      
+      {/* Debug button - TEMPORARY */}
+      <Box sx={{ position: 'fixed', bottom: 100, right: 20, zIndex: 9999 }}>
+        <button 
+          onClick={() => {
+            console.log('🚨 DEBUG BUTTON CLICKED');
+            setShowCenterSelector(true);
+          }}
+          style={{ 
+            padding: '10px 20px', 
+            background: 'red', 
+            color: 'white', 
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer'
+          }}
+        >
+          DEBUG: Open Modal
+        </button>
+      </Box>
     </Box>
   );
 };

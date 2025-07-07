@@ -175,9 +175,14 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
   };
 
   const handleModeSwitch = (newMode: 'chat' | 'voice') => {
+    console.log('🔄 JulieUnifiedInterface: Switching mode to:', newMode);
     setMode(newMode);
     if (newMode === 'chat') {
-      chatStore.openChat();
+      // Use setTimeout to ensure state updates happen in order
+      setTimeout(() => {
+        chatStore.openChat();
+        console.log('✅ JulieUnifiedInterface: Chat store opened');
+      }, 50);
       stopListening();
       stopSpeaking();
     } else if (newMode === 'voice') {
@@ -198,7 +203,10 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
     const handleOpenJulieChat = () => {
       console.log('✅ JulieUnifiedInterface: Received open-julie-chat event');
       setMode('chat');
-      chatStore.openChat();
+      // Ensure chat store is opened with a slight delay to allow mode change to propagate
+      setTimeout(() => {
+        chatStore.openChat();
+      }, 100);
     };
 
     const handleOpenJulieVoice = () => {
@@ -210,11 +218,17 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
     console.log('🎯 JulieUnifiedInterface: Setting up event listeners');
     window.addEventListener('open-julie-chat', handleOpenJulieChat);
     window.addEventListener('open-julie-voice', handleOpenJulieVoice);
+    
+    // Expose direct methods on window for fallback access
+    (window as any).openJulieChat = handleOpenJulieChat;
+    (window as any).openJulieVoice = handleOpenJulieVoice;
 
     return () => {
       console.log('🔄 JulieUnifiedInterface: Cleaning up event listeners');
       window.removeEventListener('open-julie-chat', handleOpenJulieChat);
       window.removeEventListener('open-julie-voice', handleOpenJulieVoice);
+      delete (window as any).openJulieChat;
+      delete (window as any).openJulieVoice;
     };
   }, [chatStore]);
 
@@ -459,6 +473,7 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
   }
 
   if (mode === 'chat') {
+    console.log('🎨 JulieUnifiedInterface: Rendering PremiumChatbot, isOpen:', chatStore.isOpen);
     return <PremiumChatbot onClose={handleClose} />;
   }
 

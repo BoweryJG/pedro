@@ -108,6 +108,8 @@ interface LuxuryCenterSelectionModalProps {
 }
 
 const LuxuryCenterSelectionModal: React.FC<LuxuryCenterSelectionModalProps> = ({ open, onClose }) => {
+  console.log('🚨 LuxuryCenterSelectionModal render - open:', open);
+  
   const theme = useTheme();
   const navigate = useNavigate();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
