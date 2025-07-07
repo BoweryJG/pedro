@@ -181,10 +181,10 @@ const EnhancedLuxuryNavbar: React.FC = () => {
         <CornerScrews
           containerWidth={typeof window !== 'undefined' ? window.innerWidth : 1920}
           containerHeight={80}
-          screwSize={2.5}
+          screwSize={3} // 20% bigger
           metalType="steel"
           interactive={true}
-          offset={12}
+          offset={15} // Increased to position inside
         />
       </Box>
       

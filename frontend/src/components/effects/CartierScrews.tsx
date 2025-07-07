@@ -211,7 +211,7 @@ export const CartierScrew: React.FC<CartierScrewProps> = ({
 export const CornerScrews: React.FC<CornerScrewsProps> = ({
   containerWidth,
   containerHeight,
-  screwSize = 3,
+  screwSize = 3.6, // 20% bigger default
   metalType = 'steel',
   interactive = true,
   offset = 12

@@ -389,10 +389,10 @@ const CenterCarouselHero: React.FC = () => {
                   <CornerScrews
                     containerWidth={400} // Match actual card width
                     containerHeight={showFeatures === index ? 600 : 500} // Dynamic height
-                    screwSize={activeIndex === index ? 4 : 3}
+                    screwSize={activeIndex === index ? 4.8 : 3.6} // 20% bigger
                     metalType={activeIndex === index ? 'gold' : 'steel'}
                     interactive={true}
-                    offset={8} // Reduced offset to align with border
+                    offset={16} // Increased offset to position inside border
                   />
                 </Box>
 
@@ -476,13 +476,23 @@ const CenterCarouselHero: React.FC = () => {
                     sx={{
                       textAlign: 'center',
                       p: 2.5,
-                      borderRadius: '16px',
-                      background: `linear-gradient(135deg, ${center.gradient}15, rgba(255, 255, 255, 0.4))`,
-                      backdropFilter: 'blur(10px)',
-                      WebkitBackdropFilter: 'blur(10px)',
-                      border: `2px solid ${center.gradient}30`,
+                      borderRadius: '24px', // More rounded
+                      background: `linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%)`,
+                      backdropFilter: 'blur(20px) saturate(180%)',
+                      WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                      border: '1px solid transparent',
+                      borderImage: `linear-gradient(135deg, ${center.gradient}40, rgba(255, 255, 255, 0.6)) 1`,
                       mb: 3,
-                      boxShadow: `inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 4px 12px ${center.gradient}20`,
+                      boxShadow: `0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.9)`,
+                      position: 'relative',
+                      overflow: 'hidden',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        inset: 0,
+                        background: `linear-gradient(135deg, ${center.gradient}08, transparent)`,
+                        borderRadius: '24px',
+                      },
                     }}
                   >
                     <Typography 
