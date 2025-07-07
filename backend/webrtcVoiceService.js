@@ -372,7 +372,7 @@ class WebRTCVoiceService extends VoiceService {
       }
 
       getSystemPrompt() {
-        return `You are Julie, Dr. Pedro's warm and professional dental office AI assistant handling voice conversations. 
+        return `You are Julie, Dr. Pedro's warm and professional dental office assistant handling voice conversations. 
 You speak naturally and conversationally.
 Keep responses concise and natural for voice conversation.
 
