@@ -23,6 +23,19 @@
       gtag('js', new Date());
       // GA Measurement ID will be set from environment variable
     </script>
+    <!-- FORCE NAVBAR FIX - 2025-01-07 -->
+    <style>
+      /* EMERGENCY NAVBAR FIX - RAINBOW TEST */
+      .MuiAppBar-root {
+        background: linear-gradient(45deg, #ff0000 0%, #00ff00 50%, #0000ff 100%) !important;
+        border: 10px solid #ffff00 !important;
+        box-shadow: 0 20px 50px rgba(255, 0, 255, 0.8) !important;
+        z-index: 99999 !important;
+      }
+      body::before {
+        display: none !important;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
