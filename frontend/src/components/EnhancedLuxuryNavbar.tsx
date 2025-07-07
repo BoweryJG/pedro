@@ -115,6 +115,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       position="fixed"
       ref={navRef}
       sx={{
+        zIndex: theme.zIndex.appBar,
         background: 'transparent',
         boxShadow: 'none',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
