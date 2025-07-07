@@ -722,7 +722,7 @@ app.post('/voice/julie/incoming', async (req, res) => {
     
     const twiml = `<?xml version="1.0" encoding="UTF-8"?>
 <Response>
-  <Say voice="alice">Thank you for calling Dr. Pedro's office. This is Julie. What brings you in today?</Say>
+  <Say voice="alice">Thank you for calling Dr. Pedro's office. This is Julie. How can I help you today?</Say>
   <Connect>
     <Stream url="${protocol}://${host}/voice/julie/websocket?callSid=${CallSid}">
       <Parameter name="callSid" value="${CallSid}" />
