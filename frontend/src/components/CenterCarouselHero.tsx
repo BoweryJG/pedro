@@ -14,55 +14,55 @@ import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import { CornerScrews, cartierScrewStyles } from './effects/CartierScrews';
-import { ProfessionalIconSprite, professionalIcons, ProfessionalIconType, professionalIconStyles } from './icons/ProfessionalIconSprite';
+import { exactLuxuryIcons, ExactIconType } from './icons/ExactLuxuryIcons';
 import '../styles/luxury-design-system.css';
 
-// Professional center data with luxury icons from ChatGPT image
+// Lightweight center data with exact luxury icons from ChatGPT image
 const centers = [
   {
-    id: 'tmj' as ProfessionalIconType,
+    id: 'tmj' as ExactIconType,
     title: 'TMJ & Orofacial Pain',
     subtitle: 'Expert jaw disorder care',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     stats: { label: 'Patients Treated', value: '2,500+' },
     features: ['Custom Oral Appliances', 'Physical Therapy', 'Pain Management'],
-    icon: 'tmj' as ProfessionalIconType,
+    icon: 'tmj' as ExactIconType,
   },
   {
-    id: 'implants' as ProfessionalIconType,
+    id: 'implants' as ExactIconType,
     title: 'Dental Implants',
     subtitle: 'Permanent tooth replacement',
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     stats: { label: 'Success Rate', value: '99.2%' },
     features: ['Single & Full Arch', 'Bone Grafting', 'Lifetime Warranty'],
-    icon: 'implants' as ProfessionalIconType,
+    icon: 'implants' as ExactIconType,
   },
   {
-    id: 'robotic' as ProfessionalIconType,
+    id: 'robotic' as ExactIconType,
     title: 'Robotic Surgery',
     subtitle: 'Precision implant placement',
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     stats: { label: 'Healing Time', value: '50% Faster' },
     features: ['Computer Precision', 'Minimally Invasive', 'Yomi Technology'],
-    icon: 'robotic' as ProfessionalIconType,
+    icon: 'robotic' as ExactIconType,
   },
   {
-    id: 'medspa' as ProfessionalIconType,
+    id: 'medspa' as ExactIconType,
     title: 'MedSpa & Aesthetics',
     subtitle: 'Facial rejuvenation',
     gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     stats: { label: 'Treatments', value: '10,000+' },
     features: ['EMFACE Technology', 'Facial Contouring', 'Anti-Aging'],
-    icon: 'medspa' as ProfessionalIconType,
+    icon: 'medspa' as ExactIconType,
   },
   {
-    id: 'aboutface' as ProfessionalIconType,
+    id: 'aboutface' as ExactIconType,
     title: 'AboutFace Aesthetics',
     subtitle: 'Complete smile makeovers',
     gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     stats: { label: 'Google Rating', value: '5.0★' },
     features: ['Veneers', 'Teeth Whitening', 'Smile Design'],
-    icon: 'aboutface' as ProfessionalIconType,
+    icon: 'aboutface' as ExactIconType,
   },
 ];
 
@@ -441,12 +441,10 @@ const CenterCarouselHero: React.FC = () => {
                           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
                       >
-                        <ProfessionalIconSprite
-                          iconType={professionalIcons[center.icon]}
-                          size={120}
-                          active={activeIndex === index}
-                          className="center-icon"
-                        />
+                        {React.createElement(exactLuxuryIcons[center.icon], {
+                          size: 120,
+                          className: `luxury-medical-icon ${activeIndex === index ? 'active' : ''}`
+                        })}
                       </Box>
                     </Box>
                     
@@ -657,10 +655,25 @@ const CenterCarouselHero: React.FC = () => {
         </Box>
       </Box>
 
-      {/* Professional Icons & Cartier Screws */}
+      {/* Cartier Screw Styles */}
       <style>{`
         ${cartierScrewStyles}
-        ${professionalIconStyles}
+        
+        /* Luxury Medical Icon Animations */
+        .luxury-medical-icon {
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+        
+        .luxury-medical-icon.active {
+          transform: scale(1.1);
+          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)) brightness(1.1);
+        }
+        
+        .luxury-medical-icon:hover {
+          transform: scale(1.15) rotate(5deg);
+          filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4)) brightness(1.2);
+        }
         
         @keyframes fadeInUp {
           from {
