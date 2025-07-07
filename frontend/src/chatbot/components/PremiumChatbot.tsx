@@ -150,6 +150,24 @@ export const PremiumChatbot: React.FC<PremiumChatbotProps> = React.memo(({ onClo
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  // Add ESC key handler
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        if (onClose) {
+          onClose();
+        } else {
+          toggleChat();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleEscKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [isOpen, onClose, toggleChat]);
   
   const handleSend = async () => {
     if (input.trim() && !isLoading) {
@@ -288,16 +306,22 @@ export const PremiumChatbot: React.FC<PremiumChatbotProps> = React.memo(({ onClo
                   <Box display="flex" alignItems="center" justifyContent="space-between">
                     <Box display="flex" alignItems="center" gap={2}>
                       {isMobile && (
-                        <IconButton
-                          onClick={() => onClose ? onClose() : toggleChat()}
-                          sx={{ 
-                            color: 'white',
-                            p: 0,
-                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' },
-                          }}
-                        >
-                          <ArrowBackIcon />
-                        </IconButton>
+                        <Tooltip title="Close chat" arrow>
+                          <IconButton
+                            onClick={() => onClose ? onClose() : toggleChat()}
+                            sx={{ 
+                              color: 'white',
+                              bgcolor: 'rgba(255, 255, 255, 0.2)',
+                              p: 1,
+                              '&:hover': { 
+                                bgcolor: 'rgba(255, 255, 255, 0.3)',
+                                transform: 'scale(1.1)',
+                              },
+                            }}
+                          >
+                            <CloseIcon sx={{ fontSize: 24 }} />
+                          </IconButton>
+                        </Tooltip>
                       )}
                       <Avatar 
                         sx={{ 
@@ -334,17 +358,34 @@ export const PremiumChatbot: React.FC<PremiumChatbotProps> = React.memo(({ onClo
                         <OnlineStatus />
                       </Box>
                     </Box>
-                    {!isMobile && (
-                      <IconButton 
-                        onClick={() => onClose ? onClose() : toggleChat()} 
-                        sx={{ 
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Chip
+                        label="Press ESC to close"
+                        size="small"
+                        sx={{
+                          bgcolor: 'rgba(255, 255, 255, 0.2)',
                           color: 'white',
-                          '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' },
+                          fontSize: '0.75rem',
+                          display: { xs: 'none', md: 'flex' },
                         }}
-                      >
-                        <CloseIcon />
-                      </IconButton>
-                    )}
+                      />
+                      <Tooltip title="Close chat (ESC)" arrow>
+                        <IconButton 
+                          onClick={() => onClose ? onClose() : toggleChat()} 
+                          sx={{ 
+                            color: 'white',
+                            bgcolor: 'rgba(255, 255, 255, 0.2)',
+                            border: '2px solid rgba(255, 255, 255, 0.3)',
+                            '&:hover': { 
+                              bgcolor: 'rgba(255, 255, 255, 0.3)',
+                              transform: 'scale(1.1)',
+                            },
+                          }}
+                        >
+                          <CloseIcon sx={{ fontSize: 28 }} />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </Box>
                 </Box>
               </Box>

@@ -220,8 +220,68 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
           zIndex: 1300,
         }}
       >
+        {/* Pulsing ring effect */}
+        <Box
+          component={motion.div}
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.4, 0, 0.4],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          sx={{
+            position: 'absolute',
+            width: 72,
+            height: 72,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            filter: 'blur(20px)',
+            zIndex: -1,
+          }}
+        />
+        {/* Floating "Chat with Julie" label */}
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1 }}
+          sx={{
+            position: 'absolute',
+            right: 90,
+            top: '50%',
+            transform: 'translateY(-50%)',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            px: 2.5,
+            py: 1.5,
+            borderRadius: 3,
+            boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)',
+            fontWeight: 700,
+            fontSize: '0.95rem',
+            whiteSpace: 'nowrap',
+            display: { xs: 'none', sm: 'block' },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              right: -8,
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: 0,
+              height: 0,
+              borderStyle: 'solid',
+              borderWidth: '8px 0 8px 8px',
+              borderColor: 'transparent transparent transparent #764ba2',
+            },
+          }}
+        >
+          Chat with Julie 👩‍⚕️
+        </Box>
+
         {/* Main Julie Launcher - Professional Medical Interface */}
-        <Tooltip title="EP³ Care Coordinator" placement="left" arrow>
+        <Tooltip title="Click to chat with Julie - EP³ Care Coordinator" placement="left" arrow>
           <Fab
             color="primary"
             size="large"
@@ -229,13 +289,23 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
             sx={{
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               boxShadow: '0 10px 30px rgba(102, 126, 234, 0.4)',
-              width: 72,
-              height: 72,
+              width: 80,
+              height: 80,
               position: 'relative',
               overflow: 'visible',
+              animation: 'gentle-bounce 3s ease-in-out infinite',
+              '@keyframes gentle-bounce': {
+                '0%, 100%': {
+                  transform: 'translateY(0)',
+                },
+                '50%': {
+                  transform: 'translateY(-10px)',
+                },
+              },
               '&:hover': {
-                transform: 'scale(1.05)',
-                boxShadow: '0 15px 40px rgba(102, 126, 234, 0.6)',
+                transform: 'scale(1.1)',
+                boxShadow: '0 20px 50px rgba(102, 126, 234, 0.7)',
+                animation: 'none',
               },
               '&::before': {
                 content: '""',
@@ -259,11 +329,46 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
             >
               <MedicalServicesIcon 
                 sx={{ 
-                  fontSize: 32, 
+                  fontSize: 36, 
                   color: 'white',
                   filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
                 }} 
               />
+              {/* "Click Me" hint for first-time users */}
+              <Box
+                component={motion.div}
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 2 }}
+                sx={{
+                  position: 'absolute',
+                  top: -35,
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  background: 'rgba(0, 0, 0, 0.8)',
+                  color: 'white',
+                  px: 1.5,
+                  py: 0.5,
+                  borderRadius: 2,
+                  fontSize: '0.75rem',
+                  fontWeight: 600,
+                  whiteSpace: 'nowrap',
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    bottom: -4,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 0,
+                    height: 0,
+                    borderStyle: 'solid',
+                    borderWidth: '4px 4px 0 4px',
+                    borderColor: 'rgba(0, 0, 0, 0.8) transparent transparent transparent',
+                  },
+                }}
+              >
+                Click me! 👆
+              </Box>
               {/* EP³ Badge */}
               <Box
                 sx={{
@@ -272,8 +377,8 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
                   right: -8,
                   background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
                   borderRadius: '50%',
-                  width: 24,
-                  height: 24,
+                  width: 28,
+                  height: 28,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -283,8 +388,8 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
               >
                 <Typography 
                   sx={{ 
-                    fontSize: '0.6rem', 
-                    fontWeight: 800,
+                    fontSize: '0.7rem', 
+                    fontWeight: 900,
                     color: 'white',
                     lineHeight: 1,
                   }}
@@ -296,15 +401,23 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
           </Fab>
         </Tooltip>
 
-        {/* Mode Selection Pills */}
+        {/* Mode Selection Pills with better visibility */}
         <Box
+          component={motion.div}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
           sx={{
             position: 'absolute',
-            bottom: -60,
+            bottom: -70,
             left: '50%',
             transform: 'translateX(-50%)',
             display: 'flex',
             gap: 1,
+            background: 'rgba(255, 255, 255, 0.95)',
+            p: 1,
+            borderRadius: 3,
+            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
           }}
         >
           <Chip

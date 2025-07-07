@@ -219,14 +219,15 @@ const CenterCarouselHero: React.FC = () => {
               mb: 2,
               px: 2,
               py: 0.5,
-              background: 'rgba(0, 0, 0, 0.7)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
+              background: 'rgba(0, 0, 0, 0.85)',
+              border: '2px solid rgba(255, 255, 255, 0.3)',
               color: '#ffffff',
-              fontSize: { xs: '0.75rem', sm: '0.875rem' },
-              fontWeight: 600,
+              fontSize: { xs: '0.85rem', sm: '1rem' },
+              fontWeight: 700,
               backdropFilter: 'blur(20px)',
               WebkitBackdropFilter: 'blur(20px)',
-              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+              textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
             }}
           />
           
@@ -355,6 +356,8 @@ const CenterCarouselHero: React.FC = () => {
                     opacity: activeIndex === index ? 1 : 0.6,
                     transition: 'opacity 0.5s ease',
                     filter: 'blur(0.5px)',
+                    zIndex: -1,
+                    pointerEvents: 'none',
                   },
                   '&:hover': {
                     transform: 'translateY(-8px) scale(1.03) translate3d(0, 0, 0)',
@@ -381,6 +384,8 @@ const CenterCarouselHero: React.FC = () => {
                     right: 0,
                     bottom: 0,
                     pointerEvents: 'none',
+                    borderRadius: '24px',
+                    overflow: 'hidden',
                     '& > *': {
                       pointerEvents: 'auto',
                     },
