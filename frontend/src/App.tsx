@@ -89,7 +89,9 @@ function App() {
         />
       </Routes>
       {/* Julie Unified Interface - Chat & Voice (hide on MedSpa routes) */}
-      {!location.pathname.includes('/medspa') && <JulieUnifiedInterface />}
+      {!location.pathname.includes('/medspa') && (
+        <JulieUnifiedInterface key="julie-interface" />
+      )}
       {/* Luxury texture overlays - REMOVED FOR PERFORMANCE */}
     </AuthProvider>
   );

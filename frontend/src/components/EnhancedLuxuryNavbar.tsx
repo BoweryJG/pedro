@@ -89,6 +89,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
   }, [location, setMode, setCurrentCenter]);
 
   const handleChooseCare = () => {
+    console.log('Centers button clicked - opening center selector');
     setShowCenterSelector(true);
   };
 
@@ -122,6 +123,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
         width: '100%',
         left: 0,
         right: 0,
+        // Add explicit container padding
+        px: { xs: 2, sm: 3, md: 4, lg: 6 },
         '&::before': {
           content: '""',
           position: 'absolute',
@@ -197,7 +200,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       
       <Toolbar sx={{ 
         minHeight: { xs: 64, md: 80 }, 
-        px: { xs: 3, sm: 4, md: 6, lg: 8 },
+        px: { xs: 4, sm: 6, md: 8, lg: 12 }, // Increased padding significantly
         position: 'relative',
         maxWidth: '100%',
         mx: 'auto'
@@ -430,9 +433,15 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                 <Button
                   variant="contained"
                   onClick={() => {
-                    // Trigger EP³ Care interface instead of navigation
-                    const event = new CustomEvent('open-julie-chat'); // Keep existing event for backend compatibility
+                    // Trigger EP³ Care interface with enhanced debugging
+                    console.log('EP³ Care button clicked - dispatching open-julie-chat event');
+                    const event = new CustomEvent('open-julie-chat');
                     window.dispatchEvent(event);
+                    
+                    // Additional fallback: try direct import if event fails
+                    setTimeout(() => {
+                      console.log('Julie chat should be open now');
+                    }, 100);
                   }}
                   sx={{
                     background: currentCenter 
@@ -521,7 +530,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                   fullWidth
                   variant="contained"
                   onClick={() => {
-                    const event = new CustomEvent('open-julie-chat'); // Keep existing event for backend compatibility
+                    console.log('Mobile EP³ Care button clicked');
+                    const event = new CustomEvent('open-julie-chat');
                     window.dispatchEvent(event);
                     setMobileMenuOpen(false);
                   }}

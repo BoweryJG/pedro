@@ -374,8 +374,10 @@ const CenterCarouselHero: React.FC = () => {
                       : 'linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1))',
                     opacity: activeIndex === index ? 1 : 0.5,
                     zIndex: -1,
-                    animation: activeIndex === index ? `borderPulse-${index} 4s ease-in-out infinite` : 'none',
-                    transition: 'opacity 0.4s ease',
+                    animation: activeIndex === index ? `borderPulse-${index} 3s ease-in-out infinite` : 'none',
+                    transition: 'all 0.4s ease',
+                    willChange: 'filter, opacity, transform', // Optimize for all animated properties
+                    transformOrigin: 'center',
                   },
                   boxShadow: activeIndex === index 
                     ? `
@@ -729,24 +731,28 @@ const CenterCarouselHero: React.FC = () => {
       <style>{`
         ${cartierScrewStyles}
         
-        /* Lightweight pulsating border animations */
+        /* Enhanced pulsating border animations - More visible */
         ${centers.map((center, idx) => `
           @keyframes borderPulse-${idx} {
             0%, 100% { 
-              filter: hue-rotate(0deg) saturate(1.2) brightness(1);
-              opacity: 0.9;
+              filter: hue-rotate(0deg) saturate(1.3) brightness(1.1);
+              opacity: 1;
+              transform: scale(1);
             }
             25% { 
-              filter: hue-rotate(10deg) saturate(1.4) brightness(1.1);
+              filter: hue-rotate(15deg) saturate(1.6) brightness(1.25);
               opacity: 1;
+              transform: scale(1.02);
             }
             50% { 
-              filter: hue-rotate(-10deg) saturate(1.3) brightness(1.05);
-              opacity: 0.95;
+              filter: hue-rotate(-15deg) saturate(1.4) brightness(1.15);
+              opacity: 0.9;
+              transform: scale(1.01);
             }
             75% { 
-              filter: hue-rotate(5deg) saturate(1.5) brightness(1.15);
+              filter: hue-rotate(10deg) saturate(1.7) brightness(1.3);
               opacity: 1;
+              transform: scale(1.015);
             }
           }
         `).join('')}

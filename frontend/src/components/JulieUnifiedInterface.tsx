@@ -38,6 +38,11 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
   const chatStore = useChatStore();
   
   const [mode, setMode] = useState<'closed' | 'chat' | 'voice'>('closed');
+  
+  // Debug mode changes
+  useEffect(() => {
+    console.log('🔄 JulieUnifiedInterface: Mode changed to:', mode);
+  }, [mode]);
   const [isListening, setIsListening] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voicePermission, setVoicePermission] = useState<'granted' | 'denied' | 'prompt'>('prompt');
@@ -191,21 +196,23 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
   // Listen for external events to open Julie
   useEffect(() => {
     const handleOpenJulieChat = () => {
-      console.log('Opening Julie chat from event');
+      console.log('✅ JulieUnifiedInterface: Received open-julie-chat event');
       setMode('chat');
       chatStore.openChat();
     };
 
     const handleOpenJulieVoice = () => {
-      console.log('Opening Julie voice from event');
+      console.log('✅ JulieUnifiedInterface: Received open-julie-voice event');
       setMode('voice');
       chatStore.closeChat();
     };
 
+    console.log('🎯 JulieUnifiedInterface: Setting up event listeners');
     window.addEventListener('open-julie-chat', handleOpenJulieChat);
     window.addEventListener('open-julie-voice', handleOpenJulieVoice);
 
     return () => {
+      console.log('🔄 JulieUnifiedInterface: Cleaning up event listeners');
       window.removeEventListener('open-julie-chat', handleOpenJulieChat);
       window.removeEventListener('open-julie-voice', handleOpenJulieVoice);
     };
