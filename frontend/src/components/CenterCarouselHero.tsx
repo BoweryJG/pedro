@@ -448,8 +448,8 @@ const CenterCarouselHero: React.FC = () => {
                 <CornerScrews
                   containerWidth={400}
                   containerHeight={showFeatures === index ? 600 : 500}
-                  screwSize={activeIndex === index ? 4.8 : 3.6}
-                  metalType={activeIndex === index ? 'gold' : 'steel'}
+                  screwSize={3.6}
+                  metalType="steel"
                   interactive={true}
                   offset={24}
                 />
