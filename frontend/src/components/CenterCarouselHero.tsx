@@ -322,51 +322,58 @@ const CenterCarouselHero: React.FC = () => {
                   overflow: 'hidden',
                   position: 'relative',
                   background: activeIndex === index 
-                    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)'
-                    : 'rgba(255, 255, 255, 0.9)',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
-                  border: '1px solid transparent',
-                  borderImage: activeIndex === index
-                    ? `linear-gradient(45deg, 
-                        ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}, 
-                        ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[1] || '#764ba2'}, 
-                        ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}
-                      ) 1`
-                    : 'none',
-                  borderColor: activeIndex !== index ? 'rgba(255, 255, 255, 0.4)' : undefined,
+                    ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)'
+                    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%)',
+                  backdropFilter: 'blur(30px) saturate(150%)',
+                  WebkitBackdropFilter: 'blur(30px) saturate(150%)',
+                  border: activeIndex === index
+                    ? '2px solid rgba(255, 255, 255, 0.3)'
+                    : '1px solid rgba(255, 255, 255, 0.18)',
                   boxShadow: activeIndex === index 
-                    ? `0 30px 80px rgba(0, 0, 0, 0.2), 0 0 120px ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}40, inset 0 1px 0 rgba(255, 255, 255, 0.8)`
-                    : '0 20px 50px rgba(0, 0, 0, 0.1), 0 0 40px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
-                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                  transform: 'translate3d(0, 0, 0)',
-                  animation: activeIndex === index ? `borderPulse-${index} 4s ease-in-out infinite` : 'none',
-                  '&::before': {
+                    ? `
+                        0 30px 80px rgba(0, 0, 0, 0.15),
+                        0 12px 40px rgba(0, 0, 0, 0.1),
+                        inset 0 0 60px rgba(255, 255, 255, 0.05),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.2)
+                      `
+                    : `
+                        0 20px 50px rgba(0, 0, 0, 0.08),
+                        0 8px 20px rgba(0, 0, 0, 0.05),
+                        inset 0 0 30px rgba(255, 255, 255, 0.03),
+                        inset 0 1px 2px rgba(255, 255, 255, 0.1)
+                      `,
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transform: activeIndex === index ? 'scale(1)' : 'scale(0.95)',
+                  '&::after': {
                     content: '""',
                     position: 'absolute',
-                    inset: 0,
-                    borderRadius: '24px',
-                    padding: '3px',
-                    background: activeIndex === index 
-                      ? center.gradient
-                      : `linear-gradient(135deg, ${center.gradient}, rgba(255, 255, 255, 0.3))`,
-                    WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                    WebkitMaskComposite: 'xor',
-                    maskComposite: 'exclude',
-                    opacity: activeIndex === index ? 1 : 0.6,
-                    transition: 'opacity 0.5s ease',
-                    filter: 'blur(0.5px)',
-                    zIndex: -1,
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '50%',
+                    background: activeIndex === index
+                      ? 'linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%)'
+                      : 'linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%)',
+                    borderRadius: '24px 24px 0 0',
                     pointerEvents: 'none',
+                    transition: 'all 0.4s ease',
                   },
                   '&:hover': {
-                    transform: 'translateY(-8px) scale(1.03) translate3d(0, 0, 0)',
-                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 0.98) 100%)',
-                    border: `3px solid transparent`,
-                    boxShadow: `0 50px 120px rgba(0, 0, 0, 0.25), 0 0 180px ${center.gradient.match(/#[0-9a-fA-F]{6}/g)?.[0] || '#667eea'}50, inset 0 1px 0 rgba(255, 255, 255, 1)`,
-                    '&::before': {
-                      opacity: 1,
-                      background: center.gradient,
+                    transform: activeIndex === index 
+                      ? 'translateY(-12px) scale(1.02)'
+                      : 'translateY(-8px) scale(0.97)',
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.08) 100%)',
+                    border: activeIndex === index
+                      ? '2px solid rgba(255, 255, 255, 0.4)'
+                      : '1px solid rgba(255, 255, 255, 0.25)',
+                    boxShadow: `
+                      0 40px 100px rgba(0, 0, 0, 0.2),
+                      0 15px 50px rgba(0, 0, 0, 0.15),
+                      inset 0 0 80px rgba(255, 255, 255, 0.08),
+                      inset 0 2px 6px rgba(255, 255, 255, 0.3)
+                    `,
+                    '&::after': {
+                      background: 'linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 100%)',
                     },
                   },
                   '&:active': {
@@ -374,32 +381,44 @@ const CenterCarouselHero: React.FC = () => {
                   },
                 }}
               >
-                {/* Cartier Corner Screws - positioned relative to card */}
-                {/* Screw container that matches card size */}
-                <Box
-                  sx={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    pointerEvents: 'none',
-                    borderRadius: '24px',
-                    overflow: 'hidden',
-                    '& > *': {
-                      pointerEvents: 'auto',
-                    },
-                  }}
-                >
-                  <CornerScrews
-                    containerWidth={400} // Match actual card width
-                    containerHeight={showFeatures === index ? 600 : 500} // Dynamic height
-                    screwSize={activeIndex === index ? 4.8 : 3.6} // 20% bigger
-                    metalType={activeIndex === index ? 'gold' : 'steel'}
-                    interactive={true}
-                    offset={16} // Increased offset to position inside border
+                {/* Gradient overlay for active cards */}
+                {activeIndex === index && (
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: -2,
+                      left: -2,
+                      right: -2,
+                      bottom: -2,
+                      borderRadius: '26px',
+                      background: center.gradient,
+                      opacity: 0.15,
+                      filter: 'blur(40px)',
+                      zIndex: -1,
+                      animation: 'pulse 3s ease-in-out infinite',
+                      '@keyframes pulse': {
+                        '0%, 100%': {
+                          opacity: 0.1,
+                          transform: 'scale(1)',
+                        },
+                        '50%': {
+                          opacity: 0.2,
+                          transform: 'scale(1.05)',
+                        },
+                      },
+                    }}
                   />
-                </Box>
+                )}
+
+                {/* Cartier Corner Screws */}
+                <CornerScrews
+                  containerWidth={400}
+                  containerHeight={showFeatures === index ? 600 : 500}
+                  screwSize={activeIndex === index ? 4.8 : 3.6}
+                  metalType={activeIndex === index ? 'gold' : 'steel'}
+                  interactive={true}
+                  offset={24}
+                />
 
                 {/* Card Content */}
                 <Box sx={{ p: { xs: 4, sm: 5 } }}>
