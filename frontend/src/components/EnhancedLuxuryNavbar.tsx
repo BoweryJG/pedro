@@ -118,9 +118,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       ref={navRef}
       sx={{
         zIndex: 9999, // Force navbar to be on top
-        background: 'linear-gradient(90deg, #ff0000 0%, #0000ff 100%)', // RED TO BLUE GRADIENT - IMPOSSIBLE TO MISS
-        boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-        border: '5px solid #00ff00', // BRIGHT GREEN BORDER
+        background: 'transparent',
+        boxShadow: 'none',
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         width: '100%',
         left: 0,
@@ -140,11 +139,12 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           backdropFilter: 'blur(24px) saturate(180%)',
           WebkitBackdropFilter: 'blur(24px) saturate(180%)',
           borderBottom: scrolled 
-            ? '3px solid rgba(102, 126, 234, 0.4)' 
-            : '3px solid rgba(102, 126, 234, 0.3)',
-          borderLeft: '2px solid rgba(102, 126, 234, 0.2)',
-          borderRight: '2px solid rgba(102, 126, 234, 0.2)',
-          borderTop: '1px solid rgba(102, 126, 234, 0.15)',
+            ? '4px solid rgba(102, 126, 234, 0.6)' 
+            : '4px solid rgba(102, 126, 234, 0.5)',
+          borderLeft: '3px solid rgba(102, 126, 234, 0.4)',
+          borderRight: '3px solid rgba(102, 126, 234, 0.4)',
+          borderTop: '2px solid rgba(102, 126, 234, 0.3)',
+          borderRadius: '0 0 16px 16px',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: -1,
           boxShadow: scrolled 

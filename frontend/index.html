@@ -23,14 +23,19 @@
       gtag('js', new Date());
       // GA Measurement ID will be set from environment variable
     </script>
-    <!-- FORCE NAVBAR FIX - 2025-01-07 -->
+    <!-- NAVBAR ENHANCEMENT - 2025-01-07 -->
     <style>
-      /* EMERGENCY NAVBAR FIX - RAINBOW TEST */
+      /* Enhanced navbar borders and visibility */
+      .MuiAppBar-root::before {
+        border-bottom: 4px solid rgba(102, 126, 234, 0.6) !important;
+        border-left: 3px solid rgba(102, 126, 234, 0.4) !important;
+        border-right: 3px solid rgba(102, 126, 234, 0.4) !important;
+        border-top: 2px solid rgba(102, 126, 234, 0.3) !important;
+        border-radius: 0 0 16px 16px !important;
+        box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3), 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+      }
       .MuiAppBar-root {
-        background: linear-gradient(45deg, #ff0000 0%, #00ff00 50%, #0000ff 100%) !important;
-        border: 10px solid #ffff00 !important;
-        box-shadow: 0 20px 50px rgba(255, 0, 255, 0.8) !important;
-        z-index: 99999 !important;
+        z-index: 9999 !important;
       }
       body::before {
         display: none !important;
