@@ -360,9 +360,23 @@ const CenterCarouselHero: React.FC = () => {
                     : 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.03) 100%)',
                   backdropFilter: 'blur(30px) saturate(150%)',
                   WebkitBackdropFilter: 'blur(30px) saturate(150%)',
-                  border: activeIndex === index
-                    ? '2px solid rgba(255, 255, 255, 0.3)'
-                    : '1px solid rgba(255, 255, 255, 0.18)',
+                  border: '2px solid transparent',
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: -2,
+                    left: -2,
+                    right: -2,
+                    bottom: -2,
+                    borderRadius: '26px',
+                    background: activeIndex === index
+                      ? center.gradient
+                      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1))',
+                    opacity: activeIndex === index ? 1 : 0.5,
+                    zIndex: -1,
+                    animation: activeIndex === index ? `borderPulse-${index} 4s ease-in-out infinite` : 'none',
+                    transition: 'opacity 0.4s ease',
+                  },
                   boxShadow: activeIndex === index 
                     ? `
                         0 30px 80px rgba(0, 0, 0, 0.15),
@@ -415,47 +429,41 @@ const CenterCarouselHero: React.FC = () => {
                   },
                 }}
               >
-                {/* Gradient overlay for active cards */}
-                {activeIndex === index && (
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: -2,
-                      left: -2,
-                      right: -2,
-                      bottom: -2,
-                      borderRadius: '26px',
-                      background: center.gradient,
-                      opacity: 0.15,
-                      filter: 'blur(40px)',
-                      zIndex: -1,
-                      animation: 'pulse 3s ease-in-out infinite',
-                      '@keyframes pulse': {
-                        '0%, 100%': {
-                          opacity: 0.1,
-                          transform: 'scale(1)',
-                        },
-                        '50%': {
-                          opacity: 0.2,
-                          transform: 'scale(1.05)',
-                        },
-                      },
-                    }}
-                  />
-                )}
-
-                {/* Cartier Corner Screws */}
-                <CornerScrews
-                  containerWidth={400}
-                  containerHeight={showFeatures === index ? 600 : 500}
-                  screwSize={3.6}
-                  metalType="steel"
-                  interactive={true}
-                  offset={24}
+                {/* Inner content wrapper for proper masking */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    inset: 2,
+                    borderRadius: '22px',
+                    background: activeIndex === index 
+                      ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)'
+                      : 'rgba(255, 255, 255, 0.9)',
+                    overflow: 'hidden',
+                    zIndex: 1,
+                  }}
                 />
 
+                {/* Cartier Corner Screws */}
+                <Box sx={{ position: 'absolute', inset: 0, zIndex: 3, pointerEvents: 'none' }}>
+                  <CornerScrews
+                    containerWidth={400}
+                    containerHeight={showFeatures === index ? 600 : 500}
+                    screwSize={3.6}
+                    metalType="steel"
+                    interactive={true}
+                    offset={24}
+                  />
+                </Box>
+
                 {/* Card Content */}
-                <Box sx={{ p: { xs: 4, sm: 5 } }}>
+                <Box sx={{ 
+                  p: { xs: 4, sm: 5 }, 
+                  position: 'relative', 
+                  zIndex: 2,
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
                   {/* Icon and Title */}
                   <Box sx={{ textAlign: 'center', mb: 3 }}>
                     <Box
@@ -590,6 +598,7 @@ const CenterCarouselHero: React.FC = () => {
                       maxHeight: showFeatures === index ? 200 : 0,
                       transition: 'max-height 0.3s ease',
                       mb: showFeatures === index ? 2 : 0,
+                      flexGrow: 1,
                     }}
                   >
                     {center.features.map((feature, idx) => (
@@ -612,11 +621,12 @@ const CenterCarouselHero: React.FC = () => {
                   </Box>
 
                   {/* CTA Button */}
-                  <Button
-                    fullWidth
-                    variant="contained"
-                    endIcon={<ArrowForwardIcon />}
-                    sx={{
+                  <Box sx={{ mt: 'auto', pt: 2 }}>
+                    <Button
+                      fullWidth
+                      variant="contained"
+                      endIcon={<ArrowForwardIcon />}
+                      sx={{
                       background: center.gradient,
                       backdropFilter: 'blur(10px)',
                       WebkitBackdropFilter: 'blur(10px)',
@@ -657,8 +667,9 @@ const CenterCarouselHero: React.FC = () => {
                       },
                     }}
                   >
-                    {showFeatures === index ? 'Enter Center' : 'Learn More'}
-                  </Button>
+                      {showFeatures === index ? 'Enter Center' : 'Learn More'}
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
             </Box>
