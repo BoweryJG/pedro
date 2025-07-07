@@ -104,7 +104,7 @@ class WebRTCVoiceService extends VoiceService {
     
     // Send initial greeting after short delay
     setTimeout(async () => {
-      const greeting = "Hi there! I'm Julie from Dr. Pedro's office. What can I help you with today?";
+      const greeting = "Hi there! I'm Julie from Dr. Pedro's office. What brings you in today?";
       await this.sendTextResponse(connection, greeting);
       await this.sendAudioResponse(connection, greeting);
     }, 500);
