@@ -13,19 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
-import { TMJIcon, ImplantsIcon, RoboticIcon, MedSpaIcon, AboutFaceIcon } from './icons/SpectrumIcons';
 import '../styles/luxury-design-system.css';
 
-// Icon mapping for centers
-const centerIcons = {
-  tmj: TMJIcon,
-  implants: ImplantsIcon,
-  robotic: RoboticIcon,
-  medspa: MedSpaIcon,
-  aboutface: AboutFaceIcon,
-};
-
-// Lightweight center data
+// Lightweight center data with specialized care images
 const centers = [
   {
     id: 'tmj',
@@ -34,6 +24,7 @@ const centers = [
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     stats: { label: 'Patients Treated', value: '2,500+' },
     features: ['Custom Oral Appliances', 'Physical Therapy', 'Pain Management'],
+    image: '/images/tmj-treatment.jpg',
   },
   {
     id: 'implants',
@@ -42,6 +33,7 @@ const centers = [
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     stats: { label: 'Success Rate', value: '99.2%' },
     features: ['Single & Full Arch', 'Bone Grafting', 'Lifetime Warranty'],
+    image: '/images/dental-implants.jpg',
   },
   {
     id: 'robotic',
@@ -50,6 +42,7 @@ const centers = [
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     stats: { label: 'Healing Time', value: '50% Faster' },
     features: ['Computer Precision', 'Minimally Invasive', 'Yomi Technology'],
+    image: '/images/yomi-robot.jpg',
   },
   {
     id: 'medspa',
@@ -58,6 +51,7 @@ const centers = [
     gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     stats: { label: 'Treatments', value: '10,000+' },
     features: ['EMFACE Technology', 'Facial Contouring', 'Anti-Aging'],
+    image: '/images/emface.jpg',
   },
   {
     id: 'aboutface',
@@ -66,6 +60,7 @@ const centers = [
     gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     stats: { label: 'Google Rating', value: '5.0★' },
     features: ['Veneers', 'Teeth Whitening', 'Smile Design'],
+    image: '/images/patient1after.png', // Using before/after image for smile makeovers
   },
 ];
 
@@ -426,28 +421,41 @@ const CenterCarouselHero: React.FC = () => {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          filter: `drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))`,
-                          '& svg': {
-                            width: 64,
-                            height: 64,
-                            color: 'white',
-                            '& g': {
-                              stroke: `url(#gradient-${center.id})`,
-                              '& circle': {
-                                fill: `url(#gradient-${center.id})`,
-                              },
-                            },
-                            filter: activeIndex === index 
-                              ? 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5))'
-                              : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
-                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                          },
+                          width: '100%',
+                          height: '100%',
+                          borderRadius: '50%',
+                          overflow: 'hidden',
+                          filter: activeIndex === index 
+                            ? 'drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5))'
+                            : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
                       >
-                        {React.createElement(centerIcons[center.id as keyof typeof centerIcons], { 
-                          size: 64,
-                          className: `center-icon ${activeIndex === index ? 'active-icon' : ''}`
-                        })}
+                        <Box
+                          component="img"
+                          src={center.image}
+                          alt={center.title}
+                          sx={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover',
+                            objectPosition: 'center',
+                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                            transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)',
+                            filter: 'brightness(1.1) contrast(1.1) saturate(1.2)',
+                          }}
+                        />
+                        {/* Subtle overlay for better text readability */}
+                        <Box
+                          sx={{
+                            position: 'absolute',
+                            inset: 0,
+                            background: `linear-gradient(135deg, ${center.gradient}40, transparent 70%)`,
+                            mixBlendMode: 'overlay',
+                            transition: 'opacity 0.3s ease',
+                            opacity: activeIndex === index ? 0.6 : 0.3,
+                          }}
+                        />
                       </Box>
                     </Box>
                     
