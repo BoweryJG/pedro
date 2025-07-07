@@ -1,15 +1,19 @@
 /* Navbar Click Fix - Ensure navbar is always interactive */
+/* FORCE UPDATE: 2025-01-07 */
 
 /* Remove the body::before overlay that might be blocking clicks */
 body::before {
   display: none !important;
 }
 
-/* Ensure navbar has proper stacking context */
+/* AGGRESSIVE NAVBAR STYLING - IMPOSSIBLE TO MISS */
 .MuiAppBar-root {
   z-index: 9999 !important;
   position: fixed !important;
   pointer-events: auto !important;
+  background: linear-gradient(45deg, #ff0000 0%, #00ff00 50%, #0000ff 100%) !important;
+  border: 10px solid #ffff00 !important;
+  box-shadow: 0 20px 50px rgba(255, 0, 255, 0.8) !important;
 }
 
 /* Ensure all navbar interactive elements are clickable */
