@@ -228,7 +228,7 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
           position: 'fixed',
           bottom: isMobile ? 24 : 40,
           right: isMobile ? 24 : 40,
-          zIndex: 1300,
+          zIndex: 10000, // Ensure Julie button is above everything
         }}
       >
         {/* Pulsing ring effect */}

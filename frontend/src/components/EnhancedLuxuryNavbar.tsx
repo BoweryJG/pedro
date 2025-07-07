@@ -133,20 +133,21 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           right: 0,
           bottom: 0,
           background: scrolled
-            ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)'
-            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.85) 100%)',
+            ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.98) 100%)'
+            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.88) 100%)',
           backdropFilter: 'blur(24px) saturate(180%)',
           WebkitBackdropFilter: 'blur(24px) saturate(180%)',
           borderBottom: scrolled 
-            ? '2px solid rgba(102, 126, 234, 0.2)' 
-            : '2px solid rgba(255, 255, 255, 0.5)',
-          borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
-          borderRight: '1px solid rgba(255, 255, 255, 0.2)',
+            ? '3px solid rgba(102, 126, 234, 0.4)' 
+            : '3px solid rgba(102, 126, 234, 0.3)',
+          borderLeft: '2px solid rgba(102, 126, 234, 0.2)',
+          borderRight: '2px solid rgba(102, 126, 234, 0.2)',
+          borderTop: '1px solid rgba(102, 126, 234, 0.15)',
           transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
           zIndex: -1,
           boxShadow: scrolled 
-            ? '0 8px 32px rgba(102, 126, 234, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(102, 126, 234, 0.1)'
-            : '0 4px 16px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(255, 255, 255, 0.2)',
+            ? '0 8px 32px rgba(102, 126, 234, 0.2), 0 2px 8px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(102, 126, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.5)'
+            : '0 4px 16px rgba(102, 126, 234, 0.15), 0 0 0 1px rgba(102, 126, 234, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
           // Add side shadows for visual separation
           '&::after': {
             content: '""',
@@ -442,14 +443,25 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                   variant="contained"
                   onClick={() => {
                     // Trigger EP³ Care interface with enhanced debugging
-                    console.log('EP³ Care button clicked - dispatching open-julie-chat event');
+                    console.log('🚨 EP³ Care button clicked - dispatching open-julie-chat event');
                     const event = new CustomEvent('open-julie-chat');
                     window.dispatchEvent(event);
                     
-                    // Additional fallback: try direct import if event fails
+                    // Fallback: directly manipulate Julie component if available
+                    const julieButtons = document.querySelectorAll('[aria-label*="Julie"]');
+                    if (julieButtons.length > 0) {
+                      console.log('🚨 Found Julie button, clicking it directly');
+                      (julieButtons[0] as HTMLElement).click();
+                    }
+                    
+                    // Another fallback: look for the FAB button
                     setTimeout(() => {
-                      console.log('Julie chat should be open now');
-                    }, 100);
+                      const fab = document.querySelector('.MuiFab-root');
+                      if (fab && !document.querySelector('.MuiDialog-root[aria-hidden="false"]')) {
+                        console.log('🚨 Clicking FAB button as fallback');
+                        (fab as HTMLElement).click();
+                      }
+                    }, 200);
                   }}
                   sx={{
                     background: currentCenter 
