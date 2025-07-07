@@ -175,22 +175,25 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          overflow: 'hidden',
+          pointerEvents: 'none',
+          '& > *': {
+            pointerEvents: 'auto',
+          },
         }}
       >
         <CornerScrews
           containerWidth={typeof window !== 'undefined' ? window.innerWidth : 1920}
           containerHeight={80}
-          screwSize={3} // 20% bigger
+          screwSize={3.6}
           metalType="steel"
           interactive={true}
-          offset={15} // Increased to position inside
+          offset={20}
         />
       </Box>
       
       <Toolbar sx={{ 
         minHeight: { xs: 64, md: 80 }, 
-        px: { xs: 6, sm: 8, md: 10, lg: 12 },
+        px: { xs: 3, sm: 4, md: 6, lg: 8 },
         position: 'relative',
         maxWidth: '100%',
         mx: 'auto'
@@ -459,9 +462,13 @@ const EnhancedLuxuryNavbar: React.FC = () => {
               sx={{
                 color: scrolled ? '#2d2d2d' : '#424242',
                 transition: 'all 0.3s ease',
+                ml: 2,
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.04)',
+                },
               }}
             >
-              {mobileMenuOpen ? <CloseIcon /> : <MenuIcon />}
+              {mobileMenuOpen ? <CloseIcon sx={{ fontSize: 28 }} /> : <MenuIcon sx={{ fontSize: 28 }} />}
             </IconButton>
           )}
         </Box>

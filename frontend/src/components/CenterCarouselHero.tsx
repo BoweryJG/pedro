@@ -212,24 +212,58 @@ const CenterCarouselHero: React.FC = () => {
       {/* Header Section */}
       <Container maxWidth="lg" sx={{ pt: { xs: 4, md: 6 }, pb: 3, position: 'relative', zIndex: 1 }}>
         <Box sx={{ textAlign: 'center' }}>
-          <Chip
-            label="Staten Island's Premier Dental Excellence"
-            className="glassmorphism"
+          <Box
             sx={{
-              mb: 2,
-              px: 2,
-              py: 0.5,
-              background: 'rgba(0, 0, 0, 0.85)',
-              border: '2px solid rgba(255, 255, 255, 0.3)',
-              color: '#ffffff',
-              fontSize: { xs: '0.85rem', sm: '1rem' },
-              fontWeight: 700,
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-              textShadow: '0 1px 2px rgba(0, 0, 0, 0.3)',
+              display: 'inline-block',
+              mb: 3,
+              position: 'relative',
             }}
-          />
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                px: 3,
+                py: 1.5,
+                background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(20, 20, 20, 0.85) 100%)',
+                border: '3px solid rgba(255, 255, 255, 0.4)',
+                borderRadius: '40px',
+                color: '#ffffff',
+                fontSize: { xs: '1rem', sm: '1.25rem', md: '1.4rem' },
+                fontWeight: 800,
+                backdropFilter: 'blur(30px)',
+                WebkitBackdropFilter: 'blur(30px)',
+                boxShadow: `
+                  0 12px 40px rgba(0, 0, 0, 0.6),
+                  0 4px 12px rgba(0, 0, 0, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                  0 0 80px rgba(102, 126, 234, 0.2)
+                `,
+                textShadow: `
+                  0 2px 4px rgba(0, 0, 0, 0.8),
+                  0 1px 2px rgba(0, 0, 0, 0.6)
+                `,
+                letterSpacing: '0.5px',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: '-100%',
+                  width: '100%',
+                  height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                  animation: 'shimmer 3s infinite',
+                },
+                '@keyframes shimmer': {
+                  '0%': { left: '-100%' },
+                  '100%': { left: '100%' },
+                },
+              }}
+            >
+              Staten Island's Premier Dental Excellence
+            </Typography>
+          </Box>
           
           <Typography
             variant="h1"
