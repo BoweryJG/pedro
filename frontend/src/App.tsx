@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -38,6 +38,7 @@ import SMSQueue from './pages/admin/SMSQueue';
 function App() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const location = useLocation();
 
   return (
     <AuthProvider>
@@ -87,8 +88,8 @@ function App() {
           }
         />
       </Routes>
-      {/* Julie Unified Interface - Chat & Voice */}
-      <JulieUnifiedInterface />
+      {/* Julie Unified Interface - Chat & Voice (hide on MedSpa routes) */}
+      {!location.pathname.includes('/medspa') && <JulieUnifiedInterface />}
       {/* Luxury texture overlays - REMOVED FOR PERFORMANCE */}
     </AuthProvider>
   );

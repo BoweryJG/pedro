@@ -13,54 +13,56 @@ import { useNavigate } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
+import { CornerScrews, cartierScrewStyles } from './effects/CartierScrews';
+import { luxuryMedicalIcons, LuxuryIconType } from './icons/LuxuryMedicalIcons';
 import '../styles/luxury-design-system.css';
 
-// Lightweight center data with specialized care images
+// Lightweight center data with luxury medical icons
 const centers = [
   {
-    id: 'tmj',
+    id: 'tmj' as LuxuryIconType,
     title: 'TMJ & Orofacial Pain',
     subtitle: 'Expert jaw disorder care',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     stats: { label: 'Patients Treated', value: '2,500+' },
     features: ['Custom Oral Appliances', 'Physical Therapy', 'Pain Management'],
-    image: '/images/tmj-treatment.jpg',
+    icon: 'tmj' as LuxuryIconType,
   },
   {
-    id: 'implants',
+    id: 'implants' as LuxuryIconType,
     title: 'Dental Implants',
     subtitle: 'Permanent tooth replacement',
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     stats: { label: 'Success Rate', value: '99.2%' },
     features: ['Single & Full Arch', 'Bone Grafting', 'Lifetime Warranty'],
-    image: '/images/dental-implants.jpg',
+    icon: 'implants' as LuxuryIconType,
   },
   {
-    id: 'robotic',
+    id: 'robotic' as LuxuryIconType,
     title: 'Robotic Surgery',
     subtitle: 'Precision implant placement',
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     stats: { label: 'Healing Time', value: '50% Faster' },
     features: ['Computer Precision', 'Minimally Invasive', 'Yomi Technology'],
-    image: '/images/yomi-robot.jpg',
+    icon: 'robotic' as LuxuryIconType,
   },
   {
-    id: 'medspa',
+    id: 'medspa' as LuxuryIconType,
     title: 'MedSpa & Aesthetics',
     subtitle: 'Facial rejuvenation',
     gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     stats: { label: 'Treatments', value: '10,000+' },
     features: ['EMFACE Technology', 'Facial Contouring', 'Anti-Aging'],
-    image: '/images/emface.jpg',
+    icon: 'medspa' as LuxuryIconType,
   },
   {
-    id: 'aboutface',
+    id: 'aboutface' as LuxuryIconType,
     title: 'AboutFace Aesthetics',
     subtitle: 'Complete smile makeovers',
     gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     stats: { label: 'Google Rating', value: '5.0★' },
     features: ['Veneers', 'Teeth Whitening', 'Smile Design'],
-    image: '/images/patient1after.png', // Using before/after image for smile makeovers
+    icon: 'aboutface' as LuxuryIconType,
   },
 ];
 
@@ -360,7 +362,15 @@ const CenterCarouselHero: React.FC = () => {
                   },
                 }}
               >
-                {/* Removed gradient header - using pulsating border instead */}
+                {/* Cartier Corner Screws */}
+                <CornerScrews
+                  containerWidth={400}
+                  containerHeight={500}
+                  screwSize={activeIndex === index ? 8 : 6}
+                  metalType={activeIndex === index ? 'gold' : 'steel'}
+                  interactive={true}
+                  offset={16}
+                />
 
                 {/* Card Content */}
                 <Box sx={{ p: { xs: 4, sm: 5 } }}>
@@ -431,31 +441,10 @@ const CenterCarouselHero: React.FC = () => {
                           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
                       >
-                        <Box
-                          component="img"
-                          src={center.image}
-                          alt={center.title}
-                          sx={{
-                            width: '100%',
-                            height: '100%',
-                            objectFit: 'cover',
-                            objectPosition: 'center',
-                            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                            transform: activeIndex === index ? 'scale(1.1)' : 'scale(1)',
-                            filter: 'brightness(1.1) contrast(1.1) saturate(1.2)',
-                          }}
-                        />
-                        {/* Subtle overlay for better text readability */}
-                        <Box
-                          sx={{
-                            position: 'absolute',
-                            inset: 0,
-                            background: `linear-gradient(135deg, ${center.gradient}40, transparent 70%)`,
-                            mixBlendMode: 'overlay',
-                            transition: 'opacity 0.3s ease',
-                            opacity: activeIndex === index ? 0.6 : 0.3,
-                          }}
-                        />
+                        {React.createElement(luxuryMedicalIcons[center.icon], {
+                          size: 120,
+                          className: `luxury-medical-icon ${activeIndex === index ? 'active' : ''}`
+                        })}
                       </Box>
                     </Box>
                     
@@ -666,8 +655,26 @@ const CenterCarouselHero: React.FC = () => {
         </Box>
       </Box>
 
-      {/* CSS Animations */}
+      {/* Cartier Screw Styles */}
       <style>{`
+        ${cartierScrewStyles}
+        
+        /* Luxury Medical Icon Animations */
+        .luxury-medical-icon {
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+        }
+        
+        .luxury-medical-icon.active {
+          transform: scale(1.1);
+          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)) brightness(1.1);
+        }
+        
+        .luxury-medical-icon:hover {
+          transform: scale(1.15) rotate(5deg);
+          filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4)) brightness(1.2);
+        }
+        
         @keyframes fadeInUp {
           from {
             opacity: 0;

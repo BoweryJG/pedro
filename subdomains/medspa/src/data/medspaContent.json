@@ -4,7 +4,7 @@
     "subtitle": "Comprehensive aesthetic treatments combining advanced technology with artistic expertise",
     "description": "Experience the ultimate in aesthetic excellence with our full range of cosmetic treatments. From Botox and fillers to body contouring and facial rejuvenation, discover your most confident self.",
     "cta": "Book Your Aesthetic Consultation",
-    "backgroundImage": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Teeth-Whitening-Background.png",
+    "backgroundImage": "/images/medspa-hero-bg.jpg",
     "features": [
       "FDA-Approved Treatments",
       "Board-Certified Provider",
@@ -22,7 +22,7 @@
       "20+ Years Experience",
       "Staten Island's Trusted Provider"
     ],
-    "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/02/Katherine-Review.png"
+    "image": "/images/gregpedro.jpg"
   },
   "treatments": [
     {
@@ -32,7 +32,7 @@
       "duration": "30 minutes",
       "priceRange": "$300-600",
       "benefits": ["Reduces wrinkles", "Prevents new lines", "Quick procedure", "No downtime"],
-      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Teeth-Whitening-Logo-1.png"
+      "image": "/images/botox-treatment.jpg"
     },
     {
       "id": "fillers",
@@ -41,7 +41,7 @@
       "duration": "45 minutes",
       "priceRange": "$600-1200",
       "benefits": ["Instant results", "Natural enhancement", "Long-lasting", "Reversible"],
-      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Dental-Implants-Logo.png"
+      "image": "/images/dermal-fillers.jpg"
     },
     {
       "id": "emface",
@@ -50,7 +50,7 @@
       "duration": "20 minutes",
       "priceRange": "$800-1500",
       "benefits": ["Muscle toning", "Skin tightening", "No downtime", "Pain-free"],
-      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/05/Implants-Featured-Image.png"
+      "image": "/images/emface.jpg"
     },
     {
       "id": "opus-plasma",
@@ -59,7 +59,7 @@
       "duration": "60 minutes",
       "priceRange": "$500-1000",
       "benefits": ["Skin resurfacing", "Collagen stimulation", "Minimal downtime", "Dramatic results"],
-      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/05/Teeth-Whitening-Featured-Image.png"
+      "image": "/images/opus-plasma.jpg"
     },
     {
       "id": "teeth-whitening",
@@ -68,7 +68,7 @@
       "duration": "90 minutes",
       "priceRange": "$400-800",
       "benefits": ["Immediate results", "Safe procedure", "Long-lasting", "Professional grade"],
-      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Teeth-Whitening-Background.png"
+      "image": "/images/teeth-whitening.jpg"
     },
     {
       "id": "combination-packages",
@@ -77,7 +77,7 @@
       "duration": "2-3 hours",
       "priceRange": "$1500-3000",
       "benefits": ["Package savings", "Comprehensive results", "Coordinated care", "Maximum value"],
-      "image": "https://aboutfacedentalmedspa.com/wp-content/uploads/2023/04/Implants-Background.jpg"
+      "image": "/images/treatment-packages.jpg"
     }
   ],
   "packages": [

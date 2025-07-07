@@ -83,6 +83,7 @@ const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
                 variant="h1"
                 sx={{
                   color: 'white',
+                  fontFamily: 'var(--font-primary)',
                   fontWeight: 700,
                   mb: 2,
                   textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
@@ -96,6 +97,7 @@ const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
                 variant="h4"
                 sx={{
                   color: 'rgba(255,255,255,0.95)',
+                  fontFamily: 'var(--font-secondary)',
                   mb: 3,
                   fontWeight: 400,
                   textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
@@ -109,6 +111,7 @@ const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
                 variant="body1"
                 sx={{
                   color: 'rgba(255,255,255,0.9)',
+                  fontFamily: 'var(--font-secondary)',
                   mb: 4,
                   fontSize: '1.1rem',
                   lineHeight: 1.7,
@@ -159,16 +162,22 @@ const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
                     px: 4,
                     py: 1.5,
                     fontSize: '1.1rem',
-                    fontWeight: 600,
-                    borderRadius: 3,
-                    background: 'linear-gradient(45deg, #B8860B 30%, #DAA520 90%)',
-                    boxShadow: '0 8px 32px rgba(184, 134, 11, 0.4)',
+                    fontFamily: 'var(--font-secondary)',
+                    fontWeight: 700,
+                    borderRadius: 2,
+                    background: 'var(--primary-gradient)',
+                    color: 'white',
+                    textTransform: 'none',
+                    letterSpacing: '0.02em',
+                    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+                    border: 'none',
                     '&:hover': {
-                      background: 'linear-gradient(45deg, #9A7C0A 30%, #B8860B 90%)',
+                      background: 'var(--primary-gradient)',
+                      filter: 'brightness(1.1)',
                       transform: 'translateY(-2px)',
-                      boxShadow: '0 12px 48px rgba(184, 134, 11, 0.5)'
+                      boxShadow: '0 12px 35px rgba(0, 0, 0, 0.25)'
                     },
-                    transition: 'all 0.3s ease-in-out'
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                   onClick={() => window.open('https://pedrobackend.onrender.com/appointments', '_blank')}
                 >
@@ -198,21 +207,21 @@ const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
                 <CardContent sx={{ p: 4 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                     <Avatar
-                      src={doctor.image}
+                      src={'/images/gregpedro.jpg'}
                       alt={doctor.name}
                       sx={{ width: 80, height: 80, mr: 2 }}
                     />
                     <Box>
-                      <Typography variant="h5" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                      <Typography variant="h5" sx={{ fontFamily: 'var(--font-primary)', fontWeight: 600, color: 'primary.main' }}>
                         {doctor.name}
                       </Typography>
-                      <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
+                      <Typography variant="subtitle1" sx={{ fontFamily: 'var(--font-secondary)', color: 'text.secondary' }}>
                         {doctor.title}
                       </Typography>
                     </Box>
                   </Box>
 
-                  <Typography variant="body2" sx={{ mb: 3, color: 'text.primary' }}>
+                  <Typography variant="body2" sx={{ fontFamily: 'var(--font-secondary)', mb: 3, color: 'text.primary' }}>
                     {doctor.description}
                   </Typography>
 
@@ -238,46 +247,6 @@ const MedSpaHero: React.FC<MedSpaHeroProps> = ({ content, doctor }) => {
         </Grid>
       </Container>
 
-      {/* Floating Elements */}
-      <motion.div
-        animate={{
-          y: [0, -10, 0],
-          rotate: [0, 5, 0]
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        style={{
-          position: 'absolute',
-          top: '20%',
-          right: '10%',
-          zIndex: 1
-        }}
-      >
-        <Spa sx={{ fontSize: 60, color: 'rgba(255,255,255,0.1)' }} />
-      </motion.div>
-
-      <motion.div
-        animate={{
-          y: [0, 15, 0],
-          rotate: [0, -3, 0]
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        style={{
-          position: 'absolute',
-          bottom: '20%',
-          left: '5%',
-          zIndex: 1
-        }}
-      >
-        <Star sx={{ fontSize: 40, color: 'rgba(255,255,255,0.1)' }} />
-      </motion.div>
     </Box>
   )
 }
