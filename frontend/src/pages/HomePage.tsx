@@ -1,4 +1,5 @@
-import ImageFocusedHero from '../components/ImageFocusedHero';
+// import ImageFocusedHero from '../components/ImageFocusedHero';
+import CenterCarouselHero from '../components/CenterCarouselHero';
 import LuxuryServicesShowcase from '../components/LuxuryServicesShowcase';
 import LuxuryStatsSection from '../components/LuxuryStatsSection';
 import LuxuryTrustIndicators from '../components/LuxuryTrustIndicators';
@@ -25,7 +26,7 @@ const HomePage = () => {
           overflow: 'hidden',
         }}
       >
-        <ImageFocusedHero />
+        <CenterCarouselHero />
       </Box>
       
       {/* Meet Dr. Pedro Section */}
