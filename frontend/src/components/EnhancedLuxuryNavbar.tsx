@@ -118,8 +118,9 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       ref={navRef}
       sx={{
         zIndex: 9999, // Force navbar to be on top
-        background: 'transparent',
-        boxShadow: 'none',
+        background: 'linear-gradient(90deg, #ff0000 0%, #0000ff 100%)', // RED TO BLUE GRADIENT - IMPOSSIBLE TO MISS
+        boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+        border: '5px solid #00ff00', // BRIGHT GREEN BORDER
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         width: '100%',
         left: 0,

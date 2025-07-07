@@ -9,8 +9,11 @@ mkdir -p dist
 
 echo "📦 Building unified frontend application..."
 cd frontend
+# Force clean install
+rm -rf node_modules package-lock.json
 npm install --silent
-npm run build --silent
+# Force production build with no cache
+NODE_ENV=production npm run build --silent
 cp -r dist/* ../dist/
 cd ..
 
