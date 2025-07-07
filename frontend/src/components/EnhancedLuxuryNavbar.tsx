@@ -501,28 +501,27 @@ const EnhancedLuxuryNavbar: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Cartier Screw Styles */}
+      <style>{`
+        ${cartierScrewStyles}
+        
+        /* Enhanced navbar depth and shadows */
+        .MuiAppBar-root {
+          border-radius: 0 0 8px 8px;
+          box-shadow: 
+            0 8px 32px rgba(0, 0, 0, 0.08),
+            0 2px 8px rgba(0, 0, 0, 0.04),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Subtle depth enhancement */
+        .MuiAppBar-root::before {
+          box-shadow: 
+            0 0 40px rgba(102, 126, 234, 0.05),
+            0 0 80px rgba(102, 126, 234, 0.03);
+        }
+      `}</style>
     </AppBar>
-    
-    {/* Cartier Screw Styles */}
-    <style>{`
-      ${cartierScrewStyles}
-      
-      /* Enhanced navbar depth and shadows */
-      .MuiAppBar-root {
-        border-radius: 0 0 8px 8px;
-        box-shadow: 
-          0 8px 32px rgba(0, 0, 0, 0.08),
-          0 2px 8px rgba(0, 0, 0, 0.04),
-          inset 0 1px 0 rgba(255, 255, 255, 0.1);
-      }
-      
-      /* Subtle depth enhancement */
-      .MuiAppBar-root::before {
-        box-shadow: 
-          0 0 40px rgba(102, 126, 234, 0.05),
-          0 0 80px rgba(102, 126, 234, 0.03);
-      }
-    `}</style>
   );
 };
 
