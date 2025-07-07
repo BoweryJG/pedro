@@ -26,6 +26,7 @@ import './theme/panerai.css';
 import './styles/enhanced-depth-disabled.css';
 import './styles/performance-optimized.css';
 import './styles/premium-chatbot.css';
+import './styles/navbar-fix.css';
 
 // Subdomain Pages
 import TMJSubdomainPage from './pages/tmj/TMJSubdomainPage';

@@ -1,0 +1,61 @@
+/* Navbar Click Fix - Ensure navbar is always interactive */
+
+/* Remove the body::before overlay that might be blocking clicks */
+body::before {
+  display: none !important;
+}
+
+/* Ensure navbar has proper stacking context */
+.MuiAppBar-root {
+  z-index: 9999 !important;
+  position: fixed !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure all navbar interactive elements are clickable */
+.MuiAppBar-root * {
+  pointer-events: auto !important;
+}
+
+/* Make sure main content doesn't overlap navbar */
+main {
+  position: relative !important;
+  z-index: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* Ensure no invisible overlays block the navbar */
+.MuiAppBar-root::before,
+.MuiAppBar-root::after {
+  pointer-events: none !important;
+}
+
+/* Fix for any potential overlay issues */
+[style*="z-index: 9999"] {
+  pointer-events: auto !important;
+}
+
+/* Ensure toolbar and all buttons are interactive */
+.MuiToolbar-root,
+.MuiButton-root,
+.MuiIconButton-root {
+  pointer-events: auto !important;
+  position: relative !important;
+  z-index: inherit !important;
+}
+
+/* Remove any transform that might affect stacking */
+.MuiAppBar-root,
+.MuiToolbar-root {
+  transform: none !important;
+}
+
+/* Ensure dialogs don't interfere when closed */
+.MuiDialog-root:not([aria-hidden="false"]) {
+  display: none !important;
+}
+
+/* Fix for any full-screen invisible overlays */
+*[style*="position: fixed"][style*="width: 100%"][style*="height: 100%"]:not(.MuiBackdrop-root):not(.MuiDialog-root) {
+  pointer-events: none !important;
+}

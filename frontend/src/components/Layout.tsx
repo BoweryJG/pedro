@@ -15,7 +15,7 @@ const Layout = () => {
       {/* Global texture overlays - REMOVED FOR PERFORMANCE */}
       
       <EnhancedLuxuryNavbar />
-      <Box component="main" sx={{ flexGrow: 1, mt: { xs: 8, md: 10 }, position: 'relative', zIndex: 1 }}>
+      <Box component="main" sx={{ flexGrow: 1, mt: { xs: 8, md: 10 }, position: 'relative' }}>
         <Outlet />
       </Box>
       <LuxuryFooter />
