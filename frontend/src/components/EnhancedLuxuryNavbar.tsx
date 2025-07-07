@@ -60,6 +60,7 @@ const centerConfig = {
 };
 
 const EnhancedLuxuryNavbar: React.FC = () => {
+  console.log('🚨 NAVBAR v2 - CACHE BUST - ', new Date().toISOString());
   const theme = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
