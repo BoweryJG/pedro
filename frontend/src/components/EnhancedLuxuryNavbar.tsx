@@ -105,7 +105,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
   const navItems = [
     { label: 'About', path: '/about' },
     { label: 'Services', path: '/services' },
-    { label: 'Technology', path: '/yomi-robotic-surgery' },
+    { label: 'Technology', path: '/robotic' },
     { label: 'Results', path: '/smile-simulator' },
     { label: 'Contact', path: '/contact' },
   ];
@@ -158,15 +158,15 @@ const EnhancedLuxuryNavbar: React.FC = () => {
       <CornerScrews
         containerWidth={window.innerWidth}
         containerHeight={80}
-        screwSize={5}
+        screwSize={2.5}
         metalType="steel"
         interactive={true}
-        offset={12}
+        offset={16}
       />
       
       <Toolbar sx={{ 
         minHeight: { xs: 64, md: 80 }, 
-        px: { xs: 2, md: 4 },
+        px: { xs: 3, md: 5 },
         position: 'relative' 
       }}>
         {/* Logo Section */}

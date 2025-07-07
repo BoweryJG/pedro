@@ -14,55 +14,55 @@ import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import { CornerScrews, cartierScrewStyles } from './effects/CartierScrews';
-import { luxuryMedicalIcons, LuxuryIconType } from './icons/LuxuryMedicalIcons';
+import { professionalIcons, ProfessionalIconType } from './icons/ProfessionalIcons';
 import '../styles/luxury-design-system.css';
 
-// Lightweight center data with exact luxury icons from ChatGPT image
+// Center data with professional medical icons
 const centers = [
   {
-    id: 'tmj' as LuxuryIconType,
+    id: 'tmj' as ProfessionalIconType,
     title: 'TMJ & Orofacial Pain',
     subtitle: 'Expert jaw disorder care',
     gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     stats: { label: 'Patients Treated', value: '2,500+' },
     features: ['Custom Oral Appliances', 'Physical Therapy', 'Pain Management'],
-    icon: 'tmj' as LuxuryIconType,
+    icon: 'tmj' as ProfessionalIconType,
   },
   {
-    id: 'implants' as LuxuryIconType,
+    id: 'implants' as ProfessionalIconType,
     title: 'Dental Implants',
     subtitle: 'Permanent tooth replacement',
     gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
     stats: { label: 'Success Rate', value: '99.2%' },
     features: ['Single & Full Arch', 'Bone Grafting', 'Lifetime Warranty'],
-    icon: 'implants' as LuxuryIconType,
+    icon: 'implants' as ProfessionalIconType,
   },
   {
-    id: 'robotic' as LuxuryIconType,
+    id: 'robotic' as ProfessionalIconType,
     title: 'Robotic Surgery',
     subtitle: 'Precision implant placement',
     gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
     stats: { label: 'Healing Time', value: '50% Faster' },
     features: ['Computer Precision', 'Minimally Invasive', 'Yomi Technology'],
-    icon: 'robotic' as LuxuryIconType,
+    icon: 'robotic' as ProfessionalIconType,
   },
   {
-    id: 'medspa' as LuxuryIconType,
+    id: 'medspa' as ProfessionalIconType,
     title: 'MedSpa & Aesthetics',
     subtitle: 'Facial rejuvenation',
     gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
     stats: { label: 'Treatments', value: '10,000+' },
     features: ['EMFACE Technology', 'Facial Contouring', 'Anti-Aging'],
-    icon: 'medspa' as LuxuryIconType,
+    icon: 'medspa' as ProfessionalIconType,
   },
   {
-    id: 'aboutface' as LuxuryIconType,
+    id: 'aboutface' as ProfessionalIconType,
     title: 'AboutFace Aesthetics',
     subtitle: 'Complete smile makeovers',
     gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
     stats: { label: 'Google Rating', value: '5.0★' },
     features: ['Veneers', 'Teeth Whitening', 'Smile Design'],
-    icon: 'aboutface' as LuxuryIconType,
+    icon: 'aboutface' as ProfessionalIconType,
   },
 ];
 
@@ -362,15 +362,26 @@ const CenterCarouselHero: React.FC = () => {
                   },
                 }}
               >
-                {/* Cartier Corner Screws */}
-                <CornerScrews
-                  containerWidth={400}
-                  containerHeight={500}
-                  screwSize={activeIndex === index ? 8 : 6}
-                  metalType={activeIndex === index ? 'gold' : 'steel'}
-                  interactive={true}
-                  offset={16}
-                />
+                {/* Cartier Corner Screws - positioned relative to card */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    inset: 0,
+                    pointerEvents: 'none',
+                    '& > *': {
+                      pointerEvents: 'auto',
+                    },
+                  }}
+                >
+                  <CornerScrews
+                    containerWidth={showFeatures === index ? 450 : 400}
+                    containerHeight={showFeatures === index ? 600 : 500}
+                    screwSize={activeIndex === index ? 4 : 3}
+                    metalType={activeIndex === index ? 'gold' : 'steel'}
+                    interactive={true}
+                    offset={showFeatures === index ? 20 : 16}
+                  />
+                </Box>
 
                 {/* Card Content */}
                 <Box sx={{ p: { xs: 4, sm: 5 } }}>
@@ -441,9 +452,9 @@ const CenterCarouselHero: React.FC = () => {
                           transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                         }}
                       >
-                        {React.createElement(luxuryMedicalIcons[center.icon], {
-                          size: 120,
-                          className: `luxury-medical-icon ${activeIndex === index ? 'active' : ''}`
+                        {React.createElement(professionalIcons[center.icon], {
+                          size: 80,
+                          className: `professional-icon ${activeIndex === index ? 'active' : ''} ${activeIndex === index ? 'text-white' : 'text-gray-800'}`
                         })}
                       </Box>
                     </Box>
@@ -659,20 +670,20 @@ const CenterCarouselHero: React.FC = () => {
       <style>{`
         ${cartierScrewStyles}
         
-        /* Luxury Medical Icon Animations */
-        .luxury-medical-icon {
+        /* Professional Icon Animations */
+        .professional-icon {
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+        
+        .professional-icon.active {
+          transform: scale(1.05);
           filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
         }
         
-        .luxury-medical-icon.active {
+        .professional-icon:hover {
           transform: scale(1.1);
-          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)) brightness(1.1);
-        }
-        
-        .luxury-medical-icon:hover {
-          transform: scale(1.15) rotate(5deg);
-          filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4)) brightness(1.2);
+          filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
         }
         
         @keyframes fadeInUp {

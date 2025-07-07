@@ -21,6 +21,8 @@ import {
   VolumeUp as SpeakerIcon,
   StopCircle as StopIcon,
   PlayArrow as PlayIcon,
+  LocalHospital as MedicalIcon,
+  MedicalServices as MedicalServicesIcon,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useChatStore } from '../chatbot/store/chatStore';
@@ -218,8 +220,8 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
           zIndex: 1300,
         }}
       >
-        {/* Main Julie Launcher */}
-        <Tooltip title="Talk to Julie - EP3 Certified Care Coordinator" placement="left" arrow>
+        {/* Main Julie Launcher - Professional Medical Interface */}
+        <Tooltip title="EP³ Care Coordinator" placement="left" arrow>
           <Fab
             color="primary"
             size="large"
@@ -229,15 +231,68 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
               boxShadow: '0 10px 30px rgba(102, 126, 234, 0.4)',
               width: 72,
               height: 72,
+              position: 'relative',
+              overflow: 'visible',
               '&:hover': {
                 transform: 'scale(1.05)',
                 boxShadow: '0 15px 40px rgba(102, 126, 234, 0.6)',
               },
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                inset: -2,
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                opacity: 0.3,
+                filter: 'blur(15px)',
+                zIndex: -1,
+              },
             }}
           >
-            <Avatar sx={{ width: 48, height: 48, bgcolor: 'transparent' }}>
-              <Typography fontSize="2rem">👩‍⚕️</Typography>
-            </Avatar>
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <MedicalServicesIcon 
+                sx={{ 
+                  fontSize: 32, 
+                  color: 'white',
+                  filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))'
+                }} 
+              />
+              {/* EP³ Badge */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: -8,
+                  right: -8,
+                  background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                  borderRadius: '50%',
+                  width: 24,
+                  height: 24,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: '2px solid white',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.3)',
+                }}
+              >
+                <Typography 
+                  sx={{ 
+                    fontSize: '0.6rem', 
+                    fontWeight: 800,
+                    color: 'white',
+                    lineHeight: 1,
+                  }}
+                >
+                  EP³
+                </Typography>
+              </Box>
+            </Box>
           </Fab>
         </Tooltip>
 
@@ -253,20 +308,24 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
           }}
         >
           <Chip
-            label="💬 Chat"
+            icon={<ChatIcon sx={{ fontSize: 16 }} />}
+            label="Chat"
             onClick={() => handleModeSwitch('chat')}
             sx={{
               bgcolor: 'background.paper',
               boxShadow: 2,
+              fontWeight: 600,
               '&:hover': { bgcolor: 'primary.main', color: 'white' },
             }}
           />
           <Chip
-            label="🎤 Voice"
+            icon={<MicIcon sx={{ fontSize: 16 }} />}
+            label="Voice"
             onClick={() => handleModeSwitch('voice')}
             sx={{
               bgcolor: 'background.paper',
               boxShadow: 2,
+              fontWeight: 600,
               '&:hover': { bgcolor: 'secondary.main', color: 'white' },
             }}
           />
@@ -310,7 +369,7 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Avatar sx={{ bgcolor: 'rgba(255, 255, 255, 0.2)' }}>
-                <Typography fontSize="1.5rem">👩‍⚕️</Typography>
+                <MedicalIcon sx={{ fontSize: 28, color: 'white' }} />
               </Avatar>
               <Box>
                 <Typography variant="h6" fontWeight="bold">
