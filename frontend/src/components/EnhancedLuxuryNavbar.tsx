@@ -313,7 +313,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     lineHeight: 1,
                   }}
                 >
-                  Dr. Pedro
+                  Dr. Greg Pedro
                 </Typography>
                 {currentCenter && (
                   <Typography

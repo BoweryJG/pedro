@@ -36,26 +36,6 @@ const Layout = () => {
       
       {/* AI Questionnaire */}
       <AIQuestionnaire />
-      
-      {/* Debug button - TEMPORARY */}
-      <Box sx={{ position: 'fixed', bottom: 100, right: 20, zIndex: 9999 }}>
-        <button 
-          onClick={() => {
-            console.log('🚨 DEBUG BUTTON CLICKED');
-            setShowCenterSelector(true);
-          }}
-          style={{ 
-            padding: '10px 20px', 
-            background: 'red', 
-            color: 'white', 
-            border: 'none',
-            borderRadius: '5px',
-            cursor: 'pointer'
-          }}
-        >
-          DEBUG: Open Modal
-        </button>
-      </Box>
     </Box>
   );
 };
