@@ -32,6 +32,8 @@ export interface FinancingResult {
   preQualificationId?: string;
   expirationDate?: string;
   message: string;
+  applicationUrl?: string;
+  features?: string[];
 }
 
 export interface InsuranceResult {
@@ -155,6 +157,22 @@ class FinancingService {
 
     const result = response.data;
 
+    // Handle direct application link response
+    if (result.directApplication && result.applicationUrl) {
+      return {
+        approved: true,
+        provider: 'cherry',
+        approvalAmount: data.procedureAmount,
+        monthlyPayment: this.calculateMonthlyPayment(data.procedureAmount, 12, 0),
+        term: 12,
+        apr: 0,
+        applicationUrl: result.applicationUrl,
+        message: result.message || 'Apply with Cherry - 60 second application!',
+        features: result.features
+      };
+    }
+
+    // Handle API response (when API docs are available)
     return {
       approved: result.approved,
       provider: 'cherry',

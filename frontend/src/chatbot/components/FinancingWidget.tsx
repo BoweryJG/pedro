@@ -42,6 +42,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { motion, AnimatePresence } from 'framer-motion';
 import { financingService } from '../services/financingService';
 import type { PatientFinancingData, InsuranceVerificationData } from '../services/financingService';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface FinancingWidgetProps {
   procedureType: 'yomi' | 'tmj' | 'emface';
@@ -71,6 +76,11 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
   // Insurance form data
   const [insuranceData, setInsuranceData] = useState<Partial<InsuranceVerificationData>>({});
   const [dateOfBirth, setDateOfBirth] = useState<Dayjs | null>(null);
+  
+  // iFrame modal states
+  const [showFinancingModal, setShowFinancingModal] = useState(false);
+  const [selectedFinancingProvider, setSelectedFinancingProvider] = useState<'cherry' | 'sunbit' | 'carecredit' | null>(null);
+  const [financingUrl, setFinancingUrl] = useState('');
 
   const handleNext = async () => {
     if (activeStep === 0 && !selectedOption) {
@@ -485,6 +495,40 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                                   </Typography>
                                 </Box>
                               )}
+                              <Box sx={{ mt: 2 }}>
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  fullWidth
+                                  onClick={() => {
+                                    // Handle application URL or direct modal
+                                    if (option.applicationUrl) {
+                                      setFinancingUrl(option.applicationUrl);
+                                      setSelectedFinancingProvider(option.provider);
+                                      setShowFinancingModal(true);
+                                    } else {
+                                      // Generate URL based on provider
+                                      let url = '';
+                                      switch (option.provider) {
+                                        case 'cherry':
+                                          url = `https://patient.withcherry.com/?practice_id=PEDRO_DENTAL_001&amount=${option.approvalAmount}`;
+                                          break;
+                                        case 'sunbit':
+                                          url = `https://app.sunbit.com/apply?merchant=PEDRO_DENTAL_SI&amount=${option.approvalAmount}`;
+                                          break;
+                                        case 'carecredit':
+                                          url = `https://www.carecredit.com/apply/?sitecode=B3CPLAdentist01&cmpid=B3CPLAdentist01&dtc=N`;
+                                          break;
+                                      }
+                                      setFinancingUrl(url);
+                                      setSelectedFinancingProvider(option.provider);
+                                      setShowFinancingModal(true);
+                                    }
+                                  }}
+                                >
+                                  Apply Now with {option.provider.charAt(0).toUpperCase() + option.provider.slice(1)}
+                                </Button>
+                              </Box>
                             </Box>
                           ) : (
                             <Alert severity="info">
@@ -645,5 +689,54 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
         </Box>
       </CardContent>
     </Card>
+
+    {/* Financing iFrame Modal */}
+    <Dialog 
+      open={showFinancingModal} 
+      onClose={() => setShowFinancingModal(false)}
+      maxWidth="lg"
+      fullWidth
+      PaperProps={{
+        sx: {
+          height: '90vh',
+          maxHeight: '900px'
+        }
+      }}
+    >
+      <DialogTitle sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-between',
+        borderBottom: 1,
+        borderColor: 'divider'
+      }}>
+        <Typography variant="h6">
+          Complete Your {selectedFinancingProvider ? 
+            selectedFinancingProvider.charAt(0).toUpperCase() + selectedFinancingProvider.slice(1) : 
+            'Financing'
+          } Application
+        </Typography>
+        <IconButton 
+          onClick={() => setShowFinancingModal(false)}
+          size="small"
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent sx={{ p: 0 }}>
+        {financingUrl && (
+          <iframe
+            src={financingUrl}
+            width="100%"
+            height="100%"
+            style={{
+              border: 'none',
+              minHeight: '700px'
+            }}
+            title={`${selectedFinancingProvider} Financing Application`}
+          />
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
