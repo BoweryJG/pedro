@@ -645,53 +645,54 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
   };
 
   return (
-    <Card sx={{ maxWidth: 800, mx: 'auto' }}>
-      <CardContent>
-        <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+    <>
+      <Card sx={{ maxWidth: 800, mx: 'auto' }}>
+        <CardContent>
+          <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeStep}
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.3 }}
-          >
-            {renderStepContent()}
-          </motion.div>
-        </AnimatePresence>
-
-        <Divider sx={{ my: 3 }} />
-
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Button
-            disabled={activeStep === 0 || loading}
-            onClick={handleBack}
-          >
-            Back
-          </Button>
-          {activeStep < 2 && (
-            <Button
-              variant="contained"
-              onClick={handleNext}
-              disabled={loading}
-              endIcon={loading && <CircularProgress size={20} />}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeStep}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
             >
-              {activeStep === 1 ? 'Check Options' : 'Next'}
-            </Button>
-          )}
-        </Box>
-      </CardContent>
-    </Card>
+              {renderStepContent()}
+            </motion.div>
+          </AnimatePresence>
 
-    {/* Financing iFrame Modal */}
-    <Dialog 
+          <Divider sx={{ my: 3 }} />
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+              disabled={activeStep === 0 || loading}
+              onClick={handleBack}
+            >
+              Back
+            </Button>
+            {activeStep < 2 && (
+              <Button
+                variant="contained"
+                onClick={handleNext}
+                disabled={loading}
+                endIcon={loading && <CircularProgress size={20} />}
+              >
+                {activeStep === 1 ? 'Check Options' : 'Next'}
+              </Button>
+            )}
+          </Box>
+        </CardContent>
+      </Card>
+
+      {/* Financing iFrame Modal */}
+      <Dialog 
       open={showFinancingModal} 
       onClose={() => setShowFinancingModal(false)}
       maxWidth="lg"
@@ -738,5 +739,6 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
         )}
       </DialogContent>
     </Dialog>
+    </>
   );
 };
