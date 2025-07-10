@@ -4,6 +4,8 @@ import { Buffer } from 'buffer';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
 import calendarService from './calendarService.js';
+import { ElevenLabsTTS } from './elevenLabsTTS.js';
+import voiceService from '../voiceService.js';
 
 dotenv.config();
 
@@ -13,23 +15,18 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY
 );
 
-// Audio conversion utilities
-const pcmToInt16 = (pcmData) => {
-  const output = new Int16Array(pcmData.length / 2);
-  for (let i = 0; i < output.length; i++) {
-    output[i] = (pcmData[i * 2] | (pcmData[i * 2 + 1] << 8));
-  }
-  return output;
-};
-
-const int16ToPcm = (int16Data) => {
-  const buffer = new Uint8Array(int16Data.length * 2);
-  for (let i = 0; i < int16Data.length; i++) {
-    buffer[i * 2] = int16Data[i] & 0xFF;
-    buffer[i * 2 + 1] = (int16Data[i] >> 8) & 0xFF;
-  }
-  return buffer;
-};
+// Initialize TTS service
+let ttsService;
+try {
+  ttsService = new ElevenLabsTTS({
+    voiceId: 'rachel', // Professional female voice for Julie
+    modelId: 'eleven_turbo_v2',
+    optimizeLatency: 4
+  });
+  console.log('ElevenLabs TTS initialized successfully');
+} catch (error) {
+  console.warn('ElevenLabs TTS not configured, voice features will be limited');
+}
 
 // Conversation Context Manager
 class ConversationContext {
@@ -101,41 +98,55 @@ class ConversationContext {
     }
     
     // Extract phone number
-    const phoneMatch = transcript.match(/\b(\d{3})[\s.-]?(\d{3})[\s.-]?(\d{4})\b/);
+    const phonePattern = /\b(\d{3})[-.\s]?(\d{3})[-.\s]?(\d{4})\b/;
+    const phoneMatch = transcript.match(phonePattern);
     if (phoneMatch) {
-      info.phone = phoneMatch[0].replace(/[^\d]/g, '');
+      info.phone = `${phoneMatch[1]}${phoneMatch[2]}${phoneMatch[3]}`;
     }
     
     // Extract email
-    const emailMatch = transcript.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/);
+    const emailPattern = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/;
+    const emailMatch = transcript.match(emailPattern);
     if (emailMatch) {
-      info.email = emailMatch[0].toLowerCase();
+      info.email = emailMatch[0];
     }
     
-    // Extract date/time preferences
-    const timePreferences = {
-      morning: /\b(morning|am|before noon)\b/i,
-      afternoon: /\b(afternoon|pm|after lunch)\b/i,
-      evening: /\b(evening|after work|late)\b/i
+    // Extract appointment time preferences
+    const timePatterns = {
+      'morning': /\b(morning|am|before noon)\b/i,
+      'afternoon': /\b(afternoon|pm|after lunch)\b/i,
+      'evening': /\b(evening|late|after work|after 5)\b/i
     };
     
-    for (const [pref, pattern] of Object.entries(timePreferences)) {
+    for (const [time, pattern] of Object.entries(timePatterns)) {
       if (pattern.test(transcript)) {
-        info.timePreference = pref;
+        info.timePreference = time;
         break;
       }
     }
     
     // Extract day preferences
-    const dayMatch = transcript.match(/\b(monday|tuesday|wednesday|thursday|friday|tomorrow|today|next week)\b/i);
-    if (dayMatch) {
-      info.dayPreference = dayMatch[0].toLowerCase();
+    const dayPatterns = {
+      'tomorrow': /\b(tomorrow)\b/i,
+      'today': /\b(today|as soon as possible|asap)\b/i,
+      'monday': /\b(monday)\b/i,
+      'tuesday': /\b(tuesday)\b/i,
+      'wednesday': /\b(wednesday)\b/i,
+      'thursday': /\b(thursday)\b/i,
+      'friday': /\b(friday)\b/i
+    };
+    
+    for (const [day, pattern] of Object.entries(dayPatterns)) {
+      if (pattern.test(transcript)) {
+        info.dayPreference = day;
+        break;
+      }
     }
     
-    // Extract dental concern
+    // Extract concern/reason for visit
     const concernPatterns = [
-      /(?:for|about|regarding|have|need|problem with|issue with)\s+(?:a\s+)?(.+?)(?:\.|,|$)/i,
-      /(?:experiencing|suffering from)\s+(.+?)(?:\.|,|$)/i
+      /(?:i have|i'm having|experiencing|problem with|issue with|pain in)\s+(.+?)(?:\.|,|$)/i,
+      /(?:calling about|need|want|looking for)\s+(.+?)(?:\.|,|$)/i
     ];
     
     for (const pattern of concernPatterns) {
@@ -146,215 +157,146 @@ class ConversationContext {
       }
     }
     
-    // Update stored patient info
-    Object.assign(this.patientInfo, info);
+    // Update patient info
+    if (Object.keys(info).length > 0) {
+      this.patientInfo = { ...this.patientInfo, ...info };
+    }
+    
     return info;
-  }
-
-  getSystemPrompt() {
-    return `You are Julie, Dr. Pedro's warm and professional AI dental assistant handling real-time voice conversations.
-
-VOICE CONVERSATION GUIDELINES:
-- Keep responses VERY concise (1-2 sentences max)
-- Use natural, conversational language
-- Include verbal acknowledgments ("I see", "Got it", "Mm-hmm")
-- Ask one question at a time
-- Pause naturally between thoughts
-- Use simple, clear language
-
-CURRENT CONTEXT:
-Stage: ${this.conversationStage}
-Emergency Detected: ${this.emergencyDetected}
-Patient Info Collected: ${JSON.stringify(this.patientInfo, null, 2)}
-
-YOUR CAPABILITIES:
-1. Emergency Routing - Immediately assess severity and offer ER referral if needed
-2. Appointment Booking - Collect name, phone, concern, and preferred time
-3. Answer Questions - Services, pricing, insurance, office hours
-4. Human Handoff - Connect to staff when requested
-
-CONVERSATION FLOW:
-${this.conversationStage === 'greeting' ? '- Warm greeting, ask how you can help' : ''}
-${this.conversationStage === 'emergency' ? '- Express concern, assess severity, offer immediate help' : ''}
-${this.conversationStage === 'appointment_booking' ? '- Collect missing info: ' + this.getMissingInfo().join(', ') : ''}
-
-IMPORTANT BEHAVIORS:
-- If emergency: "I understand you're in pain. Is this a severe emergency that needs immediate attention?"
-- If booking: Offer specific slots like "I have tomorrow at 2 PM or Thursday at 10 AM"
-- If human requested: "I'll connect you with our team right away. What's the best number to reach you?"
-- Always confirm important details back to the patient
-
-Remember: You're having a real-time voice conversation. Be natural, brief, and helpful.`;
   }
 
   getMissingInfo() {
     const required = ['name', 'phone', 'concern'];
     const missing = [];
     
-    if (!this.patientInfo.name) missing.push('name');
-    if (!this.patientInfo.phone) missing.push('phone number');
-    if (!this.patientInfo.concern) missing.push('reason for visit');
-    if (!this.patientInfo.timePreference && !this.patientInfo.dayPreference) {
-      missing.push('preferred time');
+    for (const field of required) {
+      if (!this.patientInfo[field]) {
+        missing.push(field === 'phone' ? 'phone number' : field === 'concern' ? 'reason for visit' : field);
+      }
     }
     
     return missing;
   }
 
   isAppointmentReady() {
-    return this.patientInfo.name && 
-           this.patientInfo.phone && 
-           this.patientInfo.concern &&
-           (this.patientInfo.timePreference || this.patientInfo.dayPreference);
+    return this.patientInfo.name && this.patientInfo.phone && this.patientInfo.concern;
   }
 }
 
-// Moshi Voice Integration
-class MoshiVoiceInterface {
+// Julie AI Service Manager
+class JulieAIService {
   constructor() {
-    this.moshiUrl = process.env.MOSHI_API_URL || 'wss://api.deepgram.com/v1/speak';
-    this.deepgramApiKey = process.env.DEEPGRAM_API_KEY;
-    this.connections = new Map();
-    this.openRouterKey = process.env.OPENROUTER_API_KEY;
+    this.activeSessions = new Map();
+    this.tts = ttsService;
+    this.voiceService = voiceService;
   }
 
-  async connect(sessionId) {
-    return new Promise((resolve, reject) => {
-      const ws = new WebSocket(`${this.moshiUrl}?model=moshi&encoding=linear16&sample_rate=16000&channels=1`, {
-        headers: {
-          'Authorization': `Token ${this.deepgramApiKey}`,
-          'Content-Type': 'audio/l16; rate=16000; channels=1'
-        }
-      });
-
-      const connection = {
-        ws,
-        sessionId,
+  async startSession(callSid, phoneNumber) {
+    try {
+      console.log(`Starting Julie AI session for call ${callSid}`);
+      
+      // Create session with context
+      const session = {
+        callSid,
+        phoneNumber,
         context: new ConversationContext(),
-        audioQueue: [],
-        isProcessing: false,
-        streamConfig: {
-          sampleRate: 16000,
-          channels: 1,
-          encoding: 'pcm16'
-        }
+        startTime: new Date(),
+        audioBuffer: Buffer.alloc(0),
+        isProcessing: false
       };
-
-      ws.on('open', () => {
-        console.log(`Moshi connection established for session ${sessionId}`);
-        
-        // Send initial configuration
-        ws.send(JSON.stringify({
-          type: 'config',
-          config: {
-            sampleRate: connection.streamConfig.sampleRate,
-            channels: connection.streamConfig.channels,
-            encoding: connection.streamConfig.encoding,
-            language: 'en-US',
-            mode: 'conversation'
-          }
-        }));
-
-        this.connections.set(sessionId, connection);
-        resolve(connection);
-      });
-
-      ws.on('message', async (data) => {
-        try {
-          const message = JSON.parse(data);
-          await this.handleMoshiMessage(connection, message);
-        } catch (error) {
-          console.error('Error handling Moshi message:', error);
-        }
-      });
-
-      ws.on('error', (error) => {
-        console.error(`Moshi WebSocket error for session ${sessionId}:`, error);
-        reject(error);
-      });
-
-      ws.on('close', () => {
-        console.log(`Moshi connection closed for session ${sessionId}`);
-        this.connections.delete(sessionId);
-      });
-    });
-  }
-
-  async handleMoshiMessage(connection, message) {
-    switch (message.type) {
-      case 'transcript':
-        // Handle real-time transcript
-        if (message.isFinal) {
-          await this.processTranscript(connection, message.text);
-        }
-        break;
-        
-      case 'audio':
-        // Handle incoming audio from Moshi (if needed for echo cancellation)
-        break;
-        
-      case 'ready':
-        // Moshi is ready to receive audio
-        await this.sendGreeting(connection);
-        break;
-        
-      case 'error':
-        console.error('Moshi error:', message.error);
-        break;
+      
+      this.activeSessions.set(callSid, session);
+      
+      // Log call start
+      await this.logCallStart(callSid, phoneNumber);
+      
+      return session;
+    } catch (error) {
+      console.error('Error starting Julie AI session:', error);
+      throw error;
     }
   }
 
-  async processTranscript(connection, transcript) {
+  async handleIncomingAudio(callSid, audioChunk) {
+    const session = this.activeSessions.get(callSid);
+    if (!session) return;
+
+    // Buffer audio for processing
+    session.audioBuffer = Buffer.concat([session.audioBuffer, audioChunk]);
+    
+    // Process in chunks (e.g., every 500ms of audio)
+    if (session.audioBuffer.length >= 8000 && !session.isProcessing) {
+      session.isProcessing = true;
+      
+      try {
+        // Use voice service for transcription
+        const transcript = await this.voiceService.transcribeAudio(session.audioBuffer);
+        
+        if (transcript) {
+          await this.processTranscript(session, transcript);
+        }
+        
+        // Clear processed audio
+        session.audioBuffer = Buffer.alloc(0);
+      } catch (error) {
+        console.error('Error processing audio:', error);
+      } finally {
+        session.isProcessing = false;
+      }
+    }
+  }
+
+  async processTranscript(session, transcript) {
     console.log(`Patient: ${transcript}`);
     
     // Extract patient information
-    connection.context.extractPatientInfo(transcript);
+    session.context.extractPatientInfo(transcript);
     
     // Detect intent
-    const intent = connection.context.detectIntent(transcript);
+    const intent = session.context.detectIntent(transcript);
     
     // Add to conversation history
-    connection.context.addMessage('user', transcript);
+    session.context.addMessage('user', transcript);
     
     // Generate response based on intent
     let response;
     
     switch (intent) {
       case 'emergency':
-        response = await this.handleEmergency(connection);
+        response = await this.handleEmergency(session);
         break;
         
       case 'appointment':
-        response = await this.handleAppointmentBooking(connection);
+        response = await this.handleAppointmentBooking(session);
         break;
         
       case 'human_request':
-        response = await this.handleHumanRequest(connection);
+        response = await this.handleHumanRequest(session);
         break;
         
       case 'inquiry':
-        response = await this.handleInquiry(connection, transcript);
+        response = await this.handleInquiry(session, transcript);
         break;
         
       default:
-        response = await this.generateAIResponse(connection, transcript);
+        response = await this.generateAIResponse(session, transcript);
     }
     
     // Send response
-    await this.sendResponse(connection, response);
+    await this.sendResponse(session, response);
   }
 
-  async handleEmergency(connection) {
+  async handleEmergency(session) {
     // Log emergency call
-    await this.logEmergencyCall(connection);
+    await this.logEmergencyCall(session);
     
     return "I understand you're experiencing a dental emergency. Are you in severe pain right now? " +
            "If this is life-threatening, please call 911 immediately. Otherwise, I can connect you " +
            "with Dr. Pedro's emergency line right away.";
   }
 
-  async handleAppointmentBooking(connection) {
-    const missingInfo = connection.context.getMissingInfo();
+  async handleAppointmentBooking(session) {
+    const missingInfo = session.context.getMissingInfo();
     
     if (missingInfo.length > 0) {
       // Ask for the first missing piece of information
@@ -369,19 +311,19 @@ class MoshiVoiceInterface {
     }
     
     // Check if we need to reschedule due to unavailable slot
-    if (connection.context.needsReschedule) {
-      const slots = connection.context.alternativeSlots;
+    if (session.context.needsReschedule) {
+      const slots = session.context.alternativeSlots;
       const slotsMessage = calendarService.formatSlotsForConversation(slots);
-      connection.context.needsReschedule = false;
+      session.context.needsReschedule = false;
       return `I'm sorry, that time isn't available. ${slotsMessage} Would any of these work instead?`;
     }
     
     // All info collected, confirm appointment
-    if (connection.context.isAppointmentReady()) {
+    if (session.context.isAppointmentReady()) {
       // If we have a specific time preference, try to book it
-      if (connection.context.patientInfo.dayPreference && connection.context.patientInfo.timePreference) {
+      if (session.context.patientInfo.dayPreference && session.context.patientInfo.timePreference) {
         try {
-          const appointment = await this.bookAppointment(connection);
+          const appointment = await this.bookAppointment(session);
           const appointmentDate = new Date(appointment.appointment_date);
           const formattedDate = appointmentDate.toLocaleDateString('en-US', {
             weekday: 'long',
@@ -392,211 +334,159 @@ class MoshiVoiceInterface {
             timeZone: 'America/Chicago'
           });
           return `Perfect! I've booked your appointment for ${formattedDate}. ` +
-                 `You'll receive a confirmation text shortly at ${connection.context.patientInfo.phone}.`;
+                 `You'll receive a confirmation text shortly at ${session.context.patientInfo.phone}.`;
         } catch (error) {
-          if (error.message === 'Slot not available' && connection.context.needsReschedule) {
-            return await this.handleAppointmentBooking(connection);
+          if (error.message === 'Slot not available' && session.context.needsReschedule) {
+            return await this.handleAppointmentBooking(session);
           }
-          console.error('Booking error:', error);
+          return "I'm sorry, I encountered an issue booking your appointment. Let me connect you with our staff.";
         }
+      } else {
+        // Get available slots
+        const slots = await calendarService.getAvailableSlots({
+          serviceType: this.mapConcernToService(session.context.patientInfo.concern),
+          duration: 60,
+          days: 7
+        });
+        
+        const slotsMessage = calendarService.formatSlotsForConversation(slots);
+        return `Let me check our availability. ${slotsMessage} Which time works best for you?`;
       }
-      
-      // Otherwise, offer available slots
-      const providerId = process.env.DEFAULT_PROVIDER_ID;
-      const slots = await calendarService.getNextAvailableSlots(providerId, 3);
-      const slotsMessage = calendarService.formatSlotsForConversation(slots);
-      return `Perfect! I have you down for ${connection.context.patientInfo.concern}. ` +
-             `${slotsMessage} Which works better?`;
     }
   }
 
-  async handleHumanRequest(connection) {
-    // Log request for callback
-    await this.logCallbackRequest(connection);
+  async handleHumanRequest(session) {
+    // Log human handoff request
+    await supabase.from('callback_requests').insert({
+      phone_number: session.phoneNumber,
+      reason: 'Patient requested to speak with human',
+      created_at: new Date().toISOString()
+    });
     
-    return "Of course! I'll have someone from our team call you right back. " +
-           "We typically return calls within 5 minutes during business hours. " +
-           "Is " + (connection.context.patientInfo.phone || "the number you're calling from") + " the best number?";
+    return "Of course! I'll connect you with one of our staff members right away. Please hold for just a moment.";
   }
 
-  async handleInquiry(connection, transcript) {
-    // Use AI to answer specific questions about services, pricing, etc.
-    return await this.generateAIResponse(connection, transcript);
+  async handleInquiry(session, transcript) {
+    // Generate AI response for inquiries using OpenRouter
+    const response = await this.generateAIResponse(session, transcript);
+    return response;
   }
 
-  async generateAIResponse(connection, transcript) {
+  async generateAIResponse(session, transcript) {
     try {
       const messages = [
-        { role: 'system', content: connection.context.getSystemPrompt() },
-        ...connection.context.messages.map(m => ({
-          role: m.role === 'user' ? 'user' : 'assistant',
-          content: m.content
+        {
+          role: 'system',
+          content: `You are Julie, Dr. Pedro's warm and professional dental office AI assistant.
+          You're handling a phone call from a patient. Be conversational, empathetic, and helpful.
+          Keep responses brief and natural for phone conversations. Never make up information about 
+          services, prices, or availability. If unsure, offer to have someone call them back.`
+        },
+        ...session.context.messages.map(msg => ({
+          role: msg.role === 'user' ? 'user' : 'assistant',
+          content: msg.content
         }))
       ];
 
-      const response = await axios.post(
-        'https://openrouter.ai/api/v1/chat/completions',
-        {
-          model: 'anthropic/claude-3-haiku-20240307',
-          messages,
-          temperature: 0.7,
-          max_tokens: 100, // Keep responses very short for voice
-          stream: false
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${this.openRouterKey}`,
-            'Content-Type': 'application/json',
-            'HTTP-Referer': 'https://gregpedromd.com',
-            'X-Title': 'Julie AI Voice Assistant'
-          }
+      const response = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
+        model: 'anthropic/claude-3-haiku',
+        messages,
+        temperature: 0.7,
+        max_tokens: 150
+      }, {
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json'
         }
-      );
+      });
 
       const aiResponse = response.data.choices[0].message.content;
-      connection.context.addMessage('assistant', aiResponse);
+      session.context.addMessage('assistant', aiResponse);
       
       return aiResponse;
     } catch (error) {
-      console.error('AI Response Error:', error);
-      return "I'm having a bit of trouble. Could you repeat that please?";
+      console.error('Error generating AI response:', error);
+      return "I apologize, I'm having trouble understanding. Could you please repeat that?";
     }
   }
 
-  async sendResponse(connection, text) {
-    console.log(`Julie: ${text}`);
-    
-    // Send text to Moshi for TTS
-    if (connection.ws.readyState === WebSocket.OPEN) {
-      connection.ws.send(JSON.stringify({
-        type: 'speak',
-        text: text,
-        voice: {
-          style: 'professional',
-          speed: 0.95,
-          pitch: 1.05
-        }
-      }));
-    }
-  }
-
-  async sendGreeting(connection) {
-    const greeting = "Thank you for calling Dr. Pedro's office. This is Julie. How can I help you today?";
-    await this.sendResponse(connection, greeting);
-  }
-
-  async sendAudio(connection, audioData) {
-    if (connection.ws.readyState === WebSocket.OPEN) {
-      // Convert audio to base64
-      const base64Audio = Buffer.from(audioData).toString('base64');
-      
-      connection.ws.send(JSON.stringify({
-        type: 'audio',
-        audio: base64Audio,
-        encoding: 'pcm16',
-        sampleRate: 16000
-      }));
-    }
-  }
-
-  // Database operations
-  async logEmergencyCall(connection) {
+  async sendResponse(session, text) {
     try {
-      await supabase.from('emergency_calls').insert({
-        patient_name: connection.context.patientInfo.name,
-        phone_number: connection.context.patientInfo.phone,
-        concern: connection.context.patientInfo.concern,
-        transcript: connection.context.messages,
-        created_at: new Date().toISOString()
-      });
-    } catch (error) {
-      console.error('Error logging emergency call:', error);
-    }
-  }
-
-  async logCallbackRequest(connection) {
-    try {
-      await supabase.from('callback_requests').insert({
-        patient_name: connection.context.patientInfo.name,
-        phone_number: connection.context.patientInfo.phone,
-        reason: connection.context.patientInfo.concern,
-        requested_at: new Date().toISOString(),
-        status: 'pending'
-      });
-    } catch (error) {
-      console.error('Error logging callback request:', error);
-    }
-  }
-
-  async getAvailableSlots(providerId = process.env.DEFAULT_PROVIDER_ID) {
-    try {
-      // Get next 3 available slots
-      const slots = await calendarService.getNextAvailableSlots(providerId, 3);
-      
-      if (slots.length === 0) {
-        return ["I'm checking our schedule... Let me find some alternatives."];
+      // Use TTS to convert text to speech
+      if (this.tts) {
+        const audioStream = await this.tts.textToSpeechStream(text, {
+          optimizeLatency: 4
+        });
+        
+        // Send audio through the session's WebSocket connection
+        // This will be handled by the calling service
+        session.responseAudio = audioStream;
+        session.responseText = text;
       }
       
-      // Format slots for conversation
-      return calendarService.formatSlotsForConversation(slots);
+      // Log the response
+      session.context.addMessage('assistant', text);
     } catch (error) {
-      console.error('Error getting available slots:', error);
-      return ["tomorrow at 2:00 PM", "Thursday at 10:00 AM", "Friday at 3:30 PM"];
+      console.error('Error sending response:', error);
     }
   }
 
-  async bookAppointment(connection) {
+  async bookAppointment(session) {
     try {
-      // Parse appointment time from context
-      const appointmentTime = await this.parseAppointmentTime(
-        connection.context.patientInfo.dayPreference,
-        connection.context.patientInfo.timePreference
+      const appointmentDate = await this.parseAppointmentTime(
+        session.context.patientInfo.dayPreference,
+        session.context.patientInfo.timePreference
       );
       
-      // Check if slot is available
-      const providerId = process.env.DEFAULT_PROVIDER_ID;
-      const isAvailable = await calendarService.isSlotAvailable(
-        providerId,
-        appointmentTime
+      // Check availability
+      const isAvailable = await calendarService.checkSlotAvailability(
+        appointmentDate,
+        60, // Duration in minutes
+        'default_provider_id'
       );
       
       if (!isAvailable) {
-        // Find alternative slots
-        const alternatives = await calendarService.getNextAvailableSlots(providerId, 3);
-        connection.context.needsReschedule = true;
-        connection.context.alternativeSlots = alternatives;
+        // Get alternative slots
+        const alternativeSlots = await calendarService.getAvailableSlots({
+          startDate: appointmentDate,
+          serviceType: this.mapConcernToService(session.context.patientInfo.concern),
+          duration: 60,
+          days: 3
+        });
+        
+        session.context.alternativeSlots = alternativeSlots.slice(0, 3);
+        session.context.needsReschedule = true;
         throw new Error('Slot not available');
       }
       
-      const appointment = {
-        patient_name: connection.context.patientInfo.name,
-        patient_phone: connection.context.patientInfo.phone,
-        patient_email: connection.context.patientInfo.email || null,
-        service_type: this.mapConcernToService(connection.context.patientInfo.concern),
-        appointment_date: appointmentTime.toISOString(),
-        status: 'confirmed',
-        notes: connection.context.patientInfo.concern,
-        booked_via: 'julie_ai_voice',
-        created_at: new Date().toISOString()
-      };
+      // Create appointment in Supabase
+      const { data, error } = await supabase.from('appointments').insert({
+        patient_name: session.context.patientInfo.name,
+        phone_number: session.context.patientInfo.phone,
+        email: session.context.patientInfo.email || null,
+        appointment_date: appointmentDate.toISOString(),
+        service_type: this.mapConcernToService(session.context.patientInfo.concern),
+        notes: session.context.patientInfo.concern,
+        status: 'scheduled',
+        created_at: new Date().toISOString(),
+        source: 'julie_ai_phone'
+      }).select().single();
       
-      const { data, error } = await supabase
-        .from('appointments')
-        .insert(appointment)
-        .select()
-        .single();
-        
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       
-      // Book the calendar slot
-      const bookingResult = await calendarService.bookSlot(
-        providerId,
-        appointmentTime,
-        data.id
-      );
+      // Book in calendar system
+      const bookingResult = await calendarService.bookAppointment({
+        appointmentId: data.id,
+        providerId: process.env.DEFAULT_PROVIDER_ID || 'default_provider_id',
+        date: appointmentDate,
+        duration: 60,
+        patientInfo: session.context.patientInfo
+      });
       
       if (!bookingResult.success) {
-        // Rollback appointment
+        // Rollback Supabase appointment
         await supabase.from('appointments').delete().eq('id', data.id);
         throw new Error(bookingResult.error);
       }
@@ -662,117 +552,62 @@ class MoshiVoiceInterface {
     console.log('Sending appointment confirmation:', appointment);
   }
 
-  disconnect(sessionId) {
-    const connection = this.connections.get(sessionId);
-    if (connection && connection.ws.readyState === WebSocket.OPEN) {
-      connection.ws.close();
-    }
-    this.connections.delete(sessionId);
-  }
-}
-
-// Julie AI Service Manager
-class JulieAIService {
-  constructor() {
-    this.moshiInterface = new MoshiVoiceInterface();
-    this.activeSessions = new Map();
-  }
-
-  async startSession(callSid, phoneNumber) {
-    try {
-      console.log(`Starting Julie AI session for call ${callSid}`);
-      
-      // Create Moshi connection
-      const connection = await this.moshiInterface.connect(callSid);
-      
-      // Store session info
-      this.activeSessions.set(callSid, {
-        phoneNumber,
-        startTime: new Date(),
-        connection
-      });
-      
-      // Log call start
-      await this.logCallStart(callSid, phoneNumber);
-      
-      return connection;
-    } catch (error) {
-      console.error('Error starting Julie AI session:', error);
-      throw error;
-    }
-  }
-
-  async endSession(callSid) {
-    try {
-      const session = this.activeSessions.get(callSid);
-      if (session) {
-        // Log call end
-        await this.logCallEnd(callSid, session);
-        
-        // Disconnect Moshi
-        this.moshiInterface.disconnect(callSid);
-        
-        // Clean up
-        this.activeSessions.delete(callSid);
-      }
-    } catch (error) {
-      console.error('Error ending Julie AI session:', error);
-    }
-  }
-
-  async handleIncomingAudio(callSid, audioData) {
-    const session = this.activeSessions.get(callSid);
-    if (session && session.connection) {
-      await this.moshiInterface.sendAudio(session.connection, audioData);
-    }
-  }
-
   async logCallStart(callSid, phoneNumber) {
     try {
-      await supabase.from('voice_calls').insert({
+      await supabase.from('call_logs').insert({
         call_sid: callSid,
         phone_number: phoneNumber,
-        status: 'in_progress',
-        ai_system: 'julie_moshi',
-        started_at: new Date().toISOString()
+        start_time: new Date().toISOString(),
+        type: 'julie_ai',
+        status: 'in_progress'
       });
     } catch (error) {
       console.error('Error logging call start:', error);
     }
   }
 
-  async logCallEnd(callSid, session) {
+  async logEmergencyCall(session) {
     try {
-      const duration = Math.floor((new Date() - session.startTime) / 1000);
-      
-      await supabase
-        .from('voice_calls')
-        .update({
-          status: 'completed',
-          duration_seconds: duration,
-          ended_at: new Date().toISOString(),
-          transcript: session.connection.context.messages,
-          patient_info: session.connection.context.patientInfo
-        })
-        .eq('call_sid', callSid);
+      await supabase.from('emergency_calls').insert({
+        phone_number: session.phoneNumber,
+        call_sid: session.callSid,
+        patient_info: session.context.patientInfo,
+        transcript: session.context.messages,
+        created_at: new Date().toISOString()
+      });
     } catch (error) {
-      console.error('Error logging call end:', error);
+      console.error('Error logging emergency call:', error);
     }
   }
 
-  // Get active session info
-  getSession(callSid) {
-    return this.activeSessions.get(callSid);
+  async endSession(callSid) {
+    const session = this.activeSessions.get(callSid);
+    if (!session) return;
+
+    try {
+      // Update call log
+      await supabase.from('call_logs')
+        .update({
+          end_time: new Date().toISOString(),
+          status: 'completed',
+          duration: Math.floor((Date.now() - session.startTime) / 1000),
+          transcript: session.context.messages
+        })
+        .eq('call_sid', callSid);
+    } catch (error) {
+      console.error('Error updating call log:', error);
+    }
+
+    this.activeSessions.delete(callSid);
   }
 
-  // Get all active sessions
-  getActiveSessions() {
-    return Array.from(this.activeSessions.entries()).map(([callSid, session]) => ({
-      callSid,
-      phoneNumber: session.phoneNumber,
-      duration: Math.floor((new Date() - session.startTime) / 1000),
-      stage: session.connection.context.conversationStage
-    }));
+  // Get status for monitoring
+  getStatus() {
+    return {
+      activeSessions: this.activeSessions.size,
+      ttsConfigured: !!this.tts,
+      voiceServiceAvailable: !!this.voiceService
+    };
   }
 }
 

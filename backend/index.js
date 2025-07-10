@@ -886,7 +886,6 @@ app.get('/api/julie/health', async (req, res) => {
         humanHandoff: true
       },
       activeSessions: activeSessions.length,
-      moshiConnection: process.env.MOSHI_API_KEY ? 'configured' : 'not configured',
       openRouterConnection: process.env.OPENROUTER_API_KEY ? 'configured' : 'not configured'
     });
   } catch (error) {
@@ -1068,7 +1067,7 @@ server.listen(PORT, () => {
   console.log('Voice webhook endpoint: /voice/incoming');
   console.log('Julie AI webhook endpoint: /voice/julie/incoming');
   console.log('WebRTC voice ready - no phone numbers needed!');
-  console.log('Julie AI with Moshi integration ready for real-time conversations!');
+  console.log('Julie AI ready for real-time conversations!');
   
   // Start scheduled jobs only in production
   if (process.env.NODE_ENV === 'production') {
