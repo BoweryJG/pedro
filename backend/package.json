@@ -1,5 +1,5 @@
 {
-  "name": "pedro-instagram-bot-backend",
+  "name": "pedro-backend",
   "version": "1.0.0",
   "description": "Instagram DM automation backend for Dr. Pedro's dental practice",
   "main": "index.js",

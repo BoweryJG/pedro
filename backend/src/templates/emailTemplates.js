@@ -1,11 +1,11 @@
 const EMAIL_TEMPLATES = {
   // Welcome email for new inquiries
   welcome: {
-    subject: 'Welcome to Staten Island Advanced Dentistry - Dr. Greg Pedro',
+    subject: 'Welcome to Dr. Greg Pedro - Dr. Greg Pedro',
     template: `
 Dear {{name}},
 
-Thank you for reaching out to Staten Island Advanced Dentistry! We're thrilled to hear from you and excited to help you achieve your best smile.
+Thank you for reaching out to Dr. Greg Pedro! We're thrilled to hear from you and excited to help you achieve your best smile.
 
 Dr. Greg Pedro and our team are committed to providing you with exceptional dental care using the latest technology, including:
 • Yomi Robotic Surgery - Staten Island's only certified practice
@@ -25,7 +25,7 @@ In the meantime, feel free to:
 We look forward to welcoming you to our practice!
 
 Warm regards,
-The Team at Staten Island Advanced Dentistry
+The Team at Dr. Greg Pedro
 
 P.S. Did you know we offer flexible financing options? Ask about our payment plans during your consultation.
     `
@@ -33,7 +33,7 @@ P.S. Did you know we offer flexible financing options? Ask about our payment pla
 
   // Appointment confirmation
   appointmentConfirmation: {
-    subject: 'Appointment Confirmed - Staten Island Advanced Dentistry',
+    subject: 'Appointment Confirmed - Dr. Greg Pedro',
     template: `
 Dear {{name}},
 
@@ -57,13 +57,13 @@ Need to reschedule? Call us at (929) 242-4535 or reply to this email.
 We're looking forward to seeing you!
 
 Best regards,
-Staten Island Advanced Dentistry
+Dr. Greg Pedro
     `
   },
 
   // Insurance inquiry response
   insuranceInquiry: {
-    subject: 'Insurance Information - Staten Island Advanced Dentistry',
+    subject: 'Insurance Information - Dr. Greg Pedro',
     template: `
 Dear {{name}},
 
@@ -90,7 +90,7 @@ Questions? Chat with Sophie on our website or call (929) 242-4535.
 
 Best regards,
 Insurance Team
-Staten Island Advanced Dentistry
+Dr. Greg Pedro
     `
   },
 
@@ -131,7 +131,7 @@ Dr. Greg Pedro and Team
     template: `
 Dear {{name}},
 
-Thank you for visiting Staten Island Advanced Dentistry! It was wonderful meeting you and discussing your smile goals.
+Thank you for visiting Dr. Greg Pedro! It was wonderful meeting you and discussing your smile goals.
 
 As promised, here's a summary of our discussion:
 {{treatmentSummary}}
@@ -183,7 +183,7 @@ P.S. Know someone else who could benefit from our care? Send them to newpatients
 
   // Billing inquiry
   billingInquiry: {
-    subject: 'Billing Information - Staten Island Advanced Dentistry',
+    subject: 'Billing Information - Dr. Greg Pedro',
     template: `
 Dear {{name}},
 
@@ -209,7 +209,7 @@ We appreciate your prompt attention to your account.
 
 Best regards,
 Billing Department
-Staten Island Advanced Dentistry
+Dr. Greg Pedro
     `
   },
 
@@ -219,7 +219,7 @@ Staten Island Advanced Dentistry
     template: `
 Dear {{name}},
 
-Happy {{month}} from Staten Island Advanced Dentistry!
+Happy {{month}} from Dr. Greg Pedro!
 
 This month's highlights:
 🦷 Featured Procedure: {{featuredProcedure}}

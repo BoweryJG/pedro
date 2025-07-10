@@ -10,7 +10,7 @@ import dotenv from 'dotenv';
 import VoiceService from './voiceService.js';
 import WebRTCVoiceService from './webrtcVoiceService.js';
 import DeepgramVoiceService from './deepgramVoiceService.js';
-import VoIPService from './src/services/voipService.js';
+// VoIP service removed - using Twilio instead
 import ScheduledJobsService from './src/services/scheduledJobs.js';
 import julieAI from './services/julieAI.js';
 import webhookRoutes from './src/routes/webhooks.js';
@@ -85,7 +85,6 @@ const webrtcWss = new WebSocketServer({
 // Initialize voice services
 const voiceService = new DeepgramVoiceService(); // Using Deepgram for phone calls
 const webrtcVoiceService = new WebRTCVoiceService();
-const voipService = new VoIPService();
 const scheduledJobs = new ScheduledJobsService();
 
 // CORS configuration for production

@@ -20,7 +20,7 @@ export class EnhancedConversationFlowManager {
       goals: ['Build rapport', 'Identify primary concern', 'Set comfortable tone'],
       triggers: ['hi', 'hello', 'help', 'start', 'hey'],
       responses: [
-        "Hi! I'm Sophie, Dr. Pedro's virtual assistant. I'm here to help you 24/7! 😊\n\nWhat brings you to Staten Island Advanced Dentistry today?",
+        "Hi! I'm Sophie, Dr. Pedro's virtual assistant. I'm here to help you 24/7! 😊\n\nWhat brings you to Dr. Greg Pedro today?",
         "Welcome! I'm Sophie, and I'm here to help you achieve your best smile. What can I assist you with today?",
         "Hello! Thanks for reaching out to Dr. Pedro's practice. I'm Sophie, and I'd love to help. What's on your mind?"
       ],

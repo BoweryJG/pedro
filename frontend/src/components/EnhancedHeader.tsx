@@ -225,7 +225,7 @@ const EnhancedHeader = () => {
                     transition: 'font-size 0.3s ease-in-out',
                   }}
                 >
-                  Staten Island Advanced Dentistry
+                  Dr. Greg Pedro
                 </Typography>
                 {!scrolled && (
                   <Typography 
