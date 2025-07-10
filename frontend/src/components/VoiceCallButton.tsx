@@ -121,8 +121,9 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
       // Initialize audio
       await initAudioContext();
       
-      // Connect WebSocket
-      const wsUrl = apiUrl.replace('http', 'ws') + '/webrtc-voice';
+      // Connect WebSocket - ensure proper protocol for production
+      const wsProtocol = apiUrl.startsWith('https') ? 'wss' : 'ws';
+      const wsUrl = apiUrl.replace(/^https?/, wsProtocol) + '/webrtc-voice';
       console.log('[VoiceCall] Connecting to WebSocket:', wsUrl);
       wsRef.current = new WebSocket(wsUrl);
       
