@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Julie Voice Test - ElevenLabs TTS</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e40af;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin-bottom: 30px;
+        }
+        .test-section h3 {
+            color: #374151;
+            margin-bottom: 15px;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            resize: vertical;
+            min-height: 100px;
+            font-size: 14px;
+        }
+        .preset-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+        button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        .preset-button {
+            background: #e5e7eb;
+            color: #374151;
+        }
+        .preset-button:hover {
+            background: #d1d5db;
+        }
+        .generate-button {
+            background: #10b981;
+            font-size: 16px;
+            padding: 12px 30px;
+        }
+        .generate-button:hover {
+            background: #059669;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+        .status.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #6ee7b7;
+        }
+        .status.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+        }
+        .status.loading {
+            background: #e0e7ff;
+            color: #3730a3;
+            border: 1px solid #a5b4fc;
+            display: block;
+        }
+        audio {
+            width: 100%;
+            margin-top: 15px;
+        }
+        .voice-info {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .voice-info h4 {
+            margin: 0 0 10px 0;
+            color: #374151;
+        }
+        .voice-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .voice-item {
+            background: white;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Julie Voice Test</h1>
+        <p class="subtitle">Test ElevenLabs Text-to-Speech for Dr. Pedro's AI Assistant</p>
+        
+        <div class="voice-info">
+            <h4>Current Voice Configuration</h4>
+            <div id="voiceInfo">Loading voice information...</div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test Phrases</h3>
+            <div class="preset-buttons">
+                <button class="preset-button" onclick="setPreset('greeting')">Greeting</button>
+                <button class="preset-button" onclick="setPreset('appointment')">Appointment</button>
+                <button class="preset-button" onclick="setPreset('emergency')">Emergency</button>
+                <button class="preset-button" onclick="setPreset('services')">Services</button>
+                <button class="preset-button" onclick="setPreset('directions')">Directions</button>
+                <button class="preset-button" onclick="setPreset('insurance')">Insurance</button>
+                <button class="preset-button" onclick="setPreset('closing')">Closing</button>
+            </div>
+            
+            <textarea id="textInput" placeholder="Enter text for Julie to speak...">Good morning! Thank you for calling Dr. Pedro's Advanced Dental Care and MedSpa. This is Julie. How can I help you today?</textarea>
+            
+            <div style="margin-top: 20px;">
+                <button class="generate-button" onclick="generateSpeech()">
+                    Generate Speech
+                </button>
+            </div>
+            
+            <div id="status" class="status"></div>
+            
+            <audio id="audioPlayer" controls style="display: none;"></audio>
+        </div>
+        
+        <div class="test-section">
+            <h3>Available Voices</h3>
+            <button onclick="loadVoices()">Refresh Voice List</button>
+            <div id="voiceList" class="voice-list" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+    
+    <script>
+        const presets = {
+            greeting: "Good morning! Thank you for calling Dr. Pedro's Advanced Dental Care and MedSpa. This is Julie. How can I help you today?",
+            appointment: "I'd be happy to help you schedule an appointment. We have openings tomorrow at 10 AM or Thursday at 2 PM. Which would work better for you?",
+            emergency: "I understand you're in pain. Let me help you right away. Can you describe where the pain is located and how severe it is on a scale of 1 to 10?",
+            services: "Dr. Pedro specializes in YOMI robotic dental implants, which offer 99.5% precision and 50% faster healing time. We also provide TMJ treatment, EMFACE aesthetics, and comprehensive dental care. Would you like to schedule a consultation?",
+            directions: "We're located at 4300 Hylan Boulevard in Staten Island, right off the expressway. We're in the plaza with the Chase Bank. There's plenty of free parking available. Would you like me to text you the address?",
+            insurance: "We accept most major insurance plans including Delta Dental, Aetna, and Cigna. We also offer flexible financing through CareCredit, Cherry, and Sunbit with 0% interest options. Would you like me to verify your specific insurance coverage?",
+            closing: "Perfect! I've scheduled your appointment for Thursday at 2 PM. You'll receive a text confirmation shortly. Is there anything else I can help you with today?"
+        };
+        
+        function setPreset(presetName) {
+            const textInput = document.getElementById('textInput');
+            textInput.value = presets[presetName] || '';
+        }
+        
+        async function generateSpeech() {
+            const textInput = document.getElementById('textInput');
+            const status = document.getElementById('status');
+            const audioPlayer = document.getElementById('audioPlayer');
+            
+            const text = textInput.value.trim();
+            if (!text) {
+                showStatus('Please enter some text for Julie to speak.', 'error');
+                return;
+            }
+            
+            showStatus('Generating speech with ElevenLabs...', 'loading');
+            audioPlayer.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/voice/test-tts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Convert base64 mulaw to WAV for playback
+                    const audioData = atob(data.audio);
+                    const audioArray = new Uint8Array(audioData.length);
+                    for (let i = 0; i < audioData.length; i++) {
+                        audioArray[i] = audioData.charCodeAt(i);
+                    }
+                    
+                    // Create WAV file from mulaw data
+                    const wavBlob = createWavFromMulaw(audioArray);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    
+                    audioPlayer.src = audioUrl;
+                    audioPlayer.style.display = 'block';
+                    audioPlayer.play();
+                    
+                    showStatus('Speech generated successfully! Julie sounds amazing with ElevenLabs.', 'success');
+                } else {
+                    showStatus(`Error: ${data.message || 'Failed to generate speech'}`, 'error');
+                }
+            } catch (error) {
+                showStatus(`Error: ${error.message}`, 'error');
+            }
+        }
+        
+        function createWavFromMulaw(mulawData) {
+            // Convert mulaw to PCM16
+            const pcm16 = new Int16Array(mulawData.length);
+            for (let i = 0; i < mulawData.length; i++) {
+                pcm16[i] = mulawToPcm16(mulawData[i]);
+            }
+            
+            // Create WAV file
+            const wavBuffer = new ArrayBuffer(44 + pcm16.length * 2);
+            const view = new DataView(wavBuffer);
+            
+            // WAV header
+            const writeString = (offset, string) => {
+                for (let i = 0; i < string.length; i++) {
+                    view.setUint8(offset + i, string.charCodeAt(i));
+                }
+            };
+            
+            writeString(0, 'RIFF');
+            view.setUint32(4, 36 + pcm16.length * 2, true);
+            writeString(8, 'WAVE');
+            writeString(12, 'fmt ');
+            view.setUint32(16, 16, true); // fmt chunk size
+            view.setUint16(20, 1, true); // PCM format
+            view.setUint16(22, 1, true); // 1 channel
+            view.setUint32(24, 8000, true); // 8kHz sample rate
+            view.setUint32(28, 16000, true); // byte rate
+            view.setUint16(32, 2, true); // block align
+            view.setUint16(34, 16, true); // bits per sample
+            writeString(36, 'data');
+            view.setUint32(40, pcm16.length * 2, true);
+            
+            // Write PCM data
+            for (let i = 0; i < pcm16.length; i++) {
+                view.setInt16(44 + i * 2, pcm16[i], true);
+            }
+            
+            return new Blob([wavBuffer], { type: 'audio/wav' });
+        }
+        
+        function mulawToPcm16(mulaw) {
+            const MULAW_BIAS = 33;
+            let byte = ~mulaw;
+            let sign = byte & 0x80;
+            let exponent = (byte & 0x70) >> 4;
+            let mantissa = byte & 0x0F;
+            let sample = mantissa << (exponent + 3);
+            sample += MULAW_BIAS << (exponent + 2);
+            if (sign === 0) sample = -sample;
+            return sample;
+        }
+        
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            status.style.display = 'block';
+            
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    status.style.display = 'none';
+                }, 5000);
+            }
+        }
+        
+        async function loadVoices() {
+            try {
+                const response = await fetch('/api/voice/available-voices');
+                const data = await response.json();
+                
+                const voiceInfo = document.getElementById('voiceInfo');
+                const voiceList = document.getElementById('voiceList');
+                
+                if (data.success) {
+                    voiceInfo.innerHTML = `
+                        <strong>Active Voice:</strong> ${data.currentVoice} (Rachel - Professional Female)<br>
+                        <strong>Total Voices Available:</strong> ${data.totalVoices}<br>
+                        <strong>Female Voices:</strong> ${data.femaleVoices}
+                    `;
+                    
+                    voiceList.innerHTML = data.recommendedVoices.map(voice => `
+                        <div class="voice-item">
+                            <strong>${voice.name}</strong> - ${voice.description}
+                        </div>
+                    `).join('');
+                } else {
+                    voiceInfo.innerHTML = `<span style="color: red;">ElevenLabs not configured. ${data.message || ''}</span>`;
+                    voiceList.innerHTML = '<div class="voice-item">No voices available</div>';
+                }
+            } catch (error) {
+                console.error('Error loading voices:', error);
+                document.getElementById('voiceInfo').innerHTML = '<span style="color: red;">Error loading voice information</span>';
+            }
+        }
+        
+        // Load voice info on page load
+        loadVoices();
+    </script>
+</body>
+</html>
