@@ -924,6 +924,71 @@ app.get('/api/julie/health', async (req, res) => {
   }
 });
 
+// Test TTS endpoint for Julie's voice
+app.post('/api/voice/test-tts', async (req, res) => {
+  try {
+    const { text = 'Hello, this is Julie from Dr. Pedro\'s office. How can I help you today?' } = req.body;
+    
+    // Use the voice service to generate audio
+    const audioData = await voiceService.textToSpeech(text);
+    
+    // Convert mulaw to base64 for response
+    const base64Audio = Buffer.from(audioData).toString('base64');
+    
+    res.json({
+      success: true,
+      text,
+      audio: base64Audio,
+      format: 'mulaw_8000',
+      message: 'Audio generated successfully using ElevenLabs TTS'
+    });
+  } catch (error) {
+    console.error('TTS test error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      message: 'Failed to generate audio'
+    });
+  }
+});
+
+// Get available ElevenLabs voices
+app.get('/api/voice/available-voices', async (req, res) => {
+  try {
+    if (!voiceService.ttsService) {
+      return res.status(503).json({
+        error: 'ElevenLabs TTS not configured',
+        message: 'Please set ELEVENLABS_API_KEY in environment variables'
+      });
+    }
+    
+    const voices = await voiceService.ttsService.getVoices();
+    const femaleVoices = voices.filter(v => 
+      v.labels && (v.labels.gender === 'female' || v.category === 'premade')
+    );
+    
+    res.json({
+      success: true,
+      totalVoices: voices.length,
+      femaleVoices: femaleVoices.length,
+      recommendedVoices: [
+        { id: 'rachel', name: 'Rachel', description: 'Professional female voice' },
+        { id: 'domi', name: 'Domi', description: 'Warm female voice' },
+        { id: 'nicole', name: 'Nicole', description: 'Friendly female voice' },
+        { id: 'elli', name: 'Elli', description: 'Clear female voice' }
+      ],
+      currentVoice: 'rachel',
+      voices: femaleVoices.slice(0, 10) // Return top 10 female voices
+    });
+  } catch (error) {
+    console.error('Get voices error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Call transcripts API endpoint
 app.get('/api/voice/transcripts', async (req, res) => {
   try {

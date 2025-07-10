@@ -1,6 +1,7 @@
 // Pipecat is implemented as custom classes below
 import { WhisperSTT } from './whisperSTT.js';
 import { CoquiTTS } from './coquiTTS.js';
+import { ElevenLabsTTS } from './elevenLabsTTS.js';
 import { MedicalLLM } from './medicalLLM.js';
 import { LiveKitTransport } from './livekitTransport.js';
 
@@ -53,11 +54,30 @@ export class PipecatService {
       maxTokens: 150
     });
 
-    const tts = new CoquiTTS({
-      voice: 'aura-2-thalia-en', // Professional female voice
-      speed: 1.0,
-      pitch: 1.0
-    });
+    // Try to use ElevenLabs for best quality, fallback to Coqui if needed
+    let tts;
+    try {
+      tts = new ElevenLabsTTS({
+        voiceId: 'rachel', // Professional female voice for Julie
+        modelId: 'eleven_turbo_v2', // Low-latency model
+        useWebSocketStream: true, // Ultra-low latency
+        enableSentenceSplitting: true, // Incremental response
+        stability: 0.5,
+        similarityBoost: 0.75,
+        style: 0.0
+      });
+      
+      // Initialize WebSocket for real-time streaming
+      await tts.initializeWebSocket();
+      console.log('Using ElevenLabs TTS for Julie\'s voice');
+    } catch (error) {
+      console.error('Failed to initialize ElevenLabs, falling back to Coqui:', error);
+      tts = new CoquiTTS({
+        voice: 'aura-2-thalia-en', // Professional female voice
+        speed: 1.0,
+        pitch: 1.0
+      });
+    }
 
     const transport = new LiveKitTransport({
       roomName,
