@@ -15,7 +15,7 @@ const ENV_CONFIG = {
     SUPABASE_URL: {
       description: 'Supabase project URL',
       example: 'https://your-project.supabase.co',
-      validate: (value) => value.startsWith('https://') && value.includes('.supabase.co')
+      validate: (value) => value.startsWith('https://') && value.includes('supabase')
     },
     SUPABASE_SERVICE_ROLE_KEY: {
       description: 'Supabase service role key for backend operations',
