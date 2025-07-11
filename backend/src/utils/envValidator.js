@@ -15,7 +15,11 @@ const ENV_CONFIG = {
     SUPABASE_URL: {
       description: 'Supabase project URL',
       example: 'https://your-project.supabase.co',
-      validate: (value) => value.startsWith('https://') && value.includes('supabase')
+      validate: (value) => {
+        // Accept any HTTPS URL that could be a Supabase URL
+        // This includes .supabase.co domains and custom domains
+        return value.startsWith('https://') && value.length > 10;
+      }
     },
     SUPABASE_SERVICE_ROLE_KEY: {
       description: 'Supabase service role key for backend operations',
@@ -27,7 +31,7 @@ const ENV_CONFIG = {
     ANTHROPIC_API_KEY: {
       description: 'Anthropic Claude API key',
       example: 'sk-ant-api03-xxxxxxxxxxxxx',
-      validate: (value) => value.startsWith('sk-ant-')
+      validate: (value) => value.length > 20
     },
     OPENROUTER_API_KEY: {
       description: 'OpenRouter API key for AI chat',
