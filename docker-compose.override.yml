@@ -1,0 +1,39 @@
+# Docker Compose override file for local development
+# This file is automatically loaded by docker-compose and overrides settings in docker-compose.yml
+# Use this for developer-specific settings that shouldn't be committed
+
+version: '3.8'
+
+services:
+  frontend:
+    # Example: Change port mapping for local development
+    # ports:
+    #   - "8080:5173"
+    
+    # Example: Add additional environment variables
+    # environment:
+    #   - DEBUG=true
+    
+    # Example: Mount additional volumes
+    # volumes:
+    #   - ./frontend/src:/app/frontend/src
+    #   - ./frontend/public:/app/frontend/public
+
+  backend:
+    # Example: Enable debug mode
+    # environment:
+    #   - DEBUG=true
+    #   - LOG_LEVEL=debug
+    
+    # Example: Mount additional volumes for hot reload
+    # volumes:
+    #   - ./backend/src:/app/backend/src
+    #   - ./backend/services:/app/backend/services
+
+  redis:
+    # Example: Expose Redis for local debugging
+    # ports:
+    #   - "6379:6379"
+    
+    # Example: Disable persistence for faster development
+    # command: redis-server --save "" --appendonly no

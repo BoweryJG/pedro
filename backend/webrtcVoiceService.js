@@ -10,7 +10,7 @@ class WebRTCVoiceService extends VoiceService {
     this.webrtcConnections = new Map();
     
     // Initialize Supabase client
-    const supabaseUrl = process.env.SUPABASE_URL || 'https://tsmtaarwgodklafqlbhm.supabase.co';
+    const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
     
     if (supabaseUrl && supabaseKey) {
@@ -22,7 +22,7 @@ class WebRTCVoiceService extends VoiceService {
     // Initialize Twilio client for SMS
     const twilioAccountSid = process.env.TWILIO_ACCOUNT_SID;
     const twilioAuthToken = process.env.TWILIO_AUTH_TOKEN;
-    this.twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER || '+19292424535';
+    this.twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
     
     if (twilioAccountSid && twilioAuthToken) {
       this.twilioClient = twilio(twilioAccountSid, twilioAuthToken);

@@ -1,0 +1,91 @@
+# Configuration for PR labeler action
+
+frontend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - frontend/**/*
+      - '*.jsx'
+      - '*.tsx'
+
+backend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - backend/**/*
+      - '*.js'
+      - '!frontend/**/*'
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.md'
+      - docs/**/*
+
+database:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/migrations/**'
+      - '**/schema.sql'
+      - '**/db/**'
+
+voice-ai:
+  - changed-files:
+    - any-glob-to-any-file:
+      - backend/services/elevenLabsTTS.js
+      - backend/deepgramVoiceService.js
+      - backend/voiceService.js
+      - backend/services/julieAI.js
+      - backend/test-*.js
+
+instagram:
+  - changed-files:
+    - any-glob-to-any-file:
+      - backend/src/services/instagramDMHandler.js
+      - backend/routes/instagram.js
+
+phone-system:
+  - changed-files:
+    - any-glob-to-any-file:
+      - backend/services/phoneNumberManager.js
+      - backend/routes/phone*.js
+      - '**/twilio/**'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/package.json'
+      - '**/package-lock.json'
+      - '**/yarn.lock'
+
+github-actions:
+  - changed-files:
+    - any-glob-to-any-file:
+      - .github/**/*
+
+security:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/auth/**'
+      - '**/security/**'
+      - backend/src/utils/envValidator.js
+      - '**/.env*'
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.test.js'
+      - '**/*.test.ts'
+      - '**/*.spec.js'
+      - '**/*.spec.ts'
+      - '**/test/**'
+      - '**/tests/**'
+      - '**/__tests__/**'
+
+subdomains:
+  - changed-files:
+    - any-glob-to-any-file:
+      - frontend/src/components/subdomains/**
+      - frontend/src/pages/tmj/**
+      - frontend/src/pages/implants/**
+      - frontend/src/pages/robotic/**
+      - frontend/src/pages/medspa/**
+      - frontend/src/pages/aboutface/**

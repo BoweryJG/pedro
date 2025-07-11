@@ -55,23 +55,15 @@ const StaffScheduler: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<Shift | null>(null);
 
-  // Mock staff data
+  // TODO: Replace with actual staff data from Supabase
   const staffMembers: StaffMember[] = [
-    { id: '1', name: 'Dr. Pedro', role: 'Lead Dentist', color: '#FFD93D', email: 'drpedro@clinic.com', phone: '+1 555-0001' },
-    { id: '2', name: 'Dr. Sarah Chen', role: 'Associate Dentist', color: '#4ECDC4', email: 'sarah@clinic.com', phone: '+1 555-0002' },
-    { id: '3', name: 'Maria Garcia', role: 'Hygienist', color: '#FF6B6B', email: 'maria@clinic.com', phone: '+1 555-0003' },
-    { id: '4', name: 'James Wilson', role: 'Assistant', color: '#95E1D3', email: 'james@clinic.com', phone: '+1 555-0004' },
-    { id: '5', name: 'Emily Brown', role: 'Receptionist', color: '#F38181', email: 'emily@clinic.com', phone: '+1 555-0005' }
+    { id: '1', name: 'Dr. Pedro', role: 'Lead Dentist', color: '#FFD93D', email: '', phone: '' }
   ];
 
-  // Mock shift data
+  // TODO: Replace with actual shift data from Supabase
   const [shifts, setShifts] = useState<Shift[]>([
     { id: '1', staffId: '1', date: addDays(currentWeek, 1), startTime: '08:00', endTime: '17:00', type: 'regular' },
-    { id: '2', staffId: '1', date: addDays(currentWeek, 2), startTime: '08:00', endTime: '17:00', type: 'regular' },
-    { id: '3', staffId: '2', date: addDays(currentWeek, 1), startTime: '09:00', endTime: '18:00', type: 'regular' },
-    { id: '4', staffId: '3', date: addDays(currentWeek, 3), startTime: '08:00', endTime: '16:00', type: 'regular' },
-    { id: '5', staffId: '4', date: addDays(currentWeek, 1), startTime: '08:00', endTime: '17:00', type: 'regular' },
-    { id: '6', staffId: '5', date: addDays(currentWeek, 1), startTime: '08:00', endTime: '17:00', type: 'regular' }
+    { id: '2', staffId: '1', date: addDays(currentWeek, 2), startTime: '08:00', endTime: '17:00', type: 'regular' }
   ]);
 
   const weekDays = Array.from({ length: 7 }, (_, i) => addDays(currentWeek, i));

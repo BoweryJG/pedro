@@ -28,14 +28,8 @@ export class AppointmentService {
     
     if (error) {
       console.error('Error fetching services:', error);
-      // Return mock data if there's an auth error
-      if (error.code === '42501' || error.message?.includes('401')) {
-        return [
-          { id: '1', name: 'General Checkup', duration: 30, price: 150 },
-          { id: '2', name: 'Dental Implant', duration: 60, price: 3000 },
-          { id: '3', name: 'YOMI Robotic Surgery', duration: 90, price: 5000 }
-        ];
-      }
+      // Don't return mock data in production
+      console.error('Failed to fetch services:', error);
       throw error;
     }
     return data || [];
@@ -56,13 +50,8 @@ export class AppointmentService {
     
     if (error) {
       console.error('Error fetching staff:', error);
-      // Return mock data if there's an auth error
-      if (error.code === '42501' || error.message?.includes('401')) {
-        return [
-          { id: '1', title: 'Dr.', first_name: 'Gregory', last_name: 'Pedro', specialization: 'General Dentistry', is_active: true },
-          { id: '2', title: 'Dr.', first_name: 'Sarah', last_name: 'Johnson', specialization: 'Implant Specialist', is_active: true }
-        ];
-      }
+      // Don't return mock data in production
+      console.error('Failed to fetch staff:', error);
       throw error;
     }
     return data || [];
@@ -81,20 +70,8 @@ export class AppointmentService {
     
     if (error) {
       console.error('Error fetching time slots:', error);
-      // Return mock available slots if there's an auth error
-      if (error.code === '42501' || error.message?.includes('401')) {
-        const mockSlots: TimeSlot[] = [];
-        const baseTime = dayjs(`${date.format('YYYY-MM-DD')} 09:00`);
-        for (let i = 0; i < 8; i++) {
-          const startTime = baseTime.add(i * 60, 'minute');
-          mockSlots.push({
-            start_time: startTime.format('HH:mm:ss'),
-            end_time: startTime.add(duration, 'minute').format('HH:mm:ss'),
-            is_available: Math.random() > 0.3 // 70% chance of being available
-          });
-        }
-        return mockSlots;
-      }
+      // Don't return mock data in production
+      console.error('Failed to fetch time slots:', error);
       throw error;
     }
     return data || [];
@@ -163,21 +140,9 @@ export class AppointmentService {
       if (err.message?.includes('sms_queue')) {
         console.log('SMS queue error detected, checking if appointment was created...');
         
-        // Return mock appointment for now
-        appointment = {
-          id: `DEMO-${Date.now()}`,
-          confirmation_code: confirmationCode,
-          appointment_date: appointmentData.date.format('YYYY-MM-DD'),
-          appointment_time: appointmentData.time
-        };
-        
-        // Show confirmation to user
-        const formattedDate = appointmentData.date.format('MMMM D, YYYY');
-        const formattedTime = dayjs(`2000-01-01 ${appointmentData.time}`).format('h:mm A');
-        
-        alert(`Appointment Confirmed!\n\nDate: ${formattedDate}\nTime: ${formattedTime}\nConfirmation Code: ${confirmationCode}\n\nPlease save this confirmation code.\nCall (929) 242-4535 if you need to reschedule.`);
-        
-        return `DEMO-${confirmationCode}`;
+        // If we get here with SMS queue error, the appointment was likely created
+        // but we should still throw the error to handle it properly upstream
+        throw err;
       }
       
       throw err;
@@ -275,7 +240,7 @@ export class AppointmentService {
     const { data: newPatient, error: createError } = await bookingSupabase
       .from('patients')
       .insert({
-        auth_user_id: '00000000-0000-0000-0000-000000000000', // Placeholder UUID
+        auth_user_id: crypto.randomUUID(), // Generate proper UUID for anonymous patients
         first_name: patientData.firstName,
         last_name: patientData.lastName,
         email: patientData.email,
@@ -289,21 +254,8 @@ export class AppointmentService {
     
     if (createError) {
       console.error('Error creating patient:', createError);
-      // If auth error, return a mock patient
-      if (createError.code === '42501' || createError.message?.includes('401')) {
-        return {
-          id: `DEMO-${Date.now()}`,
-          auth_user_id: '00000000-0000-0000-0000-000000000000',
-          first_name: patientData.firstName,
-          last_name: patientData.lastName,
-          email: patientData.email,
-          phone: patientData.phone,
-          insurance_provider: patientData.insuranceProvider,
-          insurance_member_id: patientData.insuranceMemberId,
-          insurance_group_number: patientData.insuranceGroupNumber,
-          created_at: new Date().toISOString()
-        };
-      }
+      // Don't return mock data in production
+      console.error('Failed to create patient:', createError);
       throw createError;
     }
     return newPatient;

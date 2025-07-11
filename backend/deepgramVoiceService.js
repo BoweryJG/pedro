@@ -7,11 +7,11 @@ import VoiceService from './voiceService.js';
 class DeepgramVoiceService extends VoiceService {
   constructor() {
     super();
-    this.deepgramApiKey = process.env.DEEPGRAM_API_KEY || '4beb44e547c8ef520a575d343315b9d0dae38549';
+    this.deepgramApiKey = process.env.DEEPGRAM_API_KEY;
     this.connections = new Map();
     
     // Initialize Supabase client
-    const supabaseUrl = process.env.SUPABASE_URL || 'https://tsmtaarwgodklafqlbhm.supabase.co';
+    const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
     
     if (supabaseUrl && supabaseKey) {

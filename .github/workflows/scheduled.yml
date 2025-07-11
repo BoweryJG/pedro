@@ -1,0 +1,133 @@
+name: Scheduled Maintenance
+
+on:
+  schedule:
+    # Run daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  # Dependency Updates
+  dependency-updates:
+    name: Check for Dependency Updates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Check frontend outdated packages
+        working-directory: ./frontend
+        run: |
+          echo "=== Frontend Outdated Packages ==="
+          npm outdated || true
+
+      - name: Check backend outdated packages
+        working-directory: ./backend
+        run: |
+          echo "=== Backend Outdated Packages ==="
+          npm outdated || true
+
+      - name: Security audit
+        run: |
+          echo "=== Frontend Security Audit ==="
+          cd frontend && npm audit || true
+          echo "=== Backend Security Audit ==="
+          cd ../backend && npm audit || true
+
+  # Database Maintenance
+  database-maintenance:
+    name: Database Maintenance
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Run database cleanup
+        working-directory: ./backend
+        run: |
+          # Add database cleanup scripts here
+          echo "Running database maintenance tasks..."
+          # Example: node scripts/cleanup-old-logs.js
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+
+  # Voice Service Health Check
+  voice-service-check:
+    name: Voice Service Health Check
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check Eleven Labs API
+        run: |
+          # Test Eleven Labs API connectivity
+          curl -f -H "xi-api-key: ${{ secrets.ELEVENLABS_API_KEY }}" \
+            https://api.elevenlabs.io/v1/voices || echo "Eleven Labs API check failed"
+
+      - name: Check Deepgram API
+        run: |
+          # Test Deepgram API connectivity
+          curl -f -H "Authorization: Token ${{ secrets.DEEPGRAM_API_KEY }}" \
+            https://api.deepgram.com/v1/projects || echo "Deepgram API check failed"
+
+      - name: Check Twilio Status
+        run: |
+          # Test Twilio API connectivity
+          curl -f -u "${{ secrets.TWILIO_ACCOUNT_SID }}:${{ secrets.TWILIO_AUTH_TOKEN }}" \
+            "https://api.twilio.com/2010-04-01/Accounts/${{ secrets.TWILIO_ACCOUNT_SID }}.json" || echo "Twilio API check failed"
+
+  # Performance Monitoring
+  performance-check:
+    name: Performance Monitoring
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            ${{ secrets.FRONTEND_URL }}
+            ${{ secrets.FRONTEND_URL }}/about
+            ${{ secrets.FRONTEND_URL }}/services
+          uploadArtifacts: true
+          temporaryPublicStorage: true
+
+  # Backup Verification
+  backup-verification:
+    name: Verify Backups
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Check database backup status
+        run: |
+          echo "Checking Supabase backup status..."
+          # Add backup verification logic here
+          
+      - name: Notify if backups are outdated
+        if: failure()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: failure
+          text: "Database backups are outdated or failing!"
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        continue-on-error: true

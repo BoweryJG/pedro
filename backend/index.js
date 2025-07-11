@@ -19,6 +19,7 @@ import phoneNumberRoutes from './routes/phoneNumbers.js';
 import authRoutes from './src/routes/auth.js';
 import apiKeyRoutes from './src/routes/api-keys.js';
 import errorAnalyticsRoutes from './src/routes/errorAnalytics.js';
+import healthRoutes from './src/routes/health.js';
 import { authenticate, authorize, requirePermission, authenticateFlexible, verifyResourceOwnership, auditLog, ROLES } from './src/middleware/auth.js';
 
 // Import error handling middleware
@@ -248,14 +249,19 @@ app.use(requestLogger);
 app.use('/api/', apiRateLimiter);
 app.use('/api/auth/', authRateLimiter);
 
-// Health check endpoint (no rate limit)
+// Root endpoint
 app.get('/', (req, res) => {
   res.json({ 
     status: 'ok', 
     message: 'Dr. Pedro Dental Backend Server',
-    version: '1.0.0'
+    version: '1.0.0',
+    health: '/health',
+    documentation: '/api/docs'
   });
 });
+
+// Mount health check routes (no rate limit for monitoring)
+app.use('/health', healthRoutes);
 
 // API status endpoint
 app.get('/api/status', (req, res) => {
@@ -368,27 +374,6 @@ app.post('/voice/config', authenticate, authorize(ROLES.DOCTOR, ROLES.ADMIN, ROL
   }
 });
 
-// Health check endpoint for monitoring
-app.get('/health', (req, res) => {
-  res.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    services: {
-      api: { status: 'operational' },
-      chat: { status: 'operational' },
-      voice: { 
-        status: 'operational',
-        activeConnections: voiceService.connections.size,
-        websocket: wss ? 'ready' : 'not initialized'
-      },
-      webrtcVoice: {
-        status: 'operational',
-        activeConnections: webrtcVoiceService.webrtcConnections.size,
-        websocket: webrtcWss ? 'ready' : 'not initialized'
-      }
-    }
-  });
-});
 
 // Financing - Sunbit endpoint - requires authentication
 app.post('/financing/sunbit', authenticate, requirePermission('read:billing'), validateSunbitFinancing, async (req, res) => {

@@ -10,7 +10,7 @@ class PhoneNumberManager {
     );
     
     // Initialize Supabase
-    const supabaseUrl = process.env.SUPABASE_URL || 'https://tsmtaarwgodklafqlbhm.supabase.co';
+    const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     this.supabase = createClient(supabaseUrl, supabaseKey);
   }
@@ -65,11 +65,11 @@ class PhoneNumberManager {
         .create({
           phoneNumber,
           friendlyName: clientName,
-          voiceUrl: `${process.env.BACKEND_URL || 'https://pedrobackend.onrender.com'}/voice/incoming`,
+          voiceUrl: `${process.env.BACKEND_URL}/voice/incoming`,
           voiceMethod: 'POST',
-          statusCallback: `${process.env.BACKEND_URL || 'https://pedrobackend.onrender.com'}/voice/status`,
+          statusCallback: `${process.env.BACKEND_URL}/voice/status`,
           statusCallbackMethod: 'POST',
-          smsUrl: `${process.env.BACKEND_URL || 'https://pedrobackend.onrender.com'}/sms/incoming`,
+          smsUrl: `${process.env.BACKEND_URL}/sms/incoming`,
           smsMethod: 'POST'
         });
       

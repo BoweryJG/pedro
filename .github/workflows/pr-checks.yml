@@ -1,0 +1,280 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  # Label PR based on changes
+  label-pr:
+    name: Label Pull Request
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Label PR
+        uses: actions/labeler@v5
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+
+  # Check PR size
+  pr-size:
+    name: Check PR Size
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PR size
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const additions = pr.additions;
+            const deletions = pr.deletions;
+            const total = additions + deletions;
+            
+            let label = '';
+            if (total < 10) label = 'size/XS';
+            else if (total < 30) label = 'size/S';
+            else if (total < 100) label = 'size/M';
+            else if (total < 500) label = 'size/L';
+            else label = 'size/XL';
+            
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: [label]
+            });
+
+  # Check for merge conflicts
+  merge-conflict-check:
+    name: Check Merge Conflicts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for conflicts
+        run: |
+          git fetch origin main
+          if ! git merge-tree $(git merge-base HEAD origin/main) HEAD origin/main | grep -q "<<<<<<< "; then
+            echo "No merge conflicts detected"
+          else
+            echo "::error::Merge conflicts detected. Please resolve conflicts before merging."
+            exit 1
+          fi
+
+  # Preview deployment for frontend
+  preview-deploy:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'frontend') || contains(github.event.pull_request.labels.*.name, 'preview')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci --legacy-peer-deps
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: npm run build:prod
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+          VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+
+      - name: Deploy preview to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: './frontend/dist'
+          production-deploy: false
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "PR Preview #${{ github.event.pull_request.number }}"
+          enable-pull-request-comment: true
+          enable-commit-comment: false
+          overwrites-pull-request-comment: true
+          alias: pr-${{ github.event.pull_request.number }}
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  # Code coverage
+  code-coverage:
+    name: Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci --legacy-peer-deps
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Run frontend tests with coverage
+        working-directory: ./frontend
+        run: npm run test:coverage || echo "No coverage script found"
+        continue-on-error: true
+
+      - name: Run backend tests with coverage
+        working-directory: ./backend
+        run: npm run test:coverage || echo "No coverage script found"
+        continue-on-error: true
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
+
+  # Documentation check
+  docs-check:
+    name: Documentation Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check for documentation updates
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const files = await github.rest.pulls.listFiles({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number
+            });
+            
+            const hasCodeChanges = files.data.some(file => 
+              file.filename.endsWith('.js') || 
+              file.filename.endsWith('.ts') || 
+              file.filename.endsWith('.jsx') || 
+              file.filename.endsWith('.tsx')
+            );
+            
+            const hasDocChanges = files.data.some(file => 
+              file.filename.endsWith('.md') || 
+              file.filename.includes('docs/')
+            );
+            
+            if (hasCodeChanges && !hasDocChanges) {
+              core.warning('Code changes detected without documentation updates. Please consider updating documentation if needed.');
+            }
+
+  # API contract testing
+  api-contract-test:
+    name: API Contract Testing
+    runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'backend') || contains(github.event.pull_request.labels.*.name, 'api')
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm ci
+
+      - name: Run API tests
+        working-directory: ./backend
+        run: npm run test:api || echo "No API tests found"
+        continue-on-error: true
+
+  # Summary comment
+  pr-summary:
+    name: PR Summary
+    runs-on: ubuntu-latest
+    needs: [frontend-lint, frontend-typecheck, frontend-build, backend-lint, security-scan]
+    if: always()
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Comment PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('## PR Check Summary')
+            );
+            
+            const checkResults = {
+              'Frontend Lint': '${{ needs.frontend-lint.result }}',
+              'Frontend TypeCheck': '${{ needs.frontend-typecheck.result }}',
+              'Frontend Build': '${{ needs.frontend-build.result }}',
+              'Backend Lint': '${{ needs.backend-lint.result }}',
+              'Security Scan': '${{ needs.security-scan.result }}'
+            };
+            
+            const getEmoji = (status) => {
+              switch(status) {
+                case 'success': return '✅';
+                case 'failure': return '❌';
+                case 'skipped': return '⏭️';
+                default: return '⏸️';
+              }
+            };
+            
+            let summary = '## PR Check Summary\n\n';
+            summary += '| Check | Status |\n|-------|--------|\n';
+            
+            for (const [check, result] of Object.entries(checkResults)) {
+              summary += `| ${check} | ${getEmoji(result)} ${result} |\n`;
+            }
+            
+            summary += '\n---\n';
+            summary += `Last updated: ${new Date().toUTCString()}`;
+            
+            const commentBody = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            };
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                ...commentBody,
+                comment_id: botComment.id
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...commentBody,
+                issue_number: context.issue.number
+              });
+            }

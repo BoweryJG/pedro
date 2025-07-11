@@ -1,0 +1,85 @@
+version: 2
+updates:
+  # Frontend dependencies
+  - package-ecosystem: "npm"
+    directory: "/frontend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    groups:
+      mui:
+        patterns:
+          - "@mui/*"
+      react:
+        patterns:
+          - "react"
+          - "react-*"
+      vite:
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+    reviewers:
+      - "pedro-dev-team"
+    labels:
+      - "dependencies"
+      - "frontend"
+    commit-message:
+      prefix: "chore(frontend)"
+      include: "scope"
+
+  # Backend dependencies
+  - package-ecosystem: "npm"
+    directory: "/backend"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+    open-pull-requests-limit: 5
+    groups:
+      express:
+        patterns:
+          - "express"
+          - "express-*"
+      ai-services:
+        patterns:
+          - "@anthropic-ai/*"
+          - "openai"
+          - "@huggingface/*"
+      voice-services:
+        patterns:
+          - "elevenlabs"
+          - "@deepgram/*"
+          - "twilio"
+    reviewers:
+      - "pedro-dev-team"
+    labels:
+      - "dependencies"
+      - "backend"
+    commit-message:
+      prefix: "chore(backend)"
+      include: "scope"
+    ignore:
+      # Don't update major versions automatically for critical services
+      - dependency-name: "express"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "twilio"
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "09:00"
+    open-pull-requests-limit: 3
+    reviewers:
+      - "pedro-dev-team"
+    labels:
+      - "dependencies"
+      - "github-actions"
+    commit-message:
+      prefix: "ci"
+      include: "scope"

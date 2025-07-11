@@ -160,7 +160,7 @@ export class AppointmentBookingService {
     
     switch (intent.urgency) {
       case 'emergency':
-        return `${baseResponse} Since this sounds urgent, please call our office immediately at (718) 555-0123 for emergency care. If it's after hours, our answering service will connect you with Dr. Pedro.`;
+        return `${baseResponse} Since this sounds urgent, please call our office immediately for emergency care. If it's after hours, our answering service will connect you with Dr. Pedro.`;
       
       case 'urgent':
         return `${baseResponse} I understand you need to be seen soon. I'll prioritize your request and have our scheduling team contact you within the next few hours to find the earliest available appointment.`;
@@ -170,56 +170,26 @@ export class AppointmentBookingService {
           ? ` for ${intent.preferredService}` 
           : '';
         
-        return `${baseResponse}${serviceInfo} Our team will reach out to you shortly to discuss available times that work with your schedule. You can also call us directly at (718) 555-0123 if you'd prefer to speak with someone right away.`;
+        return `${baseResponse}${serviceInfo} Our team will reach out to you shortly to discuss available times that work with your schedule. You can also call us directly if you'd prefer to speak with someone right away.`;
     }
   }
 
-  // Get available appointment slots (mock implementation)
+  // Get available appointment slots
   async getAvailableSlots(date, serviceType = 'General Consultation') {
     try {
-      // This would integrate with your actual appointment system
-      // For now, we'll return mock available slots
-      const slots = [];
-      const startDate = new Date(date || Date.now());
+      // TODO: Integrate with actual appointment system
+      // This should connect to the practice management system
+      // to retrieve real-time availability
       
-      // Generate available slots for the next 14 days
-      for (let i = 0; i < 14; i++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + i);
-        
-        // Skip Sundays
-        if (currentDate.getDay() === 0) continue;
-        
-        // Morning slots (9 AM - 12 PM)
-        for (let hour = 9; hour < 12; hour++) {
-          slots.push({
-            date: currentDate.toISOString().split('T')[0],
-            time: `${hour}:00`,
-            duration: serviceType === 'General Consultation' ? 30 : 60,
-            available: Math.random() > 0.3 // 70% chance slot is available
-          });
-        }
-        
-        // Afternoon slots (1 PM - 5 PM), Saturday until 2 PM
-        const maxAfternoonHour = currentDate.getDay() === 6 ? 2 : 5;
-        for (let hour = 13; hour < 13 + maxAfternoonHour; hour++) {
-          slots.push({
-            date: currentDate.toISOString().split('T')[0],
-            time: `${hour}:00`,
-            duration: serviceType === 'General Consultation' ? 30 : 60,
-            available: Math.random() > 0.3
-          });
-        }
-      }
-      
-      return slots.filter(slot => slot.available);
+      console.warn('getAvailableSlots: Not yet implemented - requires integration with practice management system');
+      return [];
     } catch (error) {
       console.error('Error getting available slots:', error);
       return [];
     }
   }
 
-  // Book appointment (mock implementation)
+  // Book appointment
   async bookAppointment(appointmentRequestId, selectedSlot, contactInfo) {
     try {
       // Update appointment request with selected slot and contact info

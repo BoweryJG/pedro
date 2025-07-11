@@ -56,11 +56,23 @@ const ENV_CONFIG = {
       validate: (value) => /^\+1\d{10}$/.test(value)
     },
 
+    // Voice Services
+    DEEPGRAM_API_KEY: {
+      description: 'Deepgram API key for speech-to-text',
+      example: 'your_deepgram_api_key',
+      validate: (value) => value.length > 20
+    },
+
     // Server Configuration
     NODE_ENV: {
       description: 'Node environment (development/production)',
       example: 'production',
       validate: (value) => ['development', 'production', 'test'].includes(value)
+    },
+    BACKEND_URL: {
+      description: 'Backend server URL for webhooks',
+      example: 'https://pedrobackend.onrender.com',
+      validate: (value) => value.startsWith('http://') || value.startsWith('https://')
     }
   },
 
@@ -111,11 +123,6 @@ const ENV_CONFIG = {
       example: 'your_elevenlabs_api_key',
       validate: (value) => value.length > 20
     },
-    DEEPGRAM_API_KEY: {
-      description: 'Deepgram API key for speech-to-text',
-      example: 'your_deepgram_api_key',
-      validate: (value) => value.length > 20
-    },
 
     // Practice Information
     PRACTICE_NAME: {
@@ -125,8 +132,8 @@ const ENV_CONFIG = {
     },
     PRACTICE_PHONE: {
       description: 'Practice phone number',
-      example: '(718) 555-0123',
-      default: '(718) 555-0123'
+      example: '(XXX) XXX-XXXX',
+      default: ''
     },
     PRACTICE_EMAIL: {
       description: 'Practice email address',
@@ -201,6 +208,96 @@ const ENV_CONFIG = {
       description: 'Sunbit merchant ID',
       example: 'your_sunbit_merchant_id_here',
       validate: (value) => value.length > 5
+    },
+
+    // Redis Configuration
+    REDIS_HOST: {
+      description: 'Redis server host',
+      example: 'localhost',
+      default: 'localhost',
+      validate: (value) => value.length > 0
+    },
+    REDIS_PORT: {
+      description: 'Redis server port',
+      example: '6379',
+      default: '6379',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) > 0
+    },
+    REDIS_PASSWORD: {
+      description: 'Redis server password',
+      example: 'your_redis_password',
+      validate: (value) => true // Password can be empty for local development
+    },
+    REDIS_USERNAME: {
+      description: 'Redis server username',
+      example: 'default',
+      validate: (value) => true // Username is optional
+    },
+    REDIS_DB: {
+      description: 'Redis database number',
+      example: '0',
+      default: '0',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) >= 0
+    },
+    REDIS_REQUIRED: {
+      description: 'Whether Redis is required for the application to start',
+      example: 'false',
+      default: 'false',
+      validate: (value) => ['true', 'false'].includes(value.toLowerCase())
+    },
+
+    // Database Connection Pool Configuration
+    DATABASE_URL: {
+      description: 'PostgreSQL connection string (alternative to using Supabase URL)',
+      example: 'postgres://user:password@host:5432/database',
+      validate: (value) => value.startsWith('postgres://') || value.startsWith('postgresql://')
+    },
+    SUPABASE_DB_PASSWORD: {
+      description: 'Supabase database password (if different from service role key)',
+      example: 'your_supabase_db_password',
+      validate: (value) => value.length > 10
+    },
+    DB_POOL_MAX: {
+      description: 'Maximum number of clients in database pool',
+      example: '20',
+      default: '20',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) > 0
+    },
+    DB_POOL_MIN: {
+      description: 'Minimum number of clients in database pool',
+      example: '2',
+      default: '2',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) >= 0
+    },
+    DB_IDLE_TIMEOUT: {
+      description: 'Database connection idle timeout in milliseconds',
+      example: '30000',
+      default: '30000',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) > 0
+    },
+    DB_CONNECTION_TIMEOUT: {
+      description: 'Database connection timeout in milliseconds',
+      example: '10000',
+      default: '10000',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) > 0
+    },
+    DB_STATEMENT_TIMEOUT: {
+      description: 'Database statement timeout in milliseconds',
+      example: '30000',
+      default: '30000',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) > 0
+    },
+    DB_QUERY_TIMEOUT: {
+      description: 'Database query timeout in milliseconds',
+      example: '30000',
+      default: '30000',
+      validate: (value) => !isNaN(parseInt(value)) && parseInt(value) > 0
+    },
+    APP_NAME: {
+      description: 'Application name for database connections',
+      example: 'pedro-backend',
+      default: 'pedro-backend',
+      validate: (value) => value.length > 0
     }
   }
 };
