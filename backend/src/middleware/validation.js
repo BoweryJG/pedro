@@ -508,6 +508,9 @@ export const globalSanitizer = (req, res, next) => {
   next();
 };
 
+// Export validation helper functions
+export { preventSQLInjection, preventNoSQLInjection, preventPathTraversal };
+
 // Export all validations
 export default {
   handleValidationErrors,

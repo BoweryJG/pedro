@@ -8,6 +8,7 @@
   NODE_VERSION = "20"
   NPM_FLAGS = "--legacy-peer-deps"
   NETLIFY_USE_PNPM = "false"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_GOOGLE_MAPS_API_KEY,VITE_OPENAI_API_KEY"
 
 [[headers]]
   for = "/*"
