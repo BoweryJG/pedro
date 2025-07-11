@@ -6,8 +6,8 @@ const ENV_CONFIG = {
     // Backend API URL is required for API calls
     VITE_API_URL: {
       description: 'Backend API URL',
-      example: 'http://localhost:3001/api',
-      default: 'http://localhost:3001/api',
+      example: 'http://localhost:3001',
+      default: 'http://localhost:3001',
       validate: (value) => value.startsWith('http')
     }
   },
@@ -167,7 +167,7 @@ export function getApiConfig() {
   const config = initializeEnvironment();
   
   return {
-    apiUrl: config.VITE_API_URL || 'http://localhost:3001/api',
+    apiUrl: config.VITE_API_URL || 'http://localhost:3001',
     enableVoiceChat: config.VITE_ENABLE_VOICE_CHAT !== 'false',
     enableFinancing: config.VITE_ENABLE_FINANCING !== 'false',
     enableInsurance: config.VITE_ENABLE_INSURANCE !== 'false',

@@ -117,6 +117,7 @@ BOOKING PROCESS:
       
       // Generate response using backend API
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      
       const response = await fetch(`${apiUrl}/chat`, {
         method: 'POST',
         headers: {

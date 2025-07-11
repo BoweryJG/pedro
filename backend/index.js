@@ -91,6 +91,10 @@ const productionDomains = [
   'https://medspa.gregpedromd.com',
   'https://aboutface.gregpedromd.com',
   
+  // Netlify deployments
+  'https://gregpedromd.netlify.app',
+  'https://pedro-dental.netlify.app',
+  
   // Development
   'http://localhost:5173',
   'http://localhost:5174',
@@ -289,8 +293,55 @@ app.use('/api/auth', authRoutes);
 // API Key management routes (admin only)
 app.use('/api/keys', apiKeyRoutes);
 
-// Chat endpoint for Julie AI assistant - requires authentication
-app.post('/chat', authenticate, validateChat, asyncHandler(async (req, res) => {
+// Public chat endpoint for website chatbot (no authentication required)
+app.post('/api/chat/public', apiRateLimiter, validateChat, asyncHandler(async (req, res) => {
+    const { messages, systemPrompt } = req.validatedData || req.body;
+    
+    if (!messages || !systemPrompt) {
+      return res.status(400).json({ 
+        error: 'Missing required fields: messages and systemPrompt' 
+      });
+    }
+    
+    if (!process.env.OPENROUTER_API_KEY) {
+      return res.status(500).json({ 
+        error: 'OpenRouter API key not configured' 
+      });
+    }
+    
+    // Use OpenRouter API (same as julieAI.js)
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://gregpedromd.com',
+        'X-Title': 'Julie AI Assistant'
+      },
+      body: JSON.stringify({
+        model: 'anthropic/claude-3-haiku', // Fastest model for chat
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages
+        ],
+        temperature: 0.7,
+        max_tokens: 500
+      })
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.error?.message || 'OpenAI API error');
+    }
+
+    res.json({
+      response: data.choices[0].message.content
+    });
+}));
+
+// Chat endpoint for Julie AI assistant - temporarily removed authentication for chatbot
+app.post('/chat', validateChat, asyncHandler(async (req, res) => {
     const { messages, systemPrompt } = req.validatedData || req.body;
     
     if (!messages || !systemPrompt) {
