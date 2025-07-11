@@ -1,0 +1,404 @@
+/* Luxury Agent Launcher - Lightweight CSS-only effects */
+
+.luxury-agent-launcher {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Main Launcher Orb */
+.launcher-orb {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0); /* Force GPU acceleration */
+  will-change: transform, box-shadow;
+  contain: layout style paint;
+}
+
+.launcher-orb.open {
+  transform: rotate(90deg);
+}
+
+.orb-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.orb-icon {
+  font-size: 24px;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.orb-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.launcher-orb:hover .orb-glow {
+  opacity: 1;
+}
+
+.orb-screws {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.8;
+}
+
+/* Agent Carousel Container */
+.agent-carousel-container {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 20px;
+  min-width: 320px;
+  max-width: 90vw;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(102, 126, 234, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  contain: layout style paint;
+}
+
+/* Carousel Header */
+.carousel-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.carousel-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 5px 0;
+  letter-spacing: 0.5px;
+}
+
+.carousel-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.3px;
+}
+
+/* Carousel Viewport */
+.carousel-viewport {
+  overflow: hidden;
+  margin: 0 -10px;
+  padding: 0 10px;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 10px;
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel-track:active {
+  cursor: grabbing;
+}
+
+/* Agent Cards */
+.agent-card {
+  flex: 0 0 80px;
+  height: 100px;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+  will-change: transform;
+  contain: layout style paint;
+}
+
+.agent-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-screws {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.6;
+  z-index: 3;
+}
+
+.agent-content {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 5px;
+  z-index: 2;
+}
+
+.agent-avatar {
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.agent-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.agent-role {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  margin-top: 2px;
+}
+
+.agent-tagline {
+  display: none; /* Hidden on cards, shown in selection */
+}
+
+/* Shimmer Effect */
+.agent-shimmer {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 60%
+  );
+  transform: rotate(45deg);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+.agent-card:hover .agent-shimmer {
+  transform: rotate(45deg) translateX(100%);
+}
+
+/* Pagination Dots */
+.carousel-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.pagination-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.pagination-dot.active {
+  background: #667eea;
+  transform: scale(1.3);
+}
+
+/* Action Menu */
+.action-menu {
+  position: absolute;
+  bottom: 80px;
+  right: 0;
+  background: rgba(15, 15, 15, 0.98);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 16px;
+  padding: 20px;
+  min-width: 280px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 80px rgba(102, 126, 234, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.action-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.selected-agent-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.selected-avatar {
+  font-size: 24px;
+}
+
+.selected-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.close-menu {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.close-menu:hover {
+  color: #ffffff;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.action-button {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.action-button:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.action-icon {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.action-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+
+.action-tooltip {
+  display: block;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.3;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .luxury-agent-launcher {
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .agent-carousel-container {
+    max-width: calc(100vw - 30px);
+    right: -15px;
+  }
+
+  .carousel-track {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .agent-card {
+    scroll-snap-align: center;
+  }
+}
+
+/* Performance Optimizations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Force Hardware Acceleration */
+.luxury-agent-launcher * {
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  -webkit-perspective: 1000;
+}
+
+/* Optimize Paint Areas */
+.agent-card,
+.launcher-orb,
+.action-button {
+  contain: layout style paint;
+}
+
+/* Reduce Blur on Low-End Devices */
+@media (max-width: 768px) {
+  .agent-carousel-container,
+  .action-menu {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .carousel-title,
+  .selected-name,
+  .action-label {
+    color: #ffffff;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .luxury-agent-launcher {
+    display: none;
+  }
+}

@@ -207,13 +207,14 @@ For appointment booking:
 class VoiceService {
   constructor() {
     this.connections = new Map();
+    this.currentVoiceConfig = {};
     this.huggingfaceToken = process.env.HUGGINGFACE_TOKEN;
     this.openRouterKey = process.env.OPENROUTER_API_KEY;
     
     // Initialize ElevenLabs TTS with Julie's voice preset
     try {
       this.ttsService = new ElevenLabsTTS({
-        voiceId: 'rachel', // Professional female voice for Julie
+        voiceId: 'nicole', // Friendly female voice for Julie
         modelId: 'eleven_turbo_v2', // Low-latency model
         stability: 0.5,
         similarityBoost: 0.75,
@@ -229,6 +230,18 @@ class VoiceService {
     if (!this.huggingfaceToken || !this.openRouterKey) {
       console.warn('Voice service: Missing API keys. Please set HUGGINGFACE_TOKEN and OPENROUTER_API_KEY environment variables.');
     }
+  }
+
+  // Update voice configuration for dynamic agent switching
+  updateVoiceConfig(config) {
+    this.currentVoiceConfig = { ...this.currentVoiceConfig, ...config };
+    
+    if (config.voiceId && this.ttsService) {
+      // Update ElevenLabs voice
+      this.ttsService.voiceId = this.ttsService.voices[config.voiceId] || config.voiceId;
+    }
+    
+    console.log(`Voice config updated:`, this.currentVoiceConfig);
   }
 
   // Speech to Text using Whisper via Huggingface
@@ -276,7 +289,7 @@ class VoiceService {
       const response = await axios.post(
         'https://openrouter.ai/api/v1/chat/completions',
         {
-          model: 'openai/gpt-3.5-turbo',
+          model: 'anthropic/claude-3-haiku', // Fast and reliable
           messages,
           temperature: 0.7,
           max_tokens: 150, // Keep responses short for phone

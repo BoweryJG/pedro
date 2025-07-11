@@ -218,7 +218,7 @@ app.post('/chat', async (req, res) => {
         'X-Title': 'Julie AI Assistant'
       },
       body: JSON.stringify({
-        model: 'openai/gpt-4',
+        model: 'anthropic/claude-3-haiku', // Fastest model for chat
         messages: [
           { role: 'system', content: systemPrompt },
           ...messages
@@ -243,6 +243,44 @@ app.post('/chat', async (req, res) => {
     res.status(500).json({ 
       error: 'Failed to generate response',
       details: error.message 
+    });
+  }
+});
+
+// Voice configuration endpoint
+app.post('/voice/config', (req, res) => {
+  try {
+    const { voiceId, agentName, agentRole, personality } = req.body;
+    
+    // Update voice service configuration
+    if (voiceService) {
+      voiceService.updateVoiceConfig({
+        voiceId,
+        agentName,
+        agentRole,
+        personality
+      });
+    }
+    
+    // Update WebRTC voice service
+    if (webrtcVoiceService) {
+      webrtcVoiceService.updateVoiceConfig({
+        voiceId,
+        agentName,
+        agentRole,
+        personality
+      });
+    }
+    
+    res.json({ 
+      success: true, 
+      message: 'Voice configuration updated',
+      agent: agentName 
+    });
+  } catch (error) {
+    console.error('Voice config error:', error);
+    res.status(500).json({ 
+      error: 'Failed to update voice configuration' 
     });
   }
 });

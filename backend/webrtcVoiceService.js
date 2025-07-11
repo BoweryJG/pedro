@@ -31,6 +31,12 @@ class WebRTCVoiceService extends VoiceService {
     }
   }
 
+  // Update voice configuration
+  updateVoiceConfig(config) {
+    // Call parent method
+    super.updateVoiceConfig(config);
+  }
+
   // Handle WebRTC signaling
   handleSignaling(ws, message) {
     const data = JSON.parse(message);

@@ -19,7 +19,7 @@ const supabase = createClient(
 let ttsService;
 try {
   ttsService = new ElevenLabsTTS({
-    voiceId: 'rachel', // Professional female voice for Julie
+    voiceId: 'nicole', // Friendly female voice for Julie
     modelId: 'eleven_turbo_v2',
     optimizeLatency: 4
   });

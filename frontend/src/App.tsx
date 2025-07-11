@@ -12,7 +12,7 @@ import InstagramDashboard from './components/InstagramDashboard';
 import TestBooking from './pages/TestBooking';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
-import { JulieUnifiedInterface } from './components/JulieUnifiedInterface';
+import { LuxuryAgentLauncherContainer } from './components/chatbot/LuxuryAgentLauncherContainer';
 import ScrollToTop from './components/ScrollToTop';
 import { useMediaQuery, useTheme } from '@mui/material';
 import DashboardPage from './pages/DashboardPage';
@@ -89,10 +89,8 @@ function App() {
           }
         />
       </Routes>
-      {/* Julie Unified Interface - Chat & Voice (hide on MedSpa routes) */}
-      {!location.pathname.includes('/medspa') && (
-        <JulieUnifiedInterface key="julie-interface" />
-      )}
+      {/* Luxury Agent Launcher - 15 AI Personalities */}
+      <LuxuryAgentLauncherContainer />
       {/* Luxury texture overlays - REMOVED FOR PERFORMANCE */}
     </AuthProvider>
   );
