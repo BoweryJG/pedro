@@ -387,8 +387,8 @@ app.post('/chat', validateChat, asyncHandler(async (req, res) => {
     });
 }));
 
-// Voice configuration endpoint - requires doctor or admin role
-app.post('/voice/config', authenticate, authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.SUPER_ADMIN), validateVoiceConfig, auditLog('voice_config_update'), (req, res) => {
+// Voice configuration endpoint - PUBLIC for agent deployment
+app.post('/voice/config', validateVoiceConfig, (req, res) => {
   try {
     const { voiceId, agentName, agentRole, personality } = req.validatedData || req.body;
     

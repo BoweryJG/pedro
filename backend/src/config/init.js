@@ -99,20 +99,18 @@ export const getHealthStatus = async () => {
     services: {}
   };
 
-  // Check Redis
+  // Check Redis (optional - not required for operation)
   try {
     const redisHealth = await checkRedisHealth();
     health.services.redis = redisHealth;
-    if (!redisHealth.healthy) {
-      health.status = 'degraded';
-    }
+    // Don't degrade health status for Redis since it's not used
   } catch (error) {
     health.services.redis = {
       healthy: false,
-      message: 'Redis health check failed',
+      message: 'Redis not configured (optional)',
       error: error.message
     };
-    health.status = 'degraded';
+    // Don't change health status - Redis is optional
   }
 
   // Check Database

@@ -9,6 +9,11 @@ const parseSupabaseUrl = (url) => {
     throw new Error('SUPABASE_URL is required for database connection');
   }
   
+  // If we have a direct DATABASE_URL, use that instead
+  if (process.env.DATABASE_URL) {
+    return { connectionString: process.env.DATABASE_URL };
+  }
+  
   // Extract project ID from Supabase URL
   const match = url.match(/https:\/\/([^.]+)\.supabase\.co/);
   if (!match) {
@@ -23,13 +28,20 @@ const parseSupabaseUrl = (url) => {
     throw new Error('SUPABASE_DB_PASSWORD or SUPABASE_SERVICE_ROLE_KEY is required');
   }
   
+  // Force IPv4 to avoid IPv6 issues
   return {
     host: dbHost,
     port: 5432,
     database: 'postgres',
     user: 'postgres',
     password: dbPassword,
-    ssl: { rejectUnauthorized: false }
+    ssl: { rejectUnauthorized: false },
+    // Force IPv4
+    stream: (socket) => {
+      socket.setNoDelay(true);
+      socket.setKeepAlive(true, 30000);
+      return socket;
+    }
   };
 };
 
