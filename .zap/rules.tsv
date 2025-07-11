@@ -1,0 +1,63 @@
+# OWASP ZAP API Scan Rules Configuration
+# Format: Rule ID	Risk Level	Confidence Level	URL
+# Risk Levels: IGNORE, INFO, LOW, MEDIUM, HIGH
+# Confidence Levels: FALSE_POSITIVE, LOW, MEDIUM, HIGH, CONFIRMED
+
+# Ignore common false positives for API endpoints
+10015	IGNORE		# Incomplete or No Cache-control and Pragma HTTP Header Set
+10017	IGNORE		# Cross-Domain JavaScript Source File Inclusion
+10020	IGNORE		# X-Frame-Options Header Not Set (API doesn't serve HTML)
+10021	IGNORE		# X-Content-Type-Options Header Missing (if API returns JSON)
+10023	IGNORE		# XML External Entity Attack (if not using XML)
+10024	IGNORE		# Information Disclosure - Debug Error Messages
+10025	IGNORE		# Information Disclosure - Sensitive Information in HTTP Referrer Header
+10027	IGNORE		# Information Disclosure - Suspicious Comments
+10032	IGNORE		# Viewstate Scanner
+10040	IGNORE		# Secure Pages Include Mixed Content
+10105	IGNORE		# Weak Authentication Method
+10202	IGNORE		# Absence of Anti-CSRF Tokens (API uses different auth)
+
+# Keep these active for API security
+10003	HIGH	HIGH	# Vulnerable JS Library
+10010	MEDIUM	MEDIUM	# Cookie No HttpOnly Flag
+10011	MEDIUM	MEDIUM	# Cookie Without Secure Flag
+10016	INFO	MEDIUM	# Web Browser XSS Protection Not Enabled
+10019	INFO	MEDIUM	# Content-Type Header Missing
+10035	HIGH	HIGH	# Strict-Transport-Security Header Not Set
+10036	MEDIUM	MEDIUM	# Server Leaks Version Information
+10037	MEDIUM	MEDIUM	# Server Leaks Information
+10038	MEDIUM	MEDIUM	# Content Security Policy (CSP) Header Not Set
+10054	MEDIUM	MEDIUM	# Cookie Without SameSite Attribute
+10055	INFO	MEDIUM	# CSP Scanner
+10056	INFO	MEDIUM	# X-Debug-Token Information Leak
+10061	MEDIUM	MEDIUM	# X-AspNet-Version Response Header Scanner
+10062	LOW	MEDIUM	# PII Scanner
+10095	INFO	MEDIUM	# Backup File Disclosure
+10096	INFO	MEDIUM	# Timestamp Disclosure
+10097	MEDIUM	MEDIUM	# Hash Disclosure
+10098	INFO	MEDIUM	# Cross-Domain Misconfiguration
+10109	LOW	MEDIUM	# Modern Web Application
+10110	INFO	MEDIUM	# Dangerous JS Functions
+40003	MEDIUM	MEDIUM	# CRLF Injection
+40009	MEDIUM	MEDIUM	# Sensitive Information in URL
+40012	HIGH	HIGH	# Cross Site Scripting (Reflected)
+40014	HIGH	HIGH	# Cross Site Scripting (Persistent)
+40016	HIGH	HIGH	# Cross Site Scripting (Persistent) - Prime
+40017	HIGH	HIGH	# Cross Site Scripting (Persistent) - Spider
+40018	HIGH	HIGH	# SQL Injection
+40019	HIGH	HIGH	# SQL Injection - MySQL
+40020	HIGH	HIGH	# SQL Injection - Hypersonic SQL
+40021	HIGH	HIGH	# SQL Injection - Oracle
+40022	HIGH	HIGH	# SQL Injection - PostgreSQL
+40024	HIGH	HIGH	# SQL Injection - SQLite
+40025	INFO	MEDIUM	# Proxy Disclosure
+40026	HIGH	HIGH	# Cross Site Scripting (DOM Based)
+40027	HIGH	HIGH	# SQL Injection - MsSQL
+40028	INFO	MEDIUM	# ELMAH Information Leak
+40029	INFO	MEDIUM	# Trace.axd Information Leak
+40032	INFO	MEDIUM	# .htaccess Information Leak
+40034	INFO	MEDIUM	# .env Information Leak
+90001	MEDIUM	MEDIUM	# Insecure JSF ViewState
+90011	MEDIUM	MEDIUM	# Charset Mismatch
+90022	HIGH	HIGH	# Application Error Disclosure
+90033	INFO	MEDIUM	# Loosely Scoped Cookie

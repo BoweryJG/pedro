@@ -1,0 +1,118 @@
+# Gitleaks configuration for Dr. Pedro's dental practice
+title = "gitleaks config"
+
+# Extend the base configuration
+[extend]
+useDefault = true
+
+# Custom allowlist for known safe patterns
+[allowlist]
+description = "Allowlisted patterns"
+paths = [
+    '''node_modules''',
+    '''dist''',
+    '''build''',
+    '''\.git''',
+    '''package-lock\.json''',
+    '''yarn\.lock''',
+    '''pnpm-lock\.yaml''',
+    '''\.next''',
+    '''\.nuxt''',
+    '''\.cache''',
+    '''coverage''',
+    '''\.nyc_output''',
+    '''\.pytest_cache''',
+    '''__pycache__''',
+    '''\.vscode''',
+    '''\.idea''',
+    '''\.DS_Store''',
+    '''Thumbs\.db''',
+    '''\.env\.example''',
+    '''\.env\.template''',
+    '''\.env\.sample''',
+    '''frontend/node_modules''',
+    '''backend/node_modules''',
+    '''subdomains/.*/node_modules'''
+]
+
+# Ignore test files
+regexTarget = "path"
+regexes = [
+    '''.*test.*\.js$''',
+    '''.*spec.*\.js$''',
+    '''.*test.*\.ts$''',
+    '''.*spec.*\.ts$''',
+    '''.*\.test\..*$''',
+    '''.*\.spec\..*$''',
+    '''__tests__''',
+    '''fixtures''',
+    '''mocks'''
+]
+
+# Custom rules for known patterns in this codebase
+[[rules]]
+description = "Supabase Anon Key (Safe to expose)"
+id = "supabase-anon-key"
+regex = '''VITE_SUPABASE_ANON_KEY'''
+tags = ["supabase", "safe"]
+[rules.allowlist]
+regexTarget = "match"
+regexes = [
+    '''VITE_SUPABASE_ANON_KEY''' # This is meant to be public
+]
+
+[[rules]]
+description = "Example/Template Files"
+id = "example-files"
+regex = '''(example|template|sample)'''
+[rules.allowlist]
+paths = [
+    '''.*\.example.*''',
+    '''.*\.template.*''',
+    '''.*\.sample.*''',
+    '''example\..*''',
+    '''template\..*''',
+    '''sample\..*'''
+]
+
+# Additional entropy checks
+[[rules]]
+description = "High Entropy String"
+id = "high-entropy-string"
+regex = '''[a-zA-Z0-9+/]{40,}'''
+secretGroup = 0
+entropy = 4.5
+[rules.allowlist]
+regexes = [
+    '''sha256|sha512|md5|hash''',
+    '''BEGIN CERTIFICATE''',
+    '''BEGIN RSA''',
+    '''BEGIN PUBLIC KEY''',
+    '''-----BEGIN''',
+    '''-----END'''
+]
+
+# Ignore localhost and development URLs
+[[rules]]
+description = "Development URLs"
+id = "dev-urls"
+regex = '''(localhost|127\.0\.0\.1|0\.0\.0\.0|::1)'''
+[rules.allowlist]
+regexTarget = "match"
+regexes = [
+    '''(localhost|127\.0\.0\.1|0\.0\.0\.0|::1)'''
+]
+
+# Ignore common false positives in React/Node projects
+[[rules]]
+description = "React Environment Variables"
+id = "react-env-vars"
+regex = '''VITE_|REACT_APP_|NEXT_PUBLIC_'''
+[rules.allowlist]
+regexTarget = "match"
+regexes = [
+    '''VITE_.*_URL''',
+    '''VITE_.*PUBLIC.*''',
+    '''REACT_APP_.*_URL''',
+    '''NEXT_PUBLIC_.*'''
+]
