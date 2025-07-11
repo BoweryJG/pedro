@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-import { agentPersonalities, AgentPersonality } from '../../chatbot/config/agentPersonalities';
+import { agentPersonalities, type AgentPersonality } from '../../chatbot/config/agentPersonalities';
 import { CartierScrew } from '../effects/CartierScrews';
 import './LuxuryAgentLauncher.css';
 

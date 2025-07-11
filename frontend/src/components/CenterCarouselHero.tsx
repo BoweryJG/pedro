@@ -14,7 +14,7 @@ import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import TouchAppIcon from '@mui/icons-material/TouchApp';
 import { CornerScrews, cartierScrewStyles } from './effects/CartierScrews';
-import { professionalIcons, ProfessionalIconType } from './icons/ProfessionalIcons';
+import { professionalIcons, type ProfessionalIconType } from './icons/ProfessionalIcons';
 import '../styles/luxury-design-system.css';
 
 // Center data with professional medical icons

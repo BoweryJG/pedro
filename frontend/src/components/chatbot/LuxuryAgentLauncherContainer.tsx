@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { LuxuryAgentLauncher } from './LuxuryAgentLauncher';
 import { PremiumChatbot } from '../../chatbot/components/PremiumChatbot';
 import { SimpleWebRTCVoice } from '../SimpleWebRTCVoice';
-import { AgentPersonality } from '../../chatbot/config/agentPersonalities';
+import type { AgentPersonality } from '../../chatbot/config/agentPersonalities';
 
 /**
  * Container component that integrates the luxury launcher with chat and voice systems
