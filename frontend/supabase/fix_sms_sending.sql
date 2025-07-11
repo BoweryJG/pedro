@@ -1,5 +1,13 @@
 -- Fix SMS sending by updating the trigger to call Edge Function
 -- This will make SMS send immediately when appointments are created
+--
+-- IMPORTANT: Before running this script, ensure you have:
+-- 1. Enabled the Supabase Vault extension: CREATE EXTENSION IF NOT EXISTS vault;
+-- 2. Stored your anon key in the vault:
+--    INSERT INTO vault.secrets (name, secret) 
+--    VALUES ('anon_key', 'your-actual-anon-key');
+-- 3. Optionally set the Supabase URL as a configuration parameter:
+--    ALTER DATABASE your_database SET app.supabase_url = 'https://your-project.supabase.co';
 
 -- First, let's create a function that calls the Edge Function
 CREATE OR REPLACE FUNCTION queue_appointment_sms()
@@ -12,6 +20,8 @@ DECLARE
     v_formatted_date TEXT;
     v_formatted_time TEXT;
     v_result JSONB;
+    v_anon_key TEXT;
+    v_supabase_url TEXT;
 BEGIN
     -- Only proceed for new scheduled appointments
     IF NEW.status = 'scheduled' THEN
@@ -51,13 +61,25 @@ BEGIN
             NOW()
         );
         
+        -- Get anon key from vault
+        -- This assumes you have stored the anon key in Supabase Vault
+        SELECT decrypted_secret INTO v_anon_key
+        FROM vault.decrypted_secrets
+        WHERE name = 'anon_key';
+        
+        -- Get Supabase URL from configuration
+        SELECT current_setting('app.supabase_url', true) INTO v_supabase_url;
+        IF v_supabase_url IS NULL THEN
+            v_supabase_url := 'https://tsmtaarwgodklafqlbhm.supabase.co';
+        END IF;
+        
         -- Call Edge Function directly using Supabase's internal function
         -- This will send the SMS immediately
         PERFORM net.http_post(
-            url := 'https://tsmtaarwgodklafqlbhm.supabase.co/functions/v1/send-appointment-sms',
+            url := v_supabase_url || '/functions/v1/send-appointment-sms',
             headers := jsonb_build_object(
                 'Content-Type', 'application/json',
-                'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzbXRhYXJ3Z29ka2xhZnFsYmhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzU3NTIzNTIsImV4cCI6MjA1MTMyODM1Mn0.qKtWF3SQ9rVevhqVZGX3V_SdW1OFrBvaSrV4S9OU-0w'
+                'Authorization', 'Bearer ' || v_anon_key
             ),
             body := jsonb_build_object(
                 'appointmentId', NEW.id::text,

@@ -11,6 +11,7 @@ import {
 } from '@mui/material'
 import { motion } from 'framer-motion'
 import { Phone, CalendarToday, LocationOn, Star } from '@mui/icons-material'
+import { environment } from '../config/environment'
 
 interface TMJHeroProps {
   content: {
@@ -44,7 +45,7 @@ interface TMJHeroProps {
 const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
   const handlePrimaryAction = () => {
     if (content.primaryButton.action === 'schedule') {
-      window.open('tel:+19292424535', '_blank')
+      window.open(`tel:${environment.practice.phoneNumber}`, '_blank')
     }
   }
 
@@ -294,7 +295,7 @@ const TMJHero: React.FC<TMJHeroProps> = ({ content, doctor }) => {
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <LocationOn sx={{ color: 'primary.main', mr: 1 }} />
                     <Typography variant="body2" color="text.secondary">
-                      Staten Island, NY • Manhattan, NY
+                      {environment.practice.address}
                     </Typography>
                   </Box>
                 </CardContent>

@@ -1,5 +1,7 @@
 import express from 'express';
 import PhoneNumberManager from '../services/phoneNumberManager.js';
+import { body, param, query, validationResult } from 'express-validator';
+import { preventSQLInjection } from '../src/middleware/validation.js';
 
 const router = express.Router();
 const phoneManager = new PhoneNumberManager();
@@ -20,9 +22,22 @@ router.post('/purchase', async (req, res) => {
   });
 });
 
+// Validation for getting managed numbers
+const validateGetManagedNumbers = [
+  query('clientId')
+    .optional()
+    .isUUID().withMessage('Client ID must be a valid UUID')
+    .trim()
+];
+
 // Get all managed numbers
-router.get('/managed', async (req, res) => {
+router.get('/managed', validateGetManagedNumbers, async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { clientId } = req.query;
     const numbers = await phoneManager.getManagedNumbers(clientId);
     res.json({ numbers });
@@ -32,9 +47,27 @@ router.get('/managed', async (req, res) => {
   }
 });
 
+// Validation for updating phone number settings
+const validateUpdateSettings = [
+  param('phoneNumber')
+    .isMobilePhone('any').withMessage('Invalid phone number format')
+    .customSanitizer(value => value.replace(/[^\d+()-]/g, '')),
+  body('voice_enabled').optional().isBoolean(),
+  body('sms_enabled').optional().isBoolean(),
+  body('voice_url').optional().isURL(),
+  body('sms_url').optional().isURL(),
+  body('status_callback_url').optional().isURL(),
+  body('friendly_name').optional().isString().isLength({ max: 255 }).trim().escape()
+];
+
 // Update phone number settings
-router.put('/:phoneNumber/settings', async (req, res) => {
+router.put('/:phoneNumber/settings', validateUpdateSettings, async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { phoneNumber } = req.params;
     const settings = req.body;
     

@@ -1,0 +1,72 @@
+🎵 Voice Samples for Dr. Greg Pedro Website
+
+Click any link to listen:
+
+Antoni Voices:
+• Antoni appointment: https://github.com/BoweryJG/pedro/raw/main/backend/antoni_appointment.mp3
+• Antoni greeting: https://github.com/BoweryJG/pedro/raw/main/backend/antoni_greeting.mp3
+• Antoni professional: https://github.com/BoweryJG/pedro/raw/main/backend/antoni_professional.mp3
+
+Herald Voices:
+• Brian excited herald: https://github.com/BoweryJG/pedro/raw/main/backend/brian_excited_herald.mp3
+• Herald chris natural: https://github.com/BoweryJG/pedro/raw/main/backend/herald_chris_natural.mp3
+• Herald josh enthusiastic: https://github.com/BoweryJG/pedro/raw/main/backend/herald_josh_enthusiastic.mp3
+• Herald liam warm: https://github.com/BoweryJG/pedro/raw/main/backend/herald_liam_warm.mp3
+• Herald sam energetic: https://github.com/BoweryJG/pedro/raw/main/backend/herald_sam_energetic.mp3
+• Herald will friendly: https://github.com/BoweryJG/pedro/raw/main/backend/herald_will_friendly.mp3
+
+Julie/NY Voices:
+• Julie appointment booking: https://github.com/BoweryJG/pedro/raw/main/backend/julie_appointment_booking.mp3
+• Julie aria ny ny: https://github.com/BoweryJG/pedro/raw/main/backend/julie_aria_ny_ny.mp3
+• Julie charlotte tough ny: https://github.com/BoweryJG/pedro/raw/main/backend/julie_charlotte_tough_ny.mp3
+• Julie closing: https://github.com/BoweryJG/pedro/raw/main/backend/julie_closing.mp3
+• Julie elli direct: https://github.com/BoweryJG/pedro/raw/main/backend/julie_elli_direct.mp3
+• Julie grace local ny: https://github.com/BoweryJG/pedro/raw/main/backend/julie_grace_local_ny.mp3
+• Julie greeting: https://github.com/BoweryJG/pedro/raw/main/backend/julie_greeting.mp3
+• Julie jessie streetwise: https://github.com/BoweryJG/pedro/raw/main/backend/julie_jessie_streetwise.mp3
+• Julie matilda si ny: https://github.com/BoweryJG/pedro/raw/main/backend/julie_matilda_si_ny.mp3
+• Julie sarah brooklyn ny: https://github.com/BoweryJG/pedro/raw/main/backend/julie_sarah_brooklyn_ny.mp3
+• Julie service information: https://github.com/BoweryJG/pedro/raw/main/backend/julie_service_information.mp3
+• Julie streaming test: https://github.com/BoweryJG/pedro/raw/main/backend/julie_streaming_test.mp3
+• Julie voice domi (warmer settings): https://github.com/BoweryJG/pedro/raw/main/backend/julie_voice_domi_(warmer%20settings).mp3
+• Julie voice jessica: https://github.com/BoweryJG/pedro/raw/main/backend/julie_voice_jessica.mp3
+• Julie voice laura: https://github.com/BoweryJG/pedro/raw/main/backend/julie_voice_laura.mp3
+• Julie voice matilda: https://github.com/BoweryJG/pedro/raw/main/backend/julie_voice_matilda.mp3
+• Julie voice sarah: https://github.com/BoweryJG/pedro/raw/main/backend/julie_voice_sarah.mp3
+
+Latin Voices:
+• Latin carlos venezuelan: https://github.com/BoweryJG/pedro/raw/main/backend/latin_carlos_venezuelan.mp3
+• Latin carmen dominican: https://github.com/BoweryJG/pedro/raw/main/backend/latin_carmen_dominican.mp3
+• Latin isabella colombian: https://github.com/BoweryJG/pedro/raw/main/backend/latin_isabella_colombian.mp3
+• Latin miguel puertorican: https://github.com/BoweryJG/pedro/raw/main/backend/latin_miguel_puertorican.mp3
+• Latin rosa mexican: https://github.com/BoweryJG/pedro/raw/main/backend/latin_rosa_mexican.mp3
+
+Legendary Voices:
+• Legendary adam deep: https://github.com/BoweryJG/pedro/raw/main/backend/legendary_adam_deep.mp3
+• Legendary brian resonant: https://github.com/BoweryJG/pedro/raw/main/backend/legendary_brian_resonant.mp3
+• Legendary daniel broadcaster: https://github.com/BoweryJG/pedro/raw/main/backend/legendary_daniel_broadcaster.mp3
+
+Male Voices:
+• Male voice adam: https://github.com/BoweryJG/pedro/raw/main/backend/male_voice_adam.mp3
+• Male voice arnold: https://github.com/BoweryJG/pedro/raw/main/backend/male_voice_arnold.mp3
+• Male voice josh: https://github.com/BoweryJG/pedro/raw/main/backend/male_voice_josh.mp3
+
+Nicole Voices:
+• Nicole appointment: https://github.com/BoweryJG/pedro/raw/main/backend/nicole_appointment.mp3
+• Nicole greeting: https://github.com/BoweryJG/pedro/raw/main/backend/nicole_greeting.mp3
+
+Staten Island Voices:
+• Si gina edgy: https://github.com/BoweryJG/pedro/raw/main/backend/si_gina_edgy.mp3
+• Si joey excited: https://github.com/BoweryJG/pedro/raw/main/backend/si_joey_excited.mp3
+• Si maria professional: https://github.com/BoweryJG/pedro/raw/main/backend/si_maria_professional.mp3
+• Si teresa warm: https://github.com/BoweryJG/pedro/raw/main/backend/si_teresa_warm.mp3
+• Si tony confident: https://github.com/BoweryJG/pedro/raw/main/backend/si_tony_confident.mp3
+• Si vinny friendly: https://github.com/BoweryJG/pedro/raw/main/backend/si_vinny_friendly.mp3
+
+Spanish Voices:
+• Spanish carlos spanish pro appointment: https://github.com/BoweryJG/pedro/raw/main/backend/spanish_carlos_spanish_pro_appointment.mp3
+• Spanish carlos spanish pro greeting: https://github.com/BoweryJG/pedro/raw/main/backend/spanish_carlos_spanish_pro_greeting.mp3
+• Spanish maria spanish pro appointment: https://github.com/BoweryJG/pedro/raw/main/backend/spanish_maria_spanish_pro_appointment.mp3
+• Spanish maria spanish pro greeting: https://github.com/BoweryJG/pedro/raw/main/backend/spanish_maria_spanish_pro_greeting.mp3
+• Spanish maria spanish pro reassurance: https://github.com/BoweryJG/pedro/raw/main/backend/spanish_maria_spanish_pro_reassurance.mp3
+

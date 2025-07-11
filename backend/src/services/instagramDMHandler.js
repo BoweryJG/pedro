@@ -122,11 +122,11 @@ export class InstagramDMHandler {
       // Get patient info from Instagram API
       const patientInfo = await this.getInstagramUserInfo(senderId);
       
-      // Get practice info (assuming Dr. Pedro for now)
+      // Get practice info
       const { data: practice } = await this.supabase
         .from('practices')
         .select('*')
-        .eq('name', 'Dr. Pedro Advanced Dental Care')
+        .eq('name', process.env.PRACTICE_NAME || 'Default Practice')
         .single();
 
       if (!practice) {
@@ -233,7 +233,7 @@ export class InstagramDMHandler {
       
       // Fallback response
       return {
-        text: "Thank you for your message! I'll make sure Dr. Pedro gets back to you as soon as possible. For urgent matters, please call our office at (718) 555-0123.",
+        text: `Thank you for your message! I'll make sure ${process.env.PRACTICE_NAME || 'our team'} gets back to you as soon as possible. For urgent matters, please call our office at ${process.env.PRACTICE_PHONE || '(xxx) xxx-xxxx'}.`,
         confidence: 0.8,
         requiresReview: true,
         intent: 'fallback'
@@ -251,8 +251,8 @@ export class InstagramDMHandler {
 
 PRACTICE INFORMATION:
 - Services: ${practice.settings?.services?.join(', ') || 'General Dentistry, Yomi Robotic Surgery, TMJ Treatment, EMFACE Procedures'}
-- Location: Staten Island, NY
-- Phone: ${practice.phone || '(718) 555-0123'}
+- Location: ${process.env.PRACTICE_ADDRESS || 'Our Office'}
+- Phone: ${practice.phone || process.env.PRACTICE_PHONE || '(xxx) xxx-xxxx'}
 - Email: ${practice.email}
 - Current Status: ${businessHoursText}
 
@@ -283,7 +283,7 @@ COMMON SCENARIOS:
 - Appointment booking: Offer to help schedule consultation, ask for preferred timing
 - Procedure questions: Provide general info, emphasize Dr. Pedro's expertise, suggest consultation
 - Pricing: Mention consultations include detailed cost discussions and financing options
-- Emergencies: Direct to call office immediately at ${practice.phone}
+- Emergencies: Direct to call office immediately at ${practice.phone || process.env.PRACTICE_PHONE || '(xxx) xxx-xxxx'}
 - After hours: Acknowledge they're contacting outside business hours, provide callback info
 
 Remember: You're representing a premium practice with cutting-edge technology. Be confident in Dr. Pedro's abilities while remaining humble and patient-focused.`;

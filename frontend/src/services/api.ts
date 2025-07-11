@@ -1,7 +1,8 @@
 import axios from 'axios';
+import ENV from '../config/environment';
 
-// Get the backend URL from environment variables
-const API_URL = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+// Get the backend URL from validated environment configuration
+const API_URL = ENV.API_URL;
 
 // Create an axios instance with default configuration
 const api = axios.create({

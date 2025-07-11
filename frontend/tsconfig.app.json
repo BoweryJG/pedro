@@ -21,7 +21,31 @@
     "noUnusedParameters": false,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+
+    /* Path mappings - must match Vite config */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@services/*": ["./src/services/*"],
+      "@assets/*": ["./src/assets/*"]
+    },
+
+    /* Production optimizations */
+    "removeComments": true,
+    "importsNotUsedAsValues": "remove",
+    "preserveConstEnums": true,
+    "downlevelIteration": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
   },
-  "include": ["src"]
+  "include": ["src", "vite.config.ts"],
+  "exclude": ["node_modules", "dist", "build", "**/*.spec.ts", "**/*.test.ts"]
 }

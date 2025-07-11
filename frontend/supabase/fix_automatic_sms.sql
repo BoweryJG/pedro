@@ -1,5 +1,13 @@
 -- Fix automatic SMS sending by updating the trigger
 -- This will send SMS immediately when appointments are created
+--
+-- IMPORTANT: Before running this script, ensure you have:
+-- 1. Enabled the Supabase Vault extension: CREATE EXTENSION IF NOT EXISTS vault;
+-- 2. Stored your service role key in the vault:
+--    INSERT INTO vault.secrets (name, secret) 
+--    VALUES ('service_role_key', 'your-actual-service-role-key');
+-- 3. Optionally set the Supabase URL as a configuration parameter:
+--    ALTER DATABASE your_database SET app.supabase_url = 'https://your-project.supabase.co';
 
 -- First, create a function that sends SMS directly
 CREATE OR REPLACE FUNCTION send_appointment_sms_immediately()
@@ -11,6 +19,8 @@ DECLARE
     v_message TEXT;
     v_formatted_date TEXT;
     v_formatted_time TEXT;
+    v_service_role_key TEXT;
+    v_supabase_url TEXT;
 BEGIN
     -- Only proceed for new scheduled appointments
     IF NEW.status = 'scheduled' THEN
@@ -39,12 +49,24 @@ BEGIN
             NEW.confirmation_code
         );
         
-        -- Send SMS directly using pg_net
+        -- Get service role key from vault
+        -- This assumes you have stored the service role key in Supabase Vault
+        SELECT decrypted_secret INTO v_service_role_key
+        FROM vault.decrypted_secrets
+        WHERE name = 'service_role_key';
+        
+        -- Get Supabase URL from configuration
+        SELECT current_setting('app.supabase_url', true) INTO v_supabase_url;
+        IF v_supabase_url IS NULL THEN
+            v_supabase_url := 'https://tsmtaarwgodklafqlbhm.supabase.co';
+        END IF;
+        
+        -- Send SMS directly using pg_net with secure authentication
         PERFORM net.http_post(
-            url := 'https://tsmtaarwgodklafqlbhm.supabase.co/functions/v1/send-appointment-sms',
+            url := v_supabase_url || '/functions/v1/send-appointment-sms',
             headers := jsonb_build_object(
                 'Content-Type', 'application/json',
-                'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzbXRhYXJ3Z29ka2xhZnFsYmhtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNTc1MjM1MiwiZXhwIjoyMDUxMzI4MzUyfQ.HrboJTgQNvDZQ92M9NXf5pTlNUkRfr0F2uqS7eELAsI'
+                'Authorization', 'Bearer ' || v_service_role_key
             ),
             body := jsonb_build_object(
                 'appointmentId', NEW.id::text,
@@ -91,17 +113,30 @@ CREATE EXTENSION IF NOT EXISTS http;
 DO $$
 DECLARE
     r RECORD;
+    v_service_role_key TEXT;
+    v_supabase_url TEXT;
 BEGIN
+    -- Get service role key from vault
+    SELECT decrypted_secret INTO v_service_role_key
+    FROM vault.decrypted_secrets
+    WHERE name = 'service_role_key';
+    
+    -- Get Supabase URL from configuration
+    SELECT current_setting('app.supabase_url', true) INTO v_supabase_url;
+    IF v_supabase_url IS NULL THEN
+        v_supabase_url := 'https://tsmtaarwgodklafqlbhm.supabase.co';
+    END IF;
+    
     FOR r IN 
         SELECT * FROM sms_queue 
         WHERE status = 'pending' 
         LIMIT 10
     LOOP
         PERFORM net.http_post(
-            url := 'https://tsmtaarwgodklafqlbhm.supabase.co/functions/v1/send-appointment-sms',
+            url := v_supabase_url || '/functions/v1/send-appointment-sms',
             headers := jsonb_build_object(
                 'Content-Type', 'application/json',
-                'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRzbXRhYXJ3Z29ka2xhZnFsYmhtIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTczNTc1MjM1MiwiZXhwIjoyMDUxMzI4MzUyfQ.HrboJTgQNvDZQ92M9NXf5pTlNUkRfr0F2uqS7eELAsI'
+                'Authorization', 'Bearer ' || v_service_role_key
             ),
             body := jsonb_build_object(
                 'appointmentId', r.appointment_id::text,

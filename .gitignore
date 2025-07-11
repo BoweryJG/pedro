@@ -31,12 +31,54 @@ lerna-debug.log*
 .env.development.local
 .env.test.local
 .env.production.local
+*.env
+*.env.*
+
+# Allow example env files
+!.env.example
+!.env.*.example
+!*.env.example
+!*.env.*.example
+
+# Specific subdirectory env files
 frontend/.env
 frontend/.env.*
 !frontend/.env.*.example
 !frontend/.env.example
 backend/.env
 backend/.env.*
+!backend/.env.*.example
+!backend/.env.example
+supabase/**/.env
+supabase/**/.env.*
+!supabase/**/.env.example
+!supabase/**/.env.*.example
+
+# Other sensitive configuration files
+config.json
+config.*.json
+!config.example.json
+!config.*.example.json
+secrets.*
+credentials.*
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+*.keystore
+*.truststore
+
+# API keys and tokens
+*_api_key*
+*_secret*
+*.token
+!*.example.token
+
+# Client configuration files with sensitive data
+backend/config/clients.json
+!backend/config/clients.example.json
 
 # Editor directories and files
 .vscode/*
@@ -58,6 +100,23 @@ dist/
 .cache/
 *.tsbuildinfo
 subdomains/*/tsconfig*.tsbuildinfo
+frontend/dist/
+frontend/node_modules/.vite/
+frontend/node_modules/.tmp/
+.parcel-cache/
+.rollup.cache/
+
+# Vite
+frontend/.vite/
+frontend/dist-ssr/
+frontend/*.local
+
+# Production build artifacts
+*.map
+*.min.js
+*.min.css
+stats.html
+bundle-report.html
 
 # Supabase
 backend/supabase/.temp

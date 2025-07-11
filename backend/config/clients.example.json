@@ -1,0 +1,48 @@
+{
+  "agency": {
+    "name": "Your Agency Name",
+    "owner": "Agency Owner",
+    "email": "owner@agency.com",
+    "facebook_app_id": "{{FACEBOOK_APP_ID}}"
+  },
+  "clients": {
+    "example": {
+      "name": "Dr. Example",
+      "practice_name": "{{PRACTICE_NAME}}",
+      "deployment_url": "{{DEPLOYMENT_URL}}",
+      "instagram_username": "@{{INSTAGRAM_USERNAME}}",
+      "facebook_page_name": "{{FACEBOOK_PAGE_NAME}}",
+      "status": "active",
+      "billing": {
+        "monthly_fee": 997,
+        "start_date": "YYYY-MM-DD",
+        "billing_cycle": "monthly"
+      },
+      "features": {
+        "instagram_dm_automation": true,
+        "appointment_booking": true,
+        "ai_responses": true,
+        "analytics_dashboard": true
+      }
+    },
+    "template": {
+      "name": "Dr. [Name]",
+      "practice_name": "[Practice Name]",
+      "deployment_url": "https://[identifier]backend.onrender.com",
+      "instagram_username": "@[username]",
+      "facebook_page_name": "[Practice] - Managed by [Agency]",
+      "status": "pending",
+      "billing": {
+        "monthly_fee": 997,
+        "start_date": "[DATE]",
+        "billing_cycle": "monthly"
+      },
+      "features": {
+        "instagram_dm_automation": true,
+        "appointment_booking": true,
+        "ai_responses": true,
+        "analytics_dashboard": true
+      }
+    }
+  }
+}

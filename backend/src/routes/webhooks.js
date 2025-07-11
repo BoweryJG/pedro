@@ -2,6 +2,9 @@ import express from 'express';
 import twilio from 'twilio';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
+import { authenticateFlexible, requirePermission } from '../middleware/auth.js';
+import { body, validationResult } from 'express-validator';
+import { preventSQLInjection, preventNoSQLInjection } from '../middleware/validation.js';
 
 dotenv.config();
 
@@ -56,9 +59,28 @@ const validateVoIPWebhook = (req, res, next) => {
 // Twilio Webhook Endpoints
 // =========================
 
-// Twilio Voice Status Callback
-router.post('/twilio/voice/status', validateTwilioWebhook, async (req, res) => {
+// Validation for Twilio voice status webhook
+const validateTwilioVoiceStatus = [
+  body('CallSid').isString().matches(/^CA[0-9a-fA-F]{32}$/),
+  body('CallStatus').isString().isIn(['queued', 'ringing', 'in-progress', 'completed', 'busy', 'failed', 'no-answer', 'canceled']),
+  body('CallDuration').optional().isNumeric(),
+  body('From').optional().isString(),
+  body('To').optional().isString(),
+  body('Direction').optional().isString().isIn(['inbound', 'outbound-api', 'outbound-dial']),
+  body('RecordingUrl').optional().isURL(),
+  body('RecordingSid').optional().matches(/^RE[0-9a-fA-F]{32}$/),
+  body('TranscriptionText').optional().isString().isLength({ max: 65000 }),
+  body('TranscriptionStatus').optional().isString()
+];
+
+// Twilio Voice Status Callback - supports both Twilio validation and API key auth
+router.post('/twilio/voice/status', validateTwilioWebhook, authenticateFlexible, requirePermission('webhook:receive'), validateTwilioVoiceStatus, async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const {
       CallSid,
       CallStatus,
@@ -105,9 +127,25 @@ router.post('/twilio/voice/status', validateTwilioWebhook, async (req, res) => {
   }
 });
 
-// Twilio SMS Webhook
-router.post('/twilio/sms/incoming', validateTwilioWebhook, async (req, res) => {
+// Validation for Twilio SMS webhook
+const validateTwilioSMS = [
+  body('MessageSid').isString().matches(/^(SM|MM)[0-9a-fA-F]{32}$/),
+  body('From').isString(),
+  body('To').isString(),
+  body('Body').isString().isLength({ max: 1600 }),
+  body('NumMedia').optional().isNumeric(),
+  body('MediaUrl0').optional().isURL(),
+  body('MediaContentType0').optional().isString()
+];
+
+// Twilio SMS Webhook - supports both Twilio validation and API key auth
+router.post('/twilio/sms/incoming', validateTwilioWebhook, authenticateFlexible, requirePermission('webhook:receive'), validateTwilioSMS, async (req, res) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const {
       MessageSid,
       From,
@@ -171,8 +209,16 @@ router.post('/twilio/sms/incoming', validateTwilioWebhook, async (req, res) => {
   }
 });
 
-// Twilio SMS Status Callback
-router.post('/twilio/sms/status', validateTwilioWebhook, async (req, res) => {
+// Validation for Twilio SMS status webhook
+const validateTwilioSMSStatus = [
+  body('MessageSid').isString().matches(/^(SM|MM)[0-9a-fA-F]{32}$/),
+  body('MessageStatus').isString().isIn(['queued', 'sending', 'sent', 'failed', 'delivered', 'undelivered', 'receiving', 'received']),
+  body('ErrorCode').optional().isNumeric(),
+  body('ErrorMessage').optional().isString()
+];
+
+// Twilio SMS Status Callback - supports both Twilio validation and API key auth
+router.post('/twilio/sms/status', validateTwilioWebhook, authenticateFlexible, requirePermission('webhook:receive'), validateTwilioSMSStatus, async (req, res) => {
   try {
     const { MessageSid, MessageStatus, ErrorCode, ErrorMessage } = req.body;
 
@@ -200,8 +246,8 @@ router.post('/twilio/sms/status', validateTwilioWebhook, async (req, res) => {
   }
 });
 
-// Twilio Recording Status Callback
-router.post('/twilio/recording/status', validateTwilioWebhook, async (req, res) => {
+// Twilio Recording Status Callback - supports both Twilio validation and API key auth
+router.post('/twilio/recording/status', validateTwilioWebhook, authenticateFlexible, requirePermission('webhook:receive'), async (req, res) => {
   try {
     const {
       RecordingSid,
@@ -246,8 +292,8 @@ router.post('/twilio/recording/status', validateTwilioWebhook, async (req, res) 
 // VoIP.ms Webhook Endpoints
 // =========================
 
-// VoIP.ms SMS Webhook
-router.post('/voipms/sms/incoming', validateVoIPWebhook, async (req, res) => {
+// VoIP.ms SMS Webhook - supports both IP validation and API key auth
+router.post('/voipms/sms/incoming', validateVoIPWebhook, authenticateFlexible, requirePermission('webhook:receive'), async (req, res) => {
   try {
     const { from, to, message, id, date } = req.body;
 
@@ -300,8 +346,8 @@ router.post('/voipms/sms/incoming', validateVoIPWebhook, async (req, res) => {
   }
 });
 
-// VoIP.ms Call Webhook (CDR notification)
-router.post('/voipms/call/cdr', validateVoIPWebhook, async (req, res) => {
+// VoIP.ms Call Webhook (CDR notification) - supports both IP validation and API key auth
+router.post('/voipms/call/cdr', validateVoIPWebhook, authenticateFlexible, requirePermission('webhook:receive'), async (req, res) => {
   try {
     const {
       callid,
@@ -353,8 +399,8 @@ router.post('/voipms/call/cdr', validateVoIPWebhook, async (req, res) => {
   }
 });
 
-// VoIP.ms Recording Ready Webhook
-router.post('/voipms/recording/ready', validateVoIPWebhook, async (req, res) => {
+// VoIP.ms Recording Ready Webhook - supports both IP validation and API key auth
+router.post('/voipms/recording/ready', validateVoIPWebhook, authenticateFlexible, requirePermission('webhook:receive'), async (req, res) => {
   try {
     const { recording_id, call_id, recording_url, duration } = req.body;
 

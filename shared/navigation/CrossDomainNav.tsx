@@ -225,7 +225,8 @@ export const CrossDomainNav: React.FC<CrossDomainNavProps> = ({
   };
 
   const handlePhoneCall = () => {
-    window.open('tel:+17185550123', '_self');
+    const phoneNumber = process.env.NEXT_PUBLIC_PRACTICE_PHONE || '+1xxxxxxxxxx';
+    window.open(`tel:${phoneNumber}`, '_self');
   };
 
   const handleChatToggle = () => {
@@ -427,7 +428,7 @@ export const CrossDomainNav: React.FC<CrossDomainNavProps> = ({
               '&:hover': { backgroundColor: currentDomain.color }
             }}
           >
-            Call Now: (718) 555-0123
+            Call Now: {process.env.NEXT_PUBLIC_PRACTICE_PHONE_DISPLAY || '(xxx) xxx-xxxx'}
           </Button>
         </Box>
       </Drawer>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Monitoring Dashboard - Dr. Pedro Dental</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .error-list {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .error-item:last-child {
+            border-bottom: none;
+        }
+        .error-code {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .error-4xx { background: #ffc107; color: white; }
+        .error-5xx { background: #dc3545; color: white; }
+        .error-3xx { background: #17a2b8; color: white; }
+        .refresh-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .refresh-btn:hover {
+            background: #0056b3;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        canvas {
+            max-width: 100%;
+            height: 300px !important;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Error Monitoring Dashboard</h1>
+            <button class="refresh-btn" onclick="refreshData()">Refresh Data</button>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="loading">Loading statistics...</div>
+        </div>
+
+        <div class="chart-container">
+            <h3>Error Trends (Last 7 Days)</h3>
+            <canvas id="trendsChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <h3>Errors by Status Code</h3>
+            <canvas id="statusChart"></canvas>
+        </div>
+
+        <div class="error-list">
+            <h3>Most Frequent Errors</h3>
+            <div id="frequentErrors">
+                <div class="loading">Loading frequent errors...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE = 'http://localhost:3001/api/errors';
+        const AUTH_TOKEN = 'YOUR_ADMIN_TOKEN'; // Replace with actual token
+
+        // Chart instances
+        let trendsChart = null;
+        let statusChart = null;
+
+        // Fetch data from API
+        async function fetchData(endpoint, params = {}) {
+            const queryString = new URLSearchParams(params).toString();
+            const url = `${API_BASE}${endpoint}${queryString ? '?' + queryString : ''}`;
+            
+            const response = await fetch(url, {
+                headers: {
+                    'Authorization': `Bearer ${AUTH_TOKEN}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return response.json();
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const endDate = new Date().toISOString();
+                const startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+                
+                const { data } = await fetchData('/stats', { startDate, endDate });
+                
+                const statsHtml = `
+                    <div class="stat-card">
+                        <div class="stat-value">${data.totalErrors || 0}</div>
+                        <div class="stat-label">Total Errors</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${data.criticalErrors || 0}</div>
+                        <div class="stat-label">Critical Errors (5xx)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${Object.keys(data.errorsByStatusCode || {}).length}</div>
+                        <div class="stat-label">Unique Error Codes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">${Math.round((data.criticalErrors / data.totalErrors) * 100) || 0}%</div>
+                        <div class="stat-label">Critical Error Rate</div>
+                    </div>
+                `;
+                
+                document.getElementById('statsGrid').innerHTML = statsHtml;
+                
+                // Update status code chart
+                updateStatusChart(data.errorsByStatusCode || {});
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+                document.getElementById('statsGrid').innerHTML = '<div class="error">Failed to load statistics</div>';
+            }
+        }
+
+        // Load trends
+        async function loadTrends() {
+            try {
+                const { data } = await fetchData('/trends', { days: 7 });
+                updateTrendsChart(data || {});
+            } catch (error) {
+                console.error('Failed to load trends:', error);
+            }
+        }
+
+        // Load frequent errors
+        async function loadFrequentErrors() {
+            try {
+                const { data } = await fetchData('/frequent', { limit: 10, days: 7 });
+                
+                const errorsHtml = data.map(error => `
+                    <div class="error-item">
+                        <span class="error-code error-${Math.floor(error.status_code / 100)}xx">${error.status_code}</span>
+                        <strong>${error.method}</strong> ${error.path}
+                        <div style="color: #666; font-size: 0.9em; margin-top: 5px;">
+                            ${error.message} (${error.count} occurrences)
+                        </div>
+                    </div>
+                `).join('');
+                
+                document.getElementById('frequentErrors').innerHTML = errorsHtml || '<div>No errors found</div>';
+            } catch (error) {
+                console.error('Failed to load frequent errors:', error);
+                document.getElementById('frequentErrors').innerHTML = '<div class="error">Failed to load errors</div>';
+            }
+        }
+
+        // Update trends chart
+        function updateTrendsChart(trends) {
+            const ctx = document.getElementById('trendsChart').getContext('2d');
+            
+            const labels = Object.keys(trends).sort();
+            const totalData = labels.map(date => trends[date].total || 0);
+            const clientData = labels.map(date => trends[date].client || 0);
+            const serverData = labels.map(date => trends[date].server || 0);
+            
+            if (trendsChart) {
+                trendsChart.destroy();
+            }
+            
+            trendsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels.map(date => new Date(date).toLocaleDateString()),
+                    datasets: [{
+                        label: 'Total Errors',
+                        data: totalData,
+                        borderColor: 'rgb(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        tension: 0.1
+                    }, {
+                        label: 'Client Errors (4xx)',
+                        data: clientData,
+                        borderColor: 'rgb(255, 193, 7)',
+                        backgroundColor: 'rgba(255, 193, 7, 0.2)',
+                        tension: 0.1
+                    }, {
+                        label: 'Server Errors (5xx)',
+                        data: serverData,
+                        borderColor: 'rgb(220, 53, 69)',
+                        backgroundColor: 'rgba(220, 53, 69, 0.2)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update status code chart
+        function updateStatusChart(statusCodes) {
+            const ctx = document.getElementById('statusChart').getContext('2d');
+            
+            const labels = Object.keys(statusCodes).sort();
+            const data = labels.map(code => statusCodes[code]);
+            const colors = labels.map(code => {
+                if (code >= 500) return 'rgb(220, 53, 69)';
+                if (code >= 400) return 'rgb(255, 193, 7)';
+                if (code >= 300) return 'rgb(23, 162, 184)';
+                return 'rgb(40, 167, 69)';
+            });
+            
+            if (statusChart) {
+                statusChart.destroy();
+            }
+            
+            statusChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Error Count',
+                        data: data,
+                        backgroundColor: colors,
+                        borderColor: colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Refresh all data
+        async function refreshData() {
+            document.getElementById('statsGrid').innerHTML = '<div class="loading">Loading statistics...</div>';
+            document.getElementById('frequentErrors').innerHTML = '<div class="loading">Loading frequent errors...</div>';
+            
+            await Promise.all([
+                loadStats(),
+                loadTrends(),
+                loadFrequentErrors()
+            ]);
+        }
+
+        // Initial load
+        refreshData();
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshData, 30000);
+    </script>
+</body>
+</html>

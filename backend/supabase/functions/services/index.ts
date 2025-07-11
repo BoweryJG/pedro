@@ -1,15 +1,20 @@
 // supabase/functions/services/index.ts
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://deno.land/x/supabase/mod.ts";
+import { getCorsHeaders } from '../_shared/cors.ts'
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
 const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") || "";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 serve(async (req) => {
+  // Get the origin from the request headers
+  const origin = req.headers.get('Origin');
+  const corsHeaders = getCorsHeaders(origin);
+  
   // Handle CORS preflight request
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: { 'Access-Control-Allow-Origin': '*' } })
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
@@ -90,7 +95,7 @@ serve(async (req) => {
       }),
       {
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
           'Content-Type': 'application/json',
         },
         status: error ? 400 : 200,
@@ -103,7 +108,7 @@ serve(async (req) => {
       }),
       {
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          ...corsHeaders,
           'Content-Type': 'application/json',
         },
         status: 500,

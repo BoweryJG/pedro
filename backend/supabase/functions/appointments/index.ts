@@ -1,13 +1,17 @@
 // supabase/functions/appointments/index.ts
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://deno.land/x/supabase/mod.ts";
-import { corsHeaders } from '../_shared/cors.ts'
+import { getCorsHeaders } from '../_shared/cors.ts'
 
 const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
 const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") || "";
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 serve(async (req) => {
+  // Get the origin from the request headers
+  const origin = req.headers.get('Origin');
+  const corsHeaders = getCorsHeaders(origin);
+  
   // Handle CORS preflight request
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })

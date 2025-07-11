@@ -17,6 +17,7 @@ import {
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle, Warning } from '@mui/icons-material'
+import { environment } from '../config/environment'
 
 interface Symptom {
   name: string
@@ -192,7 +193,7 @@ const TMJSymptomAssessment: React.FC<TMJSymptomAssessmentProps> = ({ symptoms })
               <Button
                 variant="contained"
                 size="large"
-                onClick={() => window.open('tel:+19292424535', '_blank')}
+                onClick={() => window.open(`tel:${environment.practice.phoneNumber}`, '_blank')}
                 sx={{ mr: 2, mb: 2 }}
               >
                 Schedule Consultation

@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
+import { validateAndExit } from './src/utils/envValidator.js';
 import VoiceService from './voiceService.js';
 import WebRTCVoiceService from './webrtcVoiceService.js';
 import DeepgramVoiceService from './deepgramVoiceService.js';
@@ -15,9 +16,62 @@ import ScheduledJobsService from './src/services/scheduledJobs.js';
 import julieAI from './services/julieAI.js';
 import webhookRoutes from './src/routes/webhooks.js';
 import phoneNumberRoutes from './routes/phoneNumbers.js';
+import authRoutes from './src/routes/auth.js';
+import apiKeyRoutes from './src/routes/api-keys.js';
+import errorAnalyticsRoutes from './src/routes/errorAnalytics.js';
+import { authenticate, authorize, requirePermission, authenticateFlexible, verifyResourceOwnership, auditLog, ROLES } from './src/middleware/auth.js';
+
+// Import error handling middleware
+import {
+  requestErrorLogger,
+  globalErrorHandler,
+  notFoundHandler,
+  asyncHandler
+} from './src/middleware/errorHandler.js';
+import {
+  responseTimeTracker,
+  requestLogger,
+  sanitizeRequestData
+} from './src/middleware/requestLogger.js';
+import logger from './src/utils/logger.js';
+import {
+  globalSanitizer,
+  validateChat,
+  validateVoiceConfig,
+  validateSunbitFinancing,
+  validateCherryFinancing,
+  validateInsuranceVerification,
+  validateSendSMS,
+  validateWebhookSMS,
+  validateConfigureWebhook,
+  validateCallHistoryQuery,
+  validateTranscriptQuery,
+  validateTTSRequest,
+  validateCallSidParam,
+  validateRecordingIdParam,
+  validatePaginationQuery,
+  validateDateRangeQuery
+} from './src/middleware/validation.js';
+import {
+  securityHeaders,
+  requestSizeLimiter,
+  requestIdMiddleware,
+  securityLogger,
+  normalizeInput,
+  sanitizeQuery,
+  validateContentType,
+  csrfProtection,
+  authRateLimiter,
+  strictRateLimiter,
+  apiRateLimiter
+} from './src/middleware/security.js';
 
 // Load environment variables
 dotenv.config();
+
+// Validate environment variables before starting the server
+console.log('🔍 Validating environment variables...');
+const validatedConfig = validateAndExit();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -118,7 +172,13 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-// Security middleware
+// Apply security middleware in correct order
+app.use(requestIdMiddleware);
+app.use(securityLogger);
+app.use(requestSizeLimiter);
+app.use(securityHeaders);
+
+// Additional helmet configuration (merged with securityHeaders)
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -153,14 +213,40 @@ const strictLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Response time tracking (should be first)
+app.use(responseTimeTracker);
+
 // Logging middleware
-app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev', {
+  stream: logger.stream
+}));
 
 // Apply middlewares
 app.use(cors(corsOptions));
+
+// Content type validation (before body parsing)
+app.use(validateContentType(['application/json', 'application/x-www-form-urlencoded']));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-app.use('/api/', limiter);
+
+// Apply sanitization and normalization
+app.use(normalizeInput);
+app.use(globalSanitizer);
+app.use(sanitizeQuery);
+
+// CSRF protection (after body parsing)
+app.use(csrfProtection);
+
+// Sanitize request data for logging
+app.use(sanitizeRequestData);
+
+// Request logging
+app.use(requestLogger);
+
+// Apply rate limiting
+app.use('/api/', apiRateLimiter);
+app.use('/api/auth/', authRateLimiter);
 
 // Health check endpoint (no rate limit)
 app.get('/', (req, res) => {
@@ -191,10 +277,15 @@ app.get('/api/status', (req, res) => {
   });
 });
 
-// Chat endpoint for Julie AI assistant
-app.post('/chat', async (req, res) => {
-  try {
-    const { messages, systemPrompt } = req.body;
+// Authentication routes (public with specific rate limiting)
+app.use('/api/auth', authRoutes);
+
+// API Key management routes (admin only)
+app.use('/api/keys', apiKeyRoutes);
+
+// Chat endpoint for Julie AI assistant - requires authentication
+app.post('/chat', authenticate, validateChat, asyncHandler(async (req, res) => {
+    const { messages, systemPrompt } = req.validatedData || req.body;
     
     if (!messages || !systemPrompt) {
       return res.status(400).json({ 
@@ -237,20 +328,12 @@ app.post('/chat', async (req, res) => {
     res.json({
       response: data.choices[0].message.content
     });
-    
-  } catch (error) {
-    console.error('Chat endpoint error:', error);
-    res.status(500).json({ 
-      error: 'Failed to generate response',
-      details: error.message 
-    });
-  }
-});
+}));
 
-// Voice configuration endpoint
-app.post('/voice/config', (req, res) => {
+// Voice configuration endpoint - requires doctor or admin role
+app.post('/voice/config', authenticate, authorize(ROLES.DOCTOR, ROLES.ADMIN, ROLES.SUPER_ADMIN), validateVoiceConfig, auditLog('voice_config_update'), (req, res) => {
   try {
-    const { voiceId, agentName, agentRole, personality } = req.body;
+    const { voiceId, agentName, agentRole, personality } = req.validatedData || req.body;
     
     // Update voice service configuration
     if (voiceService) {
@@ -307,10 +390,10 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Financing - Sunbit endpoint
-app.post('/financing/sunbit', async (req, res) => {
+// Financing - Sunbit endpoint - requires authentication
+app.post('/financing/sunbit', authenticate, requirePermission('read:billing'), validateSunbitFinancing, async (req, res) => {
   try {
-    const { applicant, transaction } = req.body;
+    const { applicant, transaction } = req.validatedData || req.body;
 
     // In production, this would call the actual Sunbit API
     // For now, simulate approval logic based on Sunbit's 85% approval rate
@@ -365,10 +448,10 @@ app.post('/financing/sunbit', async (req, res) => {
   }
 });
 
-// Financing - Cherry endpoint
-app.post('/financing/cherry', async (req, res) => {
+// Financing - Cherry endpoint - requires authentication
+app.post('/financing/cherry', authenticate, requirePermission('read:billing'), validateCherryFinancing, async (req, res) => {
   try {
-    const { patient, practice, amount } = req.body;
+    const { patient, practice, amount } = req.validatedData || req.body;
     
     // Get Cherry API credentials from environment
     const cherryApiKey = process.env.CHERRY_API_KEY;
@@ -448,10 +531,10 @@ app.post('/financing/cherry', async (req, res) => {
   }
 });
 
-// Insurance - pVerify endpoint
-app.post('/insurance/pverify', async (req, res) => {
+// Insurance - pVerify endpoint - requires authentication
+app.post('/insurance/pverify', authenticate, requirePermission('read:patients'), validateInsuranceVerification, async (req, res) => {
   try {
-    const { subscriber, provider, payerId, serviceType } = req.body;
+    const { subscriber, provider, payerId, serviceType } = req.validatedData || req.body;
 
     // Simulate pVerify response
     // In production, this would call the actual pVerify API
@@ -497,8 +580,8 @@ app.post('/insurance/pverify', async (req, res) => {
   }
 });
 
-// Insurance - Zuub endpoint (placeholder for future implementation)
-app.post('/insurance/zuub', async (req, res) => {
+// Insurance - Zuub endpoint - requires authentication
+app.post('/insurance/zuub', authenticate, requirePermission('read:patients'), async (req, res) => {
   try {
     // Zuub integration would go here
     // For now, return a placeholder response
@@ -647,9 +730,9 @@ app.get('/voice/test', async (req, res) => {
 });
 
 // VoIP.ms SMS webhook endpoint
-app.post('/api/voip/sms/webhook', async (req, res) => {
+app.post('/api/voip/sms/webhook', validateWebhookSMS, async (req, res) => {
   try {
-    const { from, message, id } = req.body;
+    const { from, message, id } = req.validatedData || req.body;
     
     if (!from || !message) {
       return res.status(400).json({ error: 'Missing required fields' });
@@ -665,10 +748,10 @@ app.post('/api/voip/sms/webhook', async (req, res) => {
   }
 });
 
-// Send SMS endpoint
-app.post('/api/voip/sms/send', strictLimiter, async (req, res) => {
+// Send SMS endpoint - requires authentication and permission
+app.post('/api/voip/sms/send', strictLimiter, authenticate, requirePermission('manage:sms'), validateSendSMS, auditLog('sms_send'), async (req, res) => {
   try {
-    const { to, message } = req.body;
+    const { to, message } = req.validatedData || req.body;
     
     if (!to || !message) {
       return res.status(400).json({ error: 'Missing required fields: to, message' });
@@ -682,10 +765,10 @@ app.post('/api/voip/sms/send', strictLimiter, async (req, res) => {
   }
 });
 
-// Get SMS conversations
-app.get('/api/voip/sms/conversations', async (req, res) => {
+// Get SMS conversations - requires authentication
+app.get('/api/voip/sms/conversations', authenticate, requirePermission('manage:sms'), validatePaginationQuery, async (req, res) => {
   try {
-    const { limit = 50 } = req.query;
+    const { limit = 50 } = req.validatedData || req.query;
     const messages = await voipService.getSMSMessages(null, null, parseInt(limit));
     res.json({ messages });
   } catch (error) {
@@ -694,10 +777,10 @@ app.get('/api/voip/sms/conversations', async (req, res) => {
   }
 });
 
-// Get call recordings
-app.get('/api/voip/calls/recordings', async (req, res) => {
+// Get call recordings - requires authentication
+app.get('/api/voip/calls/recordings', authenticate, requirePermission('manage:voice_calls'), validateCallHistoryQuery, async (req, res) => {
   try {
-    const { callId } = req.query;
+    const { callId } = req.validatedData || req.query;
     const recordings = await voipService.getCallRecordings(callId);
     res.json({ recordings });
   } catch (error) {
@@ -706,8 +789,8 @@ app.get('/api/voip/calls/recordings', async (req, res) => {
   }
 });
 
-// Download specific recording
-app.get('/api/voip/calls/recording/:recordingId', async (req, res) => {
+// Download specific recording - requires authentication
+app.get('/api/voip/calls/recording/:recordingId', authenticate, requirePermission('manage:voice_calls'), validateRecordingIdParam, async (req, res) => {
   try {
     const { recordingId } = req.params;
     const { callSid } = req.query;
@@ -724,10 +807,10 @@ app.get('/api/voip/calls/recording/:recordingId', async (req, res) => {
   }
 });
 
-// Get call history
-app.get('/api/voip/calls/history', async (req, res) => {
+// Get call history - requires authentication
+app.get('/api/voip/calls/history', authenticate, requirePermission('manage:voice_calls'), validateDateRangeQuery, async (req, res) => {
   try {
-    const { dateFrom, dateTo } = req.query;
+    const { dateFrom, dateTo } = req.validatedData || req.query;
     
     if (!dateFrom || !dateTo) {
       return res.status(400).json({ error: 'Missing date range parameters' });
@@ -741,8 +824,8 @@ app.get('/api/voip/calls/history', async (req, res) => {
   }
 });
 
-// Sync call history (admin endpoint)
-app.post('/api/voip/sync', strictLimiter, async (req, res) => {
+// Sync call history - admin only
+app.post('/api/voip/sync', strictLimiter, authenticate, authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN), auditLog('voip_sync'), async (req, res) => {
   try {
     await voipService.syncCallHistory();
     res.json({ status: 'success', message: 'Call history sync initiated' });
@@ -752,10 +835,10 @@ app.post('/api/voip/sync', strictLimiter, async (req, res) => {
   }
 });
 
-// Get VoIP analytics
-app.get('/api/voip/analytics', async (req, res) => {
+// Get VoIP analytics - requires authentication
+app.get('/api/voip/analytics', authenticate, requirePermission('view:analytics'), validateDateRangeQuery, async (req, res) => {
   try {
-    const { startDate, endDate } = req.query;
+    const { startDate, endDate } = req.validatedData || req.query;
     
     if (!startDate || !endDate) {
       return res.status(400).json({ error: 'Missing date range parameters' });
@@ -769,10 +852,10 @@ app.get('/api/voip/analytics', async (req, res) => {
   }
 });
 
-// Configure VoIP.ms webhook
-app.post('/api/voip/configure-webhook', strictLimiter, async (req, res) => {
+// Configure VoIP.ms webhook - admin only
+app.post('/api/voip/configure-webhook', strictLimiter, authenticate, authorize(ROLES.ADMIN, ROLES.SUPER_ADMIN), validateConfigureWebhook, auditLog('voip_webhook_config'), async (req, res) => {
   try {
-    const { webhookUrl } = req.body;
+    const { webhookUrl } = req.validatedData || req.body;
     
     if (!webhookUrl) {
       return res.status(400).json({ error: 'Missing webhookUrl' });
@@ -897,8 +980,8 @@ app.post('/voice/julie/status', async (req, res) => {
   res.sendStatus(200);
 });
 
-// Get active Julie AI sessions
-app.get('/api/julie/sessions', async (req, res) => {
+// Get active Julie AI sessions - requires authentication
+app.get('/api/julie/sessions', authenticate, requirePermission('manage:voice_calls'), async (req, res) => {
   try {
     const sessions = julieAI.getActiveSessions();
     res.json({ sessions });
@@ -933,10 +1016,10 @@ app.get('/api/julie/health', async (req, res) => {
   }
 });
 
-// Test TTS endpoint for Julie's voice
-app.post('/api/voice/test-tts', async (req, res) => {
+// Test TTS endpoint for Julie's voice - requires authentication
+app.post('/api/voice/test-tts', authenticate, requirePermission('manage:voice_calls'), validateTTSRequest, async (req, res) => {
   try {
-    const { text = 'Hello, this is Julie from Dr. Pedro\'s office. How can I help you today?' } = req.body;
+    const { text = 'Hello, this is Julie from Dr. Pedro\'s office. How can I help you today?' } = req.validatedData || req.body;
     
     // Use the voice service to generate audio
     const audioData = await voiceService.textToSpeech(text);
@@ -961,8 +1044,8 @@ app.post('/api/voice/test-tts', async (req, res) => {
   }
 });
 
-// Get available ElevenLabs voices
-app.get('/api/voice/available-voices', async (req, res) => {
+// Get available ElevenLabs voices - requires authentication
+app.get('/api/voice/available-voices', authenticate, requirePermission('manage:voice_calls'), async (req, res) => {
   try {
     if (!voiceService.ttsService) {
       return res.status(503).json({
@@ -998,10 +1081,10 @@ app.get('/api/voice/available-voices', async (req, res) => {
   }
 });
 
-// Call transcripts API endpoint
-app.get('/api/voice/transcripts', async (req, res) => {
+// Call transcripts API endpoint - requires authentication
+app.get('/api/voice/transcripts', authenticate, requirePermission('manage:voice_calls'), validateTranscriptQuery, async (req, res) => {
   try {
-    const { limit = 50, client_id } = req.query;
+    const { limit = 50, client_id } = req.validatedData || req.query;
     
     // Create Supabase client
     const { createClient } = await import('@supabase/supabase-js');
@@ -1046,8 +1129,8 @@ app.get('/api/voice/transcripts', async (req, res) => {
   }
 });
 
-// Single call transcript API endpoint
-app.get('/api/voice/transcripts/:callSid', async (req, res) => {
+// Single call transcript API endpoint - requires authentication
+app.get('/api/voice/transcripts/:callSid', authenticate, requirePermission('manage:voice_calls'), validateCallSidParam, async (req, res) => {
   try {
     const { callSid } = req.params;
     
@@ -1089,12 +1172,24 @@ app.get('/api/voice/transcripts/:callSid', async (req, res) => {
 // Mount webhook routes
 app.use('/webhooks', webhookRoutes);
 
-// Mount phone number management routes
-app.use('/api/phone-numbers', phoneNumberRoutes);
+// Mount phone number management routes - requires authentication
+app.use('/api/phone-numbers', authenticate, requirePermission('manage:voice_calls'), phoneNumberRoutes);
 
-// Mount AI voice agent routes
+// Mount AI voice agent routes - requires authentication
 import { voiceAgentApp } from './voice-agent/index.js';
-app.use('/api/voice-agent', voiceAgentApp);
+app.use('/api/voice-agent', authenticate, requirePermission('manage:voice_calls'), voiceAgentApp);
+
+// Mount error analytics routes (admin only)
+app.use('/api/errors', errorAnalyticsRoutes);
+
+// 404 handler - must be after all routes
+app.use(notFoundHandler);
+
+// Error logging middleware - must be before error handler
+app.use(requestErrorLogger);
+
+// Global error handler - must be last
+app.use(globalErrorHandler);
 
 server.listen(PORT, () => {
   console.log(`Backend server with WebSocket support running on port ${PORT}`);
