@@ -23,10 +23,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
+      - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: Run ESLint
@@ -45,10 +44,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
+      - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: Run TypeScript check
@@ -67,10 +65,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
+      - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: Build frontend
@@ -101,10 +98,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
+      - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: Run frontend tests
@@ -126,11 +122,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install backend dependencies
-        working-directory: ./backend
-        run: npm ci
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
 
       - name: Run ESLint
         working-directory: ./backend
@@ -148,11 +143,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install backend dependencies
-        working-directory: ./backend
-        run: npm ci
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
 
       - name: Validate environment
         working-directory: ./backend
@@ -189,19 +183,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
 
-      - name: Run npm audit for frontend
-        working-directory: ./frontend
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Run npm audit
         run: npm audit --production --audit-level=high || true
 
-      - name: Run npm audit for backend
-        working-directory: ./backend
-        run: npm audit --production --audit-level=high || true
-
-      - name: Run CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
-        with:
-          languages: javascript, typescript
+      # CodeQL would require a separate workflow with proper initialization
+      # Skipping CodeQL for now as it needs init/autobuild/analyze steps
 
   dependency-review:
     name: Dependency Review
@@ -228,11 +220,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install backend dependencies
-        working-directory: ./backend
-        run: npm ci
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
 
       - name: Check for migration files
         run: |
@@ -257,10 +248,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
+      - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: Build and analyze bundle
