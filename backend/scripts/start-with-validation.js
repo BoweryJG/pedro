@@ -11,6 +11,16 @@ console.log(formatValidationResults(results));
 
 if (!results.valid) {
   console.error('💥 Cannot start server due to environment configuration errors.\n');
+  
+  // In production on Render, provide specific guidance
+  if (process.env.RENDER) {
+    console.error('🔧 You are running on Render. Please add the missing environment variables in your Render dashboard:\n');
+    console.error('   1. Go to https://dashboard.render.com/');
+    console.error('   2. Select your service');
+    console.error('   3. Go to the "Environment" tab');
+    console.error('   4. Add the missing variables listed above\n');
+  }
+  
   console.error('Please fix the errors above and try again.\n');
   process.exit(1);
 }
