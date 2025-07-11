@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "NODE_ENV=production node scripts/start-with-validation.js",
+    "start": "NODE_ENV=production node index.js",
     "start:prod": "NODE_ENV=production node scripts/start-production.js",
     "start:no-validation": "NODE_ENV=production node index.js",
     "start:dev": "NODE_ENV=development node scripts/start-with-validation.js",
