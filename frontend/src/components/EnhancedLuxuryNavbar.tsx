@@ -65,7 +65,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { setShowCenterSelector, setMode, setCurrentCenter } = useAdaptiveNavigation();
+  const { currentCenter, setShowCenterSelector, setMode, setCurrentCenter } = useAdaptiveNavigation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
