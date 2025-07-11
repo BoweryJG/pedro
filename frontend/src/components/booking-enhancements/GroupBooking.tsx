@@ -76,7 +76,7 @@ export const GroupBooking: React.FC<GroupBookingProps> = ({
   value,
   onChange,
   maxGroupSize = 6,
-  serviceId,
+  // serviceId,
 }) => {
   const [expandedMembers, setExpandedMembers] = useState<Set<string>>(new Set());
   const [showGroupOptions, setShowGroupOptions] = useState(true);
@@ -183,7 +183,7 @@ export const GroupBooking: React.FC<GroupBookingProps> = ({
         <InputLabel>Group Type</InputLabel>
         <Select
           value={value.type}
-          onChange={(e) => onChange({ ...value, type: e.target.value as any })}
+          onChange={(e) => onChange({ ...value, type: e.target.value as 'family' | 'corporate' | 'custom' })}
           label="Group Type"
         >
           <MenuItem value="family">Family</MenuItem>

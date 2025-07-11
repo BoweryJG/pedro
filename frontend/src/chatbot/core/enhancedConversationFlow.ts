@@ -172,7 +172,7 @@ export class EnhancedConversationFlowManager {
     return this.state.currentStage;
   }
   
-  getStageResponse(stage: ConversationStage, context?: any): string {
+  getStageResponse(stage: ConversationStage, context?: Record<string, unknown>): string {
     const config = this.stageConfigs[stage];
     const responses = config.responses;
     

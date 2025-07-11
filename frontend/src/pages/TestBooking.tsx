@@ -4,8 +4,8 @@ import { AppointmentService } from '../services/appointmentService';
 import { supabase, isSupabaseEnabled } from '../lib/supabase';
 
 const TestBooking = () => {
-  const [services, setServices] = useState<any[]>([]);
-  const [staff, setStaff] = useState<any[]>([]);
+  const [services, setServices] = useState<Array<{ id: string; name: string; description: string; category: string }>>([]);
+  const [staff, setStaff] = useState<Array<{ id: string; first_name: string; last_name: string; title: string }>>([]);
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
 
@@ -38,9 +38,9 @@ const TestBooking = () => {
       console.log('Staff:', staffData);
       setStaff(staffData || []);
       
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error:', err);
-      setError(err.message || 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }

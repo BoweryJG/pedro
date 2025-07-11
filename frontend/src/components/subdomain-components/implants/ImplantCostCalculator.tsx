@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   Box,
   Container,
@@ -33,7 +33,7 @@ import {
   CheckCircle,
   ExpandMore,
   CreditCard,
-  Schedule,
+  // Schedule,
   Psychology
 } from '@mui/icons-material'
 import { implantApiService, implantApiUtils } from '../../../services/implantApi'
@@ -56,6 +56,21 @@ interface FinancingOption {
   totalCost: number
 }
 
+const bonusServices = [
+  { name: '3D Imaging & Planning', cost: 350, description: 'Comprehensive 3D scan for precise placement' },
+  { name: 'Bone Grafting', cost: 800, description: 'Bone augmentation if needed' },
+  { name: 'Sinus Lift', cost: 1200, description: 'Upper jaw bone enhancement' },
+  { name: 'Sedation', cost: 400, description: 'IV sedation for comfort' },
+  { name: 'Temporary Crown', cost: 300, description: 'Immediate temporary restoration' },
+  { name: 'Premium Crown Material', cost: 500, description: 'Zirconia or porcelain upgrade' }
+]
+
+const baseCosts = {
+  single: { implant: 2500, crown: 1200, surgical: 800 },
+  multiple: { implant: 2200, crown: 1100, surgical: 600 },
+  full_mouth: { implant: 2000, crown: 1000, surgical: 500 }
+}
+
 const ImplantCostCalculator: React.FC = () => {
   const { toggleChat, sendMessage } = useChatStore()
   const [implantType, setImplantType] = useState<'single' | 'multiple' | 'full_mouth'>('single')
@@ -66,22 +81,7 @@ const ImplantCostCalculator: React.FC = () => {
   const [financingOptions, setFinancingOptions] = useState<FinancingOption[]>([])
   const [isCalculating, setIsCalculating] = useState(false)
 
-  const bonusServices = [
-    { name: '3D Imaging & Planning', cost: 350, description: 'Comprehensive 3D scan for precise placement' },
-    { name: 'Bone Grafting', cost: 800, description: 'Bone augmentation if needed' },
-    { name: 'Sinus Lift', cost: 1200, description: 'Upper jaw bone enhancement' },
-    { name: 'Sedation', cost: 400, description: 'IV sedation for comfort' },
-    { name: 'Temporary Crown', cost: 300, description: 'Immediate temporary restoration' },
-    { name: 'Premium Crown Material', cost: 500, description: 'Zirconia or porcelain upgrade' }
-  ]
-
-  const baseCosts = {
-    single: { implant: 2500, crown: 1200, surgical: 800 },
-    multiple: { implant: 2200, crown: 1100, surgical: 600 },
-    full_mouth: { implant: 2000, crown: 1000, surgical: 500 }
-  }
-
-  const calculateCost = async () => {
+  const calculateCost = useCallback(async () => {
     setIsCalculating(true)
     
     try {
@@ -159,7 +159,7 @@ const ImplantCostCalculator: React.FC = () => {
     }
     
     setIsCalculating(false)
-  }
+  }, [implantType, quantity, includeCrown, selectedServices])
 
   const handleServiceToggle = (serviceName: string) => {
     setSelectedServices(prev => 
@@ -185,7 +185,7 @@ const ImplantCostCalculator: React.FC = () => {
 
   useEffect(() => {
     calculateCost()
-  }, [implantType, quantity, includeCrown, selectedServices])
+  }, [implantType, quantity, includeCrown, selectedServices, calculateCost])
 
   return (
     <Box 
@@ -240,7 +240,7 @@ const ImplantCostCalculator: React.FC = () => {
                   <InputLabel>Implant Type</InputLabel>
                   <Select
                     value={implantType}
-                    onChange={(e) => setImplantType(e.target.value as any)}
+                    onChange={(e) => setImplantType(e.target.value as 'single' | 'multiple' | 'full_mouth')}
                   >
                     <MenuItem value="single">Single Implant</MenuItem>
                     <MenuItem value="multiple">Multiple Implants</MenuItem>

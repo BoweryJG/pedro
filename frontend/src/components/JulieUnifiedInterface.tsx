@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   Fab,
@@ -7,7 +7,7 @@ import {
   IconButton,
   Tooltip,
   Avatar,
-  Badge,
+  // Badge,
   useTheme,
   useMediaQuery,
   Chip,
@@ -16,7 +16,7 @@ import {
 import {
   Chat as ChatIcon,
   Mic as MicIcon,
-  Phone as PhoneIcon,
+  // Phone as PhoneIcon,
   Close as CloseIcon,
   VolumeUp as SpeakerIcon,
   StopCircle as StopIcon,
@@ -100,7 +100,7 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
         synthRef.current.cancel();
       }
     };
-  }, []);
+  }, [handleVoiceMessage]);
 
   const requestMicrophonePermission = async () => {
     try {
@@ -134,7 +134,7 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
     setIsListening(false);
   };
 
-  const handleVoiceMessage = async (message: string) => {
+  const handleVoiceMessage = useCallback(async (message: string) => {
     if (message.trim()) {
       await chatStore.sendMessage(message);
       setTranscript('');
@@ -145,9 +145,9 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
         speakResponse(latestMessage.content);
       }
     }
-  };
+  }, [chatStore, speakResponse]);
 
-  const speakResponse = (text: string) => {
+  const speakResponse = useCallback((text: string) => {
     if (synthRef.current && 'speechSynthesis' in window) {
       // Cancel any ongoing speech
       synthRef.current.cancel();
@@ -165,7 +165,7 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
       
       synthRef.current.speak(utterance);
     }
-  };
+  }, []);
 
   const stopSpeaking = () => {
     if (synthRef.current) {
@@ -220,15 +220,15 @@ export const JulieUnifiedInterface: React.FC<JulieUnifiedInterfaceProps> = ({ on
     window.addEventListener('open-julie-voice', handleOpenJulieVoice);
     
     // Expose direct methods on window for fallback access
-    (window as any).openJulieChat = handleOpenJulieChat;
-    (window as any).openJulieVoice = handleOpenJulieVoice;
+    (window as Record<string, () => void>).openJulieChat = handleOpenJulieChat;
+    (window as Record<string, () => void>).openJulieVoice = handleOpenJulieVoice;
 
     return () => {
       console.log('🔄 JulieUnifiedInterface: Cleaning up event listeners');
       window.removeEventListener('open-julie-chat', handleOpenJulieChat);
       window.removeEventListener('open-julie-voice', handleOpenJulieVoice);
-      delete (window as any).openJulieChat;
-      delete (window as any).openJulieVoice;
+      delete (window as Record<string, () => void>).openJulieChat;
+      delete (window as Record<string, () => void>).openJulieVoice;
     };
   }, [chatStore]);
 

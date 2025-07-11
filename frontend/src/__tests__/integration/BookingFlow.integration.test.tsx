@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor, within } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { BookAppointmentButton } from '../../components/BookAppointmentButton';
@@ -13,7 +13,7 @@ jest.mock('../../services/appointmentService');
 
 // Mock date picker for simplicity
 jest.mock('@mui/x-date-pickers/DatePicker', () => ({
-  DatePicker: ({ label, value, onChange, ...props }: any) => (
+  DatePicker: ({ label, value, onChange, ...props }: {label?: string; value?: dayjs.Dayjs | null; onChange?: (value: dayjs.Dayjs | null) => void; [key: string]: unknown}) => (
     <input
       type="date"
       aria-label={label}

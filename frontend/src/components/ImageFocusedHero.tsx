@@ -252,8 +252,8 @@ const ImageFocusedHero: React.FC = () => {
           </Box>
         </motion.div>
 
-      {/* Excellence Centers Showcase */}
-      <Box sx={{ position: 'relative' }}>
+        {/* Excellence Centers Showcase */}
+        <Box sx={{ position: 'relative' }}>
           {/* Navigation Controls */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <IconButton
@@ -541,9 +541,6 @@ const ImageFocusedHero: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
-      </Box>
-      </Box>
-      </Box>
     </Box>
   );
 };

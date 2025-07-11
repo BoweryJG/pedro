@@ -51,7 +51,7 @@ import CloseIcon from '@mui/icons-material/Close';
 interface FinancingWidgetProps {
   procedureType: 'yomi' | 'tmj' | 'emface';
   procedureCost: number;
-  onComplete?: (result: any) => void;
+  onComplete?: (result: { type: string; data: unknown }) => void;
 }
 
 const steps = ['Choose Option', 'Enter Information', 'Get Results'];
@@ -64,7 +64,7 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
   const [activeStep, setActiveStep] = useState(0);
   const [selectedOption, setSelectedOption] = useState<'financing' | 'insurance' | null>(null);
   const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<{ type: string; data: unknown } | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   // Financing form data
@@ -427,7 +427,7 @@ export const FinancingWidget: React.FC<FinancingWidgetProps> = ({
                 </Typography>
                 {results.data.length > 0 ? (
                   <Box sx={{ mt: 2 }}>
-                    {results.data.map((option: any, index: number) => (
+                    {(results.data as Array<{ approved?: boolean; provider?: string; apr?: number; term?: number; monthlyPayment?: number; totalCost?: number }>).map((option, index) => (
                       <Accordion key={index} defaultExpanded={option.approved && index === 0}>
                         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                           <Box display="flex" alignItems="center" gap={2} width="100%">

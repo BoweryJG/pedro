@@ -2,7 +2,7 @@ import type { ConversationStage, Analytics } from '../types';
 
 interface AnalyticsEvent {
   event: string;
-  properties?: Record<string, any>;
+  properties?: Record<string, unknown>;
   timestamp: Date;
 }
 
@@ -29,7 +29,7 @@ class ChatbotAnalytics {
     return userId;
   }
   
-  track(event: string, properties?: Record<string, any>) {
+  track(event: string, properties?: Record<string, unknown>) {
     const analyticsEvent: AnalyticsEvent = {
       event,
       properties: {
@@ -54,9 +54,9 @@ class ChatbotAnalytics {
   
   private sendToAnalyticsService(event: AnalyticsEvent) {
     // In production, send to your analytics service
-    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+    if (typeof window !== 'undefined' && typeof (window as Window & { gtag?: (command: string, eventName: string, parameters?: Record<string, unknown>) => void }).gtag === 'function') {
       try {
-        (window as any).gtag('event', event.event, event.properties);
+        (window as Window & { gtag: (command: string, eventName: string, parameters?: Record<string, unknown>) => void }).gtag('event', event.event, event.properties);
       } catch (error) {
         console.warn('Analytics tracking error:', error);
       }
@@ -143,7 +143,7 @@ class ChatbotAnalytics {
     });
   }
   
-  trackBookingFormSubmitted(procedure: string, formData: any) {
+  trackBookingFormSubmitted(procedure: string, formData: Record<string, unknown>) {
     this.track('booking_form_submitted', {
       procedure,
       has_insurance: formData.insurance !== 'none',

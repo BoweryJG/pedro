@@ -80,7 +80,7 @@ export class ConversationFlowManager {
     return Math.min(100, Math.round(score));
   }
   
-  getNextQuestion(stage: ConversationStage, context: any): string {
+  getNextQuestion(stage: ConversationStage, context: Record<string, unknown>): string {
     const questionSets = {
       greeting: socraticQuestions.discovery.opening,
       discovery: socraticQuestions.discovery.pain,

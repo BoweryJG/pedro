@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import type { ReactNode } from 'react';
 
-type NavigationMode = 'minimal' | 'exploring' | 'center-focused' | 'emergency';
-type CenterType = 'tmj' | 'implants' | 'robotic' | 'medspa' | 'aboutface' | null;
+export type NavigationMode = 'minimal' | 'exploring' | 'center-focused' | 'emergency';
+export type CenterType = 'tmj' | 'implants' | 'robotic' | 'medspa' | 'aboutface' | null;
 
 interface AdaptiveNavigationContextType {
   mode: NavigationMode;
@@ -52,7 +52,7 @@ export const AdaptiveNavigationProvider: React.FC<AdaptiveNavigationProviderProp
     setCurrentCenter(null);
     setShowCenterSelector(false);
     setUserJourneyPath([]);
-  }, []);
+  }, [setShowCenterSelector]);
 
   const value = {
     mode,

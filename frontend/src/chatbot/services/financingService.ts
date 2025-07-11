@@ -308,7 +308,7 @@ class FinancingService {
     return Math.round(payment * 100) / 100;
   }
 
-  private generateInsuranceMessage(result: any): string {
+  private generateInsuranceMessage(result: { eligible?: boolean; coveragePercentage?: number; estimatedCoverage?: number; remainingCost?: number }): string {
     if (!result.eligible) {
       return 'Insurance coverage could not be verified. Please contact our office for assistance.';
     }

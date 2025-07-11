@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Card, Typography, LinearProgress, Grid, Chip, IconButton, Tooltip, Avatar } from '@mui/material';
+import { Box, Card, Typography, LinearProgress, Grid, Chip, Avatar } from '@mui/material';
 import { 
   TrendingUp,
   CheckCircle,
   Schedule,
-  Healing,
+  // Healing,
   MedicalServices,
   AttachMoney,
-  Timeline,
+  // Timeline,
   Engineering,
   VerifiedUser,
   Timer
@@ -72,7 +72,7 @@ const ImplantsDashboard: React.FC = () => {
   const fetchImplantData = async () => {
     try {
       // Fetch implant-specific appointment data
-      const { data: appointments } = await supabase
+      const { data: _appointments } = await supabase
         .from('appointments')
         .select('*, services(*), patients(*)')
         .eq('services.category', 'implants')
@@ -154,7 +154,7 @@ const ImplantsDashboard: React.FC = () => {
   };
 
   // Luxury watch-style gauge component
-  const GaugeMetric = ({ value, max, label, sublabel, color }: any) => (
+  const GaugeMetric = ({ value, max, label, sublabel, color }: { value: number; max: number; label: string; sublabel: string; color: string }) => (
     <Box sx={{ textAlign: 'center' }}>
       <Box
         sx={{

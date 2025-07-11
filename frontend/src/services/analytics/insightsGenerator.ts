@@ -1,6 +1,6 @@
 export class InsightsGenerator {
   // Generate insights based on current metrics
-  static generateInsights(metrics: any): {
+  static generateInsights(metrics: Record<string, unknown>): {
     type: 'success' | 'warning' | 'info' | 'opportunity';
     title: string;
     description: string;
@@ -88,7 +88,7 @@ export class InsightsGenerator {
   }
 
   // Generate trend insights
-  static generateTrendInsights(historicalData: any[]): {
+  static generateTrendInsights(historicalData: Array<{ date: string; value: number }>): {
     metric: string;
     trend: 'improving' | 'declining' | 'stable';
     change: number;
@@ -133,7 +133,7 @@ export class InsightsGenerator {
   }
 
   // Generate action items
-  static generateActionItems(metrics: any, insights: any[]): {
+  static generateActionItems(metrics: Record<string, unknown>, insights: Array<{ type: string; severity: string }>): {
     priority: 'high' | 'medium' | 'low';
     task: string;
     deadline: string;

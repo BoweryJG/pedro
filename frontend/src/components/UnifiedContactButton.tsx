@@ -5,7 +5,7 @@ import {
   Paper,
   IconButton,
   Tooltip,
-  Zoom,
+  // Zoom,
   Typography,
   useTheme,
   useMediaQuery,
@@ -55,7 +55,7 @@ export const UnifiedContactButton: React.FC = () => {
     if (chatStore.isOpen && activeMode !== 'chat') {
       setActiveMode('chat');
     }
-  }, [chatStore.isOpen]);
+  }, [chatStore.isOpen, activeMode]);
 
   return (
     <>

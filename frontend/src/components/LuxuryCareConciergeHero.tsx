@@ -10,17 +10,17 @@ import {
   useMediaQuery,
   alpha,
 } from '@mui/material';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import { LuxuryNavigationIcon, LuxuryExploreIcon, LuxuryEmergencyIcon, LuxurySparkleIcon } from './icons/LuxuryIcons';
-import { CalendarMonth } from '@mui/icons-material';
+// import { CalendarMonth } from '@mui/icons-material';
 import { BookAppointmentButton } from './BookAppointmentButton';
 
 // Removed ParticleField component for performance optimization
 
 const LuxuryCareConciergeHero: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { setMode, setShowCenterSelector, addToJourneyPath } = useAdaptiveNavigation();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);

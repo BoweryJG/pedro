@@ -7,7 +7,7 @@ import LuxuryGoogleReviews from '../components/LuxuryGoogleReviews';
 import MeetDrPedroSection from '../components/MeetDrPedroSection';
 import { Box } from '@mui/material';
 import { usePageTitle } from '../hooks/usePageTitle';
-import { TexturedSection } from '../components/effects/TextureOverlays';
+// import { TexturedSection } from '../components/effects/TextureOverlays';
 
 const HomePage = () => {
   usePageTitle('Home');

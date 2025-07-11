@@ -11,7 +11,6 @@ import {
   ChevronUp,
   User,
   MapPin,
-  DollarSign,
   FileText,
   CheckCircle,
   XCircle,
@@ -335,7 +334,7 @@ export const AppointmentHistory: React.FC<AppointmentHistoryProps> = ({
                 <div className="flex space-x-2">
                   <select
                     value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value as any)}
+                    onChange={(e) => setSortBy(e.target.value as 'date' | 'service' | 'provider')}
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="date">Date</option>

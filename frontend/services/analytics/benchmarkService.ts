@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+// import { supabase } from '@/lib/supabase'; // Currently unused - will be needed for database operations
 import { MetricsCalculator, DashboardMetrics } from './metricsCalculator';
 
 export interface BenchmarkData {
@@ -429,7 +429,7 @@ export class BenchmarkService {
     return invertedMetrics.includes(metric);
   }
 
-  private calculateTrend(metricName: string): 'improving' | 'declining' | 'stable' {
+  private calculateTrend(_metricName: string): 'improving' | 'declining' | 'stable' {
     // In production, would analyze historical data
     // For now, return random but realistic trends
     const random = Math.random();
@@ -508,7 +508,7 @@ export class BenchmarkService {
 
   private async identifyOpportunities(
     benchmarkResults: BenchmarkData[],
-    currentMetrics: DashboardMetrics
+    _currentMetrics: DashboardMetrics
   ): Promise<Array<{
     metric: string;
     currentValue: number;
@@ -538,7 +538,7 @@ export class BenchmarkService {
     return opportunities;
   }
 
-  private generateRecommendations(metric: string, benchmark: BenchmarkData): string[] {
+  private generateRecommendations(metric: string, _benchmark: BenchmarkData): string[] {
     const recommendations: Record<string, string[]> = {
       collectionRate: [
         'Implement automated payment reminders',
@@ -682,7 +682,7 @@ export class BenchmarkService {
   async getCustomBenchmark(
     metricName: string,
     value: number,
-    filters?: {
+    _filters?: {
       practiceSize?: 'small' | 'medium' | 'large';
       location?: string;
       specialty?: string;

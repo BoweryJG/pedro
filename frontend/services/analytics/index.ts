@@ -14,6 +14,13 @@ export type { BenchmarkData, BenchmarkReport, IndustryBenchmark } from './benchm
 export { InsightsGenerator } from './insightsGenerator';
 export type { Insight, InsightRule } from './insightsGenerator';
 
+// Import specific classes and types for the unified service
+import { MetricsCalculator } from './metricsCalculator';
+import { RealtimeAggregator, RealtimeMetric } from './realtimeAggregator';
+import { PredictiveAnalytics } from './predictiveAnalytics';
+import { BenchmarkService } from './benchmarkService';
+import { InsightsGenerator, Insight } from './insightsGenerator';
+
 // Unified Analytics Service
 export class AnalyticsService {
   private metricsCalculator: MetricsCalculator;
@@ -48,7 +55,7 @@ export class AnalyticsService {
     this.realtimeAggregator.stopRealtimeSubscriptions();
   }
 
-  subscribeToMetric(metricId: string, callback: (metric: any) => void) {
+  subscribeToMetric(metricId: string, callback: (metric: RealtimeMetric) => void) {
     this.realtimeAggregator.subscribeToMetric(metricId, callback);
   }
 
@@ -79,7 +86,7 @@ export class AnalyticsService {
     return this.insightsGenerator.generateInsights();
   }
 
-  async subscribeToInsights(callback: (insights: any[]) => void) {
+  async subscribeToInsights(callback: (insights: Insight[]) => void) {
     return this.insightsGenerator.subscribeToInsights(callback);
   }
 

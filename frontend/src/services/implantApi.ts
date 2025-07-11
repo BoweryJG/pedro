@@ -33,7 +33,7 @@ interface ChatbotConversation {
 
 interface TrackingEvent {
   eventType: string;
-  data: any;
+  data: Record<string, unknown>;
   timestamp?: Date;
 }
 

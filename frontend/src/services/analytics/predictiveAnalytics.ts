@@ -1,6 +1,20 @@
+interface PatientRecord {
+  history?: {
+    no_shows: number;
+    total_appointments: number;
+    average_delay: number;
+  };
+  distance_from_clinic?: number;
+}
+
+interface AppointmentRecord {
+  appointment_time?: string;
+  service_type?: string;
+}
+
 export class PredictiveAnalytics {
   // Predict no-show probability
-  static predictNoShowProbability(patient: any, appointment: any): number {
+  static predictNoShowProbability(patient: PatientRecord, appointment: AppointmentRecord): number {
     let riskScore = 0;
     
     // Factors that increase no-show risk
@@ -25,7 +39,7 @@ export class PredictiveAnalytics {
   }
 
   // Predict optimal scheduling
-  static predictOptimalScheduleTime(patientHistory: any[]): string[] {
+  static predictOptimalScheduleTime(patientHistory: Array<{ appointment_time: string; status: string }>): string[] {
     const timePreferences: { [key: string]: number } = {};
     
     // Analyze past appointments
@@ -50,7 +64,7 @@ export class PredictiveAnalytics {
   }
 
   // Predict treatment acceptance
-  static predictTreatmentAcceptance(patient: any, treatmentCost: number): number {
+  static predictTreatmentAcceptance(patient: { insurance_coverage?: number; treatment_history?: { accepted_treatments: number; proposed_treatments: number }; income_bracket?: string }, treatmentCost: number): number {
     let acceptanceProbability = 70; // Base probability
     
     // Insurance factor
@@ -111,7 +125,7 @@ export class PredictiveAnalytics {
   }
 
   // Predict busy periods
-  static predictBusyPeriods(historicalAppointments: any[]): {
+  static predictBusyPeriods(historicalAppointments: Array<{ appointment_date: string; appointment_time: string }>): {
     dayOfWeek: string;
     timeSlot: string;
     utilization: number;

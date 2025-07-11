@@ -6,16 +6,16 @@ import {
   Button,
   IconButton,
   Typography,
-  Fade,
-  Chip,
+  // Fade,
+  // Chip,
   useTheme,
   useMediaQuery,
-  alpha,
+  // alpha,
 } from '@mui/material';
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
-import HomeIcon from '@mui/icons-material/Home';
+// import HomeIcon from '@mui/icons-material/Home';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { CornerScrews, cartierScrewStyles } from './effects/CartierScrews';
@@ -65,7 +65,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const { mode, currentCenter, setShowCenterSelector, setMode, setCurrentCenter } = useAdaptiveNavigation();
+  const { setShowCenterSelector, setMode, setCurrentCenter } = useAdaptiveNavigation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
@@ -84,7 +84,7 @@ const EnhancedLuxuryNavbar: React.FC = () => {
     Object.keys(centerConfig).forEach((key) => {
       if (path.startsWith(`/${key}`)) {
         setMode('center-focused');
-        setCurrentCenter(key as any);
+        setCurrentCenter(key as 'tmj' | 'implants' | 'robotic' | 'medspa' | 'aboutface');
       }
     });
   }, [location, setMode, setCurrentCenter]);
@@ -96,10 +96,10 @@ const EnhancedLuxuryNavbar: React.FC = () => {
     setShowCenterSelector(true);
   };
 
-  const handleEmergency = () => {
-    setMode('emergency');
-    navigate('/contact?emergency=true');
-  };
+  // const _handleEmergency = () => {
+  //   setMode('emergency');
+  //   navigate('/contact?emergency=true');
+  // };
 
   const handleHome = () => {
     setMode('minimal');
@@ -474,9 +474,9 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     // Enhanced fallback: Use direct window method if available
                     setTimeout(() => {
                       // First try: Use the direct window method if available
-                      if ((window as any).openJulieChat) {
+                      if ((window as Window & { openJulieChat?: () => void }).openJulieChat) {
                         console.log('🚨 Using direct window.openJulieChat method');
-                        (window as any).openJulieChat();
+                        (window as Window & { openJulieChat?: () => void }).openJulieChat?.();
                         return;
                       }
                       
@@ -603,8 +603,8 @@ const EnhancedLuxuryNavbar: React.FC = () => {
                     
                     // Same fallback logic for mobile
                     setTimeout(() => {
-                      if ((window as any).openJulieChat) {
-                        (window as any).openJulieChat();
+                      if ((window as Window & { openJulieChat?: () => void }).openJulieChat) {
+                        (window as Window & { openJulieChat?: () => void }).openJulieChat?.();
                         return;
                       }
                       

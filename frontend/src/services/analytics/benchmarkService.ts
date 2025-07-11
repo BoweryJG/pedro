@@ -158,7 +158,7 @@ export class BenchmarkService {
   }
 
   // Get improvement recommendations
-  static getRecommendations(metrics: any): string[] {
+  static getRecommendations(metrics: Record<string, number>): string[] {
     const recommendations: string[] = [];
     
     // Production recommendations

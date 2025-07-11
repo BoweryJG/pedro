@@ -21,9 +21,9 @@ interface DashboardIntegrationProps {
  * function TMJSubdomainPage() {
  *   return (
  *     <Box>
- *       {/* ... existing page content ... */}
+ *       {/* ... existing page content ... * /}
  *       
- *       {/* Add dashboard integration */}
+ *       {/* Add dashboard integration * /}
  *       <DashboardIntegration dashboardType="tmj" />
  *     </Box>
  *   );

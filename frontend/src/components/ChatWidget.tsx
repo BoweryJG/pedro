@@ -6,7 +6,7 @@ interface ChatWidgetProps {
   onNewMessage?: () => void;
 }
 
-export const ChatWidget: React.FC<ChatWidgetProps> = ({ onNewMessage }) => {
+export const ChatWidget: React.FC<ChatWidgetProps> = () => {
   return (
     <Box sx={{ height: '100%', width: '100%' }}>
       <Chatbot />

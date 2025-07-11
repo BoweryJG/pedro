@@ -24,7 +24,7 @@ import {
   SmartToy,
   Memory,
   Visibility,
-  Speed,
+  // Speed,
   Security,
   Science,
   AutoFixHigh,

@@ -3,9 +3,8 @@ import {
   Wifi, 
   WifiOff, 
   RefreshCw, 
-  Clock, 
+  // Clock, 
   Users, 
-  Calendar,
   AlertCircle,
   CheckCircle,
   Loader,
@@ -26,7 +25,7 @@ interface AvailabilityUpdate {
   providerId: string;
   date: string;
   time?: string;
-  data?: any;
+  data?: unknown;
   timestamp: number;
 }
 

@@ -3,7 +3,6 @@ import { useDrag } from 'react-dnd';
 import { format, differenceInMinutes } from 'date-fns';
 import { 
   Clock, 
-  User, 
   Phone, 
   MessageSquare, 
   MoreVertical,

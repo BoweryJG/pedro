@@ -25,8 +25,8 @@ import {
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
-  CreditCard, 
-  AccountBalance, 
+  // CreditCard, 
+  // AccountBalance, 
   CheckCircle, 
   TrendingUp,
   Psychology,
@@ -45,6 +45,15 @@ interface FinancingApplication {
   treatmentCost: number
   provider: 'Cherry' | 'Sunbit' | 'CareCredit' | 'Affirm'
   softCreditCheck: boolean
+}
+
+interface QualificationResult {
+  approved: boolean
+  approvedAmount: number
+  monthlyPayment: number
+  term: number
+  apr: number
+  provider: string
 }
 
 interface FinancingData {
@@ -106,7 +115,7 @@ const ImplantFinancingWizard: React.FC = () => {
       preferredProvider: 'Cherry'
     }
   })
-  const [qualificationResults, setQualificationResults] = useState<any>(null)
+  const [qualificationResults, setQualificationResults] = useState<QualificationResult | null>(null)
 
   const handleNext = async () => {
     if (activeStep === steps.length - 2) {
@@ -120,7 +129,7 @@ const ImplantFinancingWizard: React.FC = () => {
           creditScore: financingData.financialInfo.creditScore,
           income: financingData.financialInfo.income,
           treatmentCost: financingData.treatmentInfo.estimatedCost,
-          provider: financingData.treatmentInfo.preferredProvider as any,
+          provider: financingData.treatmentInfo.preferredProvider as 'Cherry' | 'Sunbit' | 'CareCredit' | 'Affirm',
           softCreditCheck: true
         }
         
@@ -147,7 +156,7 @@ const ImplantFinancingWizard: React.FC = () => {
     setActiveStep((prevStep) => prevStep - 1)
   }
 
-  const updateFinancingData = (section: keyof FinancingData, field: string, value: any) => {
+  const updateFinancingData = (section: keyof FinancingData, field: string, value: string | number | boolean) => {
     setFinancingData(prev => ({
       ...prev,
       [section]: {

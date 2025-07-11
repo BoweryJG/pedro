@@ -20,7 +20,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion'
 import { 
   Face, 
-  AutoAwesome, 
+  // AutoAwesome, 
   Schedule, 
   AttachMoney,
   NavigateNext,
@@ -36,7 +36,12 @@ const FacialTreatmentWizard: React.FC = () => {
   const [selectedConcerns, setSelectedConcerns] = useState<string[]>([])
   const [budget, setBudget] = useState<number>(1000)
   const [timeframe, setTimeframe] = useState('')
-  const [recommendations, setRecommendations] = useState<any[]>([])
+  const [recommendations, setRecommendations] = useState<{
+    treatment: string;
+    description: string;
+    price: string;
+    duration: string;
+  }[]>([])
   const { toggleChat, sendMessage } = useChatStore()
 
   const handleChatWithJulie = async (context: string, treatmentName?: string) => {

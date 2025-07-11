@@ -1,6 +1,34 @@
+interface Appointment {
+  date: string;
+  production?: number;
+  patient_id: string;
+  status: string;
+  duration?: number;
+  service_type?: string;
+  operatory_id?: string;
+  start_time?: string;
+}
+
+interface Patient {
+  id: string;
+  created_at: string;
+  status?: string;
+}
+
+interface Staff {
+  id: string;
+  name: string;
+  status?: string;
+}
+
+// interface Operatory {
+//   id: string;
+//   status: string;
+// }
+
 export class MetricsCalculator {
   // Convert metrics to watch hand values based on data mode
-  static metricsToWatchValues(metrics: any, dataMode: string): {
+  static metricsToWatchValues(metrics: Record<string, unknown>, dataMode: string): {
     hours: number;
     minutes: number;
     seconds: number;
@@ -10,7 +38,7 @@ export class MetricsCalculator {
     subdial3: number;
   } {
     // Safe number helper
-    const safeNumber = (value: any, defaultValue: number = 0): number => {
+    const safeNumber = (value: unknown, defaultValue: number = 0): number => {
       const num = Number(value);
       return isNaN(num) || !isFinite(num) ? defaultValue : num;
     };
@@ -84,11 +112,11 @@ export class MetricsCalculator {
     };
   }
   // Calculate production metrics
-  static calculateDailyProduction(appointments: any[]): number {
+  static calculateDailyProduction(appointments: Appointment[]): number {
     return appointments.reduce((total, apt) => total + (apt.production || 0), 0);
   }
 
-  static calculateMonthlyProduction(appointments: any[]): number {
+  static calculateMonthlyProduction(appointments: Appointment[]): number {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     
@@ -104,7 +132,7 @@ export class MetricsCalculator {
   }
 
   // Calculate patient metrics
-  static calculateNewPatientRate(patients: any[]): number {
+  static calculateNewPatientRate(patients: Patient[]): number {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
     
@@ -115,7 +143,7 @@ export class MetricsCalculator {
     return newPatients.length;
   }
 
-  static calculatePatientRetentionRate(patients: any[], appointments: any[]): number {
+  static calculatePatientRetentionRate(patients: Patient[], appointments: Appointment[]): number {
     const activePatients = new Set(appointments.map(a => a.patient_id));
     const totalPatients = patients.length;
     
@@ -124,7 +152,7 @@ export class MetricsCalculator {
   }
 
   // Calculate appointment metrics
-  static calculateNoShowRate(appointments: any[]): number {
+  static calculateNoShowRate(appointments: Appointment[]): number {
     const completedOrNoShow = appointments.filter(a => 
       a.status === 'completed' || a.status === 'no-show'
     );
@@ -135,7 +163,7 @@ export class MetricsCalculator {
     return (noShows.length / completedOrNoShow.length) * 100;
   }
 
-  static calculateScheduleFillRate(appointments: any[], totalSlots: number): number {
+  static calculateScheduleFillRate(appointments: Appointment[], totalSlots: number): number {
     if (totalSlots === 0) return 0;
     return (appointments.length / totalSlots) * 100;
   }
@@ -181,7 +209,7 @@ export class MetricsCalculator {
   }
 
   // Calculate all metrics
-  static calculateAllMetrics(appointments: any[], patients: any[], services: any[], staff: any[]): any {
+  static calculateAllMetrics(appointments: Appointment[], patients: Patient[], services: Array<{ id: string; name: string; category?: string; is_yomi_technology?: boolean }>): Record<string, unknown> {
     const today = new Date();
     const todayStr = today.toISOString().split('T')[0];
     

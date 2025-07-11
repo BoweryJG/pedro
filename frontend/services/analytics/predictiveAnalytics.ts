@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
-import { addDays, format, startOfDay, endOfDay, subMonths, isWeekend } from 'date-fns';
+import { addDays, format, subMonths, isWeekend } from 'date-fns';
 import * as tf from '@tensorflow/tfjs';
+import { Appointment, PatientData, TreatmentPlan, SchedulingFeatures, TimeSlot, Patient } from './types';
 
 export interface PredictionResult {
   value: number;
@@ -29,7 +30,7 @@ export interface PatientRiskScore {
 export class PredictiveAnalytics {
   private practiceId: string;
   private models: Map<string, tf.LayersModel> = new Map();
-  private modelCache: Map<string, any> = new Map();
+  private modelCache: Map<string, tf.Tensor | number[]> = new Map();
 
   constructor(practiceId: string) {
     this.practiceId = practiceId;
@@ -244,7 +245,7 @@ export class PredictiveAnalytics {
     };
   }
 
-  private extractSchedulingFeatures(date: Date, historicalData: any): number[] {
+  private extractSchedulingFeatures(date: Date, historicalData: SchedulingFeatures): number[] {
     const dayOfWeek = date.getDay();
     const month = date.getMonth();
     const isWeekendVal = isWeekend(date) ? 1 : 0;
@@ -335,7 +336,7 @@ export class PredictiveAnalytics {
     };
   }
 
-  private async forecastDailyProduction(date: Date, features?: number[]): Promise<PredictionResult> {
+  private async forecastDailyProduction(date: Date, _features?: number[]): Promise<PredictionResult> {
     const historicalAvg = await this.getHistoricalAverageProduction(date);
     const seasonalMultiplier = this.getSeasonalFactor(date.getMonth());
     const dayOfWeekMultiplier = this.getDayOfWeekMultiplier(date.getDay());
@@ -384,7 +385,7 @@ export class PredictiveAnalytics {
     return sameDayProduction.reduce((sum, d) => sum + d.total_production, 0) / sameDayProduction.length;
   }
 
-  private async calculateHistoricalProduction(appointments: any[]): Promise<number> {
+  private async calculateHistoricalProduction(appointments: Appointment[]): Promise<number> {
     // Simplified calculation - would need to join with treatment data
     return appointments.length * 250; // Average appointment value
   }
@@ -436,7 +437,7 @@ export class PredictiveAnalytics {
     return holidays.includes(dateStr);
   }
 
-  private async gatherPatientData(patientId: string) {
+  private async gatherPatientData(patientId: string): Promise<PatientData> {
     const { data: patient } = await supabase
       .from('patients')
       .select('*')
@@ -468,7 +469,7 @@ export class PredictiveAnalytics {
     };
   }
 
-  private async calculateNoShowRisk(patientData: any): Promise<{
+  private async calculateNoShowRisk(patientData: PatientData): Promise<{
     value: number;
     factors: Array<{ factor: string; weight: number }>;
   }> {
@@ -477,7 +478,7 @@ export class PredictiveAnalytics {
 
     // Calculate no-show history
     const totalAppointments = patientData.appointments.length;
-    const noShows = patientData.appointments.filter((a: any) => a.status === 'no_show').length;
+    const noShows = patientData.appointments.filter(a => a.status === 'no_show').length;
     const noShowRate = totalAppointments > 0 ? noShows / totalAppointments : 0;
     
     if (noShowRate > 0.2) {
@@ -498,7 +499,7 @@ export class PredictiveAnalytics {
     }
 
     // Check outstanding balance
-    const outstandingBalance = patientData.billings.reduce((sum: number, b: any) => 
+    const outstandingBalance = patientData.billings.reduce((sum, b) => 
       sum + (b.amount_due - b.amount_paid), 0
     );
     
@@ -519,7 +520,7 @@ export class PredictiveAnalytics {
     };
   }
 
-  private async calculateChurnRisk(patientData: any): Promise<{
+  private async calculateChurnRisk(patientData: PatientData): Promise<{
     value: number;
     factors: Array<{ factor: string; weight: number }>;
   }> {
@@ -542,7 +543,7 @@ export class PredictiveAnalytics {
     }
 
     // Treatment plan rejection
-    const rejectedPlans = patientData.treatments.filter((t: any) => t.status === 'rejected').length;
+    const rejectedPlans = patientData.treatments.filter(t => t.status === 'rejected').length;
     if (rejectedPlans > 0) {
       churnScore += 0.2;
       factors.push({ factor: 'Rejected treatment plans', weight: 0.2 });
@@ -560,8 +561,8 @@ export class PredictiveAnalytics {
     };
   }
 
-  private async predictTreatmentAcceptance(patientData: any): Promise<PredictionResult> {
-    const acceptedPlans = patientData.treatments.filter((t: any) => t.status === 'accepted').length;
+  private async predictTreatmentAcceptance(patientData: PatientData): Promise<PredictionResult> {
+    const acceptedPlans = patientData.treatments.filter(t => t.status === 'accepted').length;
     const totalPlans = patientData.treatments.length;
     
     const historicalAcceptance = totalPlans > 0 ? acceptedPlans / totalPlans : 0.5;
@@ -575,7 +576,7 @@ export class PredictiveAnalytics {
     }
     
     // Financial history
-    const paymentHistory = patientData.billings.filter((b: any) => b.status === 'paid').length / 
+    const paymentHistory = patientData.billings.filter(b => b.status === 'paid').length / 
                           (patientData.billings.length || 1);
     acceptanceProbability = (acceptanceProbability + paymentHistory) / 2;
 
@@ -594,9 +595,9 @@ export class PredictiveAnalytics {
     };
   }
 
-  private async calculatePatientLifetimeValue(patientData: any): Promise<PredictionResult> {
+  private async calculatePatientLifetimeValue(patientData: PatientData): Promise<PredictionResult> {
     // Historical value
-    const historicalRevenue = patientData.billings.reduce((sum: number, b: any) => 
+    const historicalRevenue = patientData.billings.reduce((sum, b) => 
       sum + b.amount_paid, 0
     );
     
@@ -628,7 +629,7 @@ export class PredictiveAnalytics {
     };
   }
 
-  private async gatherTreatmentData(treatmentPlanId: string) {
+  private async gatherTreatmentData(treatmentPlanId: string): Promise<TreatmentPlan & { patient: Patient }> {
     const { data: treatmentPlan } = await supabase
       .from('treatment_plans')
       .select('*, patient:patients(*)')
@@ -638,7 +639,7 @@ export class PredictiveAnalytics {
     return treatmentPlan;
   }
 
-  private async findSimilarTreatmentCases(treatmentData: any) {
+  private async findSimilarTreatmentCases(treatmentData: TreatmentPlan & { patient: { age?: number } }) {
     // Find similar cases based on treatment type, patient age, etc.
     const { data: similarCases } = await supabase
       .from('completed_treatments')
@@ -661,7 +662,7 @@ export class PredictiveAnalytics {
       .order('date', { ascending: true });
 
     // Group by time slots
-    const timeSlots: any = {};
+    const timeSlots: Record<string, TimeSlot> = {};
     
     appointments?.forEach(apt => {
       const hour = new Date(apt.date).getHours();
@@ -681,10 +682,10 @@ export class PredictiveAnalytics {
     });
 
     // Calculate metrics for each time slot
-    Object.values(timeSlots).forEach((slot: any) => {
+    Object.values(timeSlots).forEach(slot => {
       const durations = slot.appointments
-        .filter((a: any) => a.actual_duration)
-        .map((a: any) => a.actual_duration);
+        .filter(a => a.actual_duration)
+        .map(a => a.actual_duration!);
       
       slot.avgDuration = durations.length > 0 ? 
         durations.reduce((sum: number, d: number) => sum + d, 0) / durations.length : 0;
@@ -695,7 +696,7 @@ export class PredictiveAnalytics {
     return { timeSlots: Object.values(timeSlots) };
   }
 
-  private calculateBottleneckScore(timeSlot: any): number {
+  private calculateBottleneckScore(timeSlot: TimeSlot): number {
     let score = 0;
     
     // High average wait time
@@ -716,7 +717,7 @@ export class PredictiveAnalytics {
     return score;
   }
 
-  private identifyBottleneckCauses(timeSlot: any): string[] {
+  private identifyBottleneckCauses(timeSlot: TimeSlot): string[] {
     const causes = [];
     
     if (timeSlot.avgWaitTime > 15) {
@@ -738,7 +739,7 @@ export class PredictiveAnalytics {
     return causes;
   }
 
-  private generateSchedulingRecommendations(timeSlot: any): string[] {
+  private generateSchedulingRecommendations(timeSlot: TimeSlot): string[] {
     const recommendations = [];
     
     if (timeSlot.avgWaitTime > 15) {

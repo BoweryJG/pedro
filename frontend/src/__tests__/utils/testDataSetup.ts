@@ -311,7 +311,22 @@ export const generateAvailableProviders = (
   }).filter(provider => provider.slots.length > 0);
 };
 
-export const generateBookingFormData = (overrides?: Partial<any>) => ({
+interface BookingFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  insuranceProvider: string;
+  insuranceMemberId: string;
+  insuranceGroupNumber: string;
+  serviceId: string;
+  staffId: string;
+  date: dayjs.Dayjs;
+  time: string;
+  notes: string;
+}
+
+export const generateBookingFormData = (overrides?: Partial<BookingFormData>): BookingFormData => ({
   firstName: 'Test',
   lastName: 'User',
   email: 'test.user@example.com',
@@ -383,14 +398,25 @@ export const testScenarios = {
  * Utility functions for tests
  */
 
-export const waitForLoadingToFinish = async (screen: any) => {
+export const waitForLoadingToFinish = async (screen: {queryAllByRole: (role: string) => HTMLElement[]; findByRole: (role: string, options?: {hidden: boolean}) => Promise<HTMLElement>}) => {
   const progressbars = screen.queryAllByRole('progressbar');
   if (progressbars.length > 0) {
     await screen.findByRole('progressbar', { hidden: true });
   }
 };
 
-export const fillPatientForm = async (user: any, screen: any, data: any) => {
+interface PatientFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  insuranceProvider?: string;
+  insuranceMemberId?: string;
+  insuranceGroupNumber?: string;
+  notes?: string;
+}
+
+export const fillPatientForm = async (user: {type: (element: HTMLElement, text: string) => Promise<void>; click: (element: HTMLElement) => Promise<void>}, screen: {getByLabelText: (text: string | RegExp) => HTMLElement; getByRole: (role: string, options?: {name: string | RegExp}) => HTMLElement}, data: PatientFormData) => {
   await user.type(screen.getByLabelText('First Name'), data.firstName);
   await user.type(screen.getByLabelText('Last Name'), data.lastName);
   await user.type(screen.getByLabelText('Email'), data.email);
@@ -414,13 +440,25 @@ export const fillPatientForm = async (user: any, screen: any, data: any) => {
   }
 };
 
-export const selectServiceAndProceed = async (screen: any, serviceName: string) => {
+interface Screen {
+  getByText: (text: string) => { closest: (selector: string) => { click: () => Promise<void> } };
+  getByRole: (role: string, options?: { name: string | RegExp }) => { click: () => Promise<void> };
+}
+
+export const selectServiceAndProceed = async (screen: Screen, serviceName: string) => {
   const serviceCard = screen.getByText(serviceName).closest('[class*="CardActionArea"]');
   await serviceCard.click();
   await screen.getByRole('button', { name: /next/i }).click();
 };
 
-export const selectDateTimeAndProceed = async (screen: any, date: string, time: string) => {
+interface DateTimeScreen {
+  getByLabelText: (text: string) => { setAttribute: (name: string, value: string) => Promise<void>; dispatchEvent: (event: Event) => Promise<void> } | undefined;
+  getByTestId: (id: string) => { setAttribute: (name: string, value: string) => Promise<void>; dispatchEvent: (event: Event) => Promise<void> };
+  findByRole: (role: string, options?: { name: string }) => Promise<{ click: () => Promise<void> }>;
+  getByRole: (role: string, options?: { name: string | RegExp }) => { click: () => Promise<void> };
+}
+
+export const selectDateTimeAndProceed = async (screen: DateTimeScreen, date: string, time: string) => {
   const dateInput = screen.getByLabelText('Preferred Date') || screen.getByTestId('date-picker');
   await dateInput.setAttribute('value', date);
   await dateInput.dispatchEvent(new Event('change', { bubbles: true }));

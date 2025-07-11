@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
 import { agentPersonalities, type AgentPersonality } from '../../chatbot/config/agentPersonalities';
 import { CartierScrew } from '../effects/CartierScrews';
 import './LuxuryAgentLauncher.css';
@@ -117,7 +117,7 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
                 onDragEnd={handleDragEnd}
                 style={{ x }}
               >
-                {agentPersonalities.map((agent, index) => (
+                {agentPersonalities.map((agent, _index) => (
                   <motion.div
                     key={agent.id}
                     className="agent-card"

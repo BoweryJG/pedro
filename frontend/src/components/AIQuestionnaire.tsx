@@ -21,7 +21,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+// import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 interface Question {
   id: string;
@@ -76,7 +76,7 @@ const AIQuestionnaire: React.FC = () => {
   
   const [open, setOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [_answers, _setAnswers] = useState<Record<string, string>>({});
   const [centerScores, setCenterScores] = useState<Record<string, number>>({
     tmj: 0,
     implants: 0,
@@ -115,7 +115,7 @@ const AIQuestionnaire: React.FC = () => {
     )[0];
 
     addToJourneyPath(`ai-recommended-${topCenter}`);
-    setCurrentCenter(topCenter as any);
+    setCurrentCenter(topCenter as 'tmj' | 'implants' | 'robotic' | 'medspa' | 'aboutface');
     setMode('center-focused');
     navigate(`/${topCenter}`);
     setOpen(false);

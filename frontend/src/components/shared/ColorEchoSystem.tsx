@@ -7,7 +7,6 @@ interface ColorEchoSystemProps {
 }
 
 export const ColorEchoSystem: React.FC<ColorEchoSystemProps> = ({ 
-  subdomain, 
   particleCount = 15 
 }) => {
   // Spectrum colors from the main brand

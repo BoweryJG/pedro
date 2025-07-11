@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Sync, Check, AlertCircle, ExternalLink, Download, Plus } from 'lucide-react';
+import { Calendar, Check, AlertCircle, Download } from 'lucide-react';
 
 interface CalendarProvider {
   id: string;
@@ -114,7 +114,7 @@ export const CalendarSync: React.FC<CalendarSyncProps> = ({
         }));
       }, 1000);
     }
-  }, [selectedProvider]);
+  }, [selectedProvider, providers]);
 
   const handleConnect = (providerId: string) => {
     setProviders(prev => prev.map(provider => {
@@ -304,7 +304,7 @@ export const CalendarSync: React.FC<CalendarSyncProps> = ({
         </label>
         <select
           value={syncSettings.syncDirection}
-          onChange={(e) => setSyncSettings({ ...syncSettings, syncDirection: e.target.value as any })}
+          onChange={(e) => setSyncSettings({ ...syncSettings, syncDirection: e.target.value as 'two-way' | 'one-way' })}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
         >
           <option value="two-way">Two-way sync</option>
@@ -438,7 +438,16 @@ export const CalendarSync: React.FC<CalendarSyncProps> = ({
 };
 
 // Calendar Event Component
-export const CalendarEvent: React.FC<{ appointment: any }> = ({ appointment }) => {
+interface CalendarAppointment {
+  date: string;
+  time: string;
+  duration: number;
+  title: string;
+  description: string;
+  location: string;
+}
+
+export const CalendarEvent: React.FC<{ appointment: CalendarAppointment }> = ({ appointment }) => {
   const [addedToCalendar, setAddedToCalendar] = useState(false);
 
   const handleAddToCalendar = (type: string) => {
@@ -450,7 +459,7 @@ export const CalendarEvent: React.FC<{ appointment: any }> = ({ appointment }) =
     };
 
     switch (type) {
-      case 'google':
+      case 'google': {
         const googleUrl = new URL('https://calendar.google.com/calendar/render');
         googleUrl.searchParams.append('action', 'TEMPLATE');
         googleUrl.searchParams.append('text', appointment.title);
@@ -459,8 +468,9 @@ export const CalendarEvent: React.FC<{ appointment: any }> = ({ appointment }) =
         googleUrl.searchParams.append('location', appointment.location);
         window.open(googleUrl.toString(), '_blank');
         break;
+      }
 
-      case 'outlook':
+      case 'outlook': {
         const outlookUrl = new URL('https://outlook.live.com/calendar/0/deeplink/compose');
         outlookUrl.searchParams.append('subject', appointment.title);
         outlookUrl.searchParams.append('startdt', startDate.toISOString());
@@ -469,8 +479,9 @@ export const CalendarEvent: React.FC<{ appointment: any }> = ({ appointment }) =
         outlookUrl.searchParams.append('location', appointment.location);
         window.open(outlookUrl.toString(), '_blank');
         break;
+      }
 
-      case 'yahoo':
+      case 'yahoo': {
         const yahooUrl = new URL('https://calendar.yahoo.com/');
         yahooUrl.searchParams.append('v', '60');
         yahooUrl.searchParams.append('title', appointment.title);
@@ -480,6 +491,7 @@ export const CalendarEvent: React.FC<{ appointment: any }> = ({ appointment }) =
         yahooUrl.searchParams.append('in_loc', appointment.location);
         window.open(yahooUrl.toString(), '_blank');
         break;
+      }
     }
 
     setAddedToCalendar(true);

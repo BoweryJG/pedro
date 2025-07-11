@@ -14,7 +14,7 @@ import { VoiceCallsDashboard } from '../components/VoiceCallsDashboard';
 import { VoiceCallDebug } from '../components/VoiceCallDebug';
 import VoiceAISettings from '../components/dashboard/VoiceAISettings';
 import PhoneNumberManager from '../components/dashboard/PhoneNumberManager';
-import { useSupabase } from '../hooks/useSupabase';
+// import { useSupabase } from '../hooks/useSupabase';
 import { AnalyticsService } from '../services/analytics/analyticsService';
 
 interface TabPanelProps {
@@ -47,7 +47,7 @@ const DashboardPage: React.FC = () => {
   const [tabValue, setTabValue] = useState(0);
   const [subdomainOpen, setSubdomainOpen] = useState(false);
   const [selectedSubdomain, setSelectedSubdomain] = useState<string>('');
-  const { supabase } = useSupabase();
+  // const { supabase } = useSupabase();
   const [analytics, setAnalytics] = useState<AnalyticsService | null>(null);
   const [practiceId] = useState('tsmtaarwgodklafqlbhm'); // Dr. Pedro's practice ID
 

@@ -60,7 +60,7 @@ const MedSpaCostCalculator: React.FC<MedSpaCostCalculatorProps> = ({
 
   const handleScheduleConsultation = () => {
     const selectedTreatmentNames = Object.entries(selectedTreatments)
-      .filter(([_, quantity]) => quantity > 0)
+      .filter(([, quantity]) => quantity > 0)
       .map(([treatmentId, quantity]) => {
         const treatment = treatments.find(t => t.id === treatmentId)
         return `${treatment?.name} (${quantity}x)`

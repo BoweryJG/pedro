@@ -132,12 +132,12 @@ export class AppointmentService {
       
       if (error) throw error;
       appointment = data;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Appointment creation error:', err);
       
       // If it's an sms_queue error, the appointment might have been created
       // Try to fetch it by confirmation code
-      if (err.message?.includes('sms_queue')) {
+      if (err instanceof Error && err.message?.includes('sms_queue')) {
         console.log('SMS queue error detected, checking if appointment was created...');
         
         // If we get here with SMS queue error, the appointment was likely created
@@ -177,13 +177,14 @@ export class AppointmentService {
       .eq('id', appointmentData.patientId)
       .single();
       
-    const { data: service } = await bookingSupabase
+    // Verify service and staff exist
+    await bookingSupabase
       .from('services')
       .select('*')
       .eq('id', appointmentData.serviceId)
       .single();
       
-    const { data: staff } = await bookingSupabase
+    await bookingSupabase
       .from('staff')
       .select('*')
       .eq('id', appointmentData.staffId)

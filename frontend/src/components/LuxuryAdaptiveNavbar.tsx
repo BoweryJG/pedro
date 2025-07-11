@@ -6,13 +6,13 @@ import {
   Button,
   IconButton,
   Typography,
-  Fade,
-  Chip,
+  // Fade,
+  // Chip,
   useTheme,
   useMediaQuery,
-  alpha,
+  // alpha,
 } from '@mui/material';
-import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
 import HomeIcon from '@mui/icons-material/Home';
@@ -77,7 +77,7 @@ const LuxuryAdaptiveNavbar: React.FC = () => {
     Object.keys(centerConfig).forEach((key) => {
       if (path.startsWith(`/${key}`)) {
         setMode('center-focused');
-        setCurrentCenter(key as any);
+        setCurrentCenter(key as 'tmj' | 'implants' | 'robotic' | 'medspa' | 'aboutface');
       }
     });
   }, [location, setMode, setCurrentCenter]);

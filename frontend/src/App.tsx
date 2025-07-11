@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -14,7 +14,6 @@ import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import { LuxuryAgentLauncherContainer } from './components/chatbot/LuxuryAgentLauncherContainer';
 import ScrollToTop from './components/ScrollToTop';
-import { useMediaQuery, useTheme } from '@mui/material';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/auth/LoginPage';
 import UnauthorizedPage from './pages/auth/UnauthorizedPage';
@@ -37,10 +36,6 @@ import AboutFaceSubdomainPage from './pages/aboutface/AboutFaceSubdomainPage';
 import SMSQueue from './pages/admin/SMSQueue';
 
 function App() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const location = useLocation();
-
   return (
     <AuthProvider>
       <GoogleAnalytics />

@@ -25,7 +25,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   Send,
   Psychology,
-  Phone,
+  // Phone,
   Close,
   SmartToy,
   CheckCircle,
@@ -41,7 +41,7 @@ interface Message {
   sender: 'user' | 'bot'
   timestamp: Date
   type?: 'text' | 'qualification' | 'financing'
-  data?: any
+  data?: FinancingQualification
 }
 
 interface FinancingQualification {
@@ -89,7 +89,7 @@ const ImplantChatbot: React.FC = () => {
     scrollToBottom()
   }, [messages])
 
-  const addMessage = (text: string, sender: 'user' | 'bot', type: 'text' | 'qualification' | 'financing' = 'text', data?: any) => {
+  const addMessage = (text: string, sender: 'user' | 'bot', type: 'text' | 'qualification' | 'financing' = 'text', data?: unknown) => {
     const newMessage: Message = {
       id: Date.now().toString(),
       text,

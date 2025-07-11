@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
   Box,
   Button,
   Card,
   CardContent,
   Typography,
-  IconButton,
+  // IconButton,
   CircularProgress,
   Stack,
   Alert,
@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import {
   Mic as MicIcon,
-  MicOff as MicOffIcon,
+  // MicOff as MicOffIcon,
   Call as CallIcon,
   CallEnd as CallEndIcon,
   VolumeUp as VolumeUpIcon,
@@ -24,7 +24,7 @@ interface SimpleWebRTCVoiceProps {
   onClose?: () => void;
 }
 
-export const SimpleWebRTCVoice: React.FC<SimpleWebRTCVoiceProps> = ({ onClose }) => {
+export const SimpleWebRTCVoice: React.FC<SimpleWebRTCVoiceProps> = () => {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
@@ -38,11 +38,35 @@ export const SimpleWebRTCVoice: React.FC<SimpleWebRTCVoiceProps> = ({ onClose })
   const sessionIdRef = useRef<string>(`session_${Date.now()}`);
   const transcriptBoxRef = useRef<HTMLDivElement>(null);
 
+  // Define disconnect before using it in useEffect
+  const disconnect = useCallback(() => {
+    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+      wsRef.current.send(JSON.stringify({
+        type: 'end-call',
+        sessionId: sessionIdRef.current
+      }));
+      wsRef.current.close();
+    }
+    
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+    }
+    
+    setIsConnected(false);
+    setIsRecording(false);
+    
+    if (audioContextRef.current) {
+      audioContextRef.current.close();
+      audioContextRef.current = null;
+    }
+  }, []);
+
   useEffect(() => {
     return () => {
       disconnect();
     };
-  }, []);
+  }, [disconnect]);
 
   useEffect(() => {
     // Auto-scroll transcript
@@ -119,12 +143,16 @@ export const SimpleWebRTCVoice: React.FC<SimpleWebRTCVoiceProps> = ({ onClose })
       ws.onclose = () => {
         console.log('WebSocket closed');
         setIsConnected(false);
-        stopRecording();
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+          mediaRecorderRef.current.stop();
+          mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
+          setIsRecording(false);
+        }
       };
 
-    } catch (error: any) {
+    } catch (error) {
       console.error('Connection error:', error);
-      setError(error.message || 'Failed to connect. Please check your microphone permissions.');
+      setError((error instanceof Error ? error.message : String(error)) || 'Failed to connect. Please check your microphone permissions.');
       setIsConnecting(false);
     }
   };
@@ -159,13 +187,6 @@ export const SimpleWebRTCVoice: React.FC<SimpleWebRTCVoiceProps> = ({ onClose })
     setIsRecording(true);
   };
 
-  const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
-      mediaRecorderRef.current.stream.getTracks().forEach(track => track.stop());
-      setIsRecording(false);
-    }
-  };
 
   const playAudioResponse = async (base64Audio: string, sampleRate: number) => {
     try {
@@ -208,23 +229,6 @@ export const SimpleWebRTCVoice: React.FC<SimpleWebRTCVoiceProps> = ({ onClose })
     }
   };
 
-  const disconnect = () => {
-    if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      wsRef.current.send(JSON.stringify({
-        type: 'end-call',
-        sessionId: sessionIdRef.current
-      }));
-      wsRef.current.close();
-    }
-    
-    stopRecording();
-    setIsConnected(false);
-    
-    if (audioContextRef.current) {
-      audioContextRef.current.close();
-      audioContextRef.current = null;
-    }
-  };
 
   const handleCallEnded = (duration: number) => {
     setTranscript(prev => [...prev, {

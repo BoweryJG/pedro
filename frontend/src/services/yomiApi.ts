@@ -59,7 +59,7 @@ export const yomiApiService = {
   },
 
   // Track user interactions
-  trackInteraction: async (interactionType: string, data?: any) => {
+  trackInteraction: async (interactionType: string, data?: Record<string, unknown>) => {
     try {
       const response = await api.post('/yomi/analytics/track', {
         type: interactionType,

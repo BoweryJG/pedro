@@ -12,7 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Paper,
+  // Paper,
   Chip,
   Dialog,
   DialogTitle,
@@ -21,8 +21,6 @@ import {
   Grid,
   IconButton,
   Alert,
-  CircularProgress,
-  InputAdornment,
   Select,
   MenuItem,
   FormControl,
@@ -30,11 +28,8 @@ import {
 } from '@mui/material';
 import {
   Phone as PhoneIcon,
-  Search as SearchIcon,
-  Add as AddIcon,
   Delete as DeleteIcon,
   Settings as SettingsIcon,
-  AttachMoney as MoneyIcon,
   Analytics as AnalyticsIcon,
 } from '@mui/icons-material';
 
@@ -49,7 +44,7 @@ interface PhoneNumber {
   };
   monthly_fee: number;
   created_at: string;
-  voice_settings: any;
+  voice_settings: Record<string, unknown>;
 }
 
 interface AvailableNumber {
@@ -62,13 +57,13 @@ interface AvailableNumber {
 
 const PhoneNumberManager: React.FC = () => {
   const [phoneNumbers, setPhoneNumbers] = useState<PhoneNumber[]>([]);
-  const [availableNumbers, setAvailableNumbers] = useState<AvailableNumber[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [searchAreaCode, setSearchAreaCode] = useState('');
-  const [searchContains, setSearchContains] = useState('');
-  const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
-  const [selectedNumber, setSelectedNumber] = useState<AvailableNumber | null>(null);
-  const [clientName, setClientName] = useState('');
+  // const [availableNumbers, setAvailableNumbers] = useState<AvailableNumber[]>([]);
+  // const [loading, setLoading] = useState(false);
+  // const [searchAreaCode, setSearchAreaCode] = useState('');
+  // const [searchContains, setSearchContains] = useState('');
+  // const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
+  // const [selectedNumber, setSelectedNumber] = useState<AvailableNumber | null>(null);
+  // const [clientName, setClientName] = useState('');
   const [showSettingsDialog, setShowSettingsDialog] = useState(false);
   const [editingNumber, setEditingNumber] = useState<PhoneNumber | null>(null);
 
@@ -92,15 +87,15 @@ const PhoneNumberManager: React.FC = () => {
     }
   };
 
-  const searchNumbers = async () => {
-    // Phone number searching has been disabled
-    alert('Phone number searching is disabled. Pedro uses only the designated 929 number.');
-  };
+  // const searchNumbers = async () => {
+  //   // Phone number searching has been disabled
+  //   alert('Phone number searching is disabled. Pedro uses only the designated 929 number.');
+  // };
 
-  const purchaseNumber = async () => {
-    // Phone number purchasing has been disabled
-    alert('Phone number purchasing is disabled. Pedro uses only the designated 929 number.');
-  };
+  // const purchaseNumber = async () => {
+  //   // Phone number purchasing has been disabled
+  //   alert('Phone number purchasing is disabled. Pedro uses only the designated 929 number.');
+  // };
 
   const releaseNumber = async (phoneNumber: string) => {
     if (!confirm(`Are you sure you want to release ${phoneNumber}?`)) {

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
+import { useAdaptiveNavigation, type CenterType } from '../contexts/AdaptiveNavigationContext';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { keyframes } from '@mui/material/styles';
@@ -97,7 +97,7 @@ const CenterSelectionModal: React.FC<CenterSelectionModalProps> = ({ open, onClo
   const [hoveredCenter, setHoveredCenter] = useState<string | null>(null);
 
   const handleSelectCenter = (centerId: string) => {
-    setCurrentCenter(centerId as any);
+    setCurrentCenter(centerId as CenterType);
     setMode('center-focused');
     addToJourneyPath(`selected-${centerId}`);
     navigate(`/${centerId}`);

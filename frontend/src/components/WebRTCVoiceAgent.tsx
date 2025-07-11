@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { 
   Room, 
   RoomEvent, 
   Track, 
   LocalParticipant, 
-  createLocalTracks,
-  VideoPresets
+  createLocalTracks
+  // VideoPresets
 } from 'livekit-client';
 import {
   Box,
@@ -29,7 +29,7 @@ import {
   VolumeUp as VolumeUpIcon,
   VolumeOff as VolumeOffIcon,
   SignalCellularAlt as SignalIcon,
-  Error as ErrorIcon,
+  // Error as ErrorIcon,
 } from '@mui/icons-material';
 
 interface WebRTCVoiceAgentProps {
@@ -48,13 +48,13 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
   
   const roomRef = useRef<Room | null>(null);
   const sessionIdRef = useRef<string>(`session_${Date.now()}`);
-  const audioTrackRef = useRef<any>(null);
+  const audioTrackRef = useRef<MediaStreamTrack | null>(null);
 
   useEffect(() => {
     return () => {
       disconnect();
     };
-  }, []);
+  }, [disconnect]);
 
   const connect = async () => {
     setIsConnecting(true);
@@ -146,7 +146,7 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
         }
       });
 
-      room.on(RoomEvent.DataReceived, (payload, participant) => {
+      room.on(RoomEvent.DataReceived, (payload, _participant) => {
         // Handle transcripts and other data from the agent
         try {
           const data = JSON.parse(new TextDecoder().decode(payload));
@@ -181,7 +181,7 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
     }
   };
 
-  const disconnect = async () => {
+  const disconnect = useCallback(async () => {
     try {
       // End session on backend
       await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/voice-agent/end-session`, {
@@ -207,7 +207,7 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
     } catch (error) {
       console.error('Disconnect error:', error);
     }
-  };
+  }, [addTranscript, onSessionEnd]);
 
   const toggleMute = () => {
     if (audioTrackRef.current) {
@@ -221,9 +221,9 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
     // In a real implementation, you would mute/unmute remote audio tracks
   };
 
-  const addTranscript = (speaker: string, text: string) => {
+  const addTranscript = useCallback((speaker: string, text: string) => {
     setTranscript(prev => [...prev, `${speaker === 'system' ? '🔊' : speaker === 'user' ? '👤' : '🤖'} ${text}`]);
-  };
+  }, []);
 
   const getQualityIcon = () => {
     switch (connectionQuality) {

@@ -43,7 +43,7 @@ export const JulieProfessionalLauncher: React.FC = () => {
       setCurrentSpecialty((prev) => (prev + 1) % specialties.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [specialties.length]);
 
   const handleConsultation = () => {
     setActiveMode('consultation');

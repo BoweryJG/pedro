@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Box,
   Fab,
@@ -48,14 +48,14 @@ export const VoiceCallButton: React.FC<VoiceCallButtonProps> = ({
   const audioContextRef = useRef<AudioContext | null>(null);
   const mediaStreamRef = useRef<MediaStream | null>(null);
   const processorRef = useRef<ScriptProcessorNode | null>(null);
-  const audioQueueRef = useRef<AudioBuffer[]>([]);
-  const isPlayingRef = useRef(false);
+  // const _audioQueueRef = useRef<AudioBuffer[]>([]);
+  // const _isPlayingRef = useRef(false);
 
   // Initialize audio context
   const initAudioContext = async () => {
     console.log('[VoiceCall] Initializing audio context...');
     try {
-      audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      audioContextRef.current = new (window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext)();
       console.log('[VoiceCall] Audio context created');
       
       // Get user media

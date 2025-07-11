@@ -1,11 +1,21 @@
 import { supabase } from '../../lib/supabase';
 
+interface Subscription {
+  unsubscribe: () => void;
+}
+
+interface RealtimePayload {
+  eventType: string;
+  new?: unknown;
+  old?: unknown;
+}
+
 export class RealtimeAggregator {
-  private subscriptions: any[] = [];
+  private subscriptions: Subscription[] = [];
   private aggregationInterval: NodeJS.Timeout | null = null;
 
   // Start real-time aggregation
-  startAggregation(callback: (data: any) => void, intervalMs: number = 5000) {
+  startAggregation(callback: (data: Record<string, unknown>) => void, intervalMs: number = 5000) {
     this.stopAggregation(); // Clear any existing interval
     
     // Initial aggregation
@@ -27,7 +37,7 @@ export class RealtimeAggregator {
   }
 
   // Subscribe to appointment changes
-  subscribeToAppointments(callback: (payload: any) => void) {
+  subscribeToAppointments(callback: (payload: RealtimePayload) => void) {
     const subscription = supabase
       .channel('appointments-channel')
       .on(
@@ -42,7 +52,7 @@ export class RealtimeAggregator {
   }
 
   // Subscribe to patient changes
-  subscribeToPatients(callback: (payload: any) => void) {
+  subscribeToPatients(callback: (payload: RealtimePayload) => void) {
     const subscription = supabase
       .channel('patients-channel')
       .on(
@@ -57,7 +67,7 @@ export class RealtimeAggregator {
   }
 
   // Subscribe to financial transactions
-  subscribeToTransactions(callback: (payload: any) => void) {
+  subscribeToTransactions(callback: (payload: RealtimePayload) => void) {
     const subscription = supabase
       .channel('transactions-channel')
       .on(
@@ -73,7 +83,7 @@ export class RealtimeAggregator {
 
   // Aggregate real-time data
   async aggregateMetrics() {
-    const today = new Date().toISOString().split('T')[0];
+    // const today = new Date().toISOString().split('T')[0]; // Unused variable
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 

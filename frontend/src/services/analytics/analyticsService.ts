@@ -5,15 +5,19 @@ import { PredictiveAnalytics } from './predictiveAnalytics';
 import { BenchmarkService } from './benchmarkService';
 import { InsightsGenerator } from './insightsGenerator';
 
+interface Subscription {
+  unsubscribe: () => void;
+}
+
 export class AnalyticsService {
-  private supabase: any;
+  private supabase: typeof supabase;
   private practiceId: string;
   private metricsCalculator: MetricsCalculator;
   private realtimeAggregator: RealtimeAggregator;
   private predictiveAnalytics: PredictiveAnalytics;
   private benchmarkService: BenchmarkService;
   private insightsGenerator: InsightsGenerator;
-  private subscriptions: any[] = [];
+  private subscriptions: Subscription[] = [];
 
   constructor(practiceId: string) {
     this.practiceId = practiceId;
@@ -41,7 +45,7 @@ export class AnalyticsService {
     await this.realtimeAggregator.stopAggregation();
   }
 
-  subscribeToMetric(metricName: string, callback: (metric: any) => void) {
+  subscribeToMetric(metricName: string, callback: (metric: Record<string, unknown>) => void) {
     const subscription = this.realtimeAggregator.subscribeToMetric(metricName, callback);
     this.subscriptions.push(subscription);
     return subscription;

@@ -56,7 +56,7 @@ const trustIndicators = [
 
 const LuxuryTrustIndicators: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box

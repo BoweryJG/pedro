@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 
 export function useSupabase() {
@@ -10,7 +10,7 @@ export function useSupabase() {
     table: string,
     options?: {
       select?: string;
-      filter?: Record<string, any>;
+      filter?: Record<string, unknown>;
       order?: { column: string; ascending?: boolean };
       limit?: number;
     }
@@ -125,7 +125,7 @@ export function useSupabase() {
   // Subscribe to real-time changes
   function subscribe(
     table: string,
-    callback: (payload: any) => void
+    callback: (payload: unknown) => void
   ) {
     const subscription = supabase
       .channel(`${table}-channel`)

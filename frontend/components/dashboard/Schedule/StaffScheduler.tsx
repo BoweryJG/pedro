@@ -6,19 +6,14 @@ import {
   eachDayOfInterval,
   addWeeks,
   subWeeks,
-  isSameDay,
-  setHours,
-  setMinutes
+  isSameDay
 } from 'date-fns';
 import { 
   Users, 
-  Calendar, 
   Clock, 
   ChevronLeft, 
   ChevronRight,
   Plus,
-  Edit2,
-  Trash2,
   Coffee,
   AlertCircle
 } from 'lucide-react';
@@ -56,10 +51,10 @@ const StaffScheduler: React.FC = () => {
   const [weekDays, setWeekDays] = useState<Date[]>([]);
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [shifts, setShifts] = useState<Shift[]>([]);
-  const [timeOffs, setTimeOffs] = useState<TimeOff[]>([]);
-  const [selectedStaff, setSelectedStaff] = useState<string | null>(null);
-  const [showShiftModal, setShowShiftModal] = useState(false);
-  const [editingShift, setEditingShift] = useState<Shift | null>(null);
+  // const [timeOffs, setTimeOffs] = useState<TimeOff[]>([]);
+  // const [selectedStaff, setSelectedStaff] = useState<string | null>(null);
+  // const [showShiftModal, setShowShiftModal] = useState(false);
+  // const [editingShift, setEditingShift] = useState<Shift | null>(null);
 
   useEffect(() => {
     const start = startOfWeek(currentWeek, { weekStartsOn: 1 });
@@ -122,7 +117,7 @@ const StaffScheduler: React.FC = () => {
       });
     });
     setShifts(mockShifts);
-  }, [weekDays]);
+  }, [weekDays, staff]);
 
   const navigateWeek = (direction: number) => {
     setCurrentWeek(direction > 0 ? addWeeks(currentWeek, 1) : subWeeks(currentWeek, 1));

@@ -6,7 +6,7 @@ import LuxuryFooter from './LuxuryFooter';
 import LuxuryCenterSelectionModal from './LuxuryCenterSelectionModal';
 import AIQuestionnaire from './AIQuestionnaire';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
-import { TexturedSection } from './effects/TextureOverlays';
+// import { TexturedSection } from './effects/TextureOverlays';
 
 const Layout = () => {
   const { showCenterSelector, setShowCenterSelector } = useAdaptiveNavigation();

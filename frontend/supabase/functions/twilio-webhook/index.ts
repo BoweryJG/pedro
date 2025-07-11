@@ -16,7 +16,7 @@ serve(async (req) => {
     const formData = await req.formData()
     const from = formData.get('From') as string
     const body = (formData.get('Body') as string || '').toLowerCase().trim()
-    const twilioSignature = req.headers.get('X-Twilio-Signature')
+    // const twilioSignature = req.headers.get('X-Twilio-Signature') // For future webhook verification
     
     console.log(`Incoming SMS from ${from}: ${body}`)
     

@@ -4,10 +4,10 @@ import {
   Container,
   Typography,
   Button,
-  Chip,
+  // Chip,
   useTheme,
   useMediaQuery,
-  alpha,
+  // alpha,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAdaptiveNavigation } from '../contexts/AdaptiveNavigationContext';
@@ -84,7 +84,7 @@ const CenterCarouselHero: React.FC = () => {
   const handleCardClick = (centerId: string, index: number) => {
     if (showFeatures === index) {
       // Navigate on second click
-      setCurrentCenter(centerId as any);
+      setCurrentCenter(centerId as 'tmj' | 'implants' | 'robotic' | 'medspa' | 'aboutface');
       setMode('center-focused');
       addToJourneyPath(`selected-${centerId}`);
       navigate(`/${centerId}`);

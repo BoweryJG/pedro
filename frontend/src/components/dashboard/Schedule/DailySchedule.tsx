@@ -26,10 +26,9 @@ import {
   Email as EmailIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-  AccessTime as TimeIcon,
-  Person as PersonIcon
+  AccessTime as TimeIcon
 } from '@mui/icons-material';
-import { format, addDays, startOfDay } from 'date-fns';
+import { format, addDays } from 'date-fns';
 import { motion } from 'framer-motion';
 
 interface Appointment {
@@ -209,7 +208,7 @@ const DailySchedule: React.FC = () => {
                         <Chip
                           label={appointment.status}
                           size="small"
-                          color={getStatusColor(appointment.status) as any}
+                          color={getStatusColor(appointment.status) as 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'}
                           sx={{ height: 24 }}
                         />
                       </Box>

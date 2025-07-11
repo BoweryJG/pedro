@@ -4,7 +4,7 @@ import { healthCheck } from '../services/api';
 
 const BackendStatus = () => {
   const [status, setStatus] = useState<'checking' | 'online' | 'offline'>('checking');
-  const [backendInfo, setBackendInfo] = useState<any>(null);
+  const [backendInfo, setBackendInfo] = useState<{ message?: string; version?: string } | null>(null);
 
   useEffect(() => {
     const checkBackend = async () => {

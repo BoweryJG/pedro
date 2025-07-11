@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {
   Fab,
 } from '@mui/material'
@@ -22,7 +22,7 @@ interface TMJChatbotProps {
   }
 }
 
-const TMJChatbot: React.FC<TMJChatbotProps> = ({ contact }) => {
+const TMJChatbot: React.FC<TMJChatbotProps> = () => {
   const { isOpen, toggleChat, sendMessage } = useChatStore()
 
   const handleChatOpen = async () => {

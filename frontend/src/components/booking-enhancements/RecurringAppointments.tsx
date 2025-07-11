@@ -11,7 +11,6 @@ import {
   Typography,
   Chip,
   Alert,
-  FormGroup,
   RadioGroup,
   Radio,
   Divider,
@@ -64,8 +63,8 @@ export const RecurringAppointments: React.FC<RecurringAppointmentsProps> = ({
   value = defaultPattern,
   onChange,
   startDate,
-  serviceId,
-  staffId,
+  // serviceId,
+  // staffId,
 }) => {
   const [showPreview, setShowPreview] = useState(false);
 
@@ -155,7 +154,7 @@ export const RecurringAppointments: React.FC<RecurringAppointmentsProps> = ({
             <InputLabel>Recurrence Pattern</InputLabel>
             <Select
               value={value.type}
-              onChange={(e) => handleChange({ type: e.target.value as any })}
+              onChange={(e) => handleChange({ type: e.target.value as 'daily' | 'weekly' | 'monthly' | 'custom' })}
               label="Recurrence Pattern"
             >
               <MenuItem value="daily">Daily</MenuItem>
@@ -234,7 +233,7 @@ export const RecurringAppointments: React.FC<RecurringAppointmentsProps> = ({
               
               <RadioGroup
                 value={value.endType}
-                onChange={(e) => handleChange({ endType: e.target.value as any })}
+                onChange={(e) => handleChange({ endType: e.target.value as 'never' | 'after' | 'on' })}
               >
                 <FormControlLabel 
                   value="never" 

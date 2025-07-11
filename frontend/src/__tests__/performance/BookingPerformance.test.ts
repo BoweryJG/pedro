@@ -37,7 +37,7 @@ describe('Booking System Performance Tests', () => {
       
       // Simulate concurrent requests
       const promises = Array.from({ length: 10 }, (_, i) => 
-        AppointmentService.getAvailableSlots(`staff-${i}`, null as any, 30)
+        AppointmentService.getAvailableSlots(`staff-${i}`, null as unknown as dayjs.Dayjs, 30)
       );
       
       const results = await Promise.all(promises);
@@ -72,7 +72,7 @@ describe('Booking System Performance Tests', () => {
       );
 
       const startTime = performance.now();
-      const providers = await AppointmentService.getAvailableProviders('service-1', null as any);
+      const providers = await AppointmentService.getAvailableProviders('service-1', null as unknown as dayjs.Dayjs);
       const endTime = performance.now();
 
       const executionTime = endTime - startTime;
@@ -152,7 +152,7 @@ describe('Booking System Performance Tests', () => {
 
       const results = await Promise.allSettled(
         Array.from({ length: 10 }, (_, i) => 
-          AppointmentService.getAvailableSlots(`staff-${i}`, null as any)
+          AppointmentService.getAvailableSlots(`staff-${i}`, null as unknown as dayjs.Dayjs)
         )
       );
 

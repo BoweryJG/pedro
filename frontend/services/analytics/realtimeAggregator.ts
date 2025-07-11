@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase';
-import { MetricsCalculator, MetricResult } from './metricsCalculator';
+import { MetricsCalculator } from './metricsCalculator';
 import { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
+import { Appointment, Billing, Patient, OperatoryStatus, AlertData } from './types';
 
 export interface RealtimeMetric {
   id: string;
@@ -158,8 +159,10 @@ export class RealtimeAggregator {
     this.startRefreshTimers();
   }
 
-  private async handleAppointmentChange(payload: RealtimePostgresChangesPayload<any>) {
-    const { eventType, new: newRecord, old: oldRecord } = payload;
+  private async handleAppointmentChange(payload: RealtimePostgresChangesPayload<Appointment>) {
+    const eventType = payload.eventType;
+    const newRecord = payload.new;
+    const oldRecord = payload.old;
 
     // Update production metrics
     if (eventType === 'UPDATE' && newRecord.status === 'completed' && oldRecord.status !== 'completed') {
@@ -182,8 +185,9 @@ export class RealtimeAggregator {
     }
   }
 
-  private async handleBillingChange(payload: RealtimePostgresChangesPayload<any>) {
-    const { eventType, new: newRecord } = payload;
+  private async handleBillingChange(payload: RealtimePostgresChangesPayload<Billing>) {
+    const eventType = payload.eventType;
+    const newRecord = payload.new;
 
     if (eventType === 'INSERT' || eventType === 'UPDATE') {
       // Update collection metrics
@@ -194,8 +198,9 @@ export class RealtimeAggregator {
     }
   }
 
-  private async handlePatientChange(payload: RealtimePostgresChangesPayload<any>) {
-    const { eventType, new: newRecord } = payload;
+  private async handlePatientChange(payload: RealtimePostgresChangesPayload<Patient>) {
+    const eventType = payload.eventType;
+    const newRecord = payload.new;
 
     if (eventType === 'INSERT') {
       // New patient registration
@@ -208,14 +213,14 @@ export class RealtimeAggregator {
     }
   }
 
-  private async handleOperatoryChange(payload: RealtimePostgresChangesPayload<any>) {
-    const { new: newRecord } = payload;
+  private async handleOperatoryChange(payload: RealtimePostgresChangesPayload<OperatoryStatus>) {
+    const newRecord = payload.new;
 
     // Update chair utilization metrics
     await this.updateChairUtilizationMetrics(newRecord);
   }
 
-  private async updateProductionMetrics(appointment: any) {
+  private async updateProductionMetrics(appointment: Appointment) {
     const production = await this.calculateAppointmentProduction(appointment.id);
     
     this.addMetricToCache({
@@ -232,7 +237,7 @@ export class RealtimeAggregator {
     await this.aggregateMetric('hourly_production');
   }
 
-  private async updatePatientFlowMetrics(appointment: any) {
+  private async updatePatientFlowMetrics(appointment: Appointment) {
     this.addMetricToCache({
       id: `flow_${appointment.id}`,
       name: 'patient_started',
@@ -244,7 +249,7 @@ export class RealtimeAggregator {
     await this.aggregateMetric('patient_throughput');
   }
 
-  private async updateWaitTimeMetrics(appointment: any) {
+  private async updateWaitTimeMetrics(appointment: Appointment) {
     const scheduledTime = new Date(appointment.scheduled_time);
     const actualTime = new Date(appointment.actual_start_time);
     const waitMinutes = (actualTime.getTime() - scheduledTime.getTime()) / 60000;
@@ -261,7 +266,7 @@ export class RealtimeAggregator {
     await this.aggregateMetric('current_wait_time');
   }
 
-  private async updateNoShowMetrics(appointment: any) {
+  private async updateNoShowMetrics(appointment: Appointment) {
     this.addMetricToCache({
       id: `noshow_${appointment.id}`,
       name: 'no_show',
@@ -281,7 +286,7 @@ export class RealtimeAggregator {
     }
   }
 
-  private async updateCollectionMetrics(billing: any) {
+  private async updateCollectionMetrics(billing: Billing) {
     if (billing.amount_paid > 0) {
       this.addMetricToCache({
         id: `collection_${billing.id}`,
@@ -307,7 +312,7 @@ export class RealtimeAggregator {
     });
   }
 
-  private async updateNewPatientMetrics(patient: any) {
+  private async updateNewPatientMetrics(patient: Patient) {
     this.addMetricToCache({
       id: `new_patient_${patient.id}`,
       name: 'new_patient',
@@ -319,7 +324,7 @@ export class RealtimeAggregator {
     await this.aggregateMetric('new_patient_registrations');
   }
 
-  private async updateReactivationMetrics(patient: any) {
+  private async updateReactivationMetrics(patient: Patient) {
     this.addMetricToCache({
       id: `reactivation_${patient.id}`,
       name: 'patient_reactivated',
@@ -329,7 +334,7 @@ export class RealtimeAggregator {
     });
   }
 
-  private async updateChairUtilizationMetrics(operatoryStatus: any) {
+  private async updateChairUtilizationMetrics(_operatoryStatus: OperatoryStatus) {
     const utilization = await this.calculateCurrentChairUtilization();
     
     this.addMetricToCache({
@@ -417,7 +422,7 @@ export class RealtimeAggregator {
     const relevantMetrics: RealtimeMetric[] = [];
 
     // Collect relevant metrics from cache
-    for (const [key, metrics] of this.metricCache.entries()) {
+    for (const [_key, metrics] of this.metricCache.entries()) {
       const filtered = metrics.filter(m => 
         m.timestamp > cutoffTime &&
         this.isRelevantForAggregation(m, metricId)
@@ -507,7 +512,7 @@ export class RealtimeAggregator {
     this.updateCallbacks.delete(metricId);
   }
 
-  private triggerAlert(alertType: string, data: any) {
+  private triggerAlert(alertType: string, data: AlertData) {
     // Emit alert through event system or notification service
     console.warn(`ALERT [${alertType}]:`, data);
     

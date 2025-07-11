@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import {
   Box,
-  Card,
-  CardContent,
+  // Card,
+  // CardContent,
   Typography,
   TextField,
   Button,
@@ -45,7 +45,7 @@ interface Message {
   suggestions?: string[]
 }
 
-const MedSpaChatbot: React.FC<MedSpaChatbotProps> = ({ contact }) => {
+const MedSpaChatbot: React.FC<MedSpaChatbotProps> = () => {
   const { isOpen, toggleChat, sendMessage } = useChatStore()
 
   const handleChatOpen = () => {

@@ -7,7 +7,7 @@ import {
   CardContent,
   Button,
   useTheme,
-  useMediaQuery,
+  // useMediaQuery,
   alpha,
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,7 +19,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 const CareConciergeHero: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const { setMode, setShowCenterSelector, addToJourneyPath } = useAdaptiveNavigation();
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 

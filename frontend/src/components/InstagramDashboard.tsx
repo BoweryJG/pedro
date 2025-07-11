@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Container,
   Typography,
@@ -108,7 +108,7 @@ const InstagramDashboard: React.FC = () => {
   const [practiceId] = useState('practice-id-placeholder'); // In real app, get from auth/context
 
   // Fetch conversations
-  const fetchConversations = async () => {
+  const fetchConversations = useCallback(async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/instagram/conversations?practice_id=${practiceId}`);
       const data = await response.json();
@@ -116,10 +116,10 @@ const InstagramDashboard: React.FC = () => {
     } catch (error) {
       console.error('Error fetching conversations:', error);
     }
-  };
+  }, [practiceId]);
 
   // Fetch analytics
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/instagram/analytics?practice_id=${practiceId}`);
       const data = await response.json();
@@ -127,7 +127,7 @@ const InstagramDashboard: React.FC = () => {
     } catch (error) {
       console.error('Error fetching analytics:', error);
     }
-  };
+  }, [practiceId]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -136,7 +136,7 @@ const InstagramDashboard: React.FC = () => {
       setLoading(false);
     };
     loadData();
-  }, []);
+  }, [fetchConversations, fetchAnalytics]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
@@ -277,7 +277,7 @@ const InstagramDashboard: React.FC = () => {
                               <Chip
                                 size="small"
                                 label={getSentimentLabel(conversation.sentiment_score)}
-                                color={getSentimentColor(conversation.sentiment_score) as any}
+                                color={getSentimentColor(conversation.sentiment_score) as 'default' | 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'}
                               />
                             </Box>
                           </Box>

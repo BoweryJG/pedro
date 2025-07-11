@@ -339,7 +339,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                   financingProcedure === 'tmj' ? 2500 :
                   3200
                 }
-                onComplete={(_result) => {
+                onComplete={() => {
                   setShowFinancingWidget(false);
                   sendMessage('I completed the financing/insurance check');
                 }}

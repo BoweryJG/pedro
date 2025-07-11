@@ -67,5 +67,5 @@ export async function sendPendingSMS() {
 
 // Export for use in browser console
 if (typeof window !== 'undefined') {
-  (window as any).sendPendingSMS = sendPendingSMS;
+  (window as Window & { sendPendingSMS?: typeof sendPendingSMS }).sendPendingSMS = sendPendingSMS;
 }

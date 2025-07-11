@@ -5,7 +5,6 @@ import {
   CardContent,
   Typography,
   Grid,
-  Chip,
   IconButton,
   Tooltip
 } from '@mui/material';
@@ -14,7 +13,7 @@ import {
   ChevronRight as ChevronRightIcon,
   Circle as CircleIcon
 } from '@mui/icons-material';
-import { format, startOfWeek, addDays, addWeeks, isSameDay, isToday } from 'date-fns';
+import { format, startOfWeek, addDays, addWeeks, isToday } from 'date-fns';
 import { motion } from 'framer-motion';
 
 interface AppointmentSlot {
@@ -26,10 +25,10 @@ interface AppointmentSlot {
   color: string;
 }
 
-interface DaySchedule {
-  date: Date;
-  appointments: AppointmentSlot[];
-}
+// interface DaySchedule {
+//   date: Date;
+//   appointments: AppointmentSlot[];
+// }
 
 const WeeklyOverview: React.FC = () => {
   const [currentWeek, setCurrentWeek] = useState(startOfWeek(new Date()));

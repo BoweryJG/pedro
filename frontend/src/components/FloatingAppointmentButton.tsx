@@ -3,15 +3,15 @@ import { Fab, Zoom, Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import ChatIcon from '@mui/icons-material/Chat';
-import { useNavigate } from 'react-router-dom';
-import { CONTACT_INFO } from '../constants/contact';
+// import { useNavigate } from 'react-router-dom';
+// import { CONTACT_INFO } from '../constants/contact';
 import { trackEvent, trackChatOpen } from '../utils/analytics';
 import { useChatStore } from '../chatbot/store/chatStore';
 
 const FloatingAppointmentButton = () => {
   const [showButton, setShowButton] = useState(false);
   const [expanded, setExpanded] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const chatStore = useChatStore();
 
   useEffect(() => {

@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
-  IconButton,
+  // IconButton,
   Avatar,
   useTheme,
   useMediaQuery,
-  alpha,
+  // alpha,
 } from '@mui/material';
 import {
   Message as MessageIcon,
-  Close as CloseIcon,
+  // Close as CloseIcon,
   AutoAwesome as SparkleIcon,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';

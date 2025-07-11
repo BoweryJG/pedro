@@ -185,12 +185,5 @@ export const SpectrumIcons = {
   AboutFace: AboutFaceIcon,
 };
 
-// Add global styles for the icons
-const style = document.createElement('style');
-style.textContent = `
-  .spectrum-icon {
-    cursor: pointer;
-    display: inline-block;
-  }
-`;
-document.head.appendChild(style);
+// Add global styles for the icons (moved to a separate file or component)
+// This should be done in a useEffect or global CSS file, not at module level

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Card,
@@ -15,7 +15,6 @@ import {
   Chip,
   Alert,
   CircularProgress,
-  Divider,
   Grid,
   IconButton,
   InputAdornment,
@@ -70,9 +69,9 @@ const VoiceAISettings: React.FC = () => {
 
   useEffect(() => {
     loadSettings();
-  }, []);
+  }, [loadSettings]);
 
-  const loadSettings = async () => {
+  const loadSettings = useCallback(async () => {
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -93,7 +92,7 @@ const VoiceAISettings: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [supabase]);
 
   const saveSettings = async () => {
     setSaveStatus('saving');
@@ -137,7 +136,7 @@ const VoiceAISettings: React.FC = () => {
     }
   };
 
-  const handleChange = (field: keyof VoiceSettings, value: any) => {
+  const handleChange = (field: keyof VoiceSettings, value: string | number | boolean) => {
     setSettings(prev => ({ ...prev, [field]: value }));
   };
 

@@ -81,7 +81,7 @@ const googleReviews = [
 
 const LuxuryGoogleReviews: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Box
@@ -235,7 +235,7 @@ const LuxuryGoogleReviews: React.FC = () => {
               },
             }}
           >
-            {googleReviews.map((review, index) => (
+            {googleReviews.map((review) => (
               <SwiperSlide key={review.id}>
                 <div>
                   <Card

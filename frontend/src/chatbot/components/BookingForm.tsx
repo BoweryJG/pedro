@@ -129,7 +129,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleFieldChange = (field: keyof BookingData, value: any) => {
+  const handleFieldChange = (field: keyof BookingData, value: string | Dayjs | null) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     setErrors(prev => ({ ...prev, [field]: undefined }));
     

@@ -38,7 +38,12 @@ interface VoiceCall {
   ended_at: string | null;
   duration_seconds: number | null;
   call_type: string;
-  patient_info: any;
+  patient_info: {
+    name?: string;
+    phone?: string;
+    email?: string;
+    reason?: string;
+  } | null;
   transcript: Array<{ role: string; text: string; timestamp: number }>;
   summary: string | null;
   appointment_booked: boolean;

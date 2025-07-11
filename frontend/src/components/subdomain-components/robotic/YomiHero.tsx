@@ -12,7 +12,7 @@ import {
   keyframes
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { CalendarToday, LocationOn, Star, Engineering, SmartToy, Chat } from '@mui/icons-material'
+import { LocationOn, Star, Engineering, SmartToy, Chat } from '@mui/icons-material'
 import roboticContent from '../../../data/subdomain-content/robotic/roboticContent.json'
 import { useChatStore } from '../../../chatbot/store/chatStore'
 import { trackChatOpen, trackEvent } from '../../../utils/analytics'

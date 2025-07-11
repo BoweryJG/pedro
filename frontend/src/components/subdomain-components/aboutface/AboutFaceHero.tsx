@@ -14,7 +14,7 @@ import {
   keyframes
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Spa, Star, Schedule, Chat, AutoAwesome } from '@mui/icons-material'
+import { Star, Schedule, Chat, AutoAwesome } from '@mui/icons-material'
 import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFaceContent.json'
 import { useChatStore } from '../../../chatbot/store/chatStore'
 import { trackChatOpen, trackEvent } from '../../../utils/analytics'
@@ -63,7 +63,7 @@ const glowPulse = keyframes`
 `
 
 // Styled components
-const StyledHeroSection = styled(Box)(({ theme }) => ({
+const StyledHeroSection = styled(Box)(() => ({
   position: 'relative',
   background: 'linear-gradient(135deg, #FF5252 0%, #FFB74D 50%, #FF8A80 100%)',
   minHeight: '100vh',
@@ -129,7 +129,7 @@ const WarmParticle = styled(Box)(({ delay }: { delay: number }) => ({
   animationDelay: `${delay}s`
 }))
 
-const GlowButton = styled(Button)(({ theme }) => ({
+const GlowButton = styled(Button)(() => ({
   background: 'linear-gradient(135deg, #FF5252 0%, #FFB74D 100%)',
   color: 'white',
   fontWeight: 600,

@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabase';
-import { format, startOfDay, endOfDay, subDays, startOfMonth, endOfMonth } from 'date-fns';
+import { startOfDay, endOfDay, subDays, startOfMonth, endOfMonth } from 'date-fns';
 
 export interface MetricResult {
   value: number;

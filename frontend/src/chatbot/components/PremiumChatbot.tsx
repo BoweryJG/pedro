@@ -1,29 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Box, 
-  Paper, 
   Typography, 
   TextField, 
   IconButton, 
   Chip,
-  CircularProgress,
-  Fade,
-  Slide,
   Avatar,
-  Divider,
   LinearProgress,
   Tooltip,
   useMediaQuery,
   useTheme,
-  alpha,
 } from '@mui/material';
 import {
   Send as SendIcon,
   Close as CloseIcon,
   Person as PersonIcon,
   AutoAwesome as SparkleIcon,
-  LocalOffer as OfferIcon,
-  ArrowBack as ArrowBackIcon,
+  // LocalOffer as OfferIcon,
+  // ArrowBack as ArrowBackIcon,
   Psychology as AIIcon,
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';

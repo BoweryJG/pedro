@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 
 declare global {
   interface Window {
-    dataLayer: any[];
-    gtag: (command: string, ...args: any[]) => void;
+    dataLayer: Array<IArguments>;
+    gtag: (command: string, targetId: string, config?: Record<string, unknown>) => void;
   }
 }
 
@@ -19,8 +19,8 @@ export const GoogleAnalytics = () => {
     // Initialize gtag if not already done
     if (typeof window.gtag === 'undefined') {
       window.dataLayer = window.dataLayer || [];
-      window.gtag = function() {
-        window.dataLayer.push(arguments);
+      window.gtag = function(...args: unknown[]) {
+        window.dataLayer.push(args as IArguments);
       };
     }
 

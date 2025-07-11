@@ -13,7 +13,7 @@ jest.mock('../../services/appointmentService');
 
 // Mock MUI Date Picker to avoid complexity in tests
 jest.mock('@mui/x-date-pickers/DatePicker', () => ({
-  DatePicker: ({ label, value, onChange, ...props }: any) => (
+  DatePicker: ({ label, value, onChange, ...props }: {label?: string; value?: dayjs.Dayjs | null; onChange?: (value: dayjs.Dayjs | null) => void; [key: string]: unknown}) => (
     <input
       type="date"
       aria-label={label}

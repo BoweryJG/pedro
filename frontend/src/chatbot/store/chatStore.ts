@@ -36,7 +36,7 @@ interface ChatStore {
   setLoading: (loading: boolean) => void;
   updateStage: (stage: ConversationStage) => void;
   updateBookingIntent: (score: number) => void;
-  trackAnalytics: (event: string, data?: any) => void;
+  trackAnalytics: (event: string, data?: Record<string, unknown>) => void;
   reset: () => void;
   setShowFinancingWidget: (show: boolean, procedure?: 'yomi' | 'tmj' | 'emface') => void;
   saveConversationToSupabase: () => Promise<void>;
@@ -110,7 +110,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     const state = get();
     
     // Check if this is the first user message after initial greeting
-    const isFirstMessage = state.messages.length === 1;
+    // const isFirstMessage = state.messages.length === 1;
     
     // Add user message
     const userMessage: Message = {

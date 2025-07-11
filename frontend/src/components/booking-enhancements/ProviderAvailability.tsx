@@ -119,7 +119,7 @@ export const ProviderAvailabilityManager: React.FC<ProviderAvailabilityProps> = 
     setShowTimeOffForm(true);
   };
 
-  const handleWorkingHoursChange = (dayIndex: number, field: keyof WorkingHours, value: any) => {
+  const handleWorkingHoursChange = (dayIndex: number, field: keyof WorkingHours, value: string | number | boolean) => {
     const updated = workingHours.map((day, index) => 
       index === dayIndex ? { ...day, [field]: value } : day
     );
@@ -156,7 +156,7 @@ export const ProviderAvailabilityManager: React.FC<ProviderAvailabilityProps> = 
                 return (
                   <button
                     key={type.value}
-                    onClick={() => setTimeOffForm({ ...timeOffForm, type: type.value as any })}
+                    onClick={() => setTimeOffForm({ ...timeOffForm, type: type.value as 'vacation' | 'sick' | 'personal' | 'conference' | 'other' })}
                     className={`p-3 rounded-lg border text-sm font-medium transition-colors ${
                       timeOffForm.type === type.value
                         ? 'border-blue-500 bg-blue-50 text-blue-700'

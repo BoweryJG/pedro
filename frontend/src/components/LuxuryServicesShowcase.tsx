@@ -55,7 +55,7 @@ const services = [
 
 const LuxuryServicesShowcase: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  // const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const [hoveredService, setHoveredService] = useState<string | null>(null);
 
@@ -115,7 +115,7 @@ const LuxuryServicesShowcase: React.FC = () => {
 
         {/* Services Grid */}
         <Grid container spacing={4}>
-          {services.map((service, index) => (
+          {services.map((service) => (
             <Grid item xs={12} md={6} key={service.id}>
               <div
                 onMouseEnter={() => setHoveredService(service.id)}

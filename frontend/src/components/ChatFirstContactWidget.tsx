@@ -21,7 +21,7 @@ import {
 } from '@mui/icons-material';
 import { keyframes } from '@mui/material/styles';
 import { CONTACT_INFO } from '../constants/contact';
-import { trackPhoneClick, trackChatOpen, trackContactMethodChoice } from '../utils/analytics';
+import { trackChatOpen, trackContactMethodChoice } from '../utils/analytics';
 
 const pulse = keyframes`
   0% { transform: scale(1); }

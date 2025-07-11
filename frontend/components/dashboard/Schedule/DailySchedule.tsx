@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { format, addMinutes, startOfDay, endOfDay, isSameMinute } from 'date-fns';
-import { Clock, Calendar, User, Phone, MessageSquare, ChevronLeft, ChevronRight } from 'lucide-react';
+import { format, addMinutes, isSameMinute } from 'date-fns';
+import { Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useDrop } from 'react-dnd';
 import AppointmentCard from './AppointmentCard';
 
@@ -225,7 +225,7 @@ interface TimeSlotCellProps {
   onDrop: (appointmentId: string) => void;
 }
 
-const TimeSlotCell: React.FC<TimeSlotCellProps> = ({ slot, chairNumber, onDrop }) => {
+const TimeSlotCell: React.FC<TimeSlotCellProps> = ({ onDrop }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: 'appointment',
     drop: (item: { id: string }) => {

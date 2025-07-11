@@ -9,7 +9,7 @@ import {
   IconButton,
   useTheme,
   useMediaQuery,
-  Fade,
+  // Fade,
   alpha,
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -117,7 +117,7 @@ const LuxuryCenterSelectionModal: React.FC<LuxuryCenterSelectionModalProps> = ({
   const [hoveredCenter, setHoveredCenter] = useState<string | null>(null);
 
   const handleSelectCenter = (centerId: string) => {
-    setCurrentCenter(centerId as any);
+    setCurrentCenter(centerId as 'tmj' | 'implants' | 'robotic' | 'medspa' | 'aboutface');
     setMode('center-focused');
     addToJourneyPath(`selected-${centerId}`);
     navigate(`/${centerId}`);

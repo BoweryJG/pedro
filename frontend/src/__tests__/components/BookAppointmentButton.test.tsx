@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BookAppointmentButton } from '../../components/BookAppointmentButton';
 import { EnhancedBookingForm } from '../../components/EnhancedBookingForm';
@@ -142,7 +142,7 @@ describe('BookAppointmentButton', () => {
 
   describe('Props forwarding', () => {
     it('should forward button props correctly', () => {
-      const handleClick = jest.fn();
+      // const handleClick = jest.fn(); // Unused variable
       render(
         <BookAppointmentButton 
           className="custom-class"
@@ -159,7 +159,7 @@ describe('BookAppointmentButton', () => {
 
     it('should not pass onClick to underlying button', () => {
       const onClick = jest.fn();
-      render(<BookAppointmentButton onClick={onClick as any} />);
+      render(<BookAppointmentButton onClick={onClick as React.MouseEventHandler<HTMLButtonElement>} />);
       
       // The onClick should be intercepted and not passed to the button
       const button = screen.getByRole('button');

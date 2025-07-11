@@ -156,6 +156,6 @@ export const contextualResponses = {
   ]
 };
 
-export function personalizeQuestion(template: string, context: any): string {
+export function personalizeQuestion(template: string, context: Record<string, string | number>): string {
   return template.replace(/{(\w+)}/g, (match, key) => context[key] || match);
 }

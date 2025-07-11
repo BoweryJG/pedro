@@ -49,8 +49,8 @@ const LoginPage: React.FC = () => {
 
       if (error) throw error;
       setMessage('Check your email for the login link!');
-    } catch (error: any) {
-      setError(error.message || 'Failed to send magic link');
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Failed to send magic link');
     } finally {
       setLoading(false);
     }

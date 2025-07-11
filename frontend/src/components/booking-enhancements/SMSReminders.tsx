@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MessageSquare, Bell, Clock, Settings, Check, X, AlertCircle } from 'lucide-react';
+import { MessageSquare, Clock, Check, X, AlertCircle } from 'lucide-react';
 
 interface SMSReminderSettings {
   enabled: boolean;
@@ -376,7 +376,7 @@ export const SMSReminderSettings: React.FC<SMSReminderProps> = ({
 };
 
 // SMS History Component
-export const SMSHistory: React.FC<{ appointmentId: string }> = ({ appointmentId }) => {
+export const SMSHistory: React.FC<{ appointmentId: string }> = () => {
   const [history] = useState([
     {
       id: '1',

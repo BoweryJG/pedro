@@ -8,7 +8,7 @@ import {
   addWeeks,
   subWeeks
 } from 'date-fns';
-import { Calendar, ChevronLeft, ChevronRight, Clock, Users } from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, Users } from 'lucide-react';
 
 interface DayAppointment {
   id: string;

@@ -1,8 +1,9 @@
 import { supabase } from '@/lib/supabase';
-import { MetricsCalculator, DashboardMetrics, MetricResult } from './metricsCalculator';
+import { MetricsCalculator, DashboardMetrics } from './metricsCalculator';
 import { PredictiveAnalytics } from './predictiveAnalytics';
 import { BenchmarkService, BenchmarkData } from './benchmarkService';
-import { format, subDays, startOfMonth } from 'date-fns';
+import { format, subDays } from 'date-fns';
+import { HistoricalData, BenchmarkReportData } from './types';
 
 export interface Insight {
   id: string;
@@ -27,15 +28,15 @@ export interface Insight {
   expiresAt?: Date;
   visual?: {
     type: 'chart' | 'gauge' | 'comparison';
-    data: any;
+    data: Record<string, unknown>;
   };
 }
 
 export interface InsightRule {
   id: string;
   name: string;
-  condition: (metrics: DashboardMetrics, historical?: any) => boolean;
-  generator: (metrics: DashboardMetrics, historical?: any) => Insight | null;
+  condition: (metrics: DashboardMetrics, historical?: HistoricalData) => boolean;
+  generator: (metrics: DashboardMetrics, historical?: HistoricalData) => Insight | null;
   frequency: 'realtime' | 'hourly' | 'daily' | 'weekly';
   enabled: boolean;
 }
@@ -701,7 +702,7 @@ export class InsightsGenerator {
     return insights;
   }
 
-  private generateBenchmarkInsights(benchmarkReport: any): Insight[] {
+  private generateBenchmarkInsights(benchmarkReport: BenchmarkReportData): Insight[] {
     const insights: Insight[] = [];
 
     // Top performing metrics
@@ -737,7 +738,7 @@ export class InsightsGenerator {
     });
 
     // Improvement opportunities
-    benchmarkReport.opportunities.slice(0, 2).forEach((opportunity: any) => {
+    benchmarkReport.opportunities.slice(0, 2).forEach(opportunity => {
       insights.push({
         id: `benchmark_opp_${opportunity.metric}_${Date.now()}`,
         type: 'opportunity',
@@ -794,7 +795,7 @@ export class InsightsGenerator {
 
   private isDuplicateInsight(insight: Insight): boolean {
     // Check if similar insight was generated recently
-    for (const [id, existing] of this.generatedInsights.entries()) {
+    for (const [_id, existing] of this.generatedInsights.entries()) {
       if (
         existing.type === insight.type &&
         existing.category === insight.category &&

@@ -3,7 +3,16 @@ import { supabase } from '../../lib/supabase';
 import { sendPendingSMS } from '../../utils/sendPendingSMS';
 
 export default function SMSQueue() {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Array<{
+    id: string;
+    to_phone: string;
+    message: string;
+    status: 'pending' | 'sent' | 'failed';
+    sent_at: string | null;
+    error_message: string | null;
+    created_at: string;
+    appointment_id: string | null;
+  }>>([]);
   const [loading, setLoading] = useState(false);
   const [sending, setSending] = useState(false);
 

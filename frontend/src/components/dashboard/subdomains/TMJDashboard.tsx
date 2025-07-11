@@ -3,7 +3,6 @@ import { Box, Card, Typography, LinearProgress, Grid, Chip, IconButton, Tooltip 
 import { 
   TrendingUp, 
   TrendingDown, 
-  AccessTime,
   Healing,
   Psychology,
   LocalHospital,

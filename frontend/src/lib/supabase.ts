@@ -29,7 +29,7 @@ export const supabase = isSupabaseConfigured
       channel: () => ({
         on: () => ({ subscribe: () => ({ unsubscribe: () => {} }) }),
       }),
-    } as any;
+    } as ReturnType<typeof createClient>;
 
 export const isSupabaseEnabled = isSupabaseConfigured;
 
@@ -44,7 +44,7 @@ export type Tables = {
       phone: string | null;
       date_of_birth: string | null;
       address: string | null;
-      medical_history: any | null;
+      medical_history: Record<string, unknown> | null;
       insurance_provider: string | null;
       insurance_member_id: string | null;
       insurance_group_number: string | null;
@@ -61,7 +61,7 @@ export type Tables = {
       description: string;
       category: string;
       estimated_duration: string | null;
-      price_range: any | null;
+      price_range: { min: number; max: number } | null;
       image_url: string | null;
       is_yomi_technology: boolean;
       created_at: string;

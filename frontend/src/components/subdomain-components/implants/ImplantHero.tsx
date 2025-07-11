@@ -13,7 +13,7 @@ import {
   keyframes
 } from '@mui/material'
 import { motion } from 'framer-motion'
-import { Phone, CalendarToday, LocationOn, Star, Psychology, AttachMoney } from '@mui/icons-material'
+import { CalendarToday, LocationOn, Star, Psychology, AttachMoney } from '@mui/icons-material'
 import implantContent from '../../../data/subdomain-content/implants/implantContent.json'
 import { useChatStore } from '../../../chatbot/store/chatStore'
 import { trackChatOpen, trackEvent } from '../../../utils/analytics'
@@ -67,7 +67,7 @@ const crystallineRotate = keyframes`
 `
 
 // Styled components
-const HeroContainer = styled(Box)(({ theme }) => ({
+const HeroContainer = styled(Box)(() => ({
   position: 'relative',
   overflow: 'hidden',
   background: `linear-gradient(135deg, ${colors.deepGraphite} 0%, ${colors.deepGraphite}ee 25%, ${colors.metallicSilver}22 50%, ${colors.electricCrimson}11 75%, ${colors.deepGraphite} 100%)`,
@@ -87,7 +87,7 @@ const HeroContainer = styled(Box)(({ theme }) => ({
   }
 }))
 
-const MetallicButton = styled(Button)(({ theme }) => ({
+const MetallicButton = styled(Button)(() => ({
   position: 'relative',
   overflow: 'hidden',
   background: `linear-gradient(45deg, ${colors.metallicSilver} 30%, #CFD8DC 50%, ${colors.metallicSilver} 70%)`,
@@ -116,7 +116,7 @@ const MetallicButton = styled(Button)(({ theme }) => ({
   }
 }))
 
-const CrimsonButton = styled(Button)(({ theme }) => ({
+const CrimsonButton = styled(Button)(() => ({
   background: `linear-gradient(45deg, ${colors.electricCrimson} 30%, #FF5252 90%)`,
   color: 'white',
   fontWeight: 600,

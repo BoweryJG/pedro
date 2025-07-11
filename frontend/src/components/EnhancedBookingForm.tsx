@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -22,18 +22,18 @@ import {
   FormControl,
   InputLabel,
   Select,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
+  // RadioGroup,
+  // FormControlLabel,
+  // Radio,
   Divider
 } from '@mui/material';
 import {
-  CalendarMonth,
+  // CalendarMonth,
   AccessTime,
   Person,
   LocalHospital,
   CheckCircle,
-  Warning
+  // Warning
 } from '@mui/icons-material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -94,7 +94,7 @@ export const EnhancedBookingForm: React.FC<EnhancedBookingFormProps> = ({
   const [services, setServices] = useState<Tables['services']['Row'][]>([]);
   const [staff, setStaff] = useState<Tables['staff']['Row'][]>([]);
   const [availableProviders, setAvailableProviders] = useState<AvailableProvider[]>([]);
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<TimeSlot | null>(null);
+  // const [_selectedTimeSlot] = useState<TimeSlot | null>(null);
   const [confirmationCode, setConfirmationCode] = useState<string>('');
   
   const [formData, setFormData] = useState<BookingFormData>({
@@ -126,7 +126,7 @@ export const EnhancedBookingForm: React.FC<EnhancedBookingFormProps> = ({
     if (formData.date && formData.serviceId) {
       loadAvailableProviders();
     }
-  }, [formData.date, formData.serviceId]);
+  }, [formData.date, formData.serviceId, loadAvailableProviders]);
 
   const loadServices = async () => {
     try {
@@ -154,7 +154,7 @@ export const EnhancedBookingForm: React.FC<EnhancedBookingFormProps> = ({
     }
   };
 
-  const loadAvailableProviders = async () => {
+  const loadAvailableProviders = useCallback(async () => {
     if (!formData.date || !formData.serviceId) return;
     
     try {
@@ -176,7 +176,7 @@ export const EnhancedBookingForm: React.FC<EnhancedBookingFormProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [formData.date, formData.serviceId, formData.staffId]);
 
   const handleNext = () => {
     setError('');

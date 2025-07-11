@@ -5,10 +5,8 @@ import {
   CardContent,
   Typography,
   Avatar,
-  AvatarGroup,
   Chip,
   Grid,
-  IconButton,
   Button,
   Dialog,
   DialogTitle,
@@ -23,10 +21,7 @@ import {
   FormControlLabel
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  Edit as EditIcon,
-  Delete as DeleteIcon,
-  Event as EventIcon
+  Add as AddIcon
 } from '@mui/icons-material';
 import { format, addDays, startOfWeek } from 'date-fns';
 import { motion } from 'framer-motion';
@@ -51,7 +46,7 @@ interface Shift {
 }
 
 const StaffScheduler: React.FC = () => {
-  const [currentWeek, setCurrentWeek] = useState(startOfWeek(new Date()));
+  const [currentWeek, _setCurrentWeek] = useState(startOfWeek(new Date()));
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<Shift | null>(null);
 
@@ -61,7 +56,7 @@ const StaffScheduler: React.FC = () => {
   ];
 
   // TODO: Replace with actual shift data from Supabase
-  const [shifts, setShifts] = useState<Shift[]>([
+  const [shifts, _setShifts] = useState<Shift[]>([
     { id: '1', staffId: '1', date: addDays(currentWeek, 1), startTime: '08:00', endTime: '17:00', type: 'regular' },
     { id: '2', staffId: '1', date: addDays(currentWeek, 2), startTime: '08:00', endTime: '17:00', type: 'regular' }
   ]);
@@ -75,7 +70,7 @@ const StaffScheduler: React.FC = () => {
     );
   };
 
-  const getStaffById = (id: string) => staffMembers.find(s => s.id === id);
+  // const getStaffById = (id: string) => staffMembers.find(s => s.id === id);
 
   const handleAddShift = () => {
     setSelectedShift(null);

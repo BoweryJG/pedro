@@ -20,7 +20,7 @@ import {
   Select,
   MenuItem,
   Slider,
-  Rating,
+  // Rating,
   Alert
 } from '@mui/material'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -31,9 +31,9 @@ import {
   Chat,
   Close,
   Memory,
-  Speed,
+  // Speed,
   CheckCircle,
-  Schedule,
+  // Schedule,
   Psychology,
   CompareArrows
 } from '@mui/icons-material'
@@ -47,7 +47,7 @@ interface Message {
   sender: 'user' | 'bot'
   timestamp: Date
   type?: 'text' | 'robotic_assessment' | 'technology_demo'
-  data?: any
+  data?: unknown
 }
 
 interface RoboticReadinessData {
@@ -108,7 +108,7 @@ const YomiChatbot: React.FC = () => {
     scrollToBottom()
   }, [messages])
 
-  const addMessage = (text: string, sender: 'user' | 'bot', type: 'text' | 'robotic_assessment' | 'technology_demo' = 'text', data?: any) => {
+  const addMessage = (text: string, sender: 'user' | 'bot', type: 'text' | 'robotic_assessment' | 'technology_demo' = 'text', data?: unknown) => {
     const newMessage: Message = {
       id: Date.now().toString(),
       text,

@@ -54,7 +54,7 @@ export const authAPI = {
   resetPassword: (email: string) =>
     api.post('/auth/reset', { email }),
   
-  updateUser: (data: any) =>
+  updateUser: (data: { email?: string; firstName?: string; lastName?: string; phone?: string }) =>
     api.post('/auth/update', data),
   
   getCurrentUser: () =>
@@ -80,7 +80,13 @@ export const appointmentsAPI = {
   }) =>
     api.post('/appointments', data),
   
-  update: (id: string, data: any) =>
+  update: (id: string, data: {
+    serviceId?: string;
+    date?: string;
+    time?: string;
+    notes?: string;
+    status?: string;
+  }) =>
     api.put(`/appointments/${id}`, data),
   
   cancel: (id: string) =>
@@ -107,7 +113,7 @@ export const servicesAPI = {
 
 // Chat API - This will replace the Netlify function
 export const chatAPI = {
-  sendMessage: async (messages: any[]) => {
+  sendMessage: async (messages: Array<{ role: string; content: string }>) => {
     try {
       const response = await api.post('/chat', { messages });
       return response.data;

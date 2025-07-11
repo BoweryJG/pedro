@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useChatStore } from '../../../chatbot/store/chatStore';
+// import { useChatStore } from '../../../chatbot/store/chatStore';
 import { trackEvent } from '../../../utils/analytics';
 
 // This component now serves as a context provider for EmFace/AboutFace specific chat interactions

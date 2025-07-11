@@ -36,7 +36,7 @@ interface EnhancedHeroProps {
 const EnhancedHero: React.FC<EnhancedHeroProps> = ({ onNavigate }) => {
   const [heroRef, heroInView] = useInView({ triggerOnce: true });
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
-  const [_showVideo, setShowVideo] = useState(false);
+  const [, setShowVideo] = useState(false);
 
   // Rotating text animations
   const rotatingTexts = [
@@ -51,7 +51,7 @@ const EnhancedHero: React.FC<EnhancedHeroProps> = ({ onNavigate }) => {
       setCurrentTextIndex((prev) => (prev + 1) % rotatingTexts.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [rotatingTexts.length]);
 
   const features = [
     { icon: <ScienceIcon />, text: "Only Yomi Provider in Staten Island" },

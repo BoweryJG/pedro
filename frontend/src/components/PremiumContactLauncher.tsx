@@ -5,7 +5,7 @@ import {
   IconButton,
   useTheme,
   useMediaQuery,
-  alpha,
+  // alpha,
 } from '@mui/material';
 import {
   Phone as PhoneIcon,
@@ -15,7 +15,7 @@ import {
 } from '@mui/icons-material';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { VoiceCallButton } from './VoiceCallButton';
-import { Chatbot } from '../chatbot/components/Chatbot';
+// import { Chatbot } from '../chatbot/components/Chatbot';
 import { useChatStore } from '../chatbot/store/chatStore';
 
 export const PremiumContactLauncher: React.FC = () => {
@@ -70,7 +70,7 @@ export const PremiumContactLauncher: React.FC = () => {
     if (chatStore.isOpen && activeMode !== 'text') {
       setActiveMode('text');
     }
-  }, [chatStore.isOpen]);
+  }, [chatStore.isOpen, activeMode]);
 
   return (
     <>

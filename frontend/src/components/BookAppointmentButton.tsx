@@ -7,12 +7,12 @@ import { trackEvent, trackChatOpen, trackProcedureInterest } from '../utils/anal
 
 interface BookAppointmentButtonProps extends Omit<ButtonProps, 'onClick'> {
   initialService?: string;
-  onSuccess?: (appointmentId: string) => void;
+  // onSuccess?: (appointmentId: string) => void;
 }
 
 export const BookAppointmentButton: React.FC<BookAppointmentButtonProps> = ({
   initialService,
-  onSuccess,
+  // onSuccess,
   children = "Book Appointment",
   startIcon = <CalendarMonth />,
   variant = "contained",

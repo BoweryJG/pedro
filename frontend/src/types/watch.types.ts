@@ -98,7 +98,7 @@ export interface Patient {
   phone?: string;
   date_of_birth?: string;
   address?: string;
-  medical_history?: any;
+  medical_history?: Record<string, unknown>;
   created_at: string;
   updated_at: string;
 }
@@ -109,7 +109,7 @@ export interface Service {
   description: string;
   category: string;
   estimated_duration?: string;
-  price_range?: any;
+  price_range?: { min: number; max: number };
   image_url?: string;
   is_yomi_technology: boolean;
   created_at: string;

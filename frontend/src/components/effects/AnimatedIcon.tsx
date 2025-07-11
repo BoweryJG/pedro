@@ -91,12 +91,12 @@ const AnimatedIcon: React.FC<AnimatedIconProps> = ({
       >
         {cloneElement(icon, {
           sx: {
-            ...(icon.props as any)?.sx,
+            ...(icon.props as React.ComponentProps<typeof SvgIcon>)?.sx,
             color: 'white',
             fontSize: size,
             filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))',
           },
-        } as any)}
+        })}
       </Box>
     </Box>
   );

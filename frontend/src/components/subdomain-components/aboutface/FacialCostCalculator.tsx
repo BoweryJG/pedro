@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {
   Box,
   Typography,
@@ -28,6 +28,15 @@ import aboutFaceContent from '../../../data/subdomain-content/aboutface/aboutFac
 import { useChatStore } from '../../../chatbot/store/chatStore'
 import { trackChatOpen, trackEvent } from '../../../utils/analytics'
 
+const treatmentPrices: { [key: string]: number } = {
+  'dermal-fillers': 850,
+  'botox-facial': 360,
+  'facial-threading': 1800,
+  'chemical-peels': 275,
+  'microneedling': 500,
+  'facial-contouring': 3200
+}
+
 const FacialCostCalculator: React.FC = () => {
   const [selectedTreatments, setSelectedTreatments] = useState<string[]>([])
   const [totalAmount, setTotalAmount] = useState(0)
@@ -54,15 +63,6 @@ const FacialCostCalculator: React.FC = () => {
 
   const { treatments, facialPackages, financing } = aboutFaceContent
 
-  const treatmentPrices: { [key: string]: number } = {
-    'dermal-fillers': 850,
-    'botox-facial': 360,
-    'facial-threading': 1800,
-    'chemical-peels': 275,
-    'microneedling': 500,
-    'facial-contouring': 3200
-  }
-
   const handleTreatmentToggle = (treatmentId: string) => {
     setSelectedTreatments(prev => 
       prev.includes(treatmentId)
@@ -71,14 +71,14 @@ const FacialCostCalculator: React.FC = () => {
     )
   }
 
-  const calculateTotal = () => {
+  const calculateTotal = useCallback(() => {
     const total = selectedTreatments.reduce((sum, id) => {
       return sum + (treatmentPrices[id] || 0)
     }, 0)
     setTotalAmount(total)
-  }
+  }, [selectedTreatments])
 
-  const calculateMonthlyPayment = () => {
+  const calculateMonthlyPayment = useCallback(() => {
     if (totalAmount === 0) {
       setMonthlyPayment(0)
       return
@@ -88,16 +88,16 @@ const FacialCostCalculator: React.FC = () => {
     const interestRate = 0.1299 / 12 // 12.99% APR divided by 12 months
     const payment = totalAmount * (interestRate * Math.pow(1 + interestRate, financingTerm)) / (Math.pow(1 + interestRate, financingTerm) - 1)
     setMonthlyPayment(Math.round(payment))
-  }
+  }, [totalAmount, financingTerm])
 
   useEffect(() => {
     calculateTotal()
-  }, [selectedTreatments])
+  }, [selectedTreatments, calculateTotal])
 
   useEffect(() => {
     calculateMonthlyPayment()
     setShowFinancing(totalAmount >= 500)
-  }, [totalAmount, financingTerm])
+  }, [totalAmount, financingTerm, calculateMonthlyPayment])
 
 
   return (

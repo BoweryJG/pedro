@@ -3,17 +3,12 @@ import {
   Phone, 
   MessageSquare, 
   Mail, 
-  Calendar,
   Clock,
-  FileText,
   Video,
-  AlertCircle,
   CheckCircle,
-  XCircle,
   Send,
   X,
   User,
-  DollarSign,
   CreditCard,
   Stethoscope
 } from 'lucide-react';
@@ -38,7 +33,7 @@ interface QuickAction {
 
 interface QuickActionsProps {
   patient?: Patient;
-  onActionComplete?: (action: string, result: any) => void;
+  onActionComplete?: (action: string, result: { notes?: string; message?: string; subject?: string; body?: string }) => void;
 }
 
 const QuickActions: React.FC<QuickActionsProps> = ({ patient, onActionComplete }) => {
@@ -332,6 +327,69 @@ const QuickActions: React.FC<QuickActionsProps> = ({ patient, onActionComplete }
                 </button>
                 <button
                   onClick={() => setShowSMSModal(false)}
+                  className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Email Modal */}
+      {showEmailModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Send Email</h3>
+              <button
+                onClick={() => setShowEmailModal(false)}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="space-y-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <p className="text-sm text-gray-600">To:</p>
+                <p className="text-lg font-medium">{patient?.name}</p>
+                <p className="text-blue-600">{patient?.email}</p>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Subject
+                </label>
+                <input
+                  type="text"
+                  value={emailSubject}
+                  onChange={(e) => setEmailSubject(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Email subject..."
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Message
+                </label>
+                <textarea
+                  value={emailBody}
+                  onChange={(e) => setEmailBody(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  rows={6}
+                  placeholder="Type your message..."
+                />
+              </div>
+              <div className="flex space-x-3">
+                <button
+                  onClick={handleEmail}
+                  className="flex-1 bg-purple-500 hover:bg-purple-600 text-white py-2 px-4 rounded-lg transition-colors flex items-center justify-center space-x-2"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>Send Email</span>
+                </button>
+                <button
+                  onClick={() => setShowEmailModal(false)}
                   className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-lg transition-colors"
                 >
                   Cancel
