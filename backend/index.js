@@ -968,8 +968,13 @@ app.post('/voice/julie/status', async (req, res) => {
 // Get active Julie AI sessions - requires authentication
 app.get('/api/julie/sessions', authenticate, requirePermission('manage:voice_calls'), async (req, res) => {
   try {
-    const sessions = julieAI.getActiveSessions();
-    res.json({ sessions });
+    // Get status which includes active session count
+    const status = julieAI.getStatus();
+    res.json({ 
+      activeSessions: status.activeSessions,
+      sessions: [], // Session details not exposed for privacy
+      status 
+    });
   } catch (error) {
     console.error('Get Julie sessions error:', error);
     res.status(500).json({ error: 'Failed to get active sessions' });
@@ -979,7 +984,7 @@ app.get('/api/julie/sessions', authenticate, requirePermission('manage:voice_cal
 // Julie AI health check
 app.get('/api/julie/health', async (req, res) => {
   try {
-    const activeSessions = julieAI.getActiveSessions();
+    const status = julieAI.getStatus();
     
     res.json({
       status: 'operational',
@@ -990,7 +995,9 @@ app.get('/api/julie/health', async (req, res) => {
         emergencyRouting: true,
         humanHandoff: true
       },
-      activeSessions: activeSessions.length,
+      activeSessions: status.activeSessions,
+      ttsConfigured: status.ttsConfigured,
+      voiceServiceAvailable: status.voiceServiceAvailable,
       openRouterConnection: process.env.OPENROUTER_API_KEY ? 'configured' : 'not configured'
     });
   } catch (error) {

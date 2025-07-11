@@ -7,7 +7,7 @@ import logger from '../utils/logger.js';
 const router = express.Router();
 
 // Basic health check
-router.get('/health', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const health = await getHealthStatus();
     const statusCode = health.status === 'healthy' ? 200 : 
@@ -25,7 +25,7 @@ router.get('/health', async (req, res) => {
 });
 
 // Detailed health check (protected endpoint)
-router.get('/health/detailed', async (req, res) => {
+router.get('/detailed', async (req, res) => {
   try {
     // Get basic health status
     const health = await getHealthStatus();
@@ -33,17 +33,28 @@ router.get('/health/detailed', async (req, res) => {
     // Add database pool stats
     health.services.database.pool = getPoolStats();
     
-    // Test Redis operations
-    const redisTestKey = 'health:test';
-    const redisTestValue = { timestamp: new Date().toISOString() };
-    const redisWriteSuccess = await cache.set(redisTestKey, redisTestValue, 60);
-    const redisReadValue = await cache.get(redisTestKey);
-    
-    health.services.redis.operations = {
-      write: redisWriteSuccess,
-      read: redisReadValue !== null,
-      match: JSON.stringify(redisReadValue) === JSON.stringify(redisTestValue)
-    };
+    // Test Redis operations if available
+    if (health.services.redis?.healthy) {
+      try {
+        const redisTestKey = 'health:test';
+        const redisTestValue = { timestamp: new Date().toISOString() };
+        const redisWriteSuccess = await cache.set(redisTestKey, redisTestValue, 60);
+        const redisReadValue = await cache.get(redisTestKey);
+        
+        health.services.redis.operations = {
+          write: redisWriteSuccess,
+          read: redisReadValue !== null,
+          match: JSON.stringify(redisReadValue) === JSON.stringify(redisTestValue)
+        };
+      } catch (error) {
+        health.services.redis.operations = {
+          write: false,
+          read: false,
+          match: false,
+          error: error.message
+        };
+      }
+    }
     
     // Add environment info
     health.environment = {
@@ -67,7 +78,7 @@ router.get('/health/detailed', async (req, res) => {
 });
 
 // Liveness probe (for Kubernetes/container orchestration)
-router.get('/health/live', (req, res) => {
+router.get('/live', (req, res) => {
   res.status(200).json({
     status: 'alive',
     timestamp: new Date().toISOString()
@@ -75,7 +86,7 @@ router.get('/health/live', (req, res) => {
 });
 
 // Readiness probe (checks if service is ready to handle requests)
-router.get('/health/ready', async (req, res) => {
+router.get('/ready', async (req, res) => {
   try {
     const health = await getHealthStatus();
     

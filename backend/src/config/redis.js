@@ -4,8 +4,9 @@ import logger from '../utils/logger.js';
 // Redis configuration with production-ready settings
 const redisConfig = {
   socket: {
-    host: process.env.REDIS_HOST || 'localhost',
+    host: process.env.REDIS_HOST || '127.0.0.1', // Use IPv4 instead of localhost
     port: parseInt(process.env.REDIS_PORT) || 6379,
+    family: 4, // Force IPv4
     reconnectStrategy: (retries) => {
       if (retries > 10) {
         logger.error('Redis: Max reconnection attempts reached');

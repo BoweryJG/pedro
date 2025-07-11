@@ -12,14 +12,20 @@ export const initializeConnections = async () => {
 
   // Initialize Redis
   try {
-    logger.info('Initializing Redis connection...');
-    await connectRedis();
-    const redisHealth = await checkRedisHealth();
-    if (redisHealth.healthy) {
-      results.redis = true;
-      logger.info('Redis initialized successfully');
+    // Skip Redis initialization if not configured
+    if (!process.env.REDIS_HOST && process.env.NODE_ENV === 'production') {
+      logger.info('Redis not configured, skipping initialization');
+      results.redis = false;
     } else {
-      throw new Error(redisHealth.message);
+      logger.info('Initializing Redis connection...');
+      await connectRedis();
+      const redisHealth = await checkRedisHealth();
+      if (redisHealth.healthy) {
+        results.redis = true;
+        logger.info('Redis initialized successfully');
+      } else {
+        throw new Error(redisHealth.message);
+      }
     }
   } catch (error) {
     logger.error('Failed to initialize Redis:', error);
