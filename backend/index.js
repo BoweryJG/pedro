@@ -1381,6 +1381,7 @@ server.listen(PORT, () => {
   console.log('WebSocket paths configured and ready');
   console.log('WebRTC voice ready - no phone numbers needed!');
   console.log('Julie AI ready for real-time conversations!');
+  console.log(`Deployment timestamp: ${new Date().toISOString()}`);
   
   // Start scheduled jobs only in production
   if (process.env.NODE_ENV === 'production') {
