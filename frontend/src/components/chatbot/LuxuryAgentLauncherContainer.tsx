@@ -31,7 +31,7 @@ export const LuxuryAgentLauncherContainer: React.FC = () => {
   const updateAgentVoice = async (agent: AgentPersonality) => {
     try {
       // Send request to update the voice configuration
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
       await fetch(`${apiUrl}/voice/config`, {
         method: 'POST',
         headers: {

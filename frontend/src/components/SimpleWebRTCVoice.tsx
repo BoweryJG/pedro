@@ -84,7 +84,8 @@ export const SimpleWebRTCVoice: React.FC<SimpleWebRTCVoiceProps> = () => {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       
       // Create WebSocket connection to backend
-      const wsUrl = import.meta.env.VITE_API_URL?.replace('http', 'ws') || 'ws://localhost:3001';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+      const wsUrl = apiUrl.replace('https', 'wss').replace('http', 'ws');
       const ws = new WebSocket(`${wsUrl}/webrtc-voice`);
       wsRef.current = ws;
 
