@@ -4,8 +4,6 @@ import {
   Container,
   Typography,
   Grid,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import { useRef, useState, useEffect } from 'react';
 import CountUp from 'react-countup';
@@ -42,7 +40,7 @@ const stats = [
 ];
 
 const LuxuryStatsSection: React.FC = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   // const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const ref = useRef(null);
   const [isInView, setIsInView] = useState(false);

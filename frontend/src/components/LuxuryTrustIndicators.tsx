@@ -5,8 +5,6 @@ import {
   Typography,
   Grid,
   Paper,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
@@ -55,7 +53,7 @@ const trustIndicators = [
 ];
 
 const LuxuryTrustIndicators: React.FC = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   // const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (

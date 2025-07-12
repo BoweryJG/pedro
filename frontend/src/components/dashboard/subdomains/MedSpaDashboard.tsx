@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Card, Typography, LinearProgress, Grid, Chip, IconButton, Tooltip, Avatar, Rating } from '@mui/material';
+import { Box, Card, Typography, LinearProgress, Grid, Chip, Rating } from '@mui/material';
 import { 
   Spa,
   Face,
@@ -8,7 +8,7 @@ import {
   Groups,
   AttachMoney,
   Star,
-  EventRepeat,
+  // EventRepeat,
   LocalOffer,
   FaceRetouchingNatural,
   Favorite,
@@ -78,7 +78,7 @@ const MedSpaDashboard: React.FC = () => {
   const fetchMedSpaData = async () => {
     try {
       // Fetch MedSpa-specific appointment data
-      const { data: appointments } = await supabase
+      const { data: _appointments } = await supabase
         .from('appointments')
         .select('*, services(*), patients(*)')
         .eq('services.category', 'medspa')
@@ -212,7 +212,13 @@ const MedSpaDashboard: React.FC = () => {
   };
 
   // Luxury spa-style circular metric
-  const SpaMetricDisplay = ({ value, label, icon, color, suffix = '' }: any) => (
+  const SpaMetricDisplay = ({ value, label, icon, color, suffix = '' }: {
+    value: number | string;
+    label: string;
+    icon: React.ReactNode;
+    color: string;
+    suffix?: string;
+  }) => (
     <Box sx={{ textAlign: 'center' }}>
       <Box
         sx={{

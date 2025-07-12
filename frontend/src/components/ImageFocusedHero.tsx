@@ -8,9 +8,6 @@ import {
   Card,
   useTheme,
   useMediaQuery,
-  alpha,
-  Fade,
-  Zoom,
 } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -71,7 +68,7 @@ const excellenceCenters = [
 
 const ImageFocusedHero: React.FC = () => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [activeIndex, setActiveIndex] = useState(0);
   const [expandedCenter, setExpandedCenter] = useState<string | null>(null);
   const [autoPlay, setAutoPlay] = useState(true);
@@ -125,7 +122,6 @@ const ImageFocusedHero: React.FC = () => {
         flexDirection: 'column',
       }}
     >
-      {/* Hero Particles for Visual Appeal */}
       <Box className="hero-particles">
         {[...Array(15)].map((_, i) => (
           <Box
@@ -140,9 +136,8 @@ const ImageFocusedHero: React.FC = () => {
         ))}
       </Box>
 
-      {/* Main Content Area */}
       <Container maxWidth="xl" sx={{ flex: 1, py: { xs: 4, md: 6 }, position: 'relative', zIndex: 2 }}>
-        {/* Header Section with EP³ Care System Introduction */
+        {/* Header Section with EP³ Care System Introduction */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -252,9 +247,7 @@ const ImageFocusedHero: React.FC = () => {
           </Box>
         </motion.div>
 
-        {/* Excellence Centers Showcase */}
         <Box sx={{ position: 'relative' }}>
-          {/* Navigation Controls */}
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <IconButton
               onClick={prevSlide}
@@ -452,7 +445,6 @@ const ImageFocusedHero: React.FC = () => {
           </Box>
         </Box>
 
-        {/* EP³ Excellence Highlights */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -494,7 +486,6 @@ const ImageFocusedHero: React.FC = () => {
         </motion.div>
       </Container>
 
-      {/* Expanded Center Details */}
       <AnimatePresence>
         {expandedCenter && (
           <motion.div

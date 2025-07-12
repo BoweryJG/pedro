@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Card, Typography, LinearProgress, Grid, Chip, IconButton, Tooltip, Avatar } from '@mui/material';
+import { Box, Card, Typography, LinearProgress, Grid, Chip, Avatar } from '@mui/material';
 import { 
   PrecisionManufacturing,
   Speed,
   Timer,
   CheckCircle,
-  Architecture,
+  // Architecture,
   AttachMoney,
-  Timeline,
+  // Timeline,
   Engineering,
   Insights,
-  Memory,
+  // Memory,
   CenterFocusStrong,
   ThreeDRotation
 } from '@mui/icons-material';
@@ -75,7 +75,7 @@ const RoboticDashboard: React.FC = () => {
   const fetchRoboticData = async () => {
     try {
       // Fetch Yomi-specific appointment data
-      const { data: appointments } = await supabase
+      const { data: _appointments } = await supabase
         .from('appointments')
         .select('*, services(*), patients(*)')
         .eq('services.is_yomi_technology', true)
@@ -153,7 +153,12 @@ const RoboticDashboard: React.FC = () => {
   };
 
   // High-tech precision display component
-  const PrecisionDisplay = ({ value, label, unit, icon }: any) => (
+  const PrecisionDisplay = ({ value, label, unit, icon }: {
+    value: number | string;
+    label: string;
+    unit: string;
+    icon: React.ReactNode;
+  }) => (
     <Box sx={{ textAlign: 'center' }}>
       <Box
         sx={{
@@ -218,7 +223,13 @@ const RoboticDashboard: React.FC = () => {
   );
 
   // 3D-style metric card
-  const Metric3DCard = ({ title, value, subtitle, icon, gradient }: any) => (
+  const Metric3DCard = ({ title, value, subtitle, icon, gradient }: {
+    title: string;
+    value: number | string;
+    subtitle: string;
+    icon: React.ReactNode;
+    gradient: string;
+  }) => (
     <motion.div
       whileHover={{ scale: 1.05, rotateY: 5 }}
       whileTap={{ scale: 0.95 }}

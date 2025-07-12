@@ -7,8 +7,6 @@ import {
   CardContent,
   Avatar,
   Rating,
-  useTheme,
-  useMediaQuery,
   IconButton,
 } from '@mui/material';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -80,7 +78,7 @@ const googleReviews = [
 ];
 
 const LuxuryGoogleReviews: React.FC = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   // const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (

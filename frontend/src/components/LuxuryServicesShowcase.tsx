@@ -7,8 +7,6 @@ import {
   CardContent,
   Grid,
   IconButton,
-  useTheme,
-  useMediaQuery,
   Chip,
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
@@ -54,7 +52,7 @@ const services = [
 ];
 
 const LuxuryServicesShowcase: React.FC = () => {
-  const theme = useTheme();
+  // const theme = useTheme();
   // const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const [hoveredService, setHoveredService] = useState<string | null>(null);

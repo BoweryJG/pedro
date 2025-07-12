@@ -37,24 +37,17 @@ interface Shift {
   type: 'regular' | 'overtime' | 'on-call';
 }
 
-interface TimeOff {
-  id: string;
-  staffId: string;
-  startDate: Date;
-  endDate: Date;
-  reason: string;
-  status: 'pending' | 'approved' | 'declined';
-}
+// TimeOff interface removed - not used in current implementation
 
 const StaffScheduler: React.FC = () => {
   const [currentWeek, setCurrentWeek] = useState(new Date());
   const [weekDays, setWeekDays] = useState<Date[]>([]);
   const [staff, setStaff] = useState<StaffMember[]>([]);
-  const [shifts, setShifts] = useState<Shift[]>([]);
+  const [shifts, _setShifts] = useState<Shift[]>([]);
   // const [timeOffs, setTimeOffs] = useState<TimeOff[]>([]);
-  // const [selectedStaff, setSelectedStaff] = useState<string | null>(null);
-  // const [showShiftModal, setShowShiftModal] = useState(false);
-  // const [editingShift, setEditingShift] = useState<Shift | null>(null);
+  const [_selectedStaff, _setSelectedStaff] = useState<string | null>(null);
+  const [_showShiftModal, _setShowShiftModal] = useState(false);
+  const [_editingShift, setEditingShift] = useState<Shift | null>(null);
 
   useEffect(() => {
     const start = startOfWeek(currentWeek, { weekStartsOn: 1 });
@@ -116,7 +109,7 @@ const StaffScheduler: React.FC = () => {
         }
       });
     });
-    setShifts(mockShifts);
+    _setShifts(mockShifts);
   }, [weekDays, staff]);
 
   const navigateWeek = (direction: number) => {
@@ -146,11 +139,11 @@ const StaffScheduler: React.FC = () => {
 
   const handleShiftClick = (shift: Shift) => {
     setEditingShift(shift);
-    setShowShiftModal(true);
+    _setShowShiftModal(true);
   };
 
   const handleAddShift = (staffId: string, day: Date) => {
-    setSelectedStaff(staffId);
+    _setSelectedStaff(staffId);
     setEditingShift({
       id: '',
       staffId,
@@ -159,7 +152,7 @@ const StaffScheduler: React.FC = () => {
       endTime: '17:00',
       type: 'regular'
     });
-    setShowShiftModal(true);
+    _setShowShiftModal(true);
   };
 
   return (
@@ -247,7 +240,7 @@ const StaffScheduler: React.FC = () => {
                     >
                       {shift ? (
                         <div
-                          onClick={() => handleShiftClick(shift)}
+                          onClick={() => handleShiftClick(shift as Shift)}
                           className={`${member.color} bg-opacity-10 border ${member.color} border-opacity-30 rounded-lg p-2 cursor-pointer hover:bg-opacity-20 transition-all`}
                         >
                           <p className="text-xs font-medium text-gray-800">
@@ -265,7 +258,7 @@ const StaffScheduler: React.FC = () => {
                         </div>
                       ) : (
                         <button
-                          onClick={() => handleAddShift(member.id, day)}
+                          onClick={() => handleAddShift(member.id, day as Date)}
                           className="w-full h-full min-h-[60px] border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-400 hover:bg-gray-50 transition-all flex items-center justify-center group"
                         >
                           <Plus className="w-4 h-4 text-gray-400 group-hover:text-gray-600" />

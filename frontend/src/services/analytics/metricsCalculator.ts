@@ -15,11 +15,7 @@ interface Patient {
   status?: string;
 }
 
-interface Staff {
-  id: string;
-  name: string;
-  status?: string;
-}
+// Staff interface removed - not used in current implementation
 
 // interface Operatory {
 //   id: string;

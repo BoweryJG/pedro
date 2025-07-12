@@ -7,7 +7,6 @@ import {
   CardContent,
   Button,
   useTheme,
-  useMediaQuery,
   alpha,
 } from '@mui/material';
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';

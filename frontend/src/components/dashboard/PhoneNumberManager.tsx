@@ -47,13 +47,7 @@ interface PhoneNumber {
   voice_settings: Record<string, unknown>;
 }
 
-interface AvailableNumber {
-  phoneNumber: string;
-  friendlyName: string;
-  locality: string;
-  region: string;
-  monthlyFee: string;
-}
+// AvailableNumber interface removed - not used in current implementation
 
 const PhoneNumberManager: React.FC = () => {
   const [phoneNumbers, setPhoneNumbers] = useState<PhoneNumber[]>([]);
