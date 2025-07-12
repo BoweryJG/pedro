@@ -20,6 +20,7 @@ import authRoutes from './src/routes/auth.js';
 import apiKeyRoutes from './src/routes/api-keys.js';
 import errorAnalyticsRoutes from './src/routes/errorAnalytics.js';
 import healthRoutes from './src/routes/health.js';
+import agentManagementRoutes from './routes/agentManagement.js';
 import { authenticate, authorize, requirePermission, authenticateFlexible, verifyResourceOwnership, auditLog, ROLES } from './src/middleware/auth.js';
 
 // Import error handling middleware
@@ -1274,6 +1275,9 @@ app.use('/api/phone-numbers', authenticate, requirePermission('manage:voice_call
 // Mount AI voice agent routes - requires authentication
 import { voiceAgentApp } from './voice-agent/index.js';
 app.use('/api/voice-agent', authenticate, requirePermission('manage:voice_calls'), voiceAgentApp);
+
+// Mount agent management routes - PUBLIC for agent deployment from agent-command-center
+app.use('/api', agentManagementRoutes);
 
 // Mount error analytics routes (admin only)
 app.use('/api/errors', errorAnalyticsRoutes);
