@@ -1,7 +1,8 @@
 import express from 'express';
 import { getHealthStatus } from '../config/init.js';
 import { getPoolStats } from '../config/database.js';
-import { cache } from '../config/redis.js';
+// Redis import removed - using Supabase instead
+// import { cache } from '../config/redis.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
@@ -33,6 +34,8 @@ router.get('/detailed', async (req, res) => {
     // Add database pool stats
     health.services.database.pool = getPoolStats();
     
+    // Redis operations test removed - using Supabase instead
+    /*
     // Test Redis operations if available
     if (health.services.redis?.healthy) {
       try {
@@ -55,6 +58,7 @@ router.get('/detailed', async (req, res) => {
         };
       }
     }
+    */
     
     // Add environment info
     health.environment = {

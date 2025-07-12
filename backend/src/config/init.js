@@ -1,4 +1,5 @@
-import { connectRedis, checkRedisHealth, disconnectRedis } from './redis.js';
+// Redis imports commented out - not needed with Supabase
+// import { connectRedis, checkRedisHealth, disconnectRedis } from './redis.js';
 import { connectDatabase, checkDatabaseHealth, disconnectDatabase } from './database.js';
 import logger from '../utils/logger.js';
 
@@ -10,6 +11,8 @@ export const initializeConnections = async () => {
     errors: []
   };
 
+  // Redis initialization commented out - using Supabase instead
+  /*
   // Initialize Redis
   try {
     // Skip Redis initialization if not configured
@@ -36,6 +39,7 @@ export const initializeConnections = async () => {
       throw new Error('Redis is required but failed to initialize');
     }
   }
+  */
 
   // Initialize Database
   try {
@@ -68,6 +72,8 @@ export const gracefulShutdown = async (signal) => {
     process.exit(1);
   }, 30000); // 30 second timeout
 
+  // Redis disconnection commented out - not using Redis
+  /*
   try {
     // Close Redis connection
     logger.info('Closing Redis connection...');
@@ -76,6 +82,7 @@ export const gracefulShutdown = async (signal) => {
   } catch (error) {
     logger.error('Error closing Redis:', error);
   }
+  */
 
   try {
     // Close database pool
@@ -99,6 +106,8 @@ export const getHealthStatus = async () => {
     services: {}
   };
 
+  // Redis health check removed - using Supabase instead
+  /*
   // Check Redis (optional - not required for operation)
   try {
     const redisHealth = await checkRedisHealth();
@@ -112,6 +121,7 @@ export const getHealthStatus = async () => {
     };
     // Don't change health status - Redis is optional
   }
+  */
 
   // Check Database
   try {

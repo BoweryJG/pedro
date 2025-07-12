@@ -38,7 +38,7 @@ const StatusIndicator: React.FC = () => {
   useEffect(() => {
     const checkConnection = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+        const apiUrl = 'https://pedrobackend.onrender.com';
         await axios.get(`${apiUrl}/health`, { timeout: 5000 });
         setIsConnected(true);
       } catch {

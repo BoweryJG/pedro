@@ -116,7 +116,7 @@ BOOKING PROCESS:
       }
       
       // Generate response using backend API
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
       
       const response = await fetch(`${apiUrl}/chat`, {
         method: 'POST',
