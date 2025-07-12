@@ -1372,11 +1372,13 @@ app.use(globalErrorHandler);
 
 server.listen(PORT, () => {
   console.log(`Backend server with WebSocket support running on port ${PORT}`);
+  console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Twilio WebSocket: ws://localhost:${PORT}/voice-websocket`);
   console.log(`WebRTC Voice: ws://localhost:${PORT}/webrtc-voice`);
   console.log(`Julie AI Voice: ws://localhost:${PORT}/voice/julie/websocket`);
   console.log('Voice webhook endpoint: /voice/incoming');
   console.log('Julie AI webhook endpoint: /voice/julie/incoming');
+  console.log('WebSocket paths configured and ready');
   console.log('WebRTC voice ready - no phone numbers needed!');
   console.log('Julie AI ready for real-time conversations!');
   
