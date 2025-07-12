@@ -294,8 +294,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/keys', apiKeyRoutes);
 
 // Public chat endpoint for website chatbot (no authentication required)
-app.post('/api/chat/public', apiRateLimiter, validateChat, asyncHandler(async (req, res) => {
-    const { messages, systemPrompt } = req.validatedData || req.body;
+app.post('/api/chat/public', apiRateLimiter, asyncHandler(async (req, res) => {
+    const { messages, systemPrompt } = req.body;
     
     if (!messages || !systemPrompt) {
       return res.status(400).json({ 
@@ -393,9 +393,9 @@ app.post('/chat-test', asyncHandler(async (req, res) => {
     }
 }));
 
-// Chat endpoint for Julie AI assistant - temporarily removed authentication for chatbot
-app.post('/chat', validateChat, asyncHandler(async (req, res) => {
-    const { messages, systemPrompt } = req.validatedData || req.body;
+// Chat endpoint for Julie AI assistant - NO AUTHENTICATION REQUIRED
+app.post('/chat', asyncHandler(async (req, res) => {
+    const { messages, systemPrompt } = req.body;
     
     if (!messages || !systemPrompt) {
       return res.status(400).json({ 
