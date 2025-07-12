@@ -122,7 +122,13 @@ const TMJDashboard: React.FC = () => {
   };
 
   // Watch complication style circular progress
-  const CircularMetric = ({ value, max, label, icon, color }: any) => (
+  const CircularMetric = ({ value, max, label, icon, color }: {
+    value: number;
+    max: number;
+    label: string;
+    icon: React.ReactNode;
+    color: string;
+  }) => (
     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
       <Box
         sx={{

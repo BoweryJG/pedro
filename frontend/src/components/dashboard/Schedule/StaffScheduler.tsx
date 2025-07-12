@@ -46,7 +46,7 @@ interface Shift {
 }
 
 const StaffScheduler: React.FC = () => {
-  const [currentWeek, _setCurrentWeek] = useState(startOfWeek(new Date()));
+  const [currentWeek] = useState(startOfWeek(new Date()));
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedShift, setSelectedShift] = useState<Shift | null>(null);
 
@@ -56,7 +56,7 @@ const StaffScheduler: React.FC = () => {
   ];
 
   // TODO: Replace with actual shift data from Supabase
-  const [shifts, _setShifts] = useState<Shift[]>([
+  const [shifts] = useState<Shift[]>([
     { id: '1', staffId: '1', date: addDays(currentWeek, 1), startTime: '08:00', endTime: '17:00', type: 'regular' },
     { id: '2', staffId: '1', date: addDays(currentWeek, 2), startTime: '08:00', endTime: '17:00', type: 'regular' }
   ]);
@@ -82,7 +82,7 @@ const StaffScheduler: React.FC = () => {
     setDialogOpen(true);
   };
 
-  const getShiftTypeColor = (type: string) => {
+  const getShiftTypeColor = (type: string): 'primary' | 'warning' | 'secondary' | 'default' => {
     switch (type) {
       case 'regular': return 'primary';
       case 'overtime': return 'warning';
@@ -198,7 +198,7 @@ const StaffScheduler: React.FC = () => {
                                     key={shift.id}
                                     label={`${shift.startTime}-${shift.endTime}`}
                                     size="small"
-                                    color={getShiftTypeColor(shift.type) as any}
+                                    color={getShiftTypeColor(shift.type)}
                                     onClick={() => handleEditShift(shift)}
                                     sx={{
                                       height: 20,

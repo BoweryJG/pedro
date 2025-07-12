@@ -105,7 +105,7 @@ export const SubtleGrid = styled(Box)(({ theme }) => ({
 interface TexturedSectionProps {
   children: React.ReactNode;
   textures?: ('diagonal' | 'dots' | 'radial' | 'grain' | 'crosshatch' | 'grid')[];
-  sx?: any;
+  sx?: React.CSSProperties;
 }
 
 export const TexturedSection: React.FC<TexturedSectionProps> = ({ 

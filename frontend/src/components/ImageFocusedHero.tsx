@@ -68,7 +68,7 @@ const excellenceCenters = [
 
 const ImageFocusedHero: React.FC = () => {
   const theme = useTheme();
-  const _isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [activeIndex, setActiveIndex] = useState(0);
   const [expandedCenter, setExpandedCenter] = useState<string | null>(null);
   const [autoPlay, setAutoPlay] = useState(true);
@@ -190,7 +190,7 @@ const ImageFocusedHero: React.FC = () => {
             </Typography>
 
             {/* EP³ Care Team Action Buttons */}
-            <Box sx={{ display: 'flex', gap: 3, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', gap: isMobile ? 2 : 3, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Button
                 variant="contained"
                 size="large"
