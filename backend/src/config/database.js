@@ -35,13 +35,7 @@ const parseSupabaseUrl = (url) => {
     database: 'postgres',
     user: 'postgres',
     password: dbPassword,
-    ssl: { rejectUnauthorized: false },
-    // Force IPv4
-    stream: (socket) => {
-      socket.setNoDelay(true);
-      socket.setKeepAlive(true, 30000);
-      return socket;
-    }
+    ssl: { rejectUnauthorized: false }
   };
 };
 
