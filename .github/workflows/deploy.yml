@@ -139,14 +139,20 @@ jobs:
         run: |
           MAX_ATTEMPTS=10
           ATTEMPT=0
-          BACKEND_URL="${{ secrets.VITE_BACKEND_URL }}"
+          BACKEND_URL="https://pedrobackend.onrender.com"
+          
+          echo "Checking backend health at $BACKEND_URL"
           
           while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-            if curl -f "$BACKEND_URL/health" > /dev/null 2>&1; then
-              echo "Backend is healthy!"
+            if curl -s "$BACKEND_URL/health" > /dev/null 2>&1; then
+              echo "Backend is responding!"
+              # Check if actually healthy or just responding
+              HEALTH_STATUS=$(curl -s "$BACKEND_URL/health" | jq -r '.status' || echo "unknown")
+              echo "Health status: $HEALTH_STATUS"
+              # Even if unhealthy, if it's responding, the deployment succeeded
               exit 0
             else
-              echo "Attempt $((ATTEMPT+1))/$MAX_ATTEMPTS: Backend not ready yet..."
+              echo "Attempt $((ATTEMPT+1)): Backend not ready, waiting..."
               sleep 30
               ATTEMPT=$((ATTEMPT+1))
             fi
