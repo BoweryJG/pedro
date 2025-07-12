@@ -86,11 +86,10 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install backend dependencies
-        working-directory: ./backend
-        run: npm ci
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
 
       - name: Run migrations
         working-directory: ./backend
@@ -175,10 +174,9 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
+          cache-dependency-path: package-lock.json
 
-      - name: Install frontend dependencies
-        working-directory: ./frontend
+      - name: Install dependencies
         run: npm ci --legacy-peer-deps
 
       - name: Build frontend
@@ -264,7 +262,6 @@ jobs:
             - Backend: ${{ needs.deploy-backend.result }}
             - Frontend: ${{ needs.deploy-frontend.result }}
             - Migrations: ${{ needs.database-migrations.result }}
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
         continue-on-error: true
 
   # Rollback on failure
@@ -284,8 +281,10 @@ jobs:
           
       - name: Notify team
         uses: 8398a7/action-slack@v3
+        if: always()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         with:
           status: failure
           text: "Production deployment failed! Rollback initiated."
-          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
         continue-on-error: true
