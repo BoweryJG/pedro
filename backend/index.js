@@ -340,6 +340,59 @@ app.post('/api/chat/public', apiRateLimiter, validateChat, asyncHandler(async (r
     });
 }));
 
+// TEST ENDPOINT - NO VALIDATION
+app.post('/chat-test', asyncHandler(async (req, res) => {
+    const { messages, systemPrompt } = req.body;
+    
+    if (!messages || !systemPrompt) {
+      return res.status(400).json({ 
+        error: 'Missing required fields: messages and systemPrompt' 
+      });
+    }
+    
+    if (!process.env.OPENROUTER_API_KEY) {
+      return res.status(500).json({ 
+        error: 'OpenRouter API key not configured' 
+      });
+    }
+    
+    try {
+      // Use OpenRouter API (same as julieAI.js)
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://gregpedromd.com',
+          'X-Title': 'Julie AI Assistant'
+        },
+        body: JSON.stringify({
+          model: 'anthropic/claude-3-haiku', // Fastest model for chat
+          messages: [
+            { role: 'system', content: systemPrompt },
+            ...messages
+          ],
+          temperature: 0.7,
+          max_tokens: 500
+        })
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        console.error('OpenRouter API Error:', data);
+        throw new Error(data.error?.message || 'OpenRouter API error');
+      }
+
+      res.json({
+        response: data.choices[0].message.content
+      });
+    } catch (error) {
+      console.error('Chat endpoint error:', error);
+      throw error;
+    }
+}));
+
 // Chat endpoint for Julie AI assistant - temporarily removed authentication for chatbot
 app.post('/chat', validateChat, asyncHandler(async (req, res) => {
     const { messages, systemPrompt } = req.validatedData || req.body;
