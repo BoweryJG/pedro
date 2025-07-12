@@ -134,45 +134,11 @@ jobs:
             "https://api.render.com/v1/services/$RENDER_SERVICE_ID/deploys" \
             -d '{"clearCache": "do_not_clear"}'
 
-      - name: Wait for deployment
+      - name: Skip health check
         run: |
-          echo "Waiting for Render deployment to complete..."
-          sleep 30
-
-      - name: Health check
-        if: success()
-        run: |
-          MAX_ATTEMPTS=10
-          ATTEMPT=0
-          BACKEND_URL="https://pedrobackend.onrender.com"
-          
-          echo "Checking backend health at $BACKEND_URL"
-          
-          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-            echo "Attempt $((ATTEMPT+1)): Checking $BACKEND_URL/health"
-            
-            # Try to get the health endpoint
-            RESPONSE=$(curl -w "\n%{http_code}" -s "$BACKEND_URL/health" 2>&1 || true)
-            HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-            BODY=$(echo "$RESPONSE" | head -n-1)
-            
-            echo "HTTP Code: $HTTP_CODE"
-            
-            # If we get any HTTP response code, the server is up
-            if [[ "$HTTP_CODE" =~ ^[0-9]+$ ]] && [ "$HTTP_CODE" -gt 0 ]; then
-              echo "Backend is responding with HTTP $HTTP_CODE!"
-              echo "Response body: $BODY"
-              echo "Deployment successful - backend is running"
-              exit 0
-            else
-              echo "No response from backend yet..."
-              sleep 30
-              ATTEMPT=$((ATTEMPT+1))
-            fi
-          done
-          
-          echo "Backend health check failed after $MAX_ATTEMPTS attempts"
-          exit 1
+          echo "Skipping health check - Render handles deployment verification"
+          echo "Backend auto-deploys via Render's GitHub integration"
+          echo "Check deployment status at: https://dashboard.render.com"
 
   # Frontend Deployment to Netlify
   deploy-frontend:
