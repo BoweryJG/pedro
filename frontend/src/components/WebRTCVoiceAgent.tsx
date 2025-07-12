@@ -62,7 +62,7 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
 
     try {
       // Get LiveKit token from backend
-      const tokenResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/voice-agent/token`, {
+      const tokenResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/voice/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -78,7 +78,7 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
       const { token, serverUrl, roomName } = await tokenResponse.json();
 
       // Start voice agent session
-      const sessionResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/voice-agent/start-session`, {
+      const sessionResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/voice/start-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

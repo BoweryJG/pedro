@@ -294,6 +294,61 @@ app.use('/api/auth', authRoutes);
 // API Key management routes (admin only)
 app.use('/api/keys', apiKeyRoutes);
 
+// Voice agent routes (for WebRTC voice calling)
+app.post('/api/voice/token', asyncHandler(async (req, res) => {
+  try {
+    const { name = 'Patient', roomName = 'medical-consultation' } = req.body;
+    
+    // For now, return a mock token since LiveKit isn't configured
+    // In production, this would generate a real LiveKit token
+    const token = `mock-token-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    
+    res.json({
+      token,
+      serverUrl: process.env.LIVEKIT_URL || 'wss://livekit.example.com',
+      roomName
+    });
+  } catch (error) {
+    console.error('Error generating voice token:', error);
+    res.status(500).json({ error: 'Failed to generate token' });
+  }
+}));
+
+app.post('/api/voice/start-session', asyncHandler(async (req, res) => {
+  try {
+    const { sessionId, roomName } = req.body;
+    
+    // For now, just acknowledge the session start
+    // In production, this would start the actual voice agent
+    console.log(`Starting voice session: ${sessionId} in room: ${roomName}`);
+    
+    res.json({
+      success: true,
+      sessionId,
+      message: 'Voice agent started successfully'
+    });
+  } catch (error) {
+    console.error('Error starting voice session:', error);
+    res.status(500).json({ error: 'Failed to start voice session' });
+  }
+}));
+
+app.post('/api/voice/end-session', asyncHandler(async (req, res) => {
+  try {
+    const { sessionId } = req.body;
+    
+    console.log(`Ending voice session: ${sessionId}`);
+    
+    res.json({
+      success: true,
+      message: 'Voice session ended'
+    });
+  } catch (error) {
+    console.error('Error ending voice session:', error);
+    res.status(500).json({ error: 'Failed to end voice session' });
+  }
+}));
+
 // Public chat endpoint for website chatbot (no authentication required)
 app.post('/api/chat/public', apiRateLimiter, asyncHandler(async (req, res) => {
     const { messages, systemPrompt } = req.body;
