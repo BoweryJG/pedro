@@ -107,8 +107,17 @@ const productionDomains = [
 const verifyWebSocketClient = (info) => {
   const origin = info.origin;
   
+  // Log the attempting origin for debugging
+  console.log(`WebSocket: Connection attempt from origin: ${origin || 'no-origin'}`);
+  
   // Allow connections with no origin (server-to-server)
   if (!origin) return true;
+  
+  // Allow file:// protocol for local HTML files
+  if (origin.startsWith('file://')) {
+    console.log('WebSocket: Allowing file:// protocol');
+    return true;
+  }
   
   const allowedOrigins = process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
@@ -125,6 +134,7 @@ const verifyWebSocketClient = (info) => {
   }
   
   console.warn(`WebSocket: Rejected origin ${origin}`);
+  console.warn(`WebSocket: Add this origin to ALLOWED_ORIGINS environment variable or productionDomains array`);
   return false;
 };
 
@@ -359,40 +369,47 @@ app.post('/api/chat/public', apiRateLimiter, asyncHandler(async (req, res) => {
       });
     }
     
-    if (!process.env.ANTHROPIC_API_KEY) {
+    if (!process.env.OPENROUTER_API_KEY) {
       return res.status(500).json({ 
-        error: 'Anthropic API key not configured' 
+        error: 'OpenRouter API key not configured' 
       });
     }
     
-    // Use Claude 3 Haiku - perfect for voice and chat
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    // Use OpenRouter for AI responses
+    console.log('OpenRouter API Key present:', !!process.env.OPENROUTER_API_KEY);
+    console.log('API Key length:', process.env.OPENROUTER_API_KEY?.length);
+    
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://gregpedromd.com',
+        'X-Title': 'Pedro Dental Assistant'
       },
       body: JSON.stringify({
-        model: 'claude-3-haiku-20240307',
-        max_tokens: 500,
-        messages: messages.map(m => ({
-          role: m.role === 'assistant' ? 'assistant' : 'user',
-          content: m.content
-        })),
-        system: systemPrompt,
-        temperature: 0.7
+        model: 'anthropic/claude-3-haiku',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages.map(m => ({
+            role: m.role === 'assistant' ? 'assistant' : 'user',
+            content: m.content
+          }))
+        ],
+        temperature: 0.7,
+        max_tokens: 500
       })
     });
 
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'Anthropic API error');
+      console.error('OpenRouter error response:', JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || 'OpenRouter API error');
     }
 
     res.json({
-      response: data.content[0].text
+      response: data.choices[0].message.content
     });
 }));
 
@@ -406,9 +423,9 @@ app.post('/chat-test', asyncHandler(async (req, res) => {
       });
     }
     
-    if (!process.env.ANTHROPIC_API_KEY) {
+    if (!process.env.OPENROUTER_API_KEY) {
       return res.status(500).json({ 
-        error: 'Anthropic API key not configured' 
+        error: 'OpenRouter API key not configured' 
       });
     }
     
@@ -459,40 +476,47 @@ app.post('/chat', asyncHandler(async (req, res) => {
       });
     }
     
-    if (!process.env.ANTHROPIC_API_KEY) {
+    if (!process.env.OPENROUTER_API_KEY) {
       return res.status(500).json({ 
-        error: 'Anthropic API key not configured' 
+        error: 'OpenRouter API key not configured' 
       });
     }
     
-    // Use Claude 3 Haiku - perfect for voice and chat
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    // Use OpenRouter for AI responses
+    console.log('OpenRouter API Key present:', !!process.env.OPENROUTER_API_KEY);
+    console.log('API Key length:', process.env.OPENROUTER_API_KEY?.length);
+    
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://gregpedromd.com',
+        'X-Title': 'Pedro Dental Assistant'
       },
       body: JSON.stringify({
-        model: 'claude-3-haiku-20240307',
-        max_tokens: 500,
-        messages: messages.map(m => ({
-          role: m.role === 'assistant' ? 'assistant' : 'user',
-          content: m.content
-        })),
-        system: systemPrompt,
-        temperature: 0.7
+        model: 'anthropic/claude-3-haiku',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages.map(m => ({
+            role: m.role === 'assistant' ? 'assistant' : 'user',
+            content: m.content
+          }))
+        ],
+        temperature: 0.7,
+        max_tokens: 500
       })
     });
 
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'Anthropic API error');
+      console.error('OpenRouter error response:', JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || 'OpenRouter API error');
     }
 
     res.json({
-      response: data.content[0].text
+      response: data.choices[0].message.content
     });
 }));
 
