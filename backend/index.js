@@ -303,40 +303,40 @@ app.post('/api/chat/public', apiRateLimiter, asyncHandler(async (req, res) => {
       });
     }
     
-    if (!process.env.OPENROUTER_API_KEY) {
+    if (!process.env.ANTHROPIC_API_KEY) {
       return res.status(500).json({ 
-        error: 'OpenRouter API key not configured' 
+        error: 'Anthropic API key not configured' 
       });
     }
     
-    // Use OpenRouter API (same as julieAI.js)
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Use Claude 3 Haiku - perfect for voice and chat
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://gregpedromd.com',
-        'X-Title': 'Julie AI Assistant'
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-haiku', // Fastest model for chat
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...messages
-        ],
-        temperature: 0.7,
-        max_tokens: 500
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 500,
+        messages: messages.map(m => ({
+          role: m.role === 'assistant' ? 'assistant' : 'user',
+          content: m.content
+        })),
+        system: systemPrompt,
+        temperature: 0.7
       })
     });
 
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'OpenAI API error');
+      throw new Error(data.error?.message || 'Anthropic API error');
     }
 
     res.json({
-      response: data.choices[0].message.content
+      response: data.content[0].text
     });
 }));
 
@@ -350,42 +350,42 @@ app.post('/chat-test', asyncHandler(async (req, res) => {
       });
     }
     
-    if (!process.env.OPENROUTER_API_KEY) {
+    if (!process.env.ANTHROPIC_API_KEY) {
       return res.status(500).json({ 
-        error: 'OpenRouter API key not configured' 
+        error: 'Anthropic API key not configured' 
       });
     }
     
     try {
-      // Use OpenRouter API (same as julieAI.js)
-      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      // Use Claude 3 Haiku - perfect for voice and chat
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://gregpedromd.com',
-          'X-Title': 'Julie AI Assistant'
+          'x-api-key': process.env.ANTHROPIC_API_KEY,
+          'anthropic-version': '2023-06-01',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'anthropic/claude-3-haiku', // Fastest model for chat
-          messages: [
-            { role: 'system', content: systemPrompt },
-            ...messages
-          ],
-          temperature: 0.7,
-          max_tokens: 500
+          model: 'claude-3-haiku-20240307',
+          max_tokens: 500,
+          messages: messages.map(m => ({
+            role: m.role === 'assistant' ? 'assistant' : 'user',
+            content: m.content
+          })),
+          system: systemPrompt,
+          temperature: 0.7
         })
       });
 
       const data = await response.json();
       
       if (!response.ok) {
-        console.error('OpenRouter API Error:', data);
-        throw new Error(data.error?.message || 'OpenRouter API error');
+        console.error('Anthropic API Error:', data);
+        throw new Error(data.error?.message || 'Anthropic API error');
       }
 
       res.json({
-        response: data.choices[0].message.content
+        response: data.content[0].text
       });
     } catch (error) {
       console.error('Chat endpoint error:', error);
@@ -403,40 +403,40 @@ app.post('/chat', asyncHandler(async (req, res) => {
       });
     }
     
-    if (!process.env.OPENROUTER_API_KEY) {
+    if (!process.env.ANTHROPIC_API_KEY) {
       return res.status(500).json({ 
-        error: 'OpenRouter API key not configured' 
+        error: 'Anthropic API key not configured' 
       });
     }
     
-    // Use OpenRouter API (same as julieAI.js)
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    // Use Claude 3 Haiku - perfect for voice and chat
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://gregpedromd.com',
-        'X-Title': 'Julie AI Assistant'
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-haiku', // Fastest model for chat
-        messages: [
-          { role: 'system', content: systemPrompt },
-          ...messages
-        ],
-        temperature: 0.7,
-        max_tokens: 500
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 500,
+        messages: messages.map(m => ({
+          role: m.role === 'assistant' ? 'assistant' : 'user',
+          content: m.content
+        })),
+        system: systemPrompt,
+        temperature: 0.7
       })
     });
 
     const data = await response.json();
     
     if (!response.ok) {
-      throw new Error(data.error?.message || 'OpenAI API error');
+      throw new Error(data.error?.message || 'Anthropic API error');
     }
 
     res.json({
-      response: data.choices[0].message.content
+      response: data.content[0].text
     });
 }));
 
