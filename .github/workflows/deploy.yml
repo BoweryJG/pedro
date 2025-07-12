@@ -237,17 +237,6 @@ jobs:
             echo "Warning: Instagram webhook endpoint not accessible"
           fi
 
-      - name: Send deployment notification
-        if: always()
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ job.status }}
-          text: |
-            Deployment Status:
-            - Backend: ${{ needs.deploy-backend.result }}
-            - Frontend: ${{ needs.deploy-frontend.result }}
-            - Migrations: ${{ needs.database-migrations.result }}
-        continue-on-error: true
 
   # Rollback on failure
   rollback:
@@ -264,12 +253,3 @@ jobs:
           # For Render: Use their API to rollback to previous deployment
           # For Netlify: Use their API to restore previous deployment
           
-      - name: Notify team
-        uses: 8398a7/action-slack@v3
-        if: always()
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        with:
-          status: failure
-          text: "Production deployment failed! Rollback initiated."
-        continue-on-error: true
