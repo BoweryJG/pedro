@@ -78,7 +78,7 @@ const MedSpaDashboard: React.FC = () => {
   const fetchMedSpaData = async () => {
     try {
       // Fetch MedSpa-specific appointment data
-      const { data: _appointments } = await supabase
+      await supabase
         .from('appointments')
         .select('*, services(*), patients(*)')
         .eq('services.category', 'medspa')

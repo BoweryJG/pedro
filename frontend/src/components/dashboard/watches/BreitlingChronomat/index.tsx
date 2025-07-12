@@ -12,10 +12,8 @@ interface BreitlingChronomatProps extends WatchComponentProps {
 }
 
 const BreitlingChronomat: React.FC<BreitlingChronomatProps> = ({
-  model,
   size = 'medium',
   dataMode,
-  realTimeUpdates,
   interactiveMode,
   onModeChange,
   metrics,

@@ -36,7 +36,7 @@ const LuxurySystemStatus: React.FC = () => {
           database: response.data.database?.status === 'connected',
         });
       }
-    } catch (_error) {
+    } catch {
       // If backend is unreachable, only mark API as down
       setStatus(prev => ({ ...prev, api: false }));
     } finally {

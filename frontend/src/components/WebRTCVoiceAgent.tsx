@@ -146,7 +146,7 @@ const WebRTCVoiceAgent: React.FC<WebRTCVoiceAgentProps> = ({ onSessionEnd }) => 
         }
       });
 
-      room.on(RoomEvent.DataReceived, (payload, _participant) => {
+      room.on(RoomEvent.DataReceived, (payload) => {
         // Handle transcripts and other data from the agent
         try {
           const data = JSON.parse(new TextDecoder().decode(payload));

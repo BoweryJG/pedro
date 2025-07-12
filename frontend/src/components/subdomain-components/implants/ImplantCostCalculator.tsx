@@ -79,7 +79,7 @@ const ImplantCostCalculator: React.FC = () => {
   const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [costBreakdown, setCostBreakdown] = useState<CostBreakdown | null>(null)
   const [financingOptions, setFinancingOptions] = useState<FinancingOption[]>([])
-  const [_isCalculating, setIsCalculating] = useState(false)
+  const [, setIsCalculating] = useState(false)
 
   const calculateCost = useCallback(async () => {
     setIsCalculating(true)

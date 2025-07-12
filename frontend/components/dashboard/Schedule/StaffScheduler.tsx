@@ -45,9 +45,6 @@ const StaffScheduler: React.FC = () => {
   const [staff, setStaff] = useState<StaffMember[]>([]);
   const [shifts, _setShifts] = useState<Shift[]>([]);
   // const [timeOffs, setTimeOffs] = useState<TimeOff[]>([]);
-  const [_selectedStaff, _setSelectedStaff] = useState<string | null>(null);
-  const [_showShiftModal, _setShowShiftModal] = useState(false);
-  const [_editingShift, setEditingShift] = useState<Shift | null>(null);
 
   useEffect(() => {
     const start = startOfWeek(currentWeek, { weekStartsOn: 1 });

@@ -117,7 +117,7 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
                 onDragEnd={handleDragEnd}
                 style={{ x }}
               >
-                {agentPersonalities.map((agent, _index) => (
+                {agentPersonalities.map((agent) => (
                   <motion.div
                     key={agent.id}
                     className="agent-card"

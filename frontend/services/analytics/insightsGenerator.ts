@@ -795,7 +795,7 @@ export class InsightsGenerator {
 
   private isDuplicateInsight(insight: Insight): boolean {
     // Check if similar insight was generated recently
-    for (const [_id, existing] of this.generatedInsights.entries()) {
+    for (const existing of this.generatedInsights.values()) {
       if (
         existing.type === insight.type &&
         existing.category === insight.category &&

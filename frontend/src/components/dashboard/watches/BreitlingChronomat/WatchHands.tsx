@@ -13,7 +13,6 @@ interface WatchHandsProps {
 
 const WatchHands: React.FC<WatchHandsProps> = ({ 
   currentTime, 
-  chronoElapsed, 
   isChronoRunning,
   metrics,
   dataMode,
@@ -38,15 +37,6 @@ const WatchHands: React.FC<WatchHandsProps> = ({
   const hourAngle = (hours + minutes / 60) * 30;
   const minuteAngle = (minutes + seconds / 60) * 6;
   const secondAngle = (seconds + milliseconds / 1000) * 6;
-
-  // Calculate chronometer positions
-  const chronoSeconds = (chronoElapsed / 1000) % 60;
-  const chronoMinutes = Math.floor(chronoElapsed / 60000) % 30;
-  const chronoHours = Math.floor(chronoElapsed / 3600000) % 12;
-
-  const chronoSecondAngle = chronoSeconds * 6;
-  const chronoMinuteAngle = chronoMinutes * 12;
-  const chronoHourAngle = chronoHours * 30;
 
   // Get data-driven values
   const dataValues = MetricsCalculator.metricsToWatchValues(metrics, dataMode);

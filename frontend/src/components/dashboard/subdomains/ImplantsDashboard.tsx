@@ -72,7 +72,7 @@ const ImplantsDashboard: React.FC = () => {
   const fetchImplantData = async () => {
     try {
       // Fetch implant-specific appointment data
-      const { data: _appointments } = await supabase
+      await supabase
         .from('appointments')
         .select('*, services(*), patients(*)')
         .eq('services.category', 'implants')

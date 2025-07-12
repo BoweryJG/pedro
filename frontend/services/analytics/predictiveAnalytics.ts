@@ -336,7 +336,7 @@ export class PredictiveAnalytics {
     };
   }
 
-  private async forecastDailyProduction(date: Date, _features?: number[]): Promise<PredictionResult> {
+  private async forecastDailyProduction(date: Date): Promise<PredictionResult> {
     const historicalAvg = await this.getHistoricalAverageProduction(date);
     const seasonalMultiplier = this.getSeasonalFactor(date.getMonth());
     const dayOfWeekMultiplier = this.getDayOfWeekMultiplier(date.getDay());

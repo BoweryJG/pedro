@@ -75,7 +75,7 @@ const RoboticDashboard: React.FC = () => {
   const fetchRoboticData = async () => {
     try {
       // Fetch Yomi-specific appointment data
-      const { data: _appointments } = await supabase
+      await supabase
         .from('appointments')
         .select('*, services(*), patients(*)')
         .eq('services.is_yomi_technology', true)

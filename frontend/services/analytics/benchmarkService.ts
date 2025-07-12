@@ -429,7 +429,7 @@ export class BenchmarkService {
     return invertedMetrics.includes(metric);
   }
 
-  private calculateTrend(_metricName: string): 'improving' | 'declining' | 'stable' {
+  private calculateTrend(): 'improving' | 'declining' | 'stable' {
     // In production, would analyze historical data
     // For now, return random but realistic trends
     const random = Math.random();
@@ -507,8 +507,7 @@ export class BenchmarkService {
   }
 
   private async identifyOpportunities(
-    benchmarkResults: BenchmarkData[],
-    _currentMetrics: DashboardMetrics
+    benchmarkResults: BenchmarkData[]
   ): Promise<Array<{
     metric: string;
     currentValue: number;
@@ -538,7 +537,7 @@ export class BenchmarkService {
     return opportunities;
   }
 
-  private generateRecommendations(metric: string, _benchmark: BenchmarkData): string[] {
+  private generateRecommendations(metric: string): string[] {
     const recommendations: Record<string, string[]> = {
       collectionRate: [
         'Implement automated payment reminders',
@@ -681,12 +680,7 @@ export class BenchmarkService {
 
   async getCustomBenchmark(
     metricName: string,
-    value: number,
-    _filters?: {
-      practiceSize?: 'small' | 'medium' | 'large';
-      location?: string;
-      specialty?: string;
-    }
+    value: number
   ): Promise<BenchmarkData | null> {
     // In production, would filter benchmarks based on practice characteristics
     const benchmark = this.industryBenchmarks.get(metricName);

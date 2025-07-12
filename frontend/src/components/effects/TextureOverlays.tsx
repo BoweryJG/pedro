@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, styled } from '@mui/material';
 
 // Diagonal Lines Pattern
-export const DiagonalLines = styled(Box)(({ theme }) => ({
+export const DiagonalLines = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -20,7 +20,7 @@ export const DiagonalLines = styled(Box)(({ theme }) => ({
 }));
 
 // Micro Dot Pattern
-export const MicroDots = styled(Box)(({ theme }) => ({
+export const MicroDots = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -33,7 +33,7 @@ export const MicroDots = styled(Box)(({ theme }) => ({
 }));
 
 // Radial Gradient Overlay
-export const RadialGradientOverlay = styled(Box)(({ theme }) => ({
+export const RadialGradientOverlay = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -45,7 +45,7 @@ export const RadialGradientOverlay = styled(Box)(({ theme }) => ({
 }));
 
 // Grain Texture - SIMPLIFIED FOR PERFORMANCE
-export const GrainTexture = styled(Box)(({ theme }) => ({
+export const GrainTexture = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -59,7 +59,7 @@ export const GrainTexture = styled(Box)(({ theme }) => ({
 }));
 
 // Cross Hatch Pattern
-export const CrossHatch = styled(Box)(({ theme }) => ({
+export const CrossHatch = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -86,7 +86,7 @@ export const CrossHatch = styled(Box)(({ theme }) => ({
 }));
 
 // Subtle Grid Pattern
-export const SubtleGrid = styled(Box)(({ theme }) => ({
+export const SubtleGrid = styled(Box)(() => ({
   position: 'absolute',
   top: 0,
   left: 0,

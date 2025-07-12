@@ -334,7 +334,7 @@ export class RealtimeAggregator {
     });
   }
 
-  private async updateChairUtilizationMetrics(_operatoryStatus: OperatoryStatus) {
+  private async updateChairUtilizationMetrics() {
     const utilization = await this.calculateCurrentChairUtilization();
     
     this.addMetricToCache({
@@ -422,7 +422,7 @@ export class RealtimeAggregator {
     const relevantMetrics: RealtimeMetric[] = [];
 
     // Collect relevant metrics from cache
-    for (const [_key, metrics] of this.metricCache.entries()) {
+    for (const metrics of this.metricCache.values()) {
       const filtered = metrics.filter(m => 
         m.timestamp > cutoffTime &&
         this.isRelevantForAggregation(m, metricId)

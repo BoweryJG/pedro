@@ -76,7 +76,6 @@ const AIQuestionnaire: React.FC = () => {
   
   const [open, setOpen] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [_answers, _setAnswers] = useState<Record<string, string>>({});
   const [centerScores, setCenterScores] = useState<Record<string, number>>({
     tmj: 0,
     implants: 0,

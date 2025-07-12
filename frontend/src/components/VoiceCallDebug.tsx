@@ -53,7 +53,7 @@ export const VoiceCallDebug: React.FC = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         setDebugInfo(prev => [...prev, '✓ Microphone access granted']);
         stream.getTracks().forEach(track => track.stop());
-      } catch (_err) {
+      } catch {
         setDebugInfo(prev => [...prev, '✗ Microphone access denied']);
       }
       

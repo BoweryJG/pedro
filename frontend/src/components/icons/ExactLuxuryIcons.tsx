@@ -5,13 +5,6 @@ interface LuxuryIconProps {
   className?: string;
 }
 
-// Exact luxury gold gradient from the image
-const LUXURY_GRADIENT = {
-  primary: 'linear-gradient(135deg, #D4AF37 0%, #FFD700 25%, #FFA500 50%, #FF8C00 75%, #CD853F 100%)',
-  highlight: 'linear-gradient(135deg, #FFFACD 0%, #F5DEB3 50%, #DEB887 100%)',
-  shadow: 'rgba(139, 69, 19, 0.3)'
-};
-
 // TMJ/Dental Chair Icon (top-left from image)
 export const TMJChairIcon: React.FC<LuxuryIconProps> = ({ size = 80, className = '' }) => {
   const id = `tmj-${Math.random().toString(36).substr(2, 9)}`;
