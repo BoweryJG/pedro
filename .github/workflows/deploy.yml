@@ -105,6 +105,8 @@ jobs:
           # Add any migration verification commands here
 
   # Backend Deployment to Render
+  # Note: Render usually auto-deploys from GitHub pushes, so this is optional
+  # Only needed if you want to manually trigger deployments via API
   deploy-backend:
     name: Deploy Backend to Render
     runs-on: ubuntu-latest
@@ -119,10 +121,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Deploy to Render
+        if: env.RENDER_API_KEY != '' && env.RENDER_SERVICE_ID != ''
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
           RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
         run: |
+          echo "Triggering Render deployment..."
           # Trigger Render deployment
           curl -X POST \
             -H "Authorization: Bearer $RENDER_API_KEY" \
@@ -136,6 +140,7 @@ jobs:
           sleep 30
 
       - name: Health check
+        if: success()
         run: |
           MAX_ATTEMPTS=10
           ATTEMPT=0
@@ -144,15 +149,23 @@ jobs:
           echo "Checking backend health at $BACKEND_URL"
           
           while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-            if curl -s "$BACKEND_URL/health" > /dev/null 2>&1; then
-              echo "Backend is responding!"
-              # Check if actually healthy or just responding
-              HEALTH_STATUS=$(curl -s "$BACKEND_URL/health" | jq -r '.status' || echo "unknown")
-              echo "Health status: $HEALTH_STATUS"
-              # Even if unhealthy, if it's responding, the deployment succeeded
+            echo "Attempt $((ATTEMPT+1)): Checking $BACKEND_URL/health"
+            
+            # Try to get the health endpoint
+            RESPONSE=$(curl -w "\n%{http_code}" -s "$BACKEND_URL/health" 2>&1 || true)
+            HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+            BODY=$(echo "$RESPONSE" | head -n-1)
+            
+            echo "HTTP Code: $HTTP_CODE"
+            
+            # If we get any HTTP response code, the server is up
+            if [[ "$HTTP_CODE" =~ ^[0-9]+$ ]] && [ "$HTTP_CODE" -gt 0 ]; then
+              echo "Backend is responding with HTTP $HTTP_CODE!"
+              echo "Response body: $BODY"
+              echo "Deployment successful - backend is running"
               exit 0
             else
-              echo "Attempt $((ATTEMPT+1)): Backend not ready, waiting..."
+              echo "No response from backend yet..."
               sleep 30
               ATTEMPT=$((ATTEMPT+1))
             fi
