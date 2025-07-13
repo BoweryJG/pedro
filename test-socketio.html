@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO Voice Test</title>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>Socket.IO Voice Test</h1>
+    <button onclick="connect()">Connect Voice</button>
+    <div id="status">Not connected</div>
+    <div id="log"></div>
+
+    <script>
+        let socket = null;
+
+        function log(msg, color = 'black') {
+            const div = document.getElementById('log');
+            div.innerHTML += `<p style="color: ${color}">${new Date().toLocaleTimeString()}: ${msg}</p>`;
+        }
+
+        function connect() {
+            log('Connecting to Socket.IO...', 'blue');
+            
+            socket = io('https://pedrobackend.onrender.com/voice', {
+                transports: ['websocket', 'polling']
+            });
+
+            socket.on('connect', () => {
+                document.getElementById('status').textContent = '✅ CONNECTED!';
+                log('Socket.IO Connected! ID: ' + socket.id, 'green');
+                
+                // Start call
+                socket.emit('start-call', {
+                    sessionId: 'test-' + Date.now(),
+                    agentName: 'Julie'
+                });
+            });
+
+            socket.on('call-started', (data) => {
+                log('Call started: ' + JSON.stringify(data), 'green');
+            });
+
+            socket.on('transcript', (data) => {
+                log('Transcript: ' + data.text, 'purple');
+            });
+
+            socket.on('error', (error) => {
+                log('Error: ' + error, 'red');
+            });
+
+            socket.on('disconnect', () => {
+                document.getElementById('status').textContent = '❌ Disconnected';
+                log('Disconnected', 'orange');
+            });
+        }
+    </script>
+</body>
+</html>

@@ -155,7 +155,8 @@ const wss = new WebSocketServer({
 // Initialize WebSocket server for WebRTC signaling
 const webrtcWss = new WebSocketServer({ 
   server,
-  path: '/webrtc-voice'
+  path: '/webrtc-voice',
+  verifyClient: verifyWebSocketClient
 });
 
 // Initialize voice services
