@@ -420,6 +420,59 @@ app.post('/api/chat/public', apiRateLimiter, asyncHandler(async (req, res) => {
     });
 }));
 
+// Agentbackend chat proxy endpoint
+app.post('/api/chat/agent', apiRateLimiter, asyncHandler(async (req, res) => {
+  try {
+    const { agentId, message, conversationId, clientId } = req.body;
+    
+    if (!agentId || !message) {
+      return res.status(400).json({ 
+        error: 'Missing required fields: agentId and message' 
+      });
+    }
+    
+    // Proxy request to agentbackend
+    const agentbackendUrl = 'https://agentbackend-2932.onrender.com';
+    const response = await fetch(`${agentbackendUrl}/api/chat`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        agentId,
+        message,
+        conversationId: conversationId || `pedro_${Date.now()}`,
+        clientId: clientId || 'pedro-backend'
+      })
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      logger.error(`Agentbackend API error: ${response.status} - ${errorText}`);
+      throw new Error(`Agentbackend API failed: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.success) {
+      throw new Error('Invalid response from agentbackend');
+    }
+    
+    res.json({
+      success: true,
+      response: data.response,
+      conversationId: data.conversationId,
+      agent: data.agent
+    });
+  } catch (error) {
+    logger.error('Error proxying to agentbackend chat:', error);
+    res.status(500).json({ 
+      error: 'Failed to process chat request',
+      details: error.message 
+    });
+  }
+}));
+
 // TEST ENDPOINT - NO VALIDATION
 app.post('/chat-test', asyncHandler(async (req, res) => {
     const { messages, systemPrompt } = req.body;

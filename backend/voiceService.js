@@ -2,6 +2,7 @@ import WebSocket from 'ws';
 import axios from 'axios';
 import FormData from 'form-data';
 import { Buffer } from 'buffer';
+import fetch from 'node-fetch';
 import { ElevenLabsTTS } from './services/elevenLabsTTS.js';
 
 // Audio conversion utilities
@@ -97,9 +98,19 @@ class ConversationManager {
   }
 
   getSystemPrompt() {
-    const basePrompt = `You are Julie, Dr. Pedro's warm and professional dental office AI assistant handling phone calls. 
+    const agent = this.currentAgent;
+    const agentName = agent?.name || 'Julie';
+    const agentRole = agent?.role || 'dental office AI assistant';
+    const agentTraits = agent?.personality?.traits?.join(', ') || 'warm, professional, helpful';
+    const agentSpecialties = agent?.personality?.specialties?.join(', ') || 'dental services, appointments, patient care';
+    
+    const basePrompt = `You are ${agentName}, Dr. Pedro's ${agentRole} handling phone calls. 
 You speak naturally and conversationally, as if you're a real person on the phone.
 Keep responses concise and natural for phone conversation.
+
+Your personality traits: ${agentTraits}
+Your specialties: ${agentSpecialties}
+Your communication style: ${agent?.personality?.communication_style || 'warm-professional'}
 
 Current conversation stage: ${this.state.stage}
 
@@ -211,10 +222,16 @@ class VoiceService {
     this.huggingfaceToken = process.env.HUGGINGFACE_TOKEN;
     this.openRouterKey = process.env.OPENROUTER_API_KEY;
     
-    // Initialize ElevenLabs TTS with Julie's voice preset
+    // Agentbackend configuration
+    this.agentbackendUrl = 'https://agentbackend-2932.onrender.com';
+    this.currentAgent = null;
+    this.agentsCache = new Map();
+    this.agentsCacheExpiry = 0;
+    
+    // Initialize ElevenLabs TTS with default Julie voice preset
     try {
       this.ttsService = new ElevenLabsTTS({
-        voiceId: 'nicole', // Friendly female voice for Julie
+        voiceId: 'nicole', // Default friendly female voice
         modelId: 'eleven_turbo_v2', // Low-latency model
         stability: 0.5,
         similarityBoost: 0.75,
@@ -229,6 +246,110 @@ class VoiceService {
     
     if (!this.huggingfaceToken || !this.openRouterKey) {
       console.warn('Voice service: Missing API keys. Please set HUGGINGFACE_TOKEN and OPENROUTER_API_KEY environment variables.');
+    }
+    
+    // Load default agent
+    this.loadDefaultAgent();
+  }
+
+  // Load default agent (Julie) from agentbackend
+  async loadDefaultAgent() {
+    try {
+      await this.setActiveAgent('julie');
+    } catch (error) {
+      console.warn('Failed to load default agent from agentbackend, using fallback:', error.message);
+      this.currentAgent = {
+        id: 'julie',
+        name: 'Julie',
+        role: 'Care Coordinator',
+        personality: {
+          traits: ['Professional', 'Warm', 'Knowledgeable'],
+          specialties: ['General dentistry', 'Patient comfort', 'Scheduling'],
+          communication_style: 'warm-professional'
+        },
+        voiceId: 'nicole'
+      };
+    }
+  }
+
+  // Set active agent by ID
+  async setActiveAgent(agentId) {
+    try {
+      const agent = await this.fetchAgent(agentId);
+      this.currentAgent = agent;
+      
+      // Update voice configuration if agent has voice settings
+      if (agent.voice_config) {
+        this.updateVoiceConfig({
+          voiceId: agent.voice_config.voice_id || agent.voiceId,
+          ...agent.voice_config.settings
+        });
+      } else if (agent.voiceId) {
+        this.updateVoiceConfig({ voiceId: agent.voiceId });
+      }
+      
+      console.log(`Active agent set to: ${agent.name} (${agent.role})`);
+      return agent;
+    } catch (error) {
+      console.error(`Failed to set active agent ${agentId}:`, error);
+      throw error;
+    }
+  }
+
+  // Fetch agent from agentbackend with caching
+  async fetchAgent(agentId) {
+    const cacheKey = agentId;
+    const now = Date.now();
+    const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+    
+    // Check cache first
+    if (this.agentsCache.has(cacheKey) && now < this.agentsCacheExpiry) {
+      return this.agentsCache.get(cacheKey);
+    }
+    
+    try {
+      const response = await fetch(`${this.agentbackendUrl}/api/agents/${agentId}`);
+      
+      if (!response.ok) {
+        throw new Error(`Agent API failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success || !data.agent) {
+        throw new Error('Invalid agent data received');
+      }
+      
+      // Cache the agent
+      this.agentsCache.set(cacheKey, data.agent);
+      this.agentsCacheExpiry = now + CACHE_DURATION;
+      
+      return data.agent;
+    } catch (error) {
+      console.error(`Error fetching agent ${agentId}:`, error);
+      throw error;
+    }
+  }
+
+  // Fetch available healthcare/dental agents
+  async fetchAvailableAgents() {
+    try {
+      const response = await fetch(`${this.agentbackendUrl}/api/agents?category=healthcare&subcategory=dental`);
+      
+      if (!response.ok) {
+        throw new Error(`Agents API failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.success || !data.agents) {
+        throw new Error('Invalid agents data received');
+      }
+      
+      return data.agents;
+    } catch (error) {
+      console.error('Error fetching available agents:', error);
+      throw error;
     }
   }
 

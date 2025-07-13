@@ -1,37 +1,69 @@
 import express from 'express';
 import { createClient } from '@supabase/supabase-js';
+import fetch from 'node-fetch';
 import logger from '../src/utils/logger.js';
 
 const router = express.Router();
 
-// Initialize Supabase client
+// Initialize Supabase client for legacy support
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// Maximum agents allowed for Pedro
+// Agentbackend API configuration
+const AGENTBACKEND_URL = 'https://agentbackend-2932.onrender.com';
+
+// Maximum agents allowed for Pedro (legacy)
 const MAX_AGENTS = 5;
 
-// Get all agents
+// Get all agents - proxy to agentbackend with healthcare/dental filter
 router.get('/agents', async (req, res) => {
   try {
-    const { data: agents, error } = await supabase
-      .from('pedro_agents')
-      .select('*')
-      .order('created_at', { ascending: false });
+    // Fetch agents from agentbackend with healthcare/dental filter
+    const response = await fetch(`${AGENTBACKEND_URL}/api/agents?category=healthcare&subcategory=dental`);
     
-    if (error) throw error;
+    if (!response.ok) {
+      throw new Error(`Agentbackend API failed: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.success) {
+      throw new Error('Invalid response from agentbackend');
+    }
     
     res.json({
       success: true,
-      agents,
-      count: agents.length,
-      maxAllowed: MAX_AGENTS
+      agents: data.agents,
+      count: data.count,
+      maxAllowed: MAX_AGENTS // Legacy support
     });
   } catch (error) {
-    logger.error('Error fetching agents:', error);
-    res.status(500).json({ error: 'Failed to fetch agents' });
+    logger.error('Error fetching agents from agentbackend:', error);
+    
+    // Fallback to local Supabase agents if agentbackend is unavailable
+    try {
+      const { data: localAgents, error: supabaseError } = await supabase
+        .from('pedro_agents')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (supabaseError) throw supabaseError;
+      
+      logger.warn('Falling back to local agents due to agentbackend unavailability');
+      
+      res.json({
+        success: true,
+        agents: localAgents,
+        count: localAgents.length,
+        maxAllowed: MAX_AGENTS,
+        fallback: true
+      });
+    } catch (fallbackError) {
+      logger.error('Fallback to local agents also failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to fetch agents from both agentbackend and local storage' });
+    }
   }
 });
 
@@ -206,25 +238,54 @@ router.delete('/agents/:agentId', async (req, res) => {
   }
 });
 
-// Get agent by ID
+// Get agent by ID - proxy to agentbackend
 router.get('/agents/:agentId', async (req, res) => {
   try {
     const { agentId } = req.params;
     
-    const { data: agent, error } = await supabase
-      .from('pedro_agents')
-      .select('*')
-      .eq('id', agentId)
-      .single();
+    // Fetch agent from agentbackend
+    const response = await fetch(`${AGENTBACKEND_URL}/api/agents/${agentId}`);
     
-    if (error || !agent) {
-      return res.status(404).json({ error: 'Agent not found' });
+    if (!response.ok) {
+      if (response.status === 404) {
+        return res.status(404).json({ error: 'Agent not found' });
+      }
+      throw new Error(`Agentbackend API failed: ${response.status}`);
     }
     
-    res.json({ success: true, agent });
+    const data = await response.json();
+    
+    if (!data.success) {
+      throw new Error('Invalid response from agentbackend');
+    }
+    
+    res.json({ success: true, agent: data.agent });
   } catch (error) {
-    logger.error('Error fetching agent:', error);
-    res.status(500).json({ error: 'Failed to fetch agent' });
+    logger.error('Error fetching agent from agentbackend:', error);
+    
+    // Fallback to local Supabase agent
+    try {
+      const { data: localAgent, error: supabaseError } = await supabase
+        .from('pedro_agents')
+        .select('*')
+        .eq('id', agentId)
+        .single();
+      
+      if (supabaseError || !localAgent) {
+        return res.status(404).json({ error: 'Agent not found' });
+      }
+      
+      logger.warn(`Falling back to local agent ${agentId} due to agentbackend unavailability`);
+      
+      res.json({ 
+        success: true, 
+        agent: localAgent,
+        fallback: true 
+      });
+    } catch (fallbackError) {
+      logger.error('Fallback to local agent also failed:', fallbackError);
+      res.status(500).json({ error: 'Failed to fetch agent from both agentbackend and local storage' });
+    }
   }
 });
 

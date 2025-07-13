@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import type { Message, ConversationState, ConversationStage, Analytics } from '../types';
 import { OpenAIService } from '../core/openaiService';
 import { supabase } from '../../lib/supabase';
+import { fetchAgents, type AgentPersonality } from '../config/agentPersonalities';
 
 interface ChatStore {
   // State
@@ -28,6 +29,11 @@ interface ChatStore {
   showFinancingWidget: boolean;
   financingProcedure?: 'yomi' | 'tmj' | 'emface';
   
+  // Agent-related state
+  availableAgents: AgentPersonality[];
+  selectedAgent: AgentPersonality | null;
+  agentsLoading: boolean;
+  
   // Actions
   toggleChat: () => void;
   openChat: () => void;
@@ -40,6 +46,11 @@ interface ChatStore {
   reset: () => void;
   setShowFinancingWidget: (show: boolean, procedure?: 'yomi' | 'tmj' | 'emface') => void;
   saveConversationToSupabase: () => Promise<void>;
+  
+  // Agent-related actions
+  loadAgents: () => Promise<void>;
+  selectAgent: (agent: AgentPersonality) => void;
+  sendMessageToAgent: (content: string, agentId?: string) => Promise<void>;
 }
 
 // Initialize chatbot configuration (no API key needed - using serverless function)
@@ -92,7 +103,12 @@ const initialState = {
     "Tell me about your services"
   ],
   showFinancingWidget: false,
-  financingProcedure: undefined
+  financingProcedure: undefined,
+  
+  // Agent-related initial state
+  availableAgents: [],
+  selectedAgent: null,
+  agentsLoading: false
 };
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -109,8 +125,18 @@ export const useChatStore = create<ChatStore>((set, get) => ({
   sendMessage: async (content: string) => {
     const state = get();
     
-    // Check if this is the first user message after initial greeting
-    // const isFirstMessage = state.messages.length === 1;
+    // If no agent is selected, load agents and select default
+    if (!state.selectedAgent && state.availableAgents.length === 0) {
+      await get().loadAgents();
+    }
+    
+    const agentId = state.selectedAgent?.id || 'julie';
+    await get().sendMessageToAgent(content, agentId);
+  },
+
+  sendMessageToAgent: async (content: string, agentId?: string) => {
+    const state = get();
+    const targetAgentId = agentId || state.selectedAgent?.id || 'julie';
     
     // Add user message
     const userMessage: Message = {
@@ -126,40 +152,51 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     }));
     
     try {
-      // Create conversation state for OpenAI service
-      const conversationState: ConversationState = {
-        messages: state.messages,
-        currentStage: state.currentStage,
-        userProfile: state.userProfile,
-        procedureInterest: state.procedureInterest,
-        bookingIntent: state.bookingIntent
-      };
+      // Use agentbackend chat API directly
+      const agentbackendUrl = 'https://agentbackend-2932.onrender.com';
       
-      // Initialize service and generate response
-      const openAIService = new OpenAIService(chatbotConfig, conversationState);
-      const response = await openAIService.generateResponse(content, state.messages);
+      const response = await fetch(`${agentbackendUrl}/api/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          agentId: targetAgentId,
+          message: content,
+          conversationId: state.conversationId || `pedro_${state.sessionId}`,
+          clientId: 'pedro-frontend'
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Agentbackend API failed: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      const assistantResponse = data.response || data.message || "I apologize, I'm having trouble responding right now.";
       
       // Add assistant message
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: response,
+        content: assistantResponse,
         timestamp: new Date()
       };
       
-      // Detect procedure interest
-      const detectedProcedure = detectProcedureFromMessage(content);
+      // Update conversation ID if provided
+      if (data.conversationId && !state.conversationId) {
+        set({ conversationId: data.conversationId });
+      }
       
-      // Check if user wants financing/insurance info
+      // Detect procedure interest and other Pedro-specific logic
+      const detectedProcedure = detectProcedureFromMessage(content);
       const wantsFinancing = content.toLowerCase().match(/financing|finance|payment|cost|insurance|coverage|afford|qualify/);
       const wantsInsuranceCheck = content.toLowerCase().match(/verify insurance|check insurance|insurance coverage|benefits/);
-      
-      // Check if user wants to book an appointment
       const wantsToBook = content.toLowerCase().match(/book|appointment|schedule|available|opening|slot|cancel|reschedule/);
       
       // Update suggested responses based on stage
       const newStage = determineStage([...state.messages, userMessage, assistantMessage]);
-      const suggestedResponses = openAIService.generateSuggestedResponses(newStage);
+      const suggestedResponses = generateSuggestedResponsesForStage(newStage);
       
       set((state) => ({
         messages: [...state.messages, assistantMessage],
@@ -176,7 +213,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       }));
       
       // If user wants to book, open the booking page
-      if (wantsToBook && response.toLowerCase().includes('booking page')) {
+      if (wantsToBook && assistantResponse.toLowerCase().includes('booking')) {
         setTimeout(() => {
           window.location.href = '/booking';
         }, 1500);
@@ -186,14 +223,15 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       get().trackAnalytics('message_sent', {
         stage: newStage,
         procedure: detectedProcedure,
-        bookingIntent: get().bookingIntent
+        bookingIntent: get().bookingIntent,
+        agentId: targetAgentId
       });
 
       // Save to Supabase
       await get().saveConversationToSupabase();
       
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error('Error sending message to agent:', error);
       
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -242,6 +280,40 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     showFinancingWidget: show,
     financingProcedure: procedure 
   }),
+
+  // Agent-related function implementations
+  loadAgents: async () => {
+    set({ agentsLoading: true });
+    try {
+      const agents = await fetchAgents();
+      const defaultAgent = agents.find(agent => agent.id === 'julie') || agents[0];
+      
+      set({ 
+        availableAgents: agents,
+        selectedAgent: defaultAgent,
+        agentsLoading: false 
+      });
+    } catch (error) {
+      console.error('Failed to load agents:', error);
+      set({ agentsLoading: false });
+    }
+  },
+
+  selectAgent: (agent: AgentPersonality) => {
+    set({ selectedAgent: agent });
+    
+    // Update the initial greeting message for the new agent
+    const greetingMessage: Message = {
+      id: '1',
+      role: 'assistant' as const,
+      content: `Hi! I'm ${agent.name}, ${agent.role}! ${agent.tagline} Whether you need to book an appointment, have questions about our procedures, want to check insurance coverage, or explore financing options - I'm here to help. What can I assist you with today?`,
+      timestamp: new Date()
+    };
+    
+    set((state) => ({
+      messages: [greetingMessage]
+    }));
+  },
 
   saveConversationToSupabase: async () => {
     const state = get();
@@ -357,4 +429,49 @@ function calculateBookingIntent(messages: Message[]): number {
   });
   
   return Math.min(100, score);
+}
+
+function generateSuggestedResponsesForStage(currentStage: ConversationStage): string[] {
+  const suggestions = {
+    greeting: [
+      "I'm missing a tooth",
+      "My jaw clicks and hurts",
+      "I want to look younger without surgery"
+    ],
+    discovery: [
+      "I've had this problem for years",
+      "It affects me daily",
+      "I'm not sure what my options are"
+    ],
+    education: [
+      "How does the robot work?",
+      "Is it painful?",
+      "How long does it take?"
+    ],
+    'objection-handling': [
+      "What about the cost?",
+      "Does insurance cover this?",
+      "I'm nervous about the procedure",
+      "Check if I qualify for financing",
+      "Verify my insurance coverage"
+    ],
+    'social-proof': [
+      "Do you have patient reviews?",
+      "How many have you done?",
+      "Can I see before/after photos?"
+    ],
+    commitment: [
+      "What's the next step?",
+      "When could I start?",
+      "Do you have payment plans?",
+      "Check financing options"
+    ],
+    booking: [
+      "What times are available?",
+      "Can I book a consultation?",
+      "Tuesday works for me"
+    ]
+  };
+  
+  return suggestions[currentStage as keyof typeof suggestions] || suggestions.greeting;
 }

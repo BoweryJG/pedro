@@ -85,9 +85,14 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     suggestedResponses,
     showFinancingWidget,
     financingProcedure,
+    selectedAgent,
+    availableAgents,
+    agentsLoading,
     toggleChat,
     sendMessage,
-    setShowFinancingWidget
+    setShowFinancingWidget,
+    loadAgents,
+    selectAgent
   } = useChatStore();
   
   const [input, setInput] = useState('');
@@ -107,6 +112,13 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  // Load agents when chat opens for the first time
+  useEffect(() => {
+    if (isOpen && availableAgents.length === 0 && !agentsLoading) {
+      loadAgents();
+    }
+  }, [isOpen, availableAgents.length, agentsLoading, loadAgents]);
   
   const handleSend = async () => {
     if (input.trim() && !isLoading) {
@@ -198,10 +210,10 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                 <ArrowBackIcon />
               </IconButton>
               <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                Chat with Julie
+                Chat with {selectedAgent?.name || 'AI Assistant'}
               </Typography>
               <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}>
-                <Typography fontSize="1.2rem">👩‍⚕️</Typography>
+                <Typography fontSize="1.2rem">{selectedAgent?.avatar || '👩‍⚕️'}</Typography>
               </Avatar>
             </Box>
           )}
@@ -210,7 +222,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
           <Box
             sx={{
               p: 2,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              background: selectedAgent?.gradient || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
               display: { xs: 'none', sm: 'flex' },
               alignItems: 'center',
@@ -238,12 +250,12 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                   border: '2px solid rgba(255,255,255,0.3)'
                 }}
               >
-                <Typography fontSize="1.8rem">👩‍⚕️</Typography>
+                <Typography fontSize="1.8rem">{selectedAgent?.avatar || '👩‍⚕️'}</Typography>
               </Avatar>
               <Box>
                 <Box display="flex" alignItems="center" gap={0.5}>
                   <Typography variant="h6" fontWeight="bold">
-                    Julie
+                    {selectedAgent?.name || 'AI Assistant'}
                   </Typography>
                   <SparkleIcon sx={{ fontSize: 16, color: '#FFD700' }} />
                 </Box>
@@ -257,7 +269,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                   }}
                 >
                   <StatusIndicator />
-                  Active Now • Your Personal Dental Care Assistant
+                  Active Now • {selectedAgent?.role || 'Your Personal Dental Care Assistant'}
                 </Typography>
               </Box>
             </Box>
@@ -366,7 +378,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                     {message.role === 'user' ? (
                       <PersonIcon sx={{ fontSize: 20 }} />
                     ) : (
-                      <Typography fontSize="1.2rem">👩‍⚕️</Typography>
+                      <Typography fontSize="1.2rem">{selectedAgent?.avatar || '👩‍⚕️'}</Typography>
                     )}
                   </Avatar>
                   <Paper
@@ -412,7 +424,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                     border: '2px solid #e0e0e0'
                   }}
                 >
-                  <Typography fontSize="1.2rem">👩‍⚕️</Typography>
+                  <Typography fontSize="1.2rem">{selectedAgent?.avatar || '👩‍⚕️'}</Typography>
                 </Avatar>
                 <Paper
                   elevation={1}
@@ -446,7 +458,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
                     </motion.div>
                   </Box>
                   <Typography variant="caption" color="text.secondary" fontStyle="italic">
-                    Julie is thinking...
+                    {selectedAgent?.name || 'AI Assistant'} is thinking...
                   </Typography>
                 </Paper>
               </Box>

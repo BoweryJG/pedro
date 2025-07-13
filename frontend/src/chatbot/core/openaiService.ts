@@ -4,10 +4,27 @@ import { EnhancedConversationFlowManager } from './enhancedConversationFlow';
 
 export class OpenAIService {
   private flowManager: EnhancedConversationFlowManager;
+  private conversationId: string | null = null;
+  private activeAgentId: string = 'julie'; // Default to Julie
   
   constructor(_config: ChatbotConfig, conversationState: ConversationState) {
     // Config is not needed when using serverless function
     this.flowManager = new EnhancedConversationFlowManager(conversationState);
+  }
+  
+  private getActiveAgentId(): string {
+    return this.activeAgentId;
+  }
+  
+  private getConversationId(): string {
+    if (!this.conversationId) {
+      this.conversationId = `pedro_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    }
+    return this.conversationId;
+  }
+  
+  public setActiveAgent(agentId: string): void {
+    this.activeAgentId = agentId;
   }
   
   private buildSystemPrompt(userMessage?: string): string {
@@ -115,17 +132,22 @@ BOOKING PROCESS:
         });
       }
       
-      // Generate response using backend API
-      const apiUrl = import.meta.env.VITE_API_URL || 'https://pedrobackend.onrender.com';
+      // Generate response using agentbackend API
+      const agentbackendUrl = 'https://agentbackend-2932.onrender.com';
       
-      const response = await fetch(`${apiUrl}/chat`, {
+      // Get the current agent ID from conversation state or default to julie
+      const agentId = this.getActiveAgentId();
+      
+      const response = await fetch(`${agentbackendUrl}/api/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          messages: messages.slice(1), // Exclude system message
-          systemPrompt: messages[0].content,
+          agentId: agentId,
+          message: userMessage,
+          conversationId: this.getConversationId(),
+          clientId: 'pedro-frontend'
         }),
       });
       
@@ -135,7 +157,7 @@ BOOKING PROCESS:
       }
       
       const data = await response.json();
-      return data.response || 
+      return data.response || data.message || 
         "I apologize, I'm having trouble responding right now. How can I help you learn about our dental services?";
       
     } catch (error) {
