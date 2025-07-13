@@ -1361,18 +1361,44 @@ app.use('/api', agentManagementRoutes);
 // Mount error analytics routes (admin only)
 app.use('/api/errors', errorAnalyticsRoutes);
 
-// WebSocket placeholder routes for Render compatibility
-// These routes allow WebSocket upgrade requests to pass through on Render
+// WebSocket routes for Render compatibility
+// These routes handle the initial HTTP request before WebSocket upgrade
 app.get('/webrtc-voice', (req, res) => {
-  res.status(426).send('Upgrade to WebSocket required');
+  // Check if this is a WebSocket upgrade request
+  if (req.headers.upgrade === 'websocket') {
+    // Let the upgrade handler deal with it
+    res.status(426).send('Upgrade to WebSocket required');
+  } else {
+    res.json({ 
+      status: 'ready',
+      message: 'WebRTC voice endpoint ready for WebSocket connection',
+      wsUrl: `${req.protocol === 'https' ? 'wss' : 'ws'}://${req.get('host')}/webrtc-voice`
+    });
+  }
 });
 
 app.get('/voice-websocket', (req, res) => {
-  res.status(426).send('Upgrade to WebSocket required');
+  if (req.headers.upgrade === 'websocket') {
+    res.status(426).send('Upgrade to WebSocket required');
+  } else {
+    res.json({ 
+      status: 'ready',
+      message: 'Twilio voice WebSocket endpoint ready',
+      wsUrl: `${req.protocol === 'https' ? 'wss' : 'ws'}://${req.get('host')}/voice-websocket`
+    });
+  }
 });
 
 app.get('/voice/julie/websocket', (req, res) => {
-  res.status(426).send('Upgrade to WebSocket required');
+  if (req.headers.upgrade === 'websocket') {
+    res.status(426).send('Upgrade to WebSocket required');
+  } else {
+    res.json({ 
+      status: 'ready',
+      message: 'Julie AI voice endpoint ready for WebSocket connection',
+      wsUrl: `${req.protocol === 'https' ? 'wss' : 'ws'}://${req.get('host')}/voice/julie/websocket`
+    });
+  }
 });
 
 // 404 handler - must be after all routes
