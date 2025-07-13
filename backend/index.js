@@ -1135,16 +1135,7 @@ julieWss.on('connection', async (ws, req) => {
   });
 });
 
-// Upgrade Julie AI WebSocket connections
-server.on('upgrade', (request, socket, head) => {
-  const pathname = new URL(request.url, `http://${request.headers.host}`).pathname;
-  
-  if (pathname === '/voice/julie/websocket') {
-    julieWss.handleUpgrade(request, socket, head, (ws) => {
-      julieWss.emit('connection', ws, request);
-    });
-  }
-});
+// Note: Julie AI WebSocket upgrade is handled in the main upgrade handler below
 
 // Julie AI status callback
 app.post('/voice/julie/status', async (req, res) => {
@@ -1380,26 +1371,40 @@ app.use(requestErrorLogger);
 app.use(globalErrorHandler);
 
 // Manual WebSocket upgrade handling for Render compatibility
+// This single handler manages all WebSocket connections
 server.on('upgrade', (request, socket, head) => {
-  const pathname = request.url;
+  const url = new URL(request.url, `http://${request.headers.host}`);
+  const pathname = url.pathname;
   const origin = request.headers.origin;
   
   console.log(`WebSocket upgrade request for ${pathname} from ${origin}`);
   
-  if (pathname === '/webrtc-voice') {
-    // Skip origin check for now to debug
-    console.log('Handling WebRTC voice upgrade');
-    webrtcWss.handleUpgrade(request, socket, head, (ws) => {
-      webrtcWss.emit('connection', ws, request);
-    });
-  } else if (pathname === '/voice-websocket') {
-    // Handle Twilio WebSocket
-    wss.handleUpgrade(request, socket, head, (ws) => {
-      wss.emit('connection', ws, request);
-    });
-  } else {
-    console.log(`Unknown WebSocket path: ${pathname}`);
-    socket.destroy();
+  // Handle different WebSocket paths
+  switch (pathname) {
+    case '/webrtc-voice':
+      console.log('Handling WebRTC voice upgrade');
+      webrtcWss.handleUpgrade(request, socket, head, (ws) => {
+        webrtcWss.emit('connection', ws, request);
+      });
+      break;
+      
+    case '/voice-websocket':
+      console.log('Handling Twilio voice WebSocket upgrade');
+      wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
+      });
+      break;
+      
+    case '/voice/julie/websocket':
+      console.log('Handling Julie AI WebSocket upgrade');
+      julieWss.handleUpgrade(request, socket, head, (ws) => {
+        julieWss.emit('connection', ws, request);
+      });
+      break;
+      
+    default:
+      console.log(`Unknown WebSocket path: ${pathname}`);
+      socket.destroy();
   }
 });
 
