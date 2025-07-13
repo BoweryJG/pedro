@@ -1364,8 +1364,13 @@ app.use('/api/errors', errorAnalyticsRoutes);
 // WebSocket routes for Render compatibility
 // These routes handle the initial HTTP request before WebSocket upgrade
 app.get('/webrtc-voice', (req, res) => {
+  console.log('WebRTC route hit - Headers:', JSON.stringify(req.headers));
+  console.log('Upgrade header:', req.headers.upgrade);
+  console.log('Connection header:', req.headers.connection);
+  
   // Check if this is a WebSocket upgrade request
   if (req.headers.upgrade === 'websocket') {
+    console.log('WebSocket upgrade detected in route handler');
     // Let the upgrade handler deal with it
     res.status(426).send('Upgrade to WebSocket required');
   } else {
