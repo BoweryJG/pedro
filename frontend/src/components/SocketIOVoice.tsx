@@ -82,7 +82,7 @@ export const SocketIOVoice: React.FC<SocketIOVoiceProps> = ({ agentName = 'Julie
       });
 
       socketRef.current.on('audio-response', async (data) => {
-        await playAudioResponse(data.audio, data.sampleRate);
+        await playAudioResponse(data.audio);
       });
 
       socketRef.current.on('error', (error) => {
@@ -142,7 +142,7 @@ export const SocketIOVoice: React.FC<SocketIOVoiceProps> = ({ agentName = 'Julie
   };
 
   // Play audio response
-  const playAudioResponse = async (base64Audio: string, _sampleRate: number) => {
+  const playAudioResponse = async (base64Audio: string) => {
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
     }
