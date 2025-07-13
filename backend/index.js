@@ -1382,12 +1382,23 @@ app.use(globalErrorHandler);
 // Manual WebSocket upgrade handling for Render compatibility
 server.on('upgrade', (request, socket, head) => {
   const pathname = request.url;
+  const origin = request.headers.origin;
+  
+  console.log(`WebSocket upgrade request for ${pathname} from ${origin}`);
   
   if (pathname === '/webrtc-voice') {
+    // Skip origin check for now to debug
+    console.log('Handling WebRTC voice upgrade');
     webrtcWss.handleUpgrade(request, socket, head, (ws) => {
       webrtcWss.emit('connection', ws, request);
     });
+  } else if (pathname === '/voice-websocket') {
+    // Handle Twilio WebSocket
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
   } else {
+    console.log(`Unknown WebSocket path: ${pathname}`);
     socket.destroy();
   }
 });

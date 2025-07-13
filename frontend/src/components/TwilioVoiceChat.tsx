@@ -50,7 +50,7 @@ export const TwilioVoiceChat: React.FC = () => {
       
     } catch (err) {
       setError('Failed to initialize voice chat');
-      console.error(err);
+      console.error('Twilio initialization error:', err);
     }
   };
 
@@ -70,6 +70,7 @@ export const TwilioVoiceChat: React.FC = () => {
     } catch (err) {
       setError('Failed to connect call');
       setIsConnecting(false);
+      console.error('Call connection error:', err);
     }
   };
 

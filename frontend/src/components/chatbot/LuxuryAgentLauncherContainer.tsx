@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { LuxuryAgentLauncher } from './LuxuryAgentLauncher';
 import { PremiumChatbot } from '../../chatbot/components/PremiumChatbot';
-import { TwilioVoiceChat } from '../TwilioVoiceChat';
+import { SimpleWebRTCVoice } from '../SimpleWebRTCVoice';
 import type { AgentPersonality } from '../../chatbot/config/agentPersonalities';
 
 /**
