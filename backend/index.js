@@ -119,6 +119,12 @@ const verifyWebSocketClient = (info) => {
     return true;
   }
   
+  // Allow localhost for development
+  if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
+    console.log('WebSocket: Allowing localhost origin');
+    return true;
+  }
+  
   const allowedOrigins = process.env.ALLOWED_ORIGINS 
     ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
     : productionDomains;
