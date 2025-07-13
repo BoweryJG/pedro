@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
-import { agentPersonalities, type AgentPersonality } from '../../chatbot/config/agentPersonalities';
+import { fetchAgents, type AgentPersonality } from '../../chatbot/config/agentPersonalities';
 import { CartierScrew } from '../effects/CartierScrews';
 import './LuxuryAgentLauncher.css';
 
@@ -12,6 +12,9 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAgent, setSelectedAgent] = useState<AgentPersonality | null>(null);
   const [showActionMenu, setShowActionMenu] = useState(false);
+  const [agents, setAgents] = useState<AgentPersonality[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   
@@ -19,6 +22,26 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
   const x = useMotionValue(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const cardWidth = 90; // Card width + gap
+  
+  // Fetch agents from centralized backend
+  useEffect(() => {
+    const loadAgents = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const fetchedAgents = await fetchAgents();
+        setAgents(fetchedAgents);
+      } catch (err) {
+        console.error('Failed to load agents:', err);
+        setError('Failed to load agents. Please try again.');
+        setAgents([]); // Fallback to empty array
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAgents();
+  }, []);
   
   // Handle click outside to close
   useEffect(() => {
@@ -57,7 +80,7 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
   const handleDragEnd = () => {
     const offset = x.get();
     const newIndex = Math.round(-offset / cardWidth);
-    const clampedIndex = Math.max(0, Math.min(newIndex, agentPersonalities.length - 1));
+    const clampedIndex = Math.max(0, Math.min(newIndex, agents.length - 1));
     setCurrentIndex(clampedIndex);
     x.set(-clampedIndex * cardWidth);
   };
@@ -102,22 +125,33 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
           >
             <div className="carousel-header">
               <h3 className="carousel-title">Choose Your AI Assistant</h3>
-              <div className="carousel-subtitle">Swipe to explore our team</div>
+              <div className="carousel-subtitle">
+                {loading ? 'Loading agents...' : error ? error : `Swipe to explore our team (${agents.length} agents)`}
+              </div>
             </div>
 
             <div className="carousel-viewport" ref={carouselRef}>
-              <motion.div
-                className="carousel-track"
-                drag="x"
-                dragConstraints={{
-                  left: -(agentPersonalities.length - 1) * cardWidth,
-                  right: 0
-                }}
-                dragElastic={0.2}
-                onDragEnd={handleDragEnd}
-                style={{ x }}
-              >
-                {agentPersonalities.map((agent) => (
+              {loading ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 120 }}>
+                  <div>Loading agents...</div>
+                </div>
+              ) : error ? (
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 120, color: 'red' }}>
+                  <div>{error}</div>
+                </div>
+              ) : (
+                <motion.div
+                  className="carousel-track"
+                  drag="x"
+                  dragConstraints={{
+                    left: -(agents.length - 1) * cardWidth,
+                    right: 0
+                  }}
+                  dragElastic={0.2}
+                  onDragEnd={handleDragEnd}
+                  style={{ x }}
+                >
+                  {agents.map((agent) => (
                   <motion.div
                     key={agent.id}
                     className="agent-card"
@@ -146,13 +180,15 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
 
                     <div className="agent-shimmer" />
                   </motion.div>
-                ))}
-              </motion.div>
+                  ))}
+                </motion.div>
+              )}
             </div>
 
             {/* Pagination Dots */}
+            {!loading && !error && (
             <div className="carousel-pagination">
-              {agentPersonalities.map((_, index) => (
+              {agents.map((_, index) => (
                 <button
                   key={index}
                   className={`pagination-dot ${currentIndex === index ? 'active' : ''}`}
@@ -163,6 +199,7 @@ export const LuxuryAgentLauncher: React.FC<LuxuryAgentLauncherProps> = ({ onAgen
                 />
               ))}
             </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

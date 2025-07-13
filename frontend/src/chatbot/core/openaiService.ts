@@ -1,15 +1,27 @@
 import type { Message, ChatbotConfig, ConversationState, ConversationStage } from '../types';
 import { procedureKnowledge, statenIslandContext } from '../knowledge/procedures';
 import { EnhancedConversationFlowManager } from './enhancedConversationFlow';
+import { fetchAgents, getAgentById, type AgentPersonality } from '../config/agentPersonalities';
 
 export class OpenAIService {
   private flowManager: EnhancedConversationFlowManager;
   private conversationId: string | null = null;
   private activeAgentId: string = 'julie'; // Default to Julie
+  private activeAgent: AgentPersonality | null = null;
   
   constructor(_config: ChatbotConfig, conversationState: ConversationState) {
-    // Config is not needed when using serverless function
+    // Config is not needed when using centralized agentbackend
     this.flowManager = new EnhancedConversationFlowManager(conversationState);
+    this.initializeActiveAgent();
+  }
+  
+  private async initializeActiveAgent(): Promise<void> {
+    try {
+      this.activeAgent = await getAgentById(this.activeAgentId);
+    } catch (error) {
+      console.error('Failed to initialize active agent:', error);
+      this.activeAgent = null;
+    }
   }
   
   private getActiveAgentId(): string {
@@ -23,12 +35,79 @@ export class OpenAIService {
     return this.conversationId;
   }
   
-  public setActiveAgent(agentId: string): void {
+  public async setActiveAgent(agentId: string): Promise<void> {
     this.activeAgentId = agentId;
+    await this.initializeActiveAgent();
   }
   
   private buildSystemPrompt(userMessage?: string): string {
+    // If no active agent is loaded, use fallback system prompt
+    if (!this.activeAgent) {
+      return this.buildFallbackSystemPrompt(userMessage);
+    }
+
     // Detect context from user's first message
+    let contextualGreeting = '';
+    if (userMessage) {
+      const lowerMessage = userMessage.toLowerCase();
+      if (lowerMessage.includes('know what') && lowerMessage.includes('need')) {
+        contextualGreeting = `\n\nCONTEXT: The user entered through the "Precision Gateway" - they know what service they need. Start by acknowledging this and quickly help them book the specific treatment they want.`;
+      } else if (lowerMessage.includes('emergency')) {
+        contextualGreeting = `\n\nCONTEXT: The user entered through the "Emergency Care" portal - they need urgent help. Show immediate concern, ask about their pain/issue, and offer the soonest available appointment or direct them to call (929) 242-4535 immediately.`;
+      }
+    }
+    
+    // Build dynamic system prompt based on active agent
+    const agent = this.activeAgent;
+    const personality = agent.personality;
+    
+    return `You are ${agent.name}, ${agent.role} for Dr. Greg Pedro in Staten Island, NY. ${agent.tagline}${contextualGreeting}
+
+PERSONALITY:
+${personality.traits ? `- Traits: ${personality.traits.join(', ')}` : ''}
+${personality.communication_style ? `- Communication Style: ${personality.communication_style}` : ''}
+${personality.approach ? `- Approach: ${personality.approach}` : ''}
+${personality.tone ? `- Tone: ${personality.tone}` : ''}
+${personality.origin ? `- Background: ${personality.origin}` : ''}
+
+SPECIALTIES:
+${personality.specialties ? personality.specialties.map(s => `- ${s}`).join('\n') : ''}
+
+CAPABILITIES:
+${agent.capabilities ? Object.entries(agent.capabilities)
+  .filter(([_, enabled]) => enabled)
+  .map(([capability, _]) => `- ${capability.replace(/([A-Z])/g, ' $1').toLowerCase()}`)
+  .join('\n') : ''}
+
+YOUR ROLE: Help patients with whatever they need:
+1. Scheduling appointments quickly and easily
+2. Understanding their insurance and payment options  
+3. Getting answers to their dental questions
+4. Feeling comfortable and cared for
+
+KNOWLEDGE BASE:
+${JSON.stringify(procedureKnowledge, null, 2)}
+
+LOCAL CONTEXT:
+${JSON.stringify(statenIslandContext, null, 2)}
+
+CONVERSATION RULES:
+1. Always ask a follow-up question
+2. Reference specific benefits only after understanding their needs
+3. Use social proof naturally (patient stories, statistics)
+4. Create gentle urgency without pressure
+5. If they show buying signals, offer to check appointment availability
+6. Track conversation stage and adapt accordingly
+
+BOOKING PROCESS:
+- When booking intent is high, say: "I can check our doctors' availability right now. What days work best for you?"
+- Offer specific times to create commitment
+- Mention current specials naturally
+- Always end with confirming their contact information`;
+  }
+  
+  private buildFallbackSystemPrompt(userMessage?: string): string {
+    // Fallback system prompt for when agent data is not available
     let contextualGreeting = '';
     if (userMessage) {
       const lowerMessage = userMessage.toLowerCase();
@@ -48,13 +127,6 @@ PERSONALITY:
 - Uses gentle, caring conversation to help patients
 - Makes everyone feel comfortable and supported
 
-COMMUNICATION STYLE:
-- Be helpful and direct - provide real assistance
-- Use "I" language to show personal care ("I can help you with that")
-- Give clear, helpful responses with practical next steps
-- Always caring and supportive, never pushy
-- Show genuine concern for the patient's wellbeing
-
 YOUR CAPABILITIES:
 - Book appointments (say "I can help you schedule that right away")
 - Check insurance coverage and benefits
@@ -69,13 +141,6 @@ PRIMARY GOAL: Help patients with whatever they need:
 2. Understanding their insurance and payment options
 3. Getting answers to their dental questions
 4. Feeling comfortable and cared for
-
-HELPFUL APPROACH:
-- Start by understanding what they need help with
-- Offer specific assistance based on their needs
-- Provide clear information and options
-- Make booking and insurance checking easy
-- Always offer to help with next steps
 
 KNOWLEDGE BASE:
 ${JSON.stringify(procedureKnowledge, null, 2)}
