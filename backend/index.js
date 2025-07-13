@@ -147,9 +147,7 @@ const wss = new WebSocketServer({
 
 // Initialize WebSocket server for WebRTC signaling
 const webrtcWss = new WebSocketServer({ 
-  server,
-  path: '/webrtc-voice',
-  verifyClient: verifyWebSocketClient
+  noServer: true // Important: Let us handle the upgrade manually
 });
 
 // Initialize voice services
@@ -825,8 +823,13 @@ wss.on('connection', async (ws, req) => {
 });
 
 // WebRTC Voice connection handler - No phone numbers needed!
+// Move WebSocket handler to where we handle the upgrade
 webrtcWss.on('connection', (ws, req) => {
   console.log('New WebRTC voice connection from browser');
+  
+  // Add CORS origin logging
+  const origin = req.headers.origin;
+  console.log('WebSocket connection from origin:', origin);
   
   ws.on('message', (message) => {
     webrtcVoiceService.handleSignaling(ws, message.toString());
@@ -1369,6 +1372,19 @@ app.use(requestErrorLogger);
 
 // Global error handler - must be last
 app.use(globalErrorHandler);
+
+// Manual WebSocket upgrade handling for Render compatibility
+server.on('upgrade', (request, socket, head) => {
+  const pathname = request.url;
+  
+  if (pathname === '/webrtc-voice') {
+    webrtcWss.handleUpgrade(request, socket, head, (ws) => {
+      webrtcWss.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
 
 server.listen(PORT, () => {
   console.log(`Backend server with WebSocket support running on port ${PORT}`);
