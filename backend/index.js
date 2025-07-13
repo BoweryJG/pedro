@@ -1361,6 +1361,20 @@ app.use('/api', agentManagementRoutes);
 // Mount error analytics routes (admin only)
 app.use('/api/errors', errorAnalyticsRoutes);
 
+// WebSocket placeholder routes for Render compatibility
+// These routes allow WebSocket upgrade requests to pass through on Render
+app.get('/webrtc-voice', (req, res) => {
+  res.status(426).send('Upgrade to WebSocket required');
+});
+
+app.get('/voice-websocket', (req, res) => {
+  res.status(426).send('Upgrade to WebSocket required');
+});
+
+app.get('/voice/julie/websocket', (req, res) => {
+  res.status(426).send('Upgrade to WebSocket required');
+});
+
 // 404 handler - must be after all routes
 app.use(notFoundHandler);
 
