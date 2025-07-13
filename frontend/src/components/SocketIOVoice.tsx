@@ -142,7 +142,7 @@ export const SocketIOVoice: React.FC<SocketIOVoiceProps> = ({ agentName = 'Julie
   };
 
   // Play audio response
-  const playAudioResponse = async (base64Audio: string, sampleRate: number) => {
+  const playAudioResponse = async (base64Audio: string, _sampleRate: number) => {
     if (!audioContextRef.current) {
       audioContextRef.current = new AudioContext();
     }
