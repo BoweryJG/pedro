@@ -153,7 +153,8 @@ const wss = new WebSocketServer({
 
 // Initialize WebSocket server for WebRTC signaling
 const webrtcWss = new WebSocketServer({ 
-  noServer: true // Important: Let us handle the upgrade manually
+  server,
+  path: '/webrtc-voice'
 });
 
 // Initialize voice services
@@ -1361,50 +1362,7 @@ app.use('/api', agentManagementRoutes);
 // Mount error analytics routes (admin only)
 app.use('/api/errors', errorAnalyticsRoutes);
 
-// WebSocket routes for Render compatibility
-// These routes handle the initial HTTP request before WebSocket upgrade
-app.get('/webrtc-voice', (req, res) => {
-  console.log('WebRTC route hit - Headers:', JSON.stringify(req.headers));
-  console.log('Upgrade header:', req.headers.upgrade);
-  console.log('Connection header:', req.headers.connection);
-  
-  // Check if this is a WebSocket upgrade request
-  if (req.headers.upgrade === 'websocket') {
-    console.log('WebSocket upgrade detected in route handler');
-    // Let the upgrade handler deal with it
-    res.status(426).send('Upgrade to WebSocket required');
-  } else {
-    res.json({ 
-      status: 'ready',
-      message: 'WebRTC voice endpoint ready for WebSocket connection',
-      wsUrl: `${req.protocol === 'https' ? 'wss' : 'ws'}://${req.get('host')}/webrtc-voice`
-    });
-  }
-});
-
-app.get('/voice-websocket', (req, res) => {
-  if (req.headers.upgrade === 'websocket') {
-    res.status(426).send('Upgrade to WebSocket required');
-  } else {
-    res.json({ 
-      status: 'ready',
-      message: 'Twilio voice WebSocket endpoint ready',
-      wsUrl: `${req.protocol === 'https' ? 'wss' : 'ws'}://${req.get('host')}/voice-websocket`
-    });
-  }
-});
-
-app.get('/voice/julie/websocket', (req, res) => {
-  if (req.headers.upgrade === 'websocket') {
-    res.status(426).send('Upgrade to WebSocket required');
-  } else {
-    res.json({ 
-      status: 'ready',
-      message: 'Julie AI voice endpoint ready for WebSocket connection',
-      wsUrl: `${req.protocol === 'https' ? 'wss' : 'ws'}://${req.get('host')}/voice/julie/websocket`
-    });
-  }
-});
+// Remove these routes - WebSocket servers with path option handle their own routes
 
 // 404 handler - must be after all routes
 app.use(notFoundHandler);
@@ -1415,8 +1373,9 @@ app.use(requestErrorLogger);
 // Global error handler - must be last
 app.use(globalErrorHandler);
 
-// Manual WebSocket upgrade handling for Render compatibility
-// This single handler manages all WebSocket connections
+// Manual WebSocket upgrade handling for paths that need it
+// Note: /webrtc-voice is handled automatically by its WebSocketServer
+// Only handle paths that use noServer: true
 server.on('upgrade', (request, socket, head) => {
   const url = new URL(request.url, `http://${request.headers.host}`);
   const pathname = url.pathname;
@@ -1424,22 +1383,8 @@ server.on('upgrade', (request, socket, head) => {
   
   console.log(`WebSocket upgrade request for ${pathname} from ${origin}`);
   
-  // Handle different WebSocket paths
+  // Handle WebSocket paths that use noServer: true
   switch (pathname) {
-    case '/webrtc-voice':
-      console.log('Handling WebRTC voice upgrade');
-      webrtcWss.handleUpgrade(request, socket, head, (ws) => {
-        webrtcWss.emit('connection', ws, request);
-      });
-      break;
-      
-    case '/voice-websocket':
-      console.log('Handling Twilio voice WebSocket upgrade');
-      wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request);
-      });
-      break;
-      
     case '/voice/julie/websocket':
       console.log('Handling Julie AI WebSocket upgrade');
       julieWss.handleUpgrade(request, socket, head, (ws) => {
@@ -1448,8 +1393,8 @@ server.on('upgrade', (request, socket, head) => {
       break;
       
     default:
-      console.log(`Unknown WebSocket path: ${pathname}`);
-      socket.destroy();
+      // Let other WebSocket servers handle their own upgrades
+      console.log(`Letting WebSocket server handle: ${pathname}`);
   }
 });
 
