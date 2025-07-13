@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <h1>WebSocket Connection Test</h1>
+    <button onclick="connect()">Connect to WebSocket</button>
+    <button onclick="disconnect()">Disconnect</button>
+    <div id="status">Not connected</div>
+    <div id="messages"></div>
+
+    <script>
+        let ws = null;
+
+        function connect() {
+            const status = document.getElementById('status');
+            const messages = document.getElementById('messages');
+            
+            status.textContent = 'Connecting...';
+            
+            // Use production WebSocket URL
+            ws = new WebSocket('wss://pedrobackend.onrender.com/webrtc-voice');
+            
+            ws.onopen = () => {
+                status.textContent = '✅ Connected!';
+                messages.innerHTML += '<p style="color: green;">WebSocket connected successfully!</p>';
+                
+                // Send test message
+                ws.send(JSON.stringify({
+                    type: 'start-call',
+                    sessionId: 'test-' + Date.now()
+                }));
+            };
+            
+            ws.onmessage = (event) => {
+                messages.innerHTML += '<p>Received: ' + event.data + '</p>';
+            };
+            
+            ws.onerror = (error) => {
+                status.textContent = '❌ Connection error';
+                messages.innerHTML += '<p style="color: red;">Error: ' + error + '</p>';
+                console.error('WebSocket error:', error);
+            };
+            
+            ws.onclose = (event) => {
+                status.textContent = '❌ Disconnected';
+                messages.innerHTML += '<p style="color: orange;">Disconnected: Code ' + event.code + ', Reason: ' + event.reason + '</p>';
+            };
+        }
+        
+        function disconnect() {
+            if (ws) {
+                ws.close();
+                ws = null;
+            }
+        }
+    </script>
+</body>
+</html>

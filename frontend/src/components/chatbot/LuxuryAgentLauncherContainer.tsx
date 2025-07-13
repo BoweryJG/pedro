@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { LuxuryAgentLauncher } from './LuxuryAgentLauncher';
 import { PremiumChatbot } from '../../chatbot/components/PremiumChatbot';
-import { SimpleWebRTCVoice } from '../SimpleWebRTCVoice';
+import { SocketIOVoice } from '../SocketIOVoice';
 import type { AgentPersonality } from '../../chatbot/config/agentPersonalities';
 
 /**
@@ -169,8 +169,8 @@ export const LuxuryAgentLauncherContainer: React.FC = () => {
               </p>
             </div>
 
-            {/* Voice Component */}
-            <SimpleWebRTCVoice 
+            {/* Voice Component - Using Socket.IO for Render compatibility */}
+            <SocketIOVoice 
               agentName={selectedAgent.name}
               voiceId={selectedAgent.voiceId}
             />
