@@ -1401,6 +1401,7 @@ server.on('upgrade', (request, socket, head) => {
 });
 
 // Setup Socket.IO for voice communication (works on Render)
+// Force redeploy with Socket.IO
 const io = setupSocketIO(server);
 
 server.listen(PORT, () => {

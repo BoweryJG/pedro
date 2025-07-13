@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CORS Debug Test</title>
+</head>
+<body>
+    <h1>CORS Debug Test</h1>
+    <button onclick="testCORS()">Test CORS</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function testCORS() {
+            const output = document.getElementById('output');
+            output.textContent = 'Testing...\n';
+            
+            // Show current origin
+            output.textContent += `Current origin: ${window.location.origin}\n\n`;
+            
+            try {
+                // Test 1: Regular fetch
+                output.textContent += 'Test 1: Regular API call\n';
+                const response = await fetch('https://pedrobackend.onrender.com/api/status');
+                output.textContent += `Status: ${response.status}\n`;
+                output.textContent += `Headers: ${response.headers.get('access-control-allow-origin')}\n\n`;
+                
+                // Test 2: Socket.IO polling
+                output.textContent += 'Test 2: Socket.IO polling endpoint\n';
+                const pollResponse = await fetch('https://pedrobackend.onrender.com/socket.io/?EIO=4&transport=polling');
+                output.textContent += `Status: ${pollResponse.status}\n`;
+                const pollText = await pollResponse.text();
+                output.textContent += `Response: ${pollText.substring(0, 100)}...\n\n`;
+                
+            } catch (error) {
+                output.textContent += `Error: ${error.message}\n`;
+                output.textContent += `Stack: ${error.stack}\n`;
+            }
+            
+            // Test 3: Try Socket.IO with explicit origin
+            output.textContent += 'Test 3: Socket.IO with script tag\n';
+            const script = document.createElement('script');
+            script.src = 'https://pedrobackend.onrender.com/socket.io/socket.io.js';
+            script.onload = () => {
+                output.textContent += '✅ Socket.IO script loaded!\n';
+                
+                // Now try to connect
+                if (typeof io !== 'undefined') {
+                    output.textContent += 'Attempting connection...\n';
+                    const socket = io('https://pedrobackend.onrender.com/voice');
+                    
+                    socket.on('connect', () => {
+                        output.textContent += '✅ Connected to Socket.IO!\n';
+                    });
+                    
+                    socket.on('connect_error', (err) => {
+                        output.textContent += `❌ Socket.IO error: ${err.message}\n`;
+                    });
+                }
+            };
+            script.onerror = () => {
+                output.textContent += '❌ Failed to load Socket.IO script\n';
+            };
+            document.head.appendChild(script);
+        }
+    </script>
+</body>
+</html>
