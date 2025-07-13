@@ -200,6 +200,10 @@ jobs:
         if: needs.deploy-frontend.result == 'success'
         run: |
           FRONTEND_URL="${{ secrets.FRONTEND_URL }}"
+          if [ -z "$FRONTEND_URL" ]; then
+            FRONTEND_URL="https://gregpedromd.netlify.app"
+          fi
+          echo "Checking frontend at: $FRONTEND_URL"
           if curl -f "$FRONTEND_URL" > /dev/null 2>&1; then
             echo "Frontend is accessible!"
           else
