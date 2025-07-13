@@ -36,6 +36,7 @@ import AboutFaceSubdomainPage from './pages/aboutface/AboutFaceSubdomainPage';
 import SMSQueue from './pages/admin/SMSQueue';
 
 function App() {
+  // v2 - Socket.IO voice chat enabled
   return (
     <AuthProvider>
       <GoogleAnalytics />
