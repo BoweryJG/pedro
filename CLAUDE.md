@@ -5,12 +5,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Core Architecture
 
 This is a monorepo for Dr. Pedro's dental practice digital ecosystem with:
-- **Frontend**: React/TypeScript SPA with MUI v7, built with Vite
-- **Backend**: Node.js/Express API server handling voice AI, Instagram automation, and multi-tenant phone management
+- **Frontend**: React 19/TypeScript SPA with MUI v7, built with Vite
+- **Backend**: Node.js/Express API server (ESM modules) handling voice AI, Instagram automation, and multi-tenant phone management
 - **Subdomains**: 5 specialized service sites (TMJ, implants, robotic, medspa, aboutface)
 - **Database**: Supabase (PostgreSQL with RLS)
 - **Voice AI**: Eleven Labs TTS + Deepgram Voice Agent for phone calls
 - **Phone System**: Twilio integration with multi-tenant management
+- **Deployment**: Frontend on Netlify, Backend on Render
 
 ## Development Commands
 
@@ -52,10 +53,12 @@ npm run preview      # Preview production build
 ### Backend-Specific
 ```bash
 cd backend
-npm run dev          # Development with hot reload
+npm run dev          # Development with hot reload (node --watch)
 npm start            # Production mode
 npm run validate     # Validate environment variables
 npm run db:migrate   # Run Supabase migrations
+npm run db:push      # Push database changes
+npm run db:seed      # Seed initial data
 ```
 
 ## Critical Service Integrations
@@ -193,3 +196,45 @@ When making changes, always check:
 - frontend/src/services/api.ts - Backend API integration
 - backend/services/julieAI.js - Main AI conversation logic
 - backend/deepgramVoiceService.js - Phone call handling
+
+## Testing Commands
+
+### Frontend Tests
+```bash
+cd frontend
+# No test framework configured yet - consider adding Vitest or Jest
+```
+
+### Backend Tests
+```bash
+cd backend
+# Test voice services
+node test-nicole-voice.js    # Test Julie's voice
+node test-all-voices.js      # Test all voices
+node generate-voice-links.js # Generate voice sample links
+
+# Test integrations
+node test-agentbackend-integration.js  # Test agent backend
+```
+
+## Code Quality Commands
+
+```bash
+# Frontend linting and type checking
+cd frontend && npm run lint && npm run typecheck
+
+# Backend validation
+cd backend && npm run validate
+
+# Check for sensitive data (from root)
+node scripts/check-sensitive-data.js
+```
+
+## Important Notes
+
+1. **Module System**: Backend uses ESM modules (type: "module" in package.json)
+2. **Node Version**: Requires Node.js >= 18.0.0
+3. **Package Installation**: Always use `npm install --legacy-peer-deps` due to peer dependency conflicts
+4. **Environment Variables**: Run validation before starting services
+5. **API Keys**: All sensitive API keys are handled server-side only
+6. **Database**: Ensure Supabase project is not paused before development
