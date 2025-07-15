@@ -131,7 +131,7 @@ export const verifyToken = (token) => {
   }
 };
 
-// Basic authentication middleware
+// Basic authentication middleware - Now uses Supabase JWT validation
 export const authenticate = async (req, res, next) => {
   try {
     // Check for Authorization header
@@ -152,24 +152,49 @@ export const authenticate = async (req, res, next) => {
       });
     }
     
-    // Verify token
-    const decoded = verifyToken(token);
+    // Verify token with Supabase
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     
-    // Check if user still exists and is active
-    const { data: user, error } = await supabase
-      .from('users')
-      .select('id, email, role, is_active, clinic_id')
-      .eq('id', decoded.id)
-      .single();
-    
-    if (error || !user) {
+    if (authError || !user) {
+      console.error('Supabase auth error:', authError);
       return res.status(401).json({ 
-        error: 'User not found',
-        code: 'USER_NOT_FOUND' 
+        error: 'Invalid or expired token',
+        code: 'TOKEN_INVALID' 
       });
     }
     
-    if (!user.is_active) {
+    // Check if user has additional profile data
+    const { data: userProfile, error: profileError } = await supabase
+      .from('users')
+      .select('id, email, role, is_active, clinic_id')
+      .eq('auth_user_id', user.id)
+      .single();
+    
+    // If no profile exists, create a basic one
+    let profile = userProfile;
+    if (profileError || !userProfile) {
+      // Check if user is in authorized list
+      const authorizedEmails = process.env.AUTHORIZED_EMAILS?.split(',') || [];
+      const isAuthorized = authorizedEmails.includes(user.email);
+      
+      profile = {
+        id: user.id,
+        auth_user_id: user.id,
+        email: user.email,
+        role: isAuthorized ? ROLES.ADMIN : ROLES.PATIENT,
+        is_active: true,
+        clinic_id: null
+      };
+      
+      // Create profile if it doesn't exist
+      if (!userProfile) {
+        await supabase
+          .from('users')
+          .insert(profile);
+      }
+    }
+    
+    if (!profile.is_active) {
       return res.status(401).json({ 
         error: 'User account is deactivated',
         code: 'USER_DEACTIVATED' 
@@ -178,27 +203,14 @@ export const authenticate = async (req, res, next) => {
     
     // Attach user to request
     req.user = {
-      ...user,
-      permissions: PERMISSIONS[user.role] || []
+      ...profile,
+      supabaseUser: user,
+      permissions: PERMISSIONS[profile.role] || []
     };
     
     next();
   } catch (error) {
     console.error('Authentication error:', error);
-    
-    if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ 
-        error: 'Token has expired',
-        code: 'TOKEN_EXPIRED' 
-      });
-    }
-    
-    if (error.name === 'JsonWebTokenError') {
-      return res.status(401).json({ 
-        error: 'Invalid token',
-        code: 'TOKEN_INVALID' 
-      });
-    }
     
     return res.status(401).json({ 
       error: 'Authentication failed',

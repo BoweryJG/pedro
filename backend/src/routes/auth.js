@@ -26,247 +26,31 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// Login endpoint
-router.post('/login', validateLogin, async (req, res) => {
-  try {
-    const { email, password } = req.validatedData || req.body;
-    
-    if (!email || !password) {
-      return res.status(400).json({
-        error: 'Email and password are required',
-        code: 'MISSING_CREDENTIALS'
-      });
-    }
-    
-    // Find user by email
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('email', email.toLowerCase())
-      .single();
-    
-    if (userError || !user) {
-      return res.status(401).json({
-        error: 'Invalid email or password',
-        code: 'INVALID_CREDENTIALS'
-      });
-    }
-    
-    // Check if user is active
-    if (!user.is_active) {
-      return res.status(401).json({
-        error: 'Your account has been deactivated. Please contact support.',
-        code: 'ACCOUNT_DEACTIVATED'
-      });
-    }
-    
-    // Verify password
-    const isValidPassword = await comparePassword(password, user.password_hash);
-    if (!isValidPassword) {
-      // Log failed login attempt
-      await supabase
-        .from('login_attempts')
-        .insert({
-          user_id: user.id,
-          ip_address: req.ip,
-          user_agent: req.headers['user-agent'],
-          success: false,
-          created_at: new Date().toISOString()
-        });
-      
-      return res.status(401).json({
-        error: 'Invalid email or password',
-        code: 'INVALID_CREDENTIALS'
-      });
-    }
-    
-    // Generate tokens
-    const { token, refreshToken } = generateToken(user);
-    
-    // Update last login
-    await supabase
-      .from('users')
-      .update({
-        last_login_at: new Date().toISOString(),
-        last_login_ip: req.ip
-      })
-      .eq('id', user.id);
-    
-    // Log successful login
-    await supabase
-      .from('login_attempts')
-      .insert({
-        user_id: user.id,
-        ip_address: req.ip,
-        user_agent: req.headers['user-agent'],
-        success: true,
-        created_at: new Date().toISOString()
-      });
-    
-    // Store refresh token
-    await supabase
-      .from('refresh_tokens')
-      .insert({
-        user_id: user.id,
-        token_hash: await hashPassword(refreshToken),
-        expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days
-        ip_address: req.ip,
-        user_agent: req.headers['user-agent'],
-        created_at: new Date().toISOString()
-      });
-    
-    res.json({
-      success: true,
-      token,
-      refreshToken,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-        clinic_id: user.clinic_id
-      }
-    });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({
-      error: 'Login failed',
-      code: 'LOGIN_FAILED'
-    });
-  }
+// Login endpoint - DEPRECATED: Now handled by Supabase Auth
+router.post('/login', async (req, res) => {
+  return res.status(410).json({
+    error: 'This endpoint is deprecated. Please use Supabase Auth for authentication.',
+    code: 'ENDPOINT_DEPRECATED',
+    documentation: 'https://supabase.com/docs/guides/auth'
+  });
 });
 
-// Logout endpoint
-router.post('/logout', authenticate, async (req, res) => {
-  try {
-    // Invalidate all refresh tokens for this user
-    await supabase
-      .from('refresh_tokens')
-      .update({ is_revoked: true })
-      .eq('user_id', req.user.id)
-      .eq('is_revoked', false);
-    
-    res.json({
-      success: true,
-      message: 'Logged out successfully'
-    });
-  } catch (error) {
-    console.error('Logout error:', error);
-    res.status(500).json({
-      error: 'Logout failed',
-      code: 'LOGOUT_FAILED'
-    });
-  }
+// Logout endpoint - DEPRECATED: Now handled by Supabase Auth
+router.post('/logout', async (req, res) => {
+  return res.status(410).json({
+    error: 'This endpoint is deprecated. Please use Supabase Auth for logout.',
+    code: 'ENDPOINT_DEPRECATED',
+    documentation: 'https://supabase.com/docs/guides/auth/sign-out'
+  });
 });
 
-// Refresh token endpoint
+// Refresh token endpoint - DEPRECATED: Now handled by Supabase Auth
 router.post('/refresh', async (req, res) => {
-  try {
-    const { refreshToken } = req.body;
-    
-    if (!refreshToken) {
-      return res.status(400).json({
-        error: 'Refresh token is required',
-        code: 'MISSING_REFRESH_TOKEN'
-      });
-    }
-    
-    // Verify refresh token format
-    let decoded;
-    try {
-      decoded = verifyToken(refreshToken);
-    } catch (error) {
-      return res.status(401).json({
-        error: 'Invalid refresh token',
-        code: 'INVALID_REFRESH_TOKEN'
-      });
-    }
-    
-    if (decoded.type !== 'refresh') {
-      return res.status(401).json({
-        error: 'Invalid token type',
-        code: 'INVALID_TOKEN_TYPE'
-      });
-    }
-    
-    // Find stored refresh token
-    const { data: storedTokens, error: tokenError } = await supabase
-      .from('refresh_tokens')
-      .select('*')
-      .eq('user_id', decoded.id)
-      .eq('is_revoked', false)
-      .gte('expires_at', new Date().toISOString());
-    
-    if (tokenError || !storedTokens || storedTokens.length === 0) {
-      return res.status(401).json({
-        error: 'Refresh token not found or expired',
-        code: 'REFRESH_TOKEN_INVALID'
-      });
-    }
-    
-    // Verify token hash
-    let validToken = null;
-    for (const storedToken of storedTokens) {
-      if (await comparePassword(refreshToken, storedToken.token_hash)) {
-        validToken = storedToken;
-        break;
-      }
-    }
-    
-    if (!validToken) {
-      return res.status(401).json({
-        error: 'Invalid refresh token',
-        code: 'REFRESH_TOKEN_INVALID'
-      });
-    }
-    
-    // Get user data
-    const { data: user, error: userError } = await supabase
-      .from('users')
-      .select('*')
-      .eq('id', decoded.id)
-      .single();
-    
-    if (userError || !user || !user.is_active) {
-      return res.status(401).json({
-        error: 'User not found or inactive',
-        code: 'USER_INVALID'
-      });
-    }
-    
-    // Generate new tokens
-    const { token, refreshToken: newRefreshToken } = generateToken(user);
-    
-    // Revoke old refresh token
-    await supabase
-      .from('refresh_tokens')
-      .update({ is_revoked: true })
-      .eq('id', validToken.id);
-    
-    // Store new refresh token
-    await supabase
-      .from('refresh_tokens')
-      .insert({
-        user_id: user.id,
-        token_hash: await hashPassword(newRefreshToken),
-        expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-        ip_address: req.ip,
-        user_agent: req.headers['user-agent'],
-        created_at: new Date().toISOString()
-      });
-    
-    res.json({
-      success: true,
-      token,
-      refreshToken: newRefreshToken
-    });
-  } catch (error) {
-    console.error('Token refresh error:', error);
-    res.status(500).json({
-      error: 'Token refresh failed',
-      code: 'REFRESH_FAILED'
-    });
-  }
+  return res.status(410).json({
+    error: 'This endpoint is deprecated. Please use Supabase Auth for token refresh.',
+    code: 'ENDPOINT_DEPRECATED',
+    documentation: 'https://supabase.com/docs/guides/auth/sessions'
+  });
 });
 
 // Register endpoint (for initial setup or admin use)

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import ENV from '../config/environment';
+import { supabase } from '../lib/supabase';
 
 // Get the backend URL from validated environment configuration
 const API_URL = ENV.API_URL;
@@ -15,11 +16,14 @@ const api = axios.create({
 
 // Add request interceptor to include auth token if available
 api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+  async (config) => {
+    // Get the current session from Supabase
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    if (session?.access_token) {
+      config.headers.Authorization = `Bearer ${session.access_token}`;
     }
+    
     return config;
   },
   (error) => {
@@ -30,35 +34,69 @@ api.interceptors.request.use(
 // Add response interceptor to handle errors
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
+  async (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access
-      localStorage.removeItem('authToken');
+      // Handle unauthorized access - sign out from Supabase
+      await supabase.auth.signOut();
       window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
 
-// Authentication API calls
+// Authentication API calls - Now handled by Supabase
 export const authAPI = {
-  signup: (data: { email: string; password: string; firstName: string; lastName: string }) =>
-    api.post('/auth/signup', data),
+  // These are kept for backward compatibility but use Supabase under the hood
+  signup: async (data: { email: string; password: string; firstName: string; lastName: string }) => {
+    const { data: authData, error } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          first_name: data.firstName,
+          last_name: data.lastName
+        }
+      }
+    });
+    return { data: authData, error };
+  },
   
-  signin: (data: { email: string; password: string }) =>
-    api.post('/auth/signin', data),
+  signin: async (data: { email: string; password: string }) => {
+    const { data: authData, error } = await supabase.auth.signInWithPassword({
+      email: data.email,
+      password: data.password
+    });
+    return { data: authData, error };
+  },
   
-  signout: () =>
-    api.post('/auth/signout'),
+  signout: async () => {
+    const { error } = await supabase.auth.signOut();
+    return { error };
+  },
   
-  resetPassword: (email: string) =>
-    api.post('/auth/reset', { email }),
+  resetPassword: async (email: string) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email);
+    return { data, error };
+  },
   
-  updateUser: (data: { email?: string; firstName?: string; lastName?: string; phone?: string }) =>
-    api.post('/auth/update', data),
+  updateUser: async (data: { email?: string; firstName?: string; lastName?: string; phone?: string }) => {
+    const updates: any = {};
+    if (data.email) updates.email = data.email;
+    if (data.firstName || data.lastName || data.phone) {
+      updates.data = {
+        ...(data.firstName && { first_name: data.firstName }),
+        ...(data.lastName && { last_name: data.lastName }),
+        ...(data.phone && { phone: data.phone })
+      };
+    }
+    const { data: user, error } = await supabase.auth.updateUser(updates);
+    return { data: user, error };
+  },
   
-  getCurrentUser: () =>
-    api.get('/auth/user'),
+  getCurrentUser: async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+    return { data: user, error };
+  },
 };
 
 // Appointments API calls
