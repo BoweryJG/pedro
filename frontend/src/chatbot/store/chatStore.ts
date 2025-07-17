@@ -54,6 +54,7 @@ interface ChatStore {
 }
 
 // Initialize chatbot configuration (no API key needed - using serverless function)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const _chatbotConfig = {
   apiKey: '', // Not needed when using serverless function
   model: 'gpt-4-turbo-preview',

@@ -92,7 +92,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     sendMessage,
     setShowFinancingWidget,
     loadAgents,
-    selectAgent: _selectAgent
+    selectAgent: _selectAgent // eslint-disable-line @typescript-eslint/no-unused-vars
   } = useChatStore();
   
   const [input, setInput] = useState('');
