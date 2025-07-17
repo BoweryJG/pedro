@@ -224,7 +224,26 @@ export const csrfProtection = (req, res, next) => {
   // For state-changing operations, verify origin
   if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
     const origin = req.headers.origin || req.headers.referer;
-    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [];
+    
+    // Use same domains as CORS
+    const productionDomains = [
+      'https://gregpedromd.com',
+      'https://www.gregpedromd.com',
+      'https://tmj.gregpedromd.com',
+      'https://implants.gregpedromd.com',
+      'https://robotic.gregpedromd.com',
+      'https://medspa.gregpedromd.com',
+      'https://aboutface.gregpedromd.com',
+      'https://gregpedromd.netlify.app',
+      'https://pedro-dental.netlify.app',
+      'https://pedrotmj.netlify.app',
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'http://localhost:3000',
+      'http://localhost:3001'
+    ];
+    
+    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || productionDomains;
     
     if (origin && !allowedOrigins.some(allowed => origin.startsWith(allowed))) {
       return res.status(403).json({
