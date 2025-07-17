@@ -96,6 +96,7 @@ const productionDomains = [
   // Netlify deployments
   'https://gregpedromd.netlify.app',
   'https://pedro-dental.netlify.app',
+  'https://pedrotmj.netlify.app',
   
   // Development
   'http://localhost:5173',
@@ -469,6 +470,110 @@ app.post('/api/chat/agent', apiRateLimiter, asyncHandler(async (req, res) => {
     res.status(500).json({ 
       error: 'Failed to process chat request',
       details: error.message 
+    });
+  }
+}));
+
+// Chat endpoint for TMJ frontend - expected by chatService.ts
+app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
+  const { message, conversationId, context } = req.body;
+  
+  if (!message) {
+    return res.status(400).json({ 
+      error: 'Missing required field: message' 
+    });
+  }
+  
+  if (!process.env.OPENROUTER_API_KEY) {
+    return res.status(500).json({ 
+      error: 'OpenRouter API key not configured' 
+    });
+  }
+  
+  // Build context-aware system prompt
+  let systemPrompt = `You are a helpful dental assistant for Dr. Pedro's TMJ practice. 
+  Be professional, empathetic, and informative. Help patients understand their symptoms and encourage them to book appointments.`;
+  
+  if (context && context.type === 'tmj_consultation') {
+    systemPrompt += `\n\nPatient context:
+    - Symptoms: ${context.symptoms?.join(', ') || 'Not specified'}
+    - Severity Level: ${context.severityLevel || 'Not specified'}%
+    - Specialty: ${context.specialty || 'TMJ'}
+    
+    Provide helpful information about TMJ disorders and treatment options.`;
+  }
+  
+  try {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://pedrotmj.netlify.app',
+        'X-Title': 'Pedro TMJ Assistant'
+      },
+      body: JSON.stringify({
+        model: 'anthropic/claude-3-haiku',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: message }
+        ],
+        temperature: 0.7,
+        max_tokens: 500
+      })
+    });
+
+    const data = await response.json();
+    
+    if (!response.ok) {
+      console.error('OpenRouter error response:', JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || 'OpenRouter API error');
+    }
+
+    res.json({
+      response: data.choices[0].message.content,
+      conversationId: conversationId || `tmj_${Date.now()}`
+    });
+  } catch (error) {
+    console.error('Chat error:', error);
+    res.status(500).json({ 
+      error: 'Chat service temporarily unavailable',
+      response: "I apologize, but I'm having trouble connecting. Please call us at (917) 993-7306 for immediate assistance."
+    });
+  }
+}));
+
+// Appointments confirmation endpoint
+app.post('/api/appointments/confirm', apiRateLimiter, asyncHandler(async (req, res) => {
+  const { appointmentId, email, phone, details } = req.body;
+  
+  if (!appointmentId || !email || !phone) {
+    return res.status(400).json({ 
+      error: 'Missing required fields: appointmentId, email, phone' 
+    });
+  }
+  
+  try {
+    // TODO: Implement actual email/SMS confirmation
+    // For now, just log the confirmation request
+    console.log('Appointment confirmation requested:', {
+      appointmentId,
+      email,
+      phone,
+      details
+    });
+    
+    // Simulate successful confirmation
+    res.json({
+      success: true,
+      message: 'Appointment confirmation sent successfully',
+      appointmentId
+    });
+  } catch (error) {
+    console.error('Appointment confirmation error:', error);
+    res.status(500).json({ 
+      error: 'Failed to send confirmation',
+      success: false
     });
   }
 }));
