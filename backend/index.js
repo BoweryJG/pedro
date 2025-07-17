@@ -22,6 +22,7 @@ import apiKeyRoutes from './src/routes/api-keys.js';
 import errorAnalyticsRoutes from './src/routes/errorAnalytics.js';
 import healthRoutes from './src/routes/health.js';
 import agentManagementRoutes from './routes/agentManagement.js';
+import TMJConsultationService from './src/services/tmjConsultationService.js';
 import { authenticate, authorize, requirePermission, authenticateFlexible, verifyResourceOwnership, auditLog, ROLES } from './src/middleware/auth.js';
 
 // Import error handling middleware
@@ -474,7 +475,7 @@ app.post('/api/chat/agent', apiRateLimiter, asyncHandler(async (req, res) => {
   }
 }));
 
-// Chat endpoint for TMJ frontend - GPT-4 Socratic approach
+// Enhanced TMJ Chat endpoint with state management and conversation logic
 app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
   const { message, conversationId, context } = req.body;
   
@@ -490,60 +491,58 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     });
   }
   
-  // Comprehensive TMJ Knowledge Bank for Staten Island
-  const tmjKnowledgeBank = `
-  PRACTICE CONTEXT:
-  - Dr. Pedro is a certified TMJ specialist in Staten Island with unique treatment modalities
-  - Located at statenislandtmj.com - established reputation for TMJ/TMD relief
-  - Competitors include RSN Dental, Joseph Mormino DDS, Karl Family Dental, but Dr. Pedro specializes specifically in TMJ
-  - Serves Staten Island community with understanding of local lifestyle and needs
-  
-  TMJ EXPERTISE:
-  - TMJ/TMD disorders affect jaw joint (temporomandibular joint)
-  - Common symptoms: jaw clicking, grinding, facial pain, headaches, ear pain, difficulty opening mouth
-  - Causes: stress, teeth grinding, jaw injury, arthritis, poor bite alignment
-  - Treatment spectrum: conservative (mouth guards, therapy) → advanced (specialized procedures)
-  - Dr. Pedro offers multiple unique modalities for comprehensive care
-  
-  PATIENT EXPERIENCE APPROACH:
-  - Staten Island patients often delay treatment due to uncertainty
-  - Many have tried other dentists without TMJ specialization
-  - Insurance and financing concerns are common
-  - Patients want to understand their condition before committing
-  `;
-  
-  // Socratic Conversational System Prompt
-  const systemPrompt = `You are a compassionate TMJ consultant for Dr. Pedro's specialized practice in Staten Island. Your role is to guide patients through discovery using Socratic questioning - NOT to provide information dumps.
-
-  CONVERSATIONAL PRINCIPLES:
-  1. EMPATHY FIRST: Always acknowledge their experience with validation
-  2. ASK, DON'T TELL: Use 1-2 thoughtful questions per response 
-  3. BRIEF RESPONSES: 2-3 sentences maximum, then engage with questions
-  4. NATURAL FLOW: Sound like a caring healthcare professional, not a textbook
-  5. DISCOVERY FOCUS: Help them understand their own situation through guided questions
-
-  QUESTION CATEGORIES TO USE:
-  - Symptom Exploration: "When do you notice this most?"
-  - Impact Assessment: "How is this affecting your daily life?"
-  - Experience Validation: "That sounds really frustrating - how long have you been dealing with this?"
-  - Gentle Probing: "What have you tried so far?"
-  - Future-Focused: "What would finding relief mean for you?"
-  - Comfort Building: "Many of our Staten Island patients have felt exactly the same way - you're not alone in this."
-
-  ${tmjKnowledgeBank}
-
-  PATIENT CONTEXT:
-  ${context && context.type === 'tmj_consultation' ? `
-  - Current symptoms: ${context.symptoms?.join(', ') || 'Not specified'}
-  - Severity level: ${context.severityLevel || 'Not specified'}%
-  - Specialty focus: ${context.specialty || 'TMJ'}` : 'Initial consultation'}
-
-  Remember: Your goal is to make them feel heard, understood, and comfortable sharing more. Ask questions that help them discover their needs rather than overwhelming them with information.`;
+  const finalConversationId = conversationId || `tmj_${Date.now()}`;
+  const consultationService = new TMJConsultationService();
   
   try {
+    // Get or create conversation session
+    const session = await consultationService.getOrCreateSession(finalConversationId);
+    
+    // Add user message to history
+    await consultationService.addMessage(finalConversationId, 'user', message);
+    
+    // Extract information from user message
+    const updatedInfo = consultationService.extractInformation(message, session.gathered_info);
+    
+    // Detect frustration level
+    const frustrationLevel = consultationService.detectFrustration(message, session.conversation_history);
+    
+    // Determine if we should progress to next stage
+    const shouldProgress = consultationService.shouldProgressStage(
+      session.current_stage, 
+      updatedInfo, 
+      message
+    );
+    
+    const nextStage = shouldProgress ? 
+      consultationService.stageFlow[session.current_stage] || session.current_stage :
+      session.current_stage;
+    
+    // Update session with new information and stage
+    await consultationService.updateSession(finalConversationId, {
+      gathered_info: updatedInfo,
+      current_stage: nextStage,
+      frustration_level: Math.max(frustrationLevel, session.frustration_level)
+    });
+    
+    // Get appropriate system prompt for current stage
+    const systemPrompt = consultationService.getSystemPrompt(
+      nextStage, 
+      updatedInfo, 
+      Math.max(frustrationLevel, session.frustration_level)
+    );
+    
+    // Prepare conversation history for AI
+    const conversationHistory = session.conversation_history
+      .slice(-6) // Keep last 3 exchanges (6 messages)
+      .map(msg => ({
+        role: msg.role,
+        content: msg.content
+      }));
+    
     let response, data;
 
-    // Try OpenAI first if key is available
+    // Try OpenAI GPT-4 first if available
     if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'your_openai_api_key_here') {
       response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -555,6 +554,7 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
           model: 'gpt-4',
           messages: [
             { role: 'system', content: systemPrompt },
+            ...conversationHistory,
             { role: 'user', content: message }
           ],
           temperature: 0.7,
@@ -567,9 +567,16 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
       data = await response.json();
       
       if (response.ok) {
+        const aiResponse = data.choices[0].message.content;
+        
+        // Add AI response to history
+        await consultationService.addMessage(finalConversationId, 'assistant', aiResponse);
+        
         return res.json({
-          response: data.choices[0].message.content,
-          conversationId: conversationId || `tmj_${Date.now()}`
+          response: aiResponse,
+          conversationId: finalConversationId,
+          stage: nextStage,
+          gatheredInfo: updatedInfo
         });
       }
     }
@@ -586,6 +593,7 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
         model: 'claude-3-haiku-20240307',
         max_tokens: 150,
         messages: [
+          ...conversationHistory,
           { role: 'user', content: message }
         ],
         system: systemPrompt,
@@ -600,12 +608,20 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
       throw new Error(data.error?.message || 'AI API error');
     }
 
+    const aiResponse = data.content[0].text;
+    
+    // Add AI response to history
+    await consultationService.addMessage(finalConversationId, 'assistant', aiResponse);
+    
     res.json({
-      response: data.content[0].text,
-      conversationId: conversationId || `tmj_${Date.now()}`
+      response: aiResponse,
+      conversationId: finalConversationId,
+      stage: nextStage,
+      gatheredInfo: updatedInfo
     });
+    
   } catch (error) {
-    console.error('Chat error:', error);
+    console.error('Enhanced chat error:', error);
     res.status(500).json({ 
       error: 'Chat service temporarily unavailable',
       response: "I'm so sorry, but I'm having trouble connecting right now. Please call Dr. Pedro's office directly at (917) 993-7306 - they'll be able to help you immediately."
