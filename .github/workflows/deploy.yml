@@ -201,7 +201,7 @@ jobs:
         run: |
           FRONTEND_URL="${{ secrets.FRONTEND_URL }}"
           if [ -z "$FRONTEND_URL" ]; then
-            FRONTEND_URL="https://gregpedromd.netlify.app"
+            FRONTEND_URL="https://pedrotmj.netlify.app"
           fi
           echo "Checking frontend at: $FRONTEND_URL"
           if curl -f "$FRONTEND_URL" > /dev/null 2>&1; then
