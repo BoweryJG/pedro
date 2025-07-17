@@ -37,6 +37,7 @@ class ScheduledJobsService {
             .from('phone_calls')
             .upsert({
               call_sid: call.sid,
+              account_sid: call.accountSid || process.env.TWILIO_ACCOUNT_SID,
               from_number: call.from,
               to_number: call.to,
               call_status: call.status,
