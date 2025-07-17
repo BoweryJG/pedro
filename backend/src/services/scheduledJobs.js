@@ -40,7 +40,7 @@ class ScheduledJobsService {
               account_sid: call.accountSid || process.env.TWILIO_ACCOUNT_SID,
               from_number: call.from,
               to_number: call.to,
-              call_status: call.status,
+              status: call.status,
               direction: call.direction,
               duration_seconds: parseInt(call.duration),
               started_at: call.startTime,
