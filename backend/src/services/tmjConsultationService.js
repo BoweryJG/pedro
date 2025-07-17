@@ -1,4 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
+import CalendarService from '../../services/calendarService.js';
+import { AppointmentBookingService } from './appointmentBooking.js';
 
 class TMJConsultationService {
   constructor() {
@@ -6,6 +8,9 @@ class TMJConsultationService {
       process.env.SUPABASE_URL,
       process.env.SUPABASE_SERVICE_ROLE_KEY
     );
+    
+    this.calendarService = CalendarService;
+    this.appointmentService = new AppointmentBookingService(this.supabase);
     
     // Define consultation stages
     this.stages = {
@@ -201,6 +206,69 @@ class TMJConsultationService {
     return painIndicators.some(indicator => lowerMessage.includes(indicator));
   }
 
+  // Detect if user wants to book an appointment
+  detectBookingIntent(message) {
+    const lowerMessage = message.toLowerCase();
+    const bookingIndicators = [
+      'book', 'schedule', 'appointment', 'come in', 'visit',
+      'see doctor', 'see dr', 'consultation', 'time to come'
+    ];
+    
+    return bookingIndicators.some(indicator => lowerMessage.includes(indicator));
+  }
+
+  // Detect if user wants more information
+  detectInfoIntent(message) {
+    const lowerMessage = message.toLowerCase();
+    const infoIndicators = [
+      'info', 'information', 'learn', 'know more', 'tell me',
+      'explain', 'what is', 'how does', 'treatment', 'options'
+    ];
+    
+    return infoIndicators.some(indicator => lowerMessage.includes(indicator));
+  }
+
+  // Get available appointment slots for TMJ consultation
+  async getAvailableSlots(conversationId, count = 3) {
+    try {
+      // Get Dr. Pedro's provider ID (you'll need to set this up)
+      const drPedroProviderId = process.env.DR_PEDRO_PROVIDER_ID || 'default-provider-id';
+      
+      const slots = await this.calendarService.getNextAvailableSlots(drPedroProviderId, count);
+      return slots;
+    } catch (error) {
+      console.error('Error getting available slots:', error);
+      return [];
+    }
+  }
+
+  // Create appointment request
+  async createAppointmentRequest(conversationId, gatheredInfo) {
+    try {
+      const { data, error } = await this.supabase
+        .from('tmj_appointment_requests')
+        .insert({
+          conversation_id: conversationId,
+          patient_info: gatheredInfo,
+          service_type: 'TMJ Consultation',
+          urgency: gatheredInfo.severity === 'severe' ? 'urgent' : 'routine',
+          status: 'pending',
+          notes: `TMJ symptoms: ${gatheredInfo.symptoms?.join(', ') || 'Not specified'}
+                 Pain timing: ${gatheredInfo.timing?.join(', ') || 'Not specified'}
+                 Severity: ${gatheredInfo.severity || 'Not specified'}`,
+          created_at: new Date().toISOString()
+        })
+        .select()
+        .single();
+
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating appointment request:', error);
+      return null;
+    }
+  }
+
   // Detect user frustration
   detectFrustration(message, history = []) {
     const lowerMessage = message.toLowerCase();
@@ -292,10 +360,65 @@ GATHERED INFO SO FAR: ${JSON.stringify(gatheredInfo)}
 Respond with excitement and offer immediate help options!`;
   }
 
+  // Get booking system prompt with available slots
+  async getBookingPrompt(gatheredInfo, conversationId) {
+    const slots = await this.getAvailableSlots(conversationId, 3);
+    const slotText = this.calendarService.formatSlotsForConversation(slots);
+    
+    return `
+BOOKING ASSISTANCE:
+The patient wants to schedule an appointment. Show available times and help them book.
+
+AVAILABLE SLOTS: ${slotText}
+
+RESPONSE REQUIREMENTS:
+1. Acknowledge their booking request enthusiastically
+2. Present the available appointment times clearly
+3. Ask them to choose a preferred time
+4. If no slots available, offer to have office call them
+
+GATHERED INFO: ${JSON.stringify(gatheredInfo)}
+
+Be helpful and efficient in getting them scheduled!`;
+  }
+
+  // Get information system prompt
+  getInfoPrompt(gatheredInfo) {
+    return `
+INFORMATION ASSISTANCE:
+The patient wants to learn more about TMJ treatment and Dr. Pedro's approach.
+
+INFORMATION TO SHARE:
+- Dr. Pedro is Staten Island's leading TMJ specialist
+- Advanced diagnostic techniques and treatment options
+- Non-surgical and surgical solutions available
+- Specialized TMJ joint analysis and bite correction
+- Pain relief focused approach
+- Insurance and financing options available
+
+RESPONSE REQUIREMENTS:
+1. Provide relevant information based on their specific symptoms
+2. Explain Dr. Pedro's unique TMJ specialization
+3. Mention treatment success with similar cases
+4. Always end by offering to schedule a consultation
+
+GATHERED INFO: ${JSON.stringify(gatheredInfo)}
+
+Be informative but not overwhelming, and always guide toward scheduling a consultation.`;
+  }
+
   // Get stage-appropriate system prompt
-  getSystemPrompt(stage, gatheredInfo, frustrationLevel, isPainExpression = false) {
+  async getSystemPrompt(stage, gatheredInfo, frustrationLevel, isPainExpression = false, conversationId = null, isBookingRequest = false, isInfoRequest = false) {
     if (isPainExpression) {
       return this.getPainAcknowledgmentPrompt(gatheredInfo);
+    }
+    
+    if (isBookingRequest) {
+      return await this.getBookingPrompt(gatheredInfo, conversationId);
+    }
+    
+    if (isInfoRequest) {
+      return this.getInfoPrompt(gatheredInfo);
     }
 
     const baseContext = `

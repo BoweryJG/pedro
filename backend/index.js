@@ -510,12 +510,18 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     // Detect if user is expressing pain (priority override)
     const isPainExpression = consultationService.detectPainExpression(message);
     
-    // Determine if we should progress to next stage (skip if pain expression)
-    const shouldProgress = !isPainExpression && consultationService.shouldProgressStage(
-      session.current_stage, 
-      updatedInfo, 
-      message
-    );
+    // Detect booking and info intents
+    const isBookingRequest = consultationService.detectBookingIntent(message);
+    const isInfoRequest = consultationService.detectInfoIntent(message);
+    
+    // Create appointment request if booking intent detected
+    if (isBookingRequest) {
+      await consultationService.createAppointmentRequest(finalConversationId, updatedInfo);
+    }
+    
+    // Determine if we should progress to next stage (skip if pain expression or routing)
+    const shouldProgress = !isPainExpression && !isBookingRequest && !isInfoRequest && 
+      consultationService.shouldProgressStage(session.current_stage, updatedInfo, message);
     
     const nextStage = shouldProgress ? 
       consultationService.stageFlow[session.current_stage] || session.current_stage :
@@ -529,11 +535,14 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     });
     
     // Get appropriate system prompt for current stage
-    const systemPrompt = consultationService.getSystemPrompt(
+    const systemPrompt = await consultationService.getSystemPrompt(
       nextStage, 
       updatedInfo, 
       Math.max(frustrationLevel, session.frustration_level),
-      isPainExpression
+      isPainExpression,
+      finalConversationId,
+      isBookingRequest,
+      isInfoRequest
     );
     
     // Prepare conversation history for AI
