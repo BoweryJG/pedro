@@ -200,7 +200,7 @@ jobs:
         if: needs.deploy-frontend.result == 'success'
         run: |
           FRONTEND_URL="${{ secrets.FRONTEND_URL }}"
-          if [ -z "$FRONTEND_URL" ]; then
+          if [ -z "$FRONTEND_URL" ] || [ "$FRONTEND_URL" = "" ]; then
             FRONTEND_URL="https://pedrotmj.netlify.app"
           fi
           echo "Checking frontend at: $FRONTEND_URL"
