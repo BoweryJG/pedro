@@ -474,7 +474,7 @@ app.post('/api/chat/agent', apiRateLimiter, asyncHandler(async (req, res) => {
   }
 }));
 
-// Chat endpoint for TMJ frontend - expected by chatService.ts
+// Chat endpoint for TMJ frontend - GPT-4 Socratic approach
 app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
   const { message, conversationId, context } = req.body;
   
@@ -484,50 +484,87 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     });
   }
   
-  if (!process.env.OPENROUTER_API_KEY) {
+  if (!process.env.OPENAI_API_KEY) {
     return res.status(500).json({ 
-      error: 'OpenRouter API key not configured' 
+      error: 'OpenAI API key not configured' 
     });
   }
   
-  // Build context-aware system prompt
-  let systemPrompt = `You are a helpful dental assistant for Dr. Pedro's TMJ practice. 
-  Be professional, empathetic, and informative. Help patients understand their symptoms and encourage them to book appointments.`;
+  // Comprehensive TMJ Knowledge Bank for Staten Island
+  const tmjKnowledgeBank = `
+  PRACTICE CONTEXT:
+  - Dr. Pedro is a certified TMJ specialist in Staten Island with unique treatment modalities
+  - Located at statenislandtmj.com - established reputation for TMJ/TMD relief
+  - Competitors include RSN Dental, Joseph Mormino DDS, Karl Family Dental, but Dr. Pedro specializes specifically in TMJ
+  - Serves Staten Island community with understanding of local lifestyle and needs
   
-  if (context && context.type === 'tmj_consultation') {
-    systemPrompt += `\n\nPatient context:
-    - Symptoms: ${context.symptoms?.join(', ') || 'Not specified'}
-    - Severity Level: ${context.severityLevel || 'Not specified'}%
-    - Specialty: ${context.specialty || 'TMJ'}
-    
-    Provide helpful information about TMJ disorders and treatment options.`;
-  }
+  TMJ EXPERTISE:
+  - TMJ/TMD disorders affect jaw joint (temporomandibular joint)
+  - Common symptoms: jaw clicking, grinding, facial pain, headaches, ear pain, difficulty opening mouth
+  - Causes: stress, teeth grinding, jaw injury, arthritis, poor bite alignment
+  - Treatment spectrum: conservative (mouth guards, therapy) → advanced (specialized procedures)
+  - Dr. Pedro offers multiple unique modalities for comprehensive care
+  
+  PATIENT EXPERIENCE APPROACH:
+  - Staten Island patients often delay treatment due to uncertainty
+  - Many have tried other dentists without TMJ specialization
+  - Insurance and financing concerns are common
+  - Patients want to understand their condition before committing
+  `;
+  
+  // Socratic Conversational System Prompt
+  const systemPrompt = `You are a compassionate TMJ consultant for Dr. Pedro's specialized practice in Staten Island. Your role is to guide patients through discovery using Socratic questioning - NOT to provide information dumps.
+
+  CONVERSATIONAL PRINCIPLES:
+  1. EMPATHY FIRST: Always acknowledge their experience with validation
+  2. ASK, DON'T TELL: Use 1-2 thoughtful questions per response 
+  3. BRIEF RESPONSES: 2-3 sentences maximum, then engage with questions
+  4. NATURAL FLOW: Sound like a caring healthcare professional, not a textbook
+  5. DISCOVERY FOCUS: Help them understand their own situation through guided questions
+
+  QUESTION CATEGORIES TO USE:
+  - Symptom Exploration: "When do you notice this most?"
+  - Impact Assessment: "How is this affecting your daily life?"
+  - Experience Validation: "That sounds really frustrating - how long have you been dealing with this?"
+  - Gentle Probing: "What have you tried so far?"
+  - Future-Focused: "What would finding relief mean for you?"
+  - Comfort Building: "Many of our Staten Island patients have felt exactly the same way - you're not alone in this."
+
+  ${tmjKnowledgeBank}
+
+  PATIENT CONTEXT:
+  ${context && context.type === 'tmj_consultation' ? `
+  - Current symptoms: ${context.symptoms?.join(', ') || 'Not specified'}
+  - Severity level: ${context.severityLevel || 'Not specified'}%
+  - Specialty focus: ${context.specialty || 'TMJ'}` : 'Initial consultation'}
+
+  Remember: Your goal is to make them feel heard, understood, and comfortable sharing more. Ask questions that help them discover their needs rather than overwhelming them with information.`;
   
   try {
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://pedrotmj.netlify.app',
-        'X-Title': 'Pedro TMJ Assistant'
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'anthropic/claude-3-haiku',
+        model: 'gpt-4',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
         ],
         temperature: 0.7,
-        max_tokens: 500
+        max_tokens: 150, // Shorter responses for more conversational flow
+        presence_penalty: 0.1,
+        frequency_penalty: 0.1
       })
     });
 
     const data = await response.json();
     
     if (!response.ok) {
-      console.error('OpenRouter error response:', JSON.stringify(data, null, 2));
-      throw new Error(data.error?.message || 'OpenRouter API error');
+      console.error('OpenAI error response:', JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || 'OpenAI API error');
     }
 
     res.json({
@@ -538,7 +575,7 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     console.error('Chat error:', error);
     res.status(500).json({ 
       error: 'Chat service temporarily unavailable',
-      response: "I apologize, but I'm having trouble connecting. Please call us at (917) 993-7306 for immediate assistance."
+      response: "I'm so sorry, but I'm having trouble connecting right now. Please call Dr. Pedro's office directly at (917) 993-7306 - they'll be able to help you immediately."
     });
   }
 }));
