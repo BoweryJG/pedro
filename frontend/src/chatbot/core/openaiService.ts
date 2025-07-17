@@ -1,7 +1,7 @@
 import type { Message, ChatbotConfig, ConversationState, ConversationStage } from '../types';
 import { procedureKnowledge, statenIslandContext } from '../knowledge/procedures';
 import { EnhancedConversationFlowManager } from './enhancedConversationFlow';
-import { fetchAgents, getAgentById, type AgentPersonality } from '../config/agentPersonalities';
+import { getAgentById, type AgentPersonality } from '../config/agentPersonalities';
 
 export class OpenAIService {
   private flowManager: EnhancedConversationFlowManager;
@@ -75,8 +75,8 @@ ${personality.specialties ? personality.specialties.map(s => `- ${s}`).join('\n'
 
 CAPABILITIES:
 ${agent.capabilities ? Object.entries(agent.capabilities)
-  .filter(([_, enabled]) => enabled)
-  .map(([capability, _]) => `- ${capability.replace(/([A-Z])/g, ' $1').toLowerCase()}`)
+  .filter(([, enabled]) => enabled)
+  .map(([capability]) => `- ${capability.replace(/([A-Z])/g, ' $1').toLowerCase()}`)
   .join('\n') : ''}
 
 YOUR ROLE: Help patients with whatever they need:

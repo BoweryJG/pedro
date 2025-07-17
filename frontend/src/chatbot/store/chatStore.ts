@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import type { Message, ConversationState, ConversationStage, Analytics } from '../types';
-import { OpenAIService } from '../core/openaiService';
+import type { Message, ConversationStage, Analytics } from '../types';
+// import { OpenAIService } from '../core/openaiService';
 import { supabase } from '../../lib/supabase';
 import { fetchAgents, type AgentPersonality } from '../config/agentPersonalities';
 
@@ -54,7 +54,7 @@ interface ChatStore {
 }
 
 // Initialize chatbot configuration (no API key needed - using serverless function)
-const chatbotConfig = {
+const _chatbotConfig = {
   apiKey: '', // Not needed when using serverless function
   model: 'gpt-4-turbo-preview',
   temperature: 0.7,
@@ -310,7 +310,7 @@ export const useChatStore = create<ChatStore>((set, get) => ({
       timestamp: new Date()
     };
     
-    set((state) => ({
+    set(() => ({
       messages: [greetingMessage]
     }));
   },

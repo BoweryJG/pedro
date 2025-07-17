@@ -80,7 +80,7 @@ export async function fetchAgents(): Promise<AgentPersonality[]> {
     }
 
     // Transform agentbackend format to Pedro format
-    const agents: AgentPersonality[] = data.agents.map((agent: any) => ({
+    const agents: AgentPersonality[] = data.agents.map((agent: Record<string, unknown>) => ({
       id: agent.id,
       name: agent.name,
       role: agent.role,

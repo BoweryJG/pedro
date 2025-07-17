@@ -92,7 +92,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({ onClose }) => {
     sendMessage,
     setShowFinancingWidget,
     loadAgents,
-    selectAgent
+    selectAgent: _selectAgent
   } = useChatStore();
   
   const [input, setInput] = useState('');

@@ -67,11 +67,11 @@ export const agentAPI = {
     agentbackendApi.get(`/api/agents/${agentId}`),
   
   // Create new agent
-  createAgent: (agentData: any) => 
+  createAgent: (agentData: Record<string, unknown>) => 
     agentbackendApi.post('/api/agents', agentData),
   
   // Update agent
-  updateAgent: (agentId: string, agentData: any) => 
+  updateAgent: (agentId: string, agentData: Record<string, unknown>) => 
     agentbackendApi.put(`/api/agents/${agentId}`, agentData),
   
   // Delete agent
@@ -79,7 +79,7 @@ export const agentAPI = {
     agentbackendApi.delete(`/api/agents/${agentId}`),
   
   // Deploy agent to Pedro
-  deployToPedro: (agent: any) => 
+  deployToPedro: (agent: Record<string, unknown>) => 
     agentbackendApi.post('/api/agents/deploy', {
       agent,
       targetPlatform: 'pedro',

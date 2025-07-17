@@ -80,7 +80,7 @@ export const authAPI = {
   },
   
   updateUser: async (data: { email?: string; firstName?: string; lastName?: string; phone?: string }) => {
-    const updates: any = {};
+    const updates: Record<string, unknown> = {};
     if (data.email) updates.email = data.email;
     if (data.firstName || data.lastName || data.phone) {
       updates.data = {
