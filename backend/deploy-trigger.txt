@@ -1,0 +1,1 @@
+Deploy trigger: 2025-07-17 - Fix CSRF and add /api/chat endpoint
