@@ -484,9 +484,9 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     });
   }
   
-  if (!process.env.OPENAI_API_KEY) {
+  if (!process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
     return res.status(500).json({ 
-      error: 'OpenAI API key not configured' 
+      error: 'AI API key not configured' 
     });
   }
   
@@ -541,34 +541,67 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
   Remember: Your goal is to make them feel heard, understood, and comfortable sharing more. Ask questions that help them discover their needs rather than overwhelming them with information.`;
   
   try {
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    let response, data;
+
+    // Try OpenAI first if key is available
+    if (process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY !== 'your_openai_api_key_here') {
+      response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: message }
+          ],
+          temperature: 0.7,
+          max_tokens: 150,
+          presence_penalty: 0.1,
+          frequency_penalty: 0.1
+        })
+      });
+
+      data = await response.json();
+      
+      if (response.ok) {
+        return res.json({
+          response: data.choices[0].message.content,
+          conversationId: conversationId || `tmj_${Date.now()}`
+        });
+      }
+    }
+
+    // Fallback to Anthropic Claude
+    response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'gpt-4',
+        model: 'claude-3-haiku-20240307',
+        max_tokens: 150,
         messages: [
-          { role: 'system', content: systemPrompt },
           { role: 'user', content: message }
         ],
-        temperature: 0.7,
-        max_tokens: 150, // Shorter responses for more conversational flow
-        presence_penalty: 0.1,
-        frequency_penalty: 0.1
+        system: systemPrompt,
+        temperature: 0.7
       })
     });
 
-    const data = await response.json();
+    data = await response.json();
     
     if (!response.ok) {
-      console.error('OpenAI error response:', JSON.stringify(data, null, 2));
-      throw new Error(data.error?.message || 'OpenAI API error');
+      console.error('AI API error response:', JSON.stringify(data, null, 2));
+      throw new Error(data.error?.message || 'AI API error');
     }
 
     res.json({
-      response: data.choices[0].message.content,
+      response: data.content[0].text,
       conversationId: conversationId || `tmj_${Date.now()}`
     });
   } catch (error) {
