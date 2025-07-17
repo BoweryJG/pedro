@@ -216,8 +216,8 @@ export const validateContentType = (allowedTypes = ['application/json']) => {
 
 // CSRF protection for state-changing operations
 export const csrfProtection = (req, res, next) => {
-  // Skip CSRF for webhook endpoints
-  if (req.path.includes('/webhook') || req.path.includes('/voice/')) {
+  // Skip CSRF for webhook endpoints and public API endpoints
+  if (req.path.includes('/webhook') || req.path.includes('/voice/') || req.path === '/api/chat') {
     return next();
   }
   
