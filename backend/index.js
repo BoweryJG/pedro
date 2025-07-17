@@ -515,8 +515,10 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     const isInfoRequest = consultationService.detectInfoIntent(message);
     
     // Create appointment request if booking intent detected
+    let appointmentRequestId = null;
     if (isBookingRequest) {
-      await consultationService.createAppointmentRequest(finalConversationId, updatedInfo);
+      const appointmentRequest = await consultationService.createAppointmentRequest(finalConversationId, updatedInfo);
+      appointmentRequestId = appointmentRequest?.id;
     }
     
     // Determine if we should progress to next stage (skip if pain expression or routing)
@@ -585,11 +587,23 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
         // Add AI response to history
         await consultationService.addMessage(finalConversationId, 'assistant', aiResponse);
         
+        // Get booking slots if this is a booking request
+        let bookingSlots = null;
+        if (isBookingRequest) {
+          const bookingOptions = await consultationService.getBookingOptionsResponse(updatedInfo, finalConversationId);
+          bookingSlots = bookingOptions.slots;
+        }
+        
         return res.json({
           response: aiResponse,
           conversationId: finalConversationId,
           stage: nextStage,
-          gatheredInfo: updatedInfo
+          gatheredInfo: updatedInfo,
+          bookingSlots,
+          appointmentRequestId,
+          isBookingRequest,
+          isInfoRequest,
+          isPainExpression
         });
       }
     }
@@ -626,11 +640,23 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     // Add AI response to history
     await consultationService.addMessage(finalConversationId, 'assistant', aiResponse);
     
+    // Get booking slots if this is a booking request
+    let bookingSlots = null;
+    if (isBookingRequest) {
+      const bookingOptions = await consultationService.getBookingOptionsResponse(updatedInfo, finalConversationId);
+      bookingSlots = bookingOptions.slots;
+    }
+    
     res.json({
       response: aiResponse,
       conversationId: finalConversationId,
       stage: nextStage,
-      gatheredInfo: updatedInfo
+      gatheredInfo: updatedInfo,
+      bookingSlots,
+      appointmentRequestId,
+      isBookingRequest,
+      isInfoRequest,
+      isPainExpression
     });
     
   } catch (error) {
@@ -638,6 +664,61 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     res.status(500).json({ 
       error: 'Chat service temporarily unavailable',
       response: "I'm so sorry, but I'm having trouble connecting right now. Please call Dr. Pedro's office directly at (917) 993-7306 - they'll be able to help you immediately."
+    });
+  }
+}));
+
+// TMJ Appointment slot booking endpoint
+app.post('/api/tmj/book-slot', apiRateLimiter, asyncHandler(async (req, res) => {
+  const { appointmentRequestId, selectedSlot, patientContactInfo } = req.body;
+  
+  if (!appointmentRequestId || !selectedSlot || !patientContactInfo) {
+    return res.status(400).json({ 
+      error: 'Missing required fields: appointmentRequestId, selectedSlot, patientContactInfo' 
+    });
+  }
+  
+  const { patient_name, patient_email, patient_phone } = patientContactInfo;
+  if (!patient_name || (!patient_email && !patient_phone)) {
+    return res.status(400).json({ 
+      error: 'Patient name and at least one contact method (email or phone) required' 
+    });
+  }
+  
+  try {
+    const consultationService = new TMJConsultationService();
+    
+    const bookingResult = await consultationService.confirmAppointmentBooking(
+      appointmentRequestId,
+      selectedSlot,
+      patientContactInfo
+    );
+    
+    if (bookingResult.success) {
+      res.json({
+        success: true,
+        message: 'Your TMJ consultation has been booked successfully!',
+        confirmationNumber: bookingResult.confirmationNumber,
+        appointment: {
+          date: selectedSlot.date,
+          time: selectedSlot.time,
+          confirmations: {
+            email: bookingResult.confirmations.email?.success || false,
+            sms: bookingResult.confirmations.sms?.success || false
+          }
+        }
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        error: bookingResult.error || 'Failed to book appointment'
+      });
+    }
+  } catch (error) {
+    console.error('TMJ slot booking error:', error);
+    res.status(500).json({ 
+      success: false,
+      error: 'Failed to book appointment. Please call (929) 242-4535 for assistance.'
     });
   }
 }));

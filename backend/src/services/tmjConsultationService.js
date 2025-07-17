@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 import CalendarService from '../../services/calendarService.js';
 import { AppointmentBookingService } from './appointmentBooking.js';
+import ConfirmationService from './confirmationService.js';
 
 class TMJConsultationService {
   constructor() {
@@ -11,6 +12,7 @@ class TMJConsultationService {
     
     this.calendarService = CalendarService;
     this.appointmentService = new AppointmentBookingService(this.supabase);
+    this.confirmationService = new ConfirmationService();
     
     // Define consultation stages
     this.stages = {
@@ -269,6 +271,96 @@ class TMJConsultationService {
     }
   }
 
+  // Confirm appointment booking with automatic email/SMS confirmation
+  async confirmAppointmentBooking(appointmentRequestId, selectedSlot, patientContactInfo) {
+    try {
+      const { patient_name, patient_email, patient_phone } = patientContactInfo;
+      
+      // Format phone number for SMS
+      const formattedPhone = this.confirmationService.formatPhoneNumber(patient_phone);
+      
+      // Update appointment request with confirmed details
+      const { data: updatedAppointment, error } = await this.supabase
+        .from('tmj_appointment_requests')
+        .update({
+          preferred_date: selectedSlot.date,
+          preferred_time: selectedSlot.startTime,
+          patient_name,
+          patient_email,
+          patient_phone: formattedPhone,
+          status: 'confirmed',
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', appointmentRequestId)
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      // Send confirmation email and SMS
+      const confirmationDetails = {
+        patient_name,
+        patient_email,
+        patient_phone: formattedPhone,
+        preferred_date: selectedSlot.date,
+        preferred_time: selectedSlot.startTime,
+        service_type: 'TMJ Consultation with Dr. Pedro'
+      };
+
+      const confirmationResults = await this.confirmationService.sendAppointmentConfirmation(confirmationDetails);
+
+      return {
+        success: true,
+        appointment: updatedAppointment,
+        confirmations: confirmationResults,
+        confirmationNumber: `TMJ${Date.now().toString().slice(-6)}`
+      };
+
+    } catch (error) {
+      console.error('Error confirming appointment booking:', error);
+      return { success: false, error: error.message };
+    }
+  }
+
+  // Generate appointment booking response with available slots formatted for frontend buttons
+  async getBookingOptionsResponse(gatheredInfo, conversationId) {
+    try {
+      const slots = await this.getAvailableSlots(conversationId, 3);
+      
+      if (!slots || slots.length === 0) {
+        return {
+          response: "I don't see any available appointments in the next two weeks. Let me have our scheduling team call you to find a time that works. Can you provide your phone number?",
+          slots: [],
+          hasSlots: false
+        };
+      }
+
+      // Format response with clickable options
+      const slotText = this.calendarService.formatSlotsForConversation(slots);
+      const response = `Perfect! I have these TMJ consultation times available with Dr. Pedro:\n\n${slotText}\n\nJust click on your preferred time below to book your appointment!`;
+
+      return {
+        response,
+        slots: slots.map(slot => ({
+          id: `slot_${slot.date}_${slot.startTime.replace(/[^a-zA-Z0-9]/g, '')}`,
+          displayText: `${slot.dayName} ${slot.startTime}`,
+          date: slot.date,
+          time: slot.startTime,
+          timestamp: slot.startTimestamp
+        })),
+        hasSlots: true
+      };
+
+    } catch (error) {
+      console.error('Error getting booking options:', error);
+      return {
+        response: "I'm having trouble accessing our scheduling system right now. Please call us at (929) 242-4535 to book your TMJ consultation.",
+        slots: [],
+        hasSlots: false
+      };
+    }
+  }
+
   // Detect user frustration
   detectFrustration(message, history = []) {
     const lowerMessage = message.toLowerCase();
@@ -362,24 +454,25 @@ Respond with excitement and offer immediate help options!`;
 
   // Get booking system prompt with available slots
   async getBookingPrompt(gatheredInfo, conversationId) {
-    const slots = await this.getAvailableSlots(conversationId, 3);
-    const slotText = this.calendarService.formatSlotsForConversation(slots);
+    const bookingOptions = await this.getBookingOptionsResponse(gatheredInfo, conversationId);
     
     return `
 BOOKING ASSISTANCE:
-The patient wants to schedule an appointment. Show available times and help them book.
+The patient wants to schedule an appointment. Use the prepared booking response.
 
-AVAILABLE SLOTS: ${slotText}
+PREPARED RESPONSE: ${bookingOptions.response}
+
+AVAILABLE SLOTS DATA: ${JSON.stringify(bookingOptions.slots)}
 
 RESPONSE REQUIREMENTS:
-1. Acknowledge their booking request enthusiastically
-2. Present the available appointment times clearly
-3. Ask them to choose a preferred time
-4. If no slots available, offer to have office call them
+1. Use the prepared response text exactly as provided
+2. The frontend will automatically display clickable buttons for the slots
+3. Be enthusiastic and helpful
+4. Don't repeat the slot information - the buttons will handle that
 
 GATHERED INFO: ${JSON.stringify(gatheredInfo)}
 
-Be helpful and efficient in getting them scheduled!`;
+Use the prepared response text and let the frontend buttons handle slot selection!`;
   }
 
   // Get information system prompt
