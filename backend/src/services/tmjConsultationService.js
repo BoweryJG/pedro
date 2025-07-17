@@ -188,6 +188,19 @@ class TMJConsultationService {
     return extracted;
   }
 
+  // Detect if user is expressing pain and needs immediate routing
+  detectPainExpression(message) {
+    const lowerMessage = message.toLowerCase();
+    const painIndicators = [
+      'hurt', 'hurts', 'pain', 'painful', 'ache', 'aches', 'aching',
+      'uncomfortable', 'throbbing', 'sharp', 'dull', 'burning',
+      'stabbing', 'sore', 'tender', 'killing me', 'unbearable',
+      'stop', 'relief', 'help'
+    ];
+    
+    return painIndicators.some(indicator => lowerMessage.includes(indicator));
+  }
+
   // Detect user frustration
   detectFrustration(message, history = []) {
     const lowerMessage = message.toLowerCase();
@@ -258,8 +271,33 @@ class TMJConsultationService {
     }
   }
 
+  // Get pain acknowledgment system prompt
+  getPainAcknowledgmentPrompt(gatheredInfo) {
+    return `
+PAIN ACKNOWLEDGMENT RESPONSE:
+The patient has expressed they are in pain. Respond with immediate empathy and enthusiasm to help.
+
+REQUIRED RESPONSE FORMAT:
+"Ah man!! We've got you covered!!! Are you looking to book a time to come in or are you looking for more info?"
+
+CONVERSATION RULES:
+1. Use the EXACT phrase "Ah man!! We've got you covered!!!" 
+2. Immediately offer the choice: booking appointment OR more information
+3. Be enthusiastic and reassuring
+4. Don't ask about symptoms - they've already expressed pain
+5. Focus on getting them help quickly
+
+GATHERED INFO SO FAR: ${JSON.stringify(gatheredInfo)}
+
+Respond with excitement and offer immediate help options!`;
+  }
+
   // Get stage-appropriate system prompt
-  getSystemPrompt(stage, gatheredInfo, frustrationLevel) {
+  getSystemPrompt(stage, gatheredInfo, frustrationLevel, isPainExpression = false) {
+    if (isPainExpression) {
+      return this.getPainAcknowledgmentPrompt(gatheredInfo);
+    }
+
     const baseContext = `
 PRACTICE CONTEXT:
 - Dr. Pedro is a certified TMJ specialist in Staten Island with unique treatment modalities

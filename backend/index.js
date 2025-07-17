@@ -507,8 +507,11 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     // Detect frustration level
     const frustrationLevel = consultationService.detectFrustration(message, session.conversation_history);
     
-    // Determine if we should progress to next stage
-    const shouldProgress = consultationService.shouldProgressStage(
+    // Detect if user is expressing pain (priority override)
+    const isPainExpression = consultationService.detectPainExpression(message);
+    
+    // Determine if we should progress to next stage (skip if pain expression)
+    const shouldProgress = !isPainExpression && consultationService.shouldProgressStage(
       session.current_stage, 
       updatedInfo, 
       message
@@ -529,7 +532,8 @@ app.post('/api/chat', apiRateLimiter, asyncHandler(async (req, res) => {
     const systemPrompt = consultationService.getSystemPrompt(
       nextStage, 
       updatedInfo, 
-      Math.max(frustrationLevel, session.frustration_level)
+      Math.max(frustrationLevel, session.frustration_level),
+      isPainExpression
     );
     
     // Prepare conversation history for AI
